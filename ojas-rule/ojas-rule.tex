@@ -1,0 +1,69 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper]{geometry}
+
+\usepackage[lastexercise]{exercise}
+
+%%%%%%%%%%% Preamble for exercise sheets
+\pagestyle{empty}
+\usepackage{vmargin}
+\setmarginsrb{2.5cm}{2.5cm}{2.5cm}{2.5cm}{0cm}{0cm}{0cm}{0cm}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{2mm}
+\linespread{1.0}
+\newcommand{\Title}[1]{\makebox[\textwidth][c]{{\large\scshape{#1}}}\\[5mm]}
+\newcommand{\What}[1]{\makebox[\textwidth][c]{\large{#1}}\\[5mm]}
+\newcommand{\Who}[1]{{\parbox[t]{\linewidth}{\centering\large{#1}}\\[1.0cm]}}
+%%%%%%%%%%%
+
+\begin{document}
+
+\What{Neuronal Dynamics: Python Exercises}
+\Who{Professor Wulfram Gerstner\\Laboratory of Computational Neuroscience, EPF Lausanne}
+\Title{Numerical simulation of Oja's hebbian learning rule}
+
+\begin{Exercise}[]
+
+Download \texttt{oja.py} from book's webpage. Create a script file \verb|answers.py| in the
+same directory, and give it the following header:
+\begin{verbatim}
+from numpy import *
+from scipy import *
+from oja import *
+\end{verbatim}
+You will type the code for your answers right below. When you want to execute your code, 
+open ipython (pylab) in a terminal and type: 
+\begin{verbatim}
+>> import answers
+\end{verbatim}
+The \texttt{oja} module contains two documented functions:
+\begin{itemize}
+\item \verb|make_cloud(...)| which generates a 2D elliptic gaussian cloud of datapoints
+\item \verb|learn(...)| which runs Oja's learning rule on the data and returns the time course of the weight vector
+\end{itemize}
+
+In your answers you will need to plot data, which can be done using pylab.
+
+\Question
+Run the learning rule on a \emph{circular} data cloud (\verb|ratio=1|). Plot the time course
+of both components of the weight vector. Do it many times. What happens?
+
+\Question
+Repeat the previous question with an \emph{elongated} elliptic data cloud (e.g. \verb|ratio=0.3|). 
+Again, do it several times. What is the
+difference with a circular data cloud, in terms of learning curve?
+ 
+\Question
+Try to change the orientation of the ellipsoid (try several different angles). What does Oja's rule do?
+Hint: plot the learned weight vector in 2D space, and relate its orientation to that of the ellipsoid.
+
+\Question
+The above work assumes that the input activities can be negative (indeed the input were statistically centered).
+In real neurons, if we think of the ``activity'' as the firing rate, this cannot be less than zero.
+Try again the previous question, applying the learning rule on \verb|5 + make_cloud(...)|,
+which centers the data around \verb|(5,5)|.
+Draw your conclusions. Can you think of a modification of the rule?
+
+
+\end{Exercise}
+
+\end{document}
