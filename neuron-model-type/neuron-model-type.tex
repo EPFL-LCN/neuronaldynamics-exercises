@@ -1,0 +1,119 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper]{geometry}
+
+\usepackage[lastexercise]{exercise}
+
+%%%%%%%%%%% Preamble for exercise sheets
+\pagestyle{empty}
+\usepackage{vmargin}
+\setmarginsrb{2.5cm}{2.5cm}{2.5cm}{2.5cm}{0cm}{0cm}{0cm}{0cm}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{2mm}
+\linespread{1.0}
+\newcommand{\Title}[1]{\makebox[\textwidth][c]{{\large\scshape{#1}}}\\[5mm]}
+\newcommand{\What}[1]{\makebox[\textwidth][c]{\large{#1}}\\[5mm]}
+\newcommand{\Who}[1]{{\parbox[t]{\linewidth}{\centering\large{#1}}\\[1.0cm]}}
+%%%%%%%%%%%
+
+\begin{document}
+
+\What{Neuronal Dynamics: Python Exercises}
+\Who{Professor Wulfram Gerstner\\Laboratory of Computational Neuroscience, EPF Lausanne}
+\Title{Neuron Model: Type I or Type II?}
+
+\begin{Exercise}[]
+
+For this computer exercise, download TypeX.py, TypeY.py, tools.py, fvsI.py
+from the book's webpage.  One of TypeX.py or TypeY.py is
+a FitzHugh-Nagumo Type II model, and the other is a Morris-Lecar Type
+I model.  The objective of this exercise is to find out which is which.
+
+Start pylab in the directory containing the
+downloaded files.  You should then be able to import the two models:
+
+\begin{verbatim}
+>> import TypeX
+>> import TypeY
+\end{verbatim}
+
+\Question What is the threshold current for repetitive firing for
+TypeX, TypeY?
+
+To this end, use the TypeX.PlotStep or TypeY.PlotStep to plot the response to
+a step current which starts after 100ms (to let the system
+equilibrate) and lasting 1000ms (to detect repetitive firing with a
+long period):
+
+For example using:
+
+\verb^>> TypeY.PlotStep(I_amp=0.5,Step_tstart=100,Step_tend=1000,tend=1000)^
+
+Exploring various values of \verb^I_amp^, find the range in which the threshold
+occurs, to a precision of 0.01.
+
+Already from the voltage response near threshold you might have an idea
+which is type I or II, but let's investigate further ...
+
+\Question Plot on one axis the response to short pulses near
+threshold, and interpret the results.  Which is Type I, II ?
+
+Example:
+
+\begin{verbatim}
+>> figure()
+>> t,v,w,I = TypeY.Step(I_amp=1.05,Step_tstart=100,Step_tend=110,tend=300)
+>> plot(t,v)
+>> t,v,w,I = TypeY.Step(I_amp=1.1,Step_tstart=100,Step_tend=110,tend=300)
+>> plot (t,v)
+>> t,v,w,I = TypeY.Step(I_amp=1.15,Step_tstart=100,Step_tend=110,tend=300)
+>> plot (t,v)
+\end{verbatim}
+
+\newpage
+
+\Question Plot f-vs-I curves for each TypeX, TypeY
+
+Provided in tools.py is a function to determine the spike times from
+t,v:
+
+\begin{verbatim}
+>> import tools
+>> t,v,w,I = TypeX.Step(I_amp=0.40,Step_tstart=100,Step_tend=1000,tend=1000)
+
+>> st = tools.spiketimes(t,v)
+>> print st
+[ 102.9  146.1   189.1 ... ]
+\end{verbatim}
+
+Using this function one can calculate an estimate of the firing rate:
+
+First calculate the inter-spike intervals (time difference between
+spikes) using this elegant indexing idiom:
+
+\verb^>> isi = st[1:]-st[:-1]^
+
+Then find the mean and take the reciprocal (pay attention when converting from 1/ms to
+Hz) to yield the firing-rate:
+
+\begin{verbatim}
+>> f = 1000.0/mean(isi)
+\end{verbatim}
+
+This function is provided in \verb^tools.py^ as the function \verb^tools.f^
+
+Now let's use it to plot an f-vs-I curve for each TypeX/TypeY
+
+The script to plot an f-vs-I curve is
+provided on the moodle as fvsI.py. You can execute it by using:
+
+\begin{verbatim}
+>> execfile('fvsI.py')
+\end{verbatim}
+
+\Question In the file fvsI.py change TypeX to TypeY, and change the \verb^I^ range to zoom in near the threshold. Then execute it again.
+
+Which is Type I and which is Type II?
+
+\end{Exercise}
+
+\end{document}
