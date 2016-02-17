@@ -33,6 +33,7 @@ Cambridge University Press, 2014."""
 
 from brian2 import *
 from brian2.units.stdunits import nA
+import pylab as plt
 
 # constants
 v_reset = 0.*mV
@@ -46,24 +47,30 @@ def do_plot(rec, v_threshold=1.*mV, **kwargs):
 
     """Plots the brian recorder 'rec' for values I and v"""
 
-    subplot(211)
-    plot(rec.t/ms, rec.v[0]/mV, lw=2)
-    plot((rec.t/ms)[[0, -1]], [v_threshold/mV, v_threshold/mV], 'r--', lw=2)
-    xlabel('t [ms]')
-    ylabel('v [mV]')
-    ylim(0, v_threshold/mV * 1.2)
-    grid()
+    plt.subplot(211)
+    plt.plot(rec.t/ms, rec.v[0]/mV, lw=2)
 
-    subplot(212)
-    plot(rec.t/ms, rec.I[0]/nA, lw=2)
-    xlabel('t [ms]')
-    ylabel('I [mV]')
-    grid()
+    plt.plot(
+        (rec.t/ms)[[0, -1]],
+        [v_threshold/mV, v_threshold/mV],
+        'r--', lw=2
+    )
+    
+    plt.xlabel('t [ms]')
+    plt.ylabel('v [mV]')
+    plt.ylim(0, v_threshold/mV * 1.2)
+    plt.grid()
+
+    plt.subplot(212)
+    plt.plot(rec.t/ms, rec.I[0]/nA, lw=2)
+    plt.xlabel('t [ms]')
+    plt.ylabel('I [mV]')
+    plt.grid()
 
     if "title" in kwargs:
-        suptitle(kwargs["title"])
+        plt.suptitle(kwargs["title"])
 
-    show()
+    plt.show()
 
 
 def LIF_Neuron(curr, simtime):

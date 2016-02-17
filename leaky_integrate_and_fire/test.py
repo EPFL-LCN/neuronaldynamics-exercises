@@ -1,13 +1,13 @@
-import unittest
 import LIF
+import matplotlib
+matplotlib.use('Agg')
 
 
-class TestLIF(unittest.TestCase):
+def test_runnable_Step():
+    """Test if LIF_Step is runnable."""
+    LIF.LIF_Step()
 
-    def test_runnable_Step(self):
-        """Test if LIF_Step is runnable."""
-        LIF.LIF_Step()
 
-    def test_runnable_Sinus(self):
-        """Test if LIF_Step is runnable."""
-        LIF.LIF_Sinus()
+def test_runnable_Sinus():
+    """Test if LIF_Step is runnable."""
+    LIF.LIF_Sinus()
