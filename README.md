@@ -9,7 +9,7 @@ Most exercises rely on the python based [Brian neural network simulator ](https:
 Each exercise is described in its own folder by a PDF file. The exercises are intended to be solved using the provided python classes. To run the code contained in each folder, the following requirements should be met:
 
 * Python>=2.7
-* [Brian Simulator](https://github.com/brian-team/brian2)
+* [Brian Simulator](https://github.com/brian-team/brian2), version 2
 * Numpy
 * Matplotlib
 * Scipy [only required in some exercises]
