@@ -1,13 +1,14 @@
-import LIF
 import matplotlib
 matplotlib.use('Agg')
 
 
 def test_runnable_Step():
     """Test if LIF_Step is runnable."""
-    LIF.LIF_Step()
+    from .LIF import LIF_Step
+    LIF_Step()
 
 
 def test_runnable_Sinus():
     """Test if LIF_Step is runnable."""
-    LIF.LIF_Sinus()
+    from .LIF import LIF_Sinus
+    LIF_Sinus()
