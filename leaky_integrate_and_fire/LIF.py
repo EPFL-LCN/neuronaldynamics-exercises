@@ -55,7 +55,7 @@ def do_plot(rec, v_threshold=1.*mV, **kwargs):
         [v_threshold/mV, v_threshold/mV],
         'r--', lw=2
     )
-    
+
     plt.xlabel('t [ms]')
     plt.ylabel('v [mV]')
     plt.ylim(0, v_threshold/mV * 1.2)
