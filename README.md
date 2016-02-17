@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=brian2)](https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises)
+
 # Neuronal Dynamics: Python Exercises
 
 This repository contains python exercises accompanying the book **[Neuronal Dynamics](http://neuronaldynamics.epfl.ch/) by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski**. References to relevant chapters will be added in the [Teaching Materials](http://neuronaldynamics.epfl.ch/lectures.html) section of the book homepage.
