@@ -4,7 +4,7 @@ python:
   - "3.4_with_system_site_packages"
 before_install:
   - sudo apt-get update
-  - sudo apt-get install python-numpy python-scipy python-cython python-matplotlib
+  - sudo apt-get install python-numpy python-scipy python-matplotlib
 install:
   - pip install -r requirements.txt
   - pip install pep8
