@@ -1,15 +1,14 @@
-Introducton
+Introduciton
 ===================================
 
 This repository contains python exercises accompanying the book
-**`Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram
-Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski**.
+`Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram
+Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.
 References to relevant chapters will be added in the `Teaching
 Materials <http://neuronaldynamics.epfl.ch/lectures.html>`__ section of
 the book homepage.
 
-Most exercises rely on the python based `Brian2 neural network
-simulator <https://github.com/brian-team/brian2>`__.
+Most exercises rely on the python based `Brian2 simulator <https://github.com/brian-team/brian2>`__.
 
 Installation
 ------------

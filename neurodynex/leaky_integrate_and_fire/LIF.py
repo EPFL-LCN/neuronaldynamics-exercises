@@ -33,7 +33,9 @@ import pylab as plt
 import numpy as np
 
 
-def do_plot(rec, v_threshold=1.*b2.mV, title=None):
+def do_plot(rec, v_threshold=1., title=None):
+
+    v_threshold = b2.mV * b2.mV
 
     """Plots a TimedArray for values I and v
 
