@@ -34,7 +34,6 @@ import numpy as np
 
 
 def do_plot(rec, v_threshold=1., title=None):
-
     """Plots a TimedArray for values I and v
 
     Args:
@@ -71,7 +70,6 @@ def do_plot(rec, v_threshold=1., title=None):
 
 
 def LIF_Neuron(curr, simtime):
-
     """Simple LIF neuron implemented in Brian2.
 
     Args:
@@ -79,8 +77,8 @@ def LIF_Neuron(curr, simtime):
         simtime (float): Simulation time [seconds]
 
     Returns:
-        StateMonitor:   Brian2 StateMonitor with input current (I) and
-                        voltage (V) recorded
+        StateMonitor: Brian2 StateMonitor with input current (I) and
+        voltage (V) recorded
     """
 
     # constants
@@ -113,7 +111,6 @@ def LIF_Neuron(curr, simtime):
 
 
 def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
-
     """Run the LIF and give a step current input.
 
     Args:
@@ -138,7 +135,6 @@ def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
 
 
 def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
-
     """
     Run the LIF for a sinusoidal current
 
