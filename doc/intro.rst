@@ -1,4 +1,4 @@
-Introduciton
+Introduction
 ===================================
 
 This repository contains python exercises accompanying the book
