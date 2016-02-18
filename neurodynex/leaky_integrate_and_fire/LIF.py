@@ -32,6 +32,7 @@ import brian2 as b2
 import pylab as plt
 import numpy as np
 
+
 def do_plot(rec, v_threshold=1.*b2.mV, title=None):
 
     """Plots a TimedArray for values I and v
