@@ -9,12 +9,16 @@ Most exercises rely on the python based [Brian neural network simulator ](https:
 Each exercise is described in its own folder by a PDF file. The exercises are intended to be solved using the provided python classes. To run the code contained in each folder, the following requirements should be met:
 
 * Python>=2.7
-* [Brian Simulator](https://github.com/brian-team/brian2)
+* [Brian Simulator](https://github.com/brian-team/brian)
 * Numpy
 * Matplotlib
 * Scipy [only required in some exercises]
 
 You can also install all requirements by running ``pip install -r requirements.txt`` from the main directory of this repository, in a console.
+
+## Brian2
+
+We are currently rewriting the examples to use the more recent [Brian2 Simulator](https://github.com/brian-team/brian2). These are available on the [brian2 branch](https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian2).
 
 ## License
 
