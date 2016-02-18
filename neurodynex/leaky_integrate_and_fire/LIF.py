@@ -35,8 +35,6 @@ import numpy as np
 
 def do_plot(rec, v_threshold=1., title=None):
 
-    v_threshold = b2.mV * b2.mV
-
     """Plots a TimedArray for values I and v
 
     Args:
@@ -51,13 +49,13 @@ def do_plot(rec, v_threshold=1., title=None):
     if v_threshold is not None:
         plt.plot(
             (rec.t/b2.ms)[[0, -1]],
-            [v_threshold/b2.mV, v_threshold/b2.mV],
+            [v_threshold, v_threshold],
             'r--', lw=2
         )
 
     plt.xlabel('t [ms]')
     plt.ylabel('v [mV]')
-    plt.ylim(0, v_threshold/b2.mV * 1.2)
+    plt.ylim(0, v_threshold * 1.2)
     plt.grid()
 
     plt.subplot(212)
