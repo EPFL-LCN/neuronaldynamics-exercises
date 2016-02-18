@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=brian2)](https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises)
-[![Doc Status](https://readthedocs.org/projects/neuronaldynamics-exercises/badge/?version=latest)](http://neuronaldynamics-exercises.readthedocs.org/en/latest/)
+[![Doc Status](https://readthedocs.org/projects/neuronaldynamics-exercises/badge/?version=brian2)](http://neuronaldynamics-exercises.readthedocs.org/)
 
 # Neuronal Dynamics: Python Exercises
 
@@ -7,7 +7,7 @@ This repository contains python exercises accompanying the book **[Neuronal Dyna
 
 ## Documentation
 
-Our [documentation is over at readthedocs](http://neuronaldynamics-exercises.readthedocs.org/en/latest/).
+Our [documentation is over at readthedocs](http://neuronaldynamics-exercises.readthedocs.org/).
 
 ## License
 
