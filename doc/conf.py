@@ -15,6 +15,7 @@
 import sys
 import os
 import shlex
+import mock
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -22,6 +23,10 @@ import shlex
 # sys.path.insert(0, os.path.abspath('.'))
 
 sys.path.insert(0, os.path.abspath('../.'))
+
+MOCK_MODULES = ['scipy', 'numpy', 'brian2', 'matplotlib.pylab', 'matplotlib']
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.Mock()
 
 # -- General configuration ------------------------------------------------
 
@@ -33,7 +38,6 @@ sys.path.insert(0, os.path.abspath('../.'))
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',

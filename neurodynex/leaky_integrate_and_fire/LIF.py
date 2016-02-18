@@ -29,19 +29,10 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 import brian2 as b2
-from brian2.units.stdunits import nA
 import pylab as plt
 import numpy as np
 
-# constants
-v_reset = 0.*b2.mV
-v_threshold = 1.*b2.mV
-R = 1*b2.Mohm
-v_rest = 0*b2.mV
-tau = 1*b2.ms
-
-
-def do_plot(rec, v_threshold=None, title=None):
+def do_plot(rec, v_threshold=1.*b2.mV, title=None):
 
     """Plots a TimedArray for values I and v
 
@@ -67,7 +58,7 @@ def do_plot(rec, v_threshold=None, title=None):
     plt.grid()
 
     plt.subplot(212)
-    plt.plot(rec.t/b2.ms, rec.I[0]/nA, lw=2)
+    plt.plot(rec.t/b2.ms, rec.I[0]/b2.namp, lw=2)
     plt.xlabel('t [ms]')
     plt.ylabel('I [mV]')
     plt.grid()
@@ -90,6 +81,13 @@ def LIF_Neuron(curr, simtime):
         StateMonitor:   Brian2 StateMonitor with input current (I) and
                         voltage (V) recorded
     """
+
+    # constants
+    v_reset = 0.*b2.mV
+    v_threshold = 1.*b2.mV
+    R = 1*b2.Mohm
+    v_rest = 0*b2.mV
+    tau = 1*b2.ms
 
     v_reset_ = "v=%f*volt" % v_reset
     v_threshold_ = "v>%f*volt" % v_threshold
@@ -126,14 +124,13 @@ def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
     """
 
     # 1ms sampled step current
-    tmp = np.zeros(tend) * nA
-    tmp[int(I_tstart):int(I_tend)] = I_amp * nA
+    tmp = np.zeros(tend) * b2.namp
+    tmp[int(I_tstart):int(I_tend)] = I_amp * b2.namp
     curr = b2.TimedArray(tmp, dt=1.*b2.ms)
 
     do_plot(
         LIF_Neuron(curr, tend * b2.ms),
         title="Step current",
-        v_threshold=v_threshold
     )
 
     return True
@@ -154,13 +151,12 @@ def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
 
     # dt sampled sinusoidal function
     t = np.arange(0, tend, dt)
-    tmp = (I_amp*np.sin(2.0*np.pi*I_freq*t)+I_offset) * nA
+    tmp = (I_amp*np.sin(2.0*np.pi*I_freq*t)+I_offset) * b2.namp
     curr = b2.TimedArray(tmp, dt=dt*b2.ms)
 
     do_plot(
         LIF_Neuron(curr, tend * b2.ms),
         title="Sinusoidal current",
-        v_threshold=v_threshold
     )
 
     return True
