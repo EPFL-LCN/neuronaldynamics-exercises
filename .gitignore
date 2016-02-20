@@ -1,3 +1,5 @@
 *.aux
 *.log
 *.gz
+*.idea
+*.pyc

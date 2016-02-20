@@ -1,24 +1,17 @@
+[![Build Status](https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=brian2)](https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises)
+[![Doc Status](https://readthedocs.org/projects/neuronaldynamics-exercises/badge/?version=brian2)](http://neuronaldynamics-exercises.readthedocs.org/)
+
 # Neuronal Dynamics: Python Exercises
 
 This repository contains python exercises accompanying the book **[Neuronal Dynamics](http://neuronaldynamics.epfl.ch/) by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski**. References to relevant chapters will be added in the [Teaching Materials](http://neuronaldynamics.epfl.ch/lectures.html) section of the book homepage.
 
-Most exercises rely on the python based [Brian neural network simulator ](https://github.com/brian-team/brian2).
+## Documentation
 
-## Installation
+Our [documentation is over at readthedocs](http://neuronaldynamics-exercises.readthedocs.org/).
 
-Each exercise is described in its own folder by a PDF file. The exercises are intended to be solved using the provided python classes. To run the code contained in each folder, the following requirements should be met:
+## Brian1
 
-* Python>=2.7
-* [Brian Simulator](https://github.com/brian-team/brian)
-* Numpy
-* Matplotlib
-* Scipy [only required in some exercises]
-
-You can also install all requirements by running ``pip install -r requirements.txt`` from the main directory of this repository, in a console.
-
-## Brian2
-
-We are currently rewriting the examples to use the more recent [Brian2 Simulator](https://github.com/brian-team/brian2). These are available on the [brian2 branch](https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian2).
+We are currently rewriting the python exercises to use the more recent [Brian2 Simulator](https://github.com/brian-team/brian2). The old brian1 exercises are available on the [brian1 branch](https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian1).
 
 ## License
 
