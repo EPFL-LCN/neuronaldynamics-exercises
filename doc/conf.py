@@ -16,6 +16,7 @@ import sys
 import os
 import shlex
 import mock
+from setuptools_scm import get_version
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -67,7 +68,6 @@ author = u'Wulfram Gerstner'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-from setuptools_scm import get_version
 version = get_version()
 # The full version, including alpha/beta/rc tags.
 release = get_version()
