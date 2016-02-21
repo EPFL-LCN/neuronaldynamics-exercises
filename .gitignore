@@ -4,3 +4,5 @@
 *.idea
 *.pyc
 neurodynex.egg-info/*
+dist
+build
