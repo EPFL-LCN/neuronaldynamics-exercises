@@ -5,9 +5,11 @@ from pip.req import parse_requirements
 install_reqs = parse_requirements('requirements.txt')
 reqs = [str(ir.req) for ir in install_reqs]
 
+print find_packages(where='neurodynex', exclude=[])
+
 setup(
   name = 'neurodynex',
-  packages = ['neurodynex'], # this must be the same as the name above
+  packages='.',
   description = 'Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
   author = 'LCN-EPFL',
   author_email = 'alex.seeholzer@epfl.ch',
