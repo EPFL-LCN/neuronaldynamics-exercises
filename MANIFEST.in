@@ -1,2 +1,6 @@
-include LICENSE*
+exclude *
+recursive-exclude doc *
+include LICENSE.txt
 include requirements.txt
+recursive-include doc/_build *
+include README.rst
