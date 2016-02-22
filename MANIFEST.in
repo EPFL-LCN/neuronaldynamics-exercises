@@ -7,3 +7,4 @@ include README.rst
 
 exclude .travis.yml
 exclude .gitignore
+exclude conda_build/*
