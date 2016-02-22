@@ -5,17 +5,21 @@ from pip.req import parse_requirements
 install_reqs = parse_requirements('requirements.txt')
 reqs = [str(ir.req) for ir in install_reqs]
 
-print find_packages(where='neurodynex', exclude=[])
+# find packages
+prefix = 'neurodynex'
+packages = find_packages(where=prefix, exclude=[])
+packages_pre = ["%s.%s" % (prefix, s) for s in packages]
 
 setup(
-  name = 'neurodynex',
-  packages='.',
-  description = 'Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
-  author = 'LCN-EPFL',
-  author_email = 'alex.seeholzer@epfl.ch',
-  url = 'https://github.com/EPFL-LCN/neuronaldynamics-exercises', # use the URL to the github repo
-  keywords = ['compneuro', 'science', 'teaching', 'neuroscience', 'brian'], # arbitrary keywords
-  classifiers = [
+  name='neurodynex',
+  packages=packages_pre,
+  description='Python exercises accompanying the \
+    book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
+  author='LCN-EPFL',
+  author_email='alex.seeholzer@epfl.ch',
+  url='https://github.com/EPFL-LCN/neuronaldynamics-exercises',  # use the URL to the github repo
+  keywords=['compneuro', 'science', 'teaching', 'neuroscience', 'brian'],  # arbitrary keywords
+  classifiers=[
     'Development Status :: 3 - Alpha',
     'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
     'Programming Language :: Python :: 2.7',

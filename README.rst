@@ -4,7 +4,7 @@ Neuronal Dynamics: Python Exercises
 ===================================
 
 This repository contains python exercises accompanying the book
-**`Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski**. References to relevant chapters will be added in the `Teaching Materials <http://neuronaldynamics.epfl.ch/lectures.html>`__ section of the book homepage.
+`Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski. References to relevant chapters will be added in the `Teaching Materials <http://neuronaldynamics.epfl.ch/lectures.html>`__ section of the book homepage.
 
 Documentation
 -------------

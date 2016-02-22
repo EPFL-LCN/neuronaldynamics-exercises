@@ -1,6 +1,9 @@
-exclude *
 recursive-exclude doc *
+recursive-include doc/_build *
+
 include LICENSE.txt
 include requirements.txt
-recursive-include doc/_build *
 include README.rst
+
+exclude .travis.yml
+exclude .gitignore
