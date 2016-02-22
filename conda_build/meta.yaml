@@ -5,7 +5,7 @@ package:
 source:
   fn: neurodynex-0.0.1b6.tar.gz
   url: https://pypi.python.org/packages/source/n/neurodynex/neurodynex-0.0.1b6.tar.gz
-  md5: 4bad1213eca7b7ae43171bac7b2a0e3b
+  md5: 6b3888adc8055f4a7fa66e319360d586
 
 requirements:
   build:
