@@ -9,3 +9,4 @@ Exercises
 
     setup
     leaky-integrate-and-fire
+    hodgkin-huxley

@@ -8,8 +8,14 @@ repository hosted at Github_. The repository contains python exercises accompany
 `Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram
 Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.
 
+Quickstart
+----------
+
+See :ref:`the setup instructions <exercises-setup>` on how to install the python classes needed for the exercises. Then, see the indiviual :ref:`exercises <exercises-index>` - they contain instructions on how to use the python code to solve them.
+
+
 Contents
-========
+--------
 
 .. toctree::
     :maxdepth: 1
@@ -20,7 +26,7 @@ Contents
     licence
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

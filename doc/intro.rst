@@ -10,17 +10,6 @@ the book homepage.
 
 Most :ref:`exercises <exercises-index>` rely on the python based `Brian2 simulator <https://github.com/brian-team/brian2>`__.
 
-
-Usage
------
-
-Please see :ref:`the setup instructions <exercises-setup>` on how to install the 
-python classes needed for the exercises.
-
-Each :ref:`exercise <exercises-index>` itself contains instructions on how to use
-the python code to solve it.
-
-
 Requirements
 ------------
 

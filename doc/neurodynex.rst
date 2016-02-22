@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    neurodynex.hodgkin_huxley
     neurodynex.leaky_integrate_and_fire
     neurodynex.test
 

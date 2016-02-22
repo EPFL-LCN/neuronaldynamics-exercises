@@ -4,6 +4,14 @@ neurodynex.test package
 Submodules
 ----------
 
+neurodynex.test.test_HH module
+------------------------------
+
+.. automodule:: neurodynex.test.test_HH
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 neurodynex.test.test_LIF module
 -------------------------------
 
