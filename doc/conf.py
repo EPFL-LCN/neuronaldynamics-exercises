@@ -61,8 +61,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Neuronaldynamics Exercises'
-copyright = u'2016, Wulfram Gerstner'
-author = u'Wulfram Gerstner'
+copyright = u'2016, EPFL-LCN'
+author = u'EPFL-LCN'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

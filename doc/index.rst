@@ -1,4 +1,4 @@
-|Build Status|
+|Build Status| |Conda Repo|
 
 Neuronal Dynamics: Python Exercises
 ===================================
@@ -30,3 +30,5 @@ Indices and tables
 .. |Build Status| image:: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=master
    :target: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises
 .. _Github: https://github.com/EPFL-LCN/neuronaldynamics-exercises
+.. |Conda Repo| image:: https://anaconda.org/epfl-lcn/neurodynex/badges/version.svg
+   :target: https://anaconda.org/epfl-lcn/neurodynex

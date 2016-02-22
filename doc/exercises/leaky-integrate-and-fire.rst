@@ -9,15 +9,21 @@ leaky-integrate-and-fire models.
 .. _Chapter: http://neuronaldynamics.epfl.ch/online/Ch1.S3.html
 
 
-**Code modules**
+**Python classes**
 
-The :mod:`.leaky_integrate_and_fire` module contains all code required for this exercise.
-At the beginning of your exercise solutions, import them by:
+The :mod:`.leaky_integrate_and_fire.LIF` module contains all code required for this exercise.
+At the beginning of your exercise solutions, import the contained functions by running
 
 .. code-block:: py
 
-	from neurodynex.leaky_integrate_and_fire import *
+	from neurodynex.leaky_integrate_and_fire.LIF import *
 
+You can then simply run the exercise functions by executing
+
+.. code-block:: py
+
+	LIF_Step()  # example Step
+	LIF_Sinus()  # example Sinus
 
 Exercise
 --------

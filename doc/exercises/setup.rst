@@ -15,16 +15,13 @@ To install the exercises using ``pip`` simply execute (the ``--upgrade`` flag wi
    pip install --upgrade neurodynex
 
 
-Using anaconda or miniconda
+Using anaconda/miniconda
 ---------------------------
 
-Temporarily, we do not offer anaconda packages, however, you can easily install neurodynex by executing the following:
+We offer anaconda packages for the most recent releases, which is the easiest way of running the exercises.
+
+Head over to the `miniconda download page <http://conda.pydata.org/miniconda.html>`__ and install **miniconda** (for Python 2.7 preferably). To **install or update** the exercise classes for your anaconda environment, it suffices to run:
 
 .. code-block:: bash
-	
-   conda install -c brian-team brian2
-   conda install -c brian-team matplotlib
 
-Download the source of the repository https://github.com/EPFL-LCN/neuronaldynamics-exercises/archive/master.zip, and unpack it to a directory.
-
-From the directory you can then follow the exercises.
+   conda install -c brian-team -c epfl-lcn neurodynex
