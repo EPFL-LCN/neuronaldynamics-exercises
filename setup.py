@@ -12,9 +12,8 @@ packages_pre = ["%s.%s" % (prefix, s) for s in packages]
 
 setup(
   name='neurodynex',
-  packages=packages_pre,
-  description='Python exercises accompanying the \
-    book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
+  py_modules=packages_pre,
+  description='Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
   author='LCN-EPFL',
   author_email='alex.seeholzer@epfl.ch',
   url='https://github.com/EPFL-LCN/neuronaldynamics-exercises',  # use the URL to the github repo
