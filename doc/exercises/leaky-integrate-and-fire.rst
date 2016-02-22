@@ -50,7 +50,7 @@ current frequency.
 Question
 ~~~~~~~~
 
-For input frequencies between :math:`0.1Hz` and :math:`1.Hz`, plot the
+For input frequencies between :math:`0.1kHz` and :math:`1.kHz`, plot the
 input frequency against the resulting *amplitude of subthreshold
 oscillations* of the membrane potential. If your neuron emits spikes at
 high stimulation frequencies, decrease the amplitude of the input
@@ -59,7 +59,7 @@ current.
 Question
 ~~~~~~~~
 
-For input frequencies between :math:`0.1Hz` and :math:`1.Hz`, plot the
+For input frequencies between :math:`0.1kHz` and :math:`1.kHz`, plot the
 input frequency against the resulting *frequency and phase of
 subthreshold oscillations* of the membrane potential. Again, keep your
 input amplitude in a regime, where the neuron does not fire action
