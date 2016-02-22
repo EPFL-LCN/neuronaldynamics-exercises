@@ -22,9 +22,9 @@ Temporarily, we do not offer anaconda packages, however, you can easily install 
 
 .. code-block:: bash
 	
-   conda install conda-build
-   conda config --add channels https://conda.anaconda.org/brian-team
-   
-   conda skeleton pypi neurodynex
-   conda build neurodynex
-   
+   conda install -c brian-team brian2
+   conda install -c brian-team matplotlib
+
+Download the source of the repository https://github.com/EPFL-LCN/neuronaldynamics-exercises/archive/master.zip, and unpack it to a directory.
+
+From the directory you can then follow the exercises.
