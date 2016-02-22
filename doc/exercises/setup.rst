@@ -18,3 +18,13 @@ To install the exercises using ``pip`` simply execute (the ``--upgrade`` flag wi
 Using anaconda or miniconda
 ---------------------------
 
+Temporarily, we do not offer anaconda packages, however, you can easily install neurodynex by executing the following:
+
+.. code-block:: bash
+	
+   conda install conda-build
+   conda config --add channels https://conda.anaconda.org/brian-team
+   
+   conda skeleton pypi neurodynex
+   conda build neurodynex
+   
