@@ -32,10 +32,12 @@ test:
   imports:
     - neurodynex
     - neurodynex.leaky_integrate_and_fire
+    - neurodynex.hodgkin_huxley
     - neurodynex.test
 
   commands:
     - nosetests neurodynex.test.test_LIF
+    - nosetests neurodynex.test.test_HH
 
   requires:
     - nose

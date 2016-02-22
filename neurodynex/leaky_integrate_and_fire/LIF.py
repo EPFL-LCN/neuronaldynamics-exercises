@@ -3,8 +3,6 @@ This file implements a leaky intergrate-and-fire (LIF) model.
 You can inject a step current or sinusoidal current into
 neuron using LIF_Step() or LIF_Sinus() methods respectively.
 
-For associated exercises, see `exercise.pdf` in the same folder.
-
 Relevant book chapters:
 
 - http://neuronaldynamics.epfl.ch/online/Ch1.S3.html
@@ -119,6 +117,9 @@ def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
         I_tend (float): start of end step [ms]
         I_amp (float): amplitude of current step [nA]
 
+    Returns:
+        StateMonitor: Brian2 StateMonitor with input current (I) and
+        voltage (V) recorded
     """
 
     # 1ms sampled step current
@@ -126,12 +127,13 @@ def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
     tmp[int(I_tstart):int(I_tend)] = I_amp * b2.namp
     curr = b2.TimedArray(tmp, dt=1.*b2.ms)
 
+    rec = LIF_Neuron(curr, tend * b2.ms)
     do_plot(
-        LIF_Neuron(curr, tend * b2.ms),
+        rec,
         title="Step current",
     )
 
-    return True
+    return rec
 
 
 def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
@@ -144,6 +146,9 @@ def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
         I_offset (float): DC offset of current [nA]
         I_amp (float): amplitude of sinusoidal [nA]
 
+    Returns:
+        StateMonitor: Brian2 StateMonitor with input current (I) and
+        voltage (V) recorded
     """
 
     # dt sampled sinusoidal function
@@ -151,9 +156,10 @@ def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
     tmp = (I_amp*np.sin(2.0*np.pi*I_freq*t)+I_offset) * b2.namp
     curr = b2.TimedArray(tmp, dt=dt*b2.ms)
 
+    rec = LIF_Neuron(curr, tend * b2.ms)
     do_plot(
-        LIF_Neuron(curr, tend * b2.ms),
+        rec,
         title="Sinusoidal current",
     )
 
-    return True
+    return rec

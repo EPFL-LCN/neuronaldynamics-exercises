@@ -1,1 +1,1 @@
-__all__ = ['test_LIF']
+__all__ = ['test_LIF', 'test_HH']
