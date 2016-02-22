@@ -26,6 +26,6 @@ Indices and tables
 * :ref:`search`
 
 
-.. |Build Status| image:: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=brian2
+.. |Build Status| image:: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=master
    :target: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises
 .. _Github: https://github.com/EPFL-LCN/neuronaldynamics-exercises
