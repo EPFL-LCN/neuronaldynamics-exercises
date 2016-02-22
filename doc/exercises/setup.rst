@@ -1,3 +1,5 @@
+.. _exercises-setup:
+
 Setting up Python and Brian
 ===========================
 
@@ -6,7 +8,7 @@ Using python and pip
 
 We provide the most recent versions of this repository as a `pypi package <https://pypi.python.org/pypi/neurodynex/>`__ called ``neurodynex``.
 
-To install the exercises using ``pip`` simply execute:
+To install the exercises using ``pip`` simply execute (the ``--upgrade`` flag will overwrite existing installations with the newest versions):
 
 .. code-block:: bash
 

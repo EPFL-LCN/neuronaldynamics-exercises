@@ -9,7 +9,17 @@ This repository contains python exercises accompanying the book
 Documentation
 -------------
 
-The `documentation and exercises are over at readthedocs <http://neuronaldynamics-exercises.readthedocs.org/>`__.
+The full documentation, including the exercise questions, `can be found at readthedocs <http://neuronaldynamics-exercises.readthedocs.org/>`__.
+
+Quickstart
+----------
+
+To install the exercises using ``pip`` simply execute:
+
+.. code-block:: bash
+
+   pip install --upgrade neurodynex
+
 
 Brian1
 ------

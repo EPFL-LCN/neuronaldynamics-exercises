@@ -1,12 +1,23 @@
 Leaky-integrate-and-fire model
 ==============================
 
-Related book chapters
----------------------
+**Book chapters**
 
-- `Chapter 1 Section 3 <Chapter_>`_
+See `Chapter 1 Section 3 <Chapter_>`_ on general information about
+leaky-integrate-and-fire models.
 
 .. _Chapter: http://neuronaldynamics.epfl.ch/online/Ch1.S3.html
+
+
+**Code modules**
+
+The :mod:`.leaky_integrate_and_fire` module contains all code required for this exercise.
+At the beginning of your exercise solutions, import them by:
+
+.. code-block:: py
+
+	from neurodynex.leaky_integrate_and_fire import *
+
 
 Exercise
 --------
