@@ -11,9 +11,10 @@ Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.
 Contents:
 
 .. toctree::
-    :maxdepth: 4
+    :maxdepth: 2
 
     intro
+    exercises/index
     contents
     licence
 
