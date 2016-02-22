@@ -1,0 +1,46 @@
+package:
+  name: neurodynex
+  version: "0.0.1b6"
+
+source:
+  fn: neurodynex-0.0.1b6.tar.gz
+  url: https://pypi.python.org/packages/source/n/neurodynex/neurodynex-0.0.1b6.tar.gz
+  md5: 4bad1213eca7b7ae43171bac7b2a0e3b
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - setuptools_scm
+    - mock
+    - nose
+    - numpy
+    - scipy
+    - brian2 >=2.0b4
+    - matplotlib
+
+  run:
+    - python
+    - numpy
+    - scipy
+    - brian2 >=2.0b4
+    - matplotlib
+    - ipython
+
+test:
+  # Python imports
+  imports:
+    - neurodynex
+    - neurodynex.leaky_integrate_and_fire
+    - neurodynex.test
+
+  commands:
+    - nosetests neurodynex.test.test_LIF
+
+  requires:
+    - nose
+
+about:
+  home: https://github.com/EPFL-LCN/neuronaldynamics-exercises
+  license: GNU General Public License v2 (GPLv2)
+  summary: 'Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.'
