@@ -6,10 +6,10 @@ Neuronal Dynamics: Python Exercises
 This repository contains python exercises accompanying the book
 `Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski. References to relevant chapters will be added in the `Teaching Materials <http://neuronaldynamics.epfl.ch/lectures.html>`__ section of the book homepage.
 
-Documentation
--------------
+Exercises & Documentation
+-------------------------
 
-The full documentation, including the exercise questions, `can be found at readthedocs <http://neuronaldynamics-exercises.readthedocs.org/>`__.
+The full documentation and the exercises `can be found at readthedocs <http://neuronaldynamics-exercises.readthedocs.org/>`__.
 
 Quickstart
 ----------
@@ -20,6 +20,11 @@ To install the exercises using ``pip`` simply execute:
 
    pip install --upgrade neurodynex
 
+To install the exercises with anaconda/miniconda execute: 
+
+.. code-block:: bash
+
+   conda install -c brian-team -c epfl-lcn neurodynex
 
 Brian1
 ------
