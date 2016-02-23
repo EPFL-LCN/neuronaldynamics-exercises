@@ -20,6 +20,14 @@ neurodynex.test.test_LIF module
     :undoc-members:
     :show-inheritance:
 
+neurodynex.test.test_nagumo module
+----------------------------------
+
+.. automodule:: neurodynex.test.test_nagumo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

@@ -10,3 +10,4 @@ Exercises
     setup
     leaky-integrate-and-fire
     hodgkin-huxley
+    phase-plane-analysis
