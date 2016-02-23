@@ -31,7 +31,7 @@ import pylab as plt
 import numpy as np
 
 
-def do_plot(rec, v_threshold=1., title=None):
+def plot_data(rec, v_threshold=1., title=None):
     """Plots a TimedArray for values I and v
 
     Args:
@@ -108,7 +108,8 @@ def LIF_Neuron(curr, simtime):
     return rec
 
 
-def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
+def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005,
+             tend=100, do_plot=True):
     """Run the LIF and give a step current input.
 
     Args:
@@ -128,15 +129,18 @@ def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005, tend=100):
     curr = b2.TimedArray(tmp, dt=1.*b2.ms)
 
     rec = LIF_Neuron(curr, tend * b2.ms)
-    do_plot(
-        rec,
-        title="Step current",
-    )
+
+    if do_plot:
+        plot_data(
+            rec,
+            title="Step current",
+        )
 
     return rec
 
 
-def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
+def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5,
+              tend=100, dt=.1, do_plot=True):
     """
     Run the LIF for a sinusoidal current
 
@@ -157,9 +161,11 @@ def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5, tend=100, dt=.1):
     curr = b2.TimedArray(tmp, dt=dt*b2.ms)
 
     rec = LIF_Neuron(curr, tend * b2.ms)
-    do_plot(
-        rec,
-        title="Sinusoidal current",
-    )
+
+    if do_plot:
+        plot_data(
+            rec,
+            title="Sinusoidal current",
+        )
 
     return rec

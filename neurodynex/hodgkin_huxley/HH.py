@@ -14,7 +14,7 @@ import pylab as plt
 import numpy as np
 
 
-def do_plot(rec, title=None):
+def plot_data(rec, title=None):
     """Plots a TimedArray for values I and v
 
     Args:
@@ -119,7 +119,8 @@ def HH_Neuron(curr, simtime):
     return rec
 
 
-def HH_Step(I_tstart=20, I_tend=180, I_amp=7, tend=200):
+def HH_Step(I_tstart=20, I_tend=180, I_amp=7,
+            tend=200, do_plot=True):
 
     """Run the Hodgkin-Huley neuron for a step current input.
 
@@ -140,15 +141,18 @@ def HH_Step(I_tstart=20, I_tend=180, I_amp=7, tend=200):
     curr = b2.TimedArray(tmp, dt=1.*b2.ms)
 
     rec = HH_Neuron(curr, tend * b2.ms)
-    do_plot(
-        rec,
-        title="Step current",
-    )
+
+    if do_plot:
+        plot_data(
+            rec,
+            title="Step current",
+        )
 
     return rec
 
 
-def HH_Sinus(I_freq=0.01, I_offset=0.5, I_amp=7., tend=600, dt=.1):
+def HH_Sinus(I_freq=0.01, I_offset=0.5, I_amp=7.,
+             tend=600, dt=.1, do_plot=True):
     """
     Run the HH model for a sinusoidal current
 
@@ -169,15 +173,18 @@ def HH_Sinus(I_freq=0.01, I_offset=0.5, I_amp=7., tend=600, dt=.1):
     curr = b2.TimedArray(tmp, dt=dt*b2.ms)
 
     rec = HH_Neuron(curr, tend * b2.ms)
-    do_plot(
-        rec,
-        title="Sinusoidal current",
-    )
+
+    if do_plot:
+        plot_data(
+            rec,
+            title="Sinusoidal current",
+        )
 
     return rec
 
 
-def HH_Ramp(I_tstart=30, I_tend=270, I_amp=20., tend=300, dt=.1):
+def HH_Ramp(I_tstart=30, I_tend=270, I_amp=20.,
+            tend=300, dt=.1, do_plot=True):
     """
     Run the HH model for a sinusoidal current
 
@@ -202,9 +209,11 @@ def HH_Ramp(I_tstart=30, I_tend=270, I_amp=20., tend=300, dt=.1):
     curr = b2.TimedArray(tmp * b2.uamp, dt=dt*b2.ms)
 
     rec = HH_Neuron(curr, tend * b2.ms)
-    do_plot(
-        rec,
-        title="Sinusoidal current",
-    )
+
+    if do_plot:
+        plot_data(
+            rec,
+            title="Sinusoidal current",
+        )
 
     return rec
