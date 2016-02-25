@@ -117,6 +117,7 @@ def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005,
         I_tstart (float): start of current step [ms]
         I_tend (float): start of end step [ms]
         I_amp (float): amplitude of current step [nA]
+        do_plot (bool): plot the resulting simulation
 
     Returns:
         StateMonitor: Brian2 StateMonitor with input current (I) and
@@ -149,6 +150,7 @@ def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5,
         I_freq (float): frequency of current sinusoidal [kHz]
         I_offset (float): DC offset of current [nA]
         I_amp (float): amplitude of sinusoidal [nA]
+        do_plot (bool): plot the resulting simulation
 
     Returns:
         StateMonitor: Brian2 StateMonitor with input current (I) and
