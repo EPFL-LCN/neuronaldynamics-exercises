@@ -11,3 +11,4 @@ Exercises
     leaky-integrate-and-fire
     hodgkin-huxley
     phase-plane-analysis
+    neuron-type

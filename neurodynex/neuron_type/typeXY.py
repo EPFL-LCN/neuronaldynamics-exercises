@@ -1,7 +1,7 @@
 """
-This file implements randomly two neuron models, as
-NeuronX and NeuronY. One is of neurons.type1 and
-one is of type neurons.type2
+This module has two neuron models, NeuronX and NeuronY.
+One of them is Type I and one if Type II. The assignment
+is randomly generated when the module is loaded.
 
 Relevant book chapters:
 
@@ -27,19 +27,23 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 from .neurons import NeuronTypeOne, NeuronTypeTwo
-import numpy as np
+from random import shuffle
 import sys
+import inspect
 
 
 def create_models():
-    """Creates classes in this module that are random
-    assignments of Type1 and Type2 neuron models."""
+    """Creates classes NeuronX and NeuronY in this module
+    that are random assignments of Type1 and Type2 neuron
+    models."""
 
     print "Re-assigning Type1 and Type2 neuron models " \
         "randomly to classes NeuronX and NeuronY."
 
     # get a random assignment for X and Y
-    order = np.random.permutation(2)
+    order = [0, 1]
+    shuffle(order)
+
     suffixes = ['X', 'Y']
     thismodule = sys.modules[__name__]
     classes = [NeuronTypeOne, NeuronTypeTwo]
@@ -48,6 +52,17 @@ def create_models():
     for i, o in enumerate(order):
         scname = 'Neuron%s' % suffixes[i]
         sc = type(scname, (classes[o],), {})
+
+        # classmethod to get the actual neuron type
+        def func(x): return inspect.getmro(x)[1]
+        docstr = """Returns the underlying neuron type.
+
+        Returns:
+            type: Class of the underlying neuron model
+        """
+        func.__doc__ = docstr
+        sc.get_neuron_type = classmethod(func)
+
         setattr(thismodule, scname, sc)
 
 create_models()

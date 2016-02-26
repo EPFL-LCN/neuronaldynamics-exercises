@@ -3,7 +3,7 @@ Phase plane and bifurcation analysis
 
 **Book chapters**
 
-See `Chapter 4 <Chapter4_>`_ and especially `Chapter 4 Section 3 <Chapter4_>`_ for background knowledge on phase plane analysis.
+See `Chapter 4 <Chapter4_>`_ and especially `Chapter 4 Section 3 <Chapter43_>`_ for background knowledge on phase plane analysis.
 
 .. _Chapter4: http://neuronaldynamics.epfl.ch/online/Ch4.html
 .. _Chapter43: http://neuronaldynamics.epfl.ch/online/Ch4.S3.html
