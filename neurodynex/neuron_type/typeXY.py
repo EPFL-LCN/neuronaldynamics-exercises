@@ -37,8 +37,8 @@ def create_models():
     that are random assignments of Type1 and Type2 neuron
     models."""
 
-    print ("Re-assigning Type1 and Type2 neuron models "
-           "randomly to classes NeuronX and NeuronY.")
+    print("Re-assigning Type1 and Type2 neuron models "
+          "randomly to classes NeuronX and NeuronY.")
 
     # get a random assignment for X and Y
     order = [0, 1]
