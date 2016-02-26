@@ -19,8 +19,7 @@ def plot_data(rec, title=None):
 
     Args:
         rec (TimedArray): the data to plot
-        v_threshold (float): plots a threshold at this level [mV]
-        title (string): plot title to display
+        title (string, optional): plot title to display
     """
 
     plt.subplot(311)
@@ -125,10 +124,11 @@ def HH_Step(I_tstart=20, I_tend=180, I_amp=7,
     """Run the Hodgkin-Huley neuron for a step current input.
 
     Args:
-        I_tstart (float): start of current step [ms]
-        I_tend (float): start of end step [ms]
-        I_amp (float): amplitude of current step [uA]
-        tend (float): the simulation time of the model [ms]
+        I_tstart (float, optional): start of current step [ms]
+        I_tend (float, optional): start of end step [ms]
+        I_amp (float, optional): amplitude of current step [uA]
+        tend (float, optional): the simulation time of the model [ms]
+        do_plot (bool, optional): plot the resulting simulation
 
     Returns:
         StateMonitor: Brian2 StateMonitor with recorded fields
@@ -157,10 +157,11 @@ def HH_Sinus(I_freq=0.01, I_offset=0.5, I_amp=7.,
     Run the HH model for a sinusoidal current
 
     Args:
-        tend (float): the simulation time of the model [ms]
-        I_freq (float): frequency of current sinusoidal [kHz]
-        I_offset (float): DC offset of current [nA]
-        I_amp (float): amplitude of sinusoidal [nA]
+        tend (float, optional): the simulation time of the model [ms]
+        I_freq (float, optional): frequency of current sinusoidal [kHz]
+        I_offset (float, optional): DC offset of current [nA]
+        I_amp (float, optional): amplitude of sinusoidal [nA]
+        do_plot (bool, optional): plot the resulting simulation
 
     Returns:
         StateMonitor: Brian2 StateMonitor with input current (I) and
@@ -189,10 +190,11 @@ def HH_Ramp(I_tstart=30, I_tend=270, I_amp=20.,
     Run the HH model for a sinusoidal current
 
     Args:
-        tend (float): the simulation time of the model [ms]
-        I_tstart (float): start of current ramp [ms]
-        I_tend (float): end of the current ramp [ms]
-        I_amp (float): final amplitude of current ramp [uA]
+        tend (float, optional): the simulation time of the model [ms]
+        I_tstart (float, optional): start of current ramp [ms]
+        I_tend (float, optional): end of the current ramp [ms]
+        I_amp (float, optional): final amplitude of current ramp [uA]
+        do_plot (bool, optional): plot the resulting simulation
 
     Returns:
         StateMonitor: Brian2 StateMonitor with input current (I) and
