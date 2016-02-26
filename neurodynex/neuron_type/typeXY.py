@@ -1,6 +1,6 @@
 """
 This module has two neuron models, NeuronX and NeuronY.
-One of them is Type I and one if Type II. The assignment
+One of them is Type I, the other is Type II - the assignment
 is randomly generated when the module is loaded.
 
 Relevant book chapters:

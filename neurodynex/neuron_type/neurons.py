@@ -1,6 +1,6 @@
 """
 This file implements a type I and a type II model from
-the abstract base class AbstractNeuron.
+the abstract base class NeuronAbstract.
 
 You can inject step currents and plot the responses,
 as well as get firing rates.
