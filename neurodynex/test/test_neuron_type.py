@@ -12,7 +12,7 @@ def test_neurons():
     """Test if neuron functions are runnable."""
     from neurodynex.neuron_type.neurons import NeuronTypeOne, NeuronTypeTwo
     for n in [NeuronTypeOne, NeuronTypeTwo]:
-        print "Test if neuron %s is runnable." % n
+        print("Test if neuron %s is runnable." % n)
         run_neuron(n)
 
 
