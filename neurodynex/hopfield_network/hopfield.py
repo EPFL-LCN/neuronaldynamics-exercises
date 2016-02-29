@@ -30,6 +30,7 @@ from time import sleep
 import pickle
 import gzip
 from pkg_resources import resource_filename
+import sys
 
 plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
 
@@ -228,7 +229,10 @@ def load_alphabet():
 
     file_name = resource_filename('neurodynex', 'data/alphabet.pickle.gz')
 
-    with gzip.open(
-        "%s" % file_name
-    ) as f:
-        return pickle.load(f)
+    with gzip.open("%s" % file_name) as f:
+        if sys.version_info < (3, 0, 0):
+            # latin1 is required for python3 compatibility
+            return pickle.load(f)
+        else:
+            # latin1 is required for python3 compatibility
+            return pickle.load(f, encoding='latin1')
