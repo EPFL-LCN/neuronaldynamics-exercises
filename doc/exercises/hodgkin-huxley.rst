@@ -71,11 +71,16 @@ To solve this exercise, you will need to change the actual implementation of the
 
 Then use any text editor to make changes in the ``HH.py`` file. 
 
-**Hint**: If you are using iPython, you will have to reload the module after making changes, by typing:
-
-.. code-block:: py
+.. note::
 	
-	reload(HH)
+	You might have to reload the module for changes to become active - quitting and restarting the python interpreter reloads all modules. Alternatively, you can also force a reload by typing
+
+	.. code-block:: py
+	
+		reload(HH)
+
+	For automatic reloading you can also run ``ipython`` instead of ``python`` and `set the autoreload flag <http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html>`_. For this, make sure you have ipython installed - if you have followed :ref:`the setup instructions for anaconda/miniconda <exercises-setup-conda>` this should already work.
+
 
 Question
 ~~~~~~~~
