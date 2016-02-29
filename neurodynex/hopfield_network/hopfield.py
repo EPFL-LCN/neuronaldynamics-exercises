@@ -134,7 +134,7 @@ class HopfieldNetwork:
             t_max (float, optional): Timesteps to simulate
             mu (int, optional): Pattern number to use
                 as initial pattern for the network state (< P)
-            flip_ratio (int, optional): ratio of randomized pixels. 
+            flip_ratio (int, optional): ratio of randomized pixels.
                 For example, to run pattern #5 with 5% flipped pixels use
                 ``run(mu=5,flip_ratio=0.05)``
             do_plot (bool, optional): Plot the network as it is
