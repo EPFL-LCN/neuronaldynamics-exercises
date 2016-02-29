@@ -26,14 +26,12 @@ Relevant book chapters:
 import matplotlib.pyplot as plt
 import numpy as np
 from copy import copy
-from time import sleep
 import pickle
 import gzip
 from pkg_resources import resource_filename
 import sys
 
 plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
-plt.ion()
 
 
 class HopfieldNetwork:
@@ -166,7 +164,7 @@ class HopfieldNetwork:
         overlap = [self.overlap(mu)]
 
         # prepare the figure
-        plt.figure()
+        fig = plt.figure()
 
         # plot the current network state
         plt.subplot(221)
@@ -191,7 +189,7 @@ class HopfieldNetwork:
         plt.ylabel('overlap')
 
         # this forces pylab to update and show the fig.
-        plt.draw()
+        fig.show()
         x_old = copy(self.x)
 
         for i in range(t_max):
@@ -215,7 +213,7 @@ class HopfieldNetwork:
             x_old = copy(self.x)
 
             # sleep for replotting
-            sleep(0.5)
+            plt.pause(0.5)
 
         print("Pattern recovered in %i time steps." % i_fin +
               " Final overlap %.3f" % overlap[-1])

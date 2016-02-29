@@ -37,11 +37,11 @@ test:
     - neurodynex.test
 
   commands:
-    - nosetests neurodynex.test.test_LIF
-    - nosetests neurodynex.test.test_HH
-    - nosetests neurodynex.test.test_hopfield
-    - nosetests neurodynex.test.test_nagumo
-    - nosetests neurodynex.test.test_neuron_type
+    - nosetests --verbosity=2 neurodynex.test.test_LIF
+    - nosetests --verbosity=2 neurodynex.test.test_HH
+    - nosetests --verbosity=2 neurodynex.test.test_hopfield
+    - nosetests --verbosity=2 neurodynex.test.test_nagumo
+    - nosetests --verbosity=2 neurodynex.test.test_neuron_type
 
   requires:
     - nose
