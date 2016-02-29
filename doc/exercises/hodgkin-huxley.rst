@@ -67,7 +67,7 @@ To solve this exercise, you will need to change the actual implementation of the
 .. code-block:: py
 	
 	import HH  # import the HH module, i.e. the HH.py file
-	HH.LIF_Step  # access the LIF_Step function in HH.py
+	HH.HH_Step()  # access the LIF_Step function in HH.py
 
 Then use any text editor to make changes in the ``HH.py`` file. 
 
