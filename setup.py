@@ -13,6 +13,9 @@ packages_pre = ["%s.%s" % (prefix, s) for s in packages]
 setup(
   name='neurodynex',
   packages=find_packages(),
+  package_data={
+    'neurodynex': ['data/*'],
+  },
   description='Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
   author='LCN-EPFL',
   author_email='alex.seeholzer@epfl.ch',

@@ -1,6 +1,5 @@
 *.aux
 *.log
-*.gz
 *.idea
 *.pyc
 neurodynex.egg-info/*
