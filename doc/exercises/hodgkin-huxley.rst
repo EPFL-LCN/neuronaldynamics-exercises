@@ -59,6 +59,8 @@ Question
 
 What is the minimum current required to make a spike when the current is slowly increased (ramp current waveform) instead of being increased suddenly?
 
+.. _exercises-hh-downloading:
+
 Exercise
 --------
 

@@ -23,7 +23,7 @@ Relevant book chapters:
 # Neuronal Dynamics: From Single Neurons to Networks and Models of Cognition.
 # Cambridge University Press, 2014.
 
-import pylab as plt
+import matplotlib.pyplot as plt
 import numpy as np
 from copy import copy
 from time import sleep
@@ -33,6 +33,7 @@ from pkg_resources import resource_filename
 import sys
 
 plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
+plt.ion()
 
 
 class HopfieldNetwork:
@@ -47,12 +48,6 @@ class HopfieldNetwork:
 
     def __init__(self, N):
         self.N = N
-        """Initialization.
-
-        Args:
-            N: Square root of the network size.
-            I.e. if N=10 it will consists of 100 pixels.
-        """
 
     def make_pattern(self, P=1, ratio=0.5, letters=None):
         """Creates and stores additional patterns to the
@@ -60,15 +55,16 @@ class HopfieldNetwork:
 
         Args:
             P (int, optional): number of patterns
-            (used only for random patterns)
+                (used only for random patterns)
             ratio (float, optional): percentage of 'on' pixels
-            for random patterns
+                for random patterns
             letters (TYPE, optional): to store characters
-            use as input a string with the desired letters
-            ex. make_pattern(letters='abcdjft')
+                use as input a string with the desired letters.
+                Example: ``make_pattern(letters='abcdjft')``
 
         Raises:
-            ValueError,: Letters are only defined for N=10
+            ValueError: Raised if N!=10 and letters!=None. For now
+                letters are hardcoded for N=10.
         """
 
         if letters:
@@ -101,8 +97,8 @@ class HopfieldNetwork:
 
         Args:
             mu (TYPE, optional): If None, return the reshaped
-            network state. For an integer i < P, return the
-            reshapeed pattern i.
+                network state. For an integer i < P, return the
+                reshaped pattern i.
 
         Returns:
             numpy.ndarray: Reshaped network state or pattern
@@ -126,7 +122,7 @@ class HopfieldNetwork:
 
         Args:
             mu (int): The index of the pattern to
-            compare with.
+                compare with.
         """
 
         return 1./self.N**2*np.sum(self.patterns[mu]*self.x)
@@ -135,18 +131,26 @@ class HopfieldNetwork:
         """Runs the dynamics and optionally plots it.
 
         Args:
-            mu (float, optional): Timesteps to simulate
+            t_max (float, optional): Timesteps to simulate
             mu (int, optional): Pattern number to use
-            as initial pattern for the network state (< P)
-            flip_ratio (int, optional): ratio of randomized pixels
-            E.g. for pattern #5 with 5% flipped pixels use
-            run(mu=5,flip_ratio=0.05)
+                as initial pattern for the network state (< P)
+            flip_ratio (int, optional): ratio of randomized pixels. 
+                For example, to run pattern #5 with 5% flipped pixels use
+                ``run(mu=5,flip_ratio=0.05)``
             do_plot (bool, optional): Plot the network as it is
-            updated
+                updated
 
         Raises:
-            IndexError,: Description
+            IndexError: Raised if given pattern index is too high.
+            RuntimeError: Raised if no patterns have been created.
         """
+        try:
+            self.patterns
+        except AttributeError:
+            raise RuntimeError(
+                'No patterns created: please ' +
+                'use make_pattern to create at least one pattern.'
+            )
 
         try:
             self.patterns[mu]
@@ -218,20 +222,32 @@ class HopfieldNetwork:
 
 
 def load_alphabet():
-    """Load alphabet dict from a tar.
-
-    Args:
-        file_name (string, optional): Name of the file to open.
+    """Load alphabet dict from the file
+    ``data/alphabet.pickle.gz``, which is included in
+    the neurodynex release.
 
     Returns:
-        dict: Dictionary of Image objects
+        dict: Dictionary of 10x10 patterns
+
+    Raises:
+        ImportError: Raised if ``neurodynex``
+            can not be imported. Please install
+            `neurodynex <pypi.python.org/pypi/neurodynex/>`_.
     """
 
-    file_name = resource_filename('neurodynex', 'data/alphabet.pickle.gz')
+    file_str = 'data/alphabet.pickle.gz'
+
+    try:
+        file_name = resource_filename('neurodynex', file_str)
+    except ImportError:
+        raise ImportError(
+            "Could not import data file %s. " % file_str +
+            "Make sure the pypi package `neurodynex` is installed!"
+        )
 
     with gzip.open("%s" % file_name) as f:
         if sys.version_info < (3, 0, 0):
-            # latin1 is required for python3 compatibility
+            # python2 pickle.loads has no attribute 'encoding'
             return pickle.load(f)
         else:
             # latin1 is required for python3 compatibility

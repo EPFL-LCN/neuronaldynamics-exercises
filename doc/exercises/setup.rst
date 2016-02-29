@@ -15,8 +15,10 @@ To install the exercises using ``pip`` simply execute (the ``--upgrade`` flag wi
    pip install --upgrade neurodynex
 
 
+.. _exercises-setup-conda:
+
 Using anaconda/miniconda
----------------------------
+------------------------
 
 We offer anaconda packages for the most recent releases, which is the easiest way of running the exercises.
 
@@ -25,3 +27,18 @@ Head over to the `miniconda download page <http://conda.pydata.org/miniconda.htm
 .. code-block:: bash
 
    conda install -c brian-team -c epfl-lcn neurodynex
+
+.. note::
+
+   	Should you want to run `Spyder <https://github.com/spyder-ide/spyder>`_ to work on the exercises, and you're running into problems (commonly, after running ``conda install spyder`` you can not start ``spyder`` due to an error related to numpy), try the following:
+
+   	.. code-block:: bash
+
+   		# create a new conda environment with spyder and the exercises
+   		conda create --name neurodynex -c brian-team -c epfl-lcn neurodynex spyder
+
+   		# activate the environment
+   		source activate neurodynex
+
+   	This creates a new conda environment (`here is more information on conda environments <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_) in which you can use spyder together with the exercises.
+

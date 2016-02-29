@@ -12,3 +12,4 @@ Exercises
     hodgkin-huxley
     phase-plane-analysis
     neuron-type
+    hopfield-network

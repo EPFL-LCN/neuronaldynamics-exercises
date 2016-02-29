@@ -8,4 +8,4 @@ called `exercise.pdf` with the actual exercises using the python code.
 .. toctree::
     :maxdepth: 4
 
-    neurodynex
+    modules/neurodynex

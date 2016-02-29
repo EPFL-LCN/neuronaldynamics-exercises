@@ -29,7 +29,7 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 import brian2 as b2
-import pylab as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 

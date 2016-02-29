@@ -1,11 +1,9 @@
 package:
   name: neurodynex
-  version: "0.0.1b6"
+  version: {{ environ.get('GIT_DESCRIBE_TAG', '') }}
 
 source:
-  fn: neurodynex-0.0.1b6.tar.gz
-  url: https://pypi.python.org/packages/source/n/neurodynex/neurodynex-0.0.1b6.tar.gz
-  md5: 6b3888adc8055f4a7fa66e319360d586
+  git_url: ../
 
 requirements:
   build:
@@ -33,11 +31,17 @@ test:
     - neurodynex
     - neurodynex.leaky_integrate_and_fire
     - neurodynex.hodgkin_huxley
+    - neurodynex.hopfield_network
+    - neurodynex.neuron_type
+    - neurodynex.phase_plane_analysis
     - neurodynex.test
 
   commands:
     - nosetests neurodynex.test.test_LIF
     - nosetests neurodynex.test.test_HH
+    - nosetests neurodynex.test.test_hopfield
+    - nosetests neurodynex.test.test_nagumo
+    - nosetests neurodynex.test.test_neuron_type
 
   requires:
     - nose

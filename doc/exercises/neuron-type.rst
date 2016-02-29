@@ -27,7 +27,7 @@ For the exercises you will need to import the classes :class:`NeuronX <.neuron_t
 Exercise: Probing Type I and Type II neuron models
 --------------------------------------------------
 
-This is the first exercise to deal not only with Python functions, but with python objects.
+This exercise deals not only with Python functions, but with python objects.
 
 The classes :class:`NeuronX <.neuron_type.typeXY.NeuronX>` and :class:`NeuronY <.neuron_type.typeXY.NeuronY>` both are neurons, that have different dynamics: **one is Type I and one is Type II**. Finding out which class implements which dynamics is the goal of the exercise.
 
