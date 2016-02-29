@@ -62,11 +62,12 @@ What is the minimum current required to make a spike when the current is slowly 
 Exercise
 --------
 
-To solve this exercise, you will need to change the actual implementation of the model. Download directly the source file `HH.py <https://github.com/EPFL-LCN/neuronaldynamics-exercises/blob/master/neurodynex/hodgkin_huxley/HH.py>`__. When starting Python in the direcory containing the downloaded file, you can import functions from it directly by the following:
+To solve this exercise, you will need to change the actual implementation of the model. Download directly the source file `HH.py <https://raw.githubusercontent.com/EPFL-LCN/neuronaldynamics-exercises/master/neurodynex/hodgkin_huxley/HH.py>`_. When starting Python in the directory containing the downloaded file, you run functions from it directly as follows:
 
 .. code-block:: py
 	
-	from HH import *
+	import HH  # import the HH module, i.e. the HH.py file
+	HH.LIF_Step  # access the LIF_Step function in HH.py
 
 Then use any text editor to make changes in the ``HH.py`` file. 
 
