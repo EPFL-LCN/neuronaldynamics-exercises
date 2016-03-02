@@ -18,7 +18,7 @@ You can also install all requirements by running ``pip install -r requirements.t
 
 ## Brian2
 
-We are currently rewriting the examples to use the more recent [Brian2 Simulator](https://github.com/brian-team/brian2). These are available on the [brian2 branch](https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian2).
+We are currently rewriting the examples to use the more recent [Brian2 Simulator](https://github.com/brian-team/brian2). These are available on the [master branch](https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/master).
 
 ## License
 
