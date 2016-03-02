@@ -1,4 +1,8 @@
-all: pypi
+all: sphinx pypi conda
+
+sphinx:
+	sphinx-apidoc -o doc/modules neurodynex -f
+	make -C doc html
 
 pypi:
 	rm -rf dist/*

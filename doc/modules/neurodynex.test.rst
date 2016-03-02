@@ -44,6 +44,14 @@ neurodynex.test.test_neuron_type module
     :undoc-members:
     :show-inheritance:
 
+neurodynex.test.test_oja module
+-------------------------------
+
+.. automodule:: neurodynex.test.test_oja
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

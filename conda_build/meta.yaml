@@ -34,6 +34,7 @@ test:
     - neurodynex.hopfield_network
     - neurodynex.neuron_type
     - neurodynex.phase_plane_analysis
+    - neurodynex.ojas_rule
     - neurodynex.test
 
   commands:
@@ -42,6 +43,7 @@ test:
     - nosetests --verbosity=2 neurodynex.test.test_hopfield
     - nosetests --verbosity=2 neurodynex.test.test_nagumo
     - nosetests --verbosity=2 neurodynex.test.test_neuron_type
+    - nosetests --verbosity=2 neurodynex.test.test_oja
 
   requires:
     - nose

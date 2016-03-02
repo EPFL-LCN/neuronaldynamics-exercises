@@ -10,6 +10,7 @@ Subpackages
     neurodynex.hopfield_network
     neurodynex.leaky_integrate_and_fire
     neurodynex.neuron_type
+    neurodynex.ojas_rule
     neurodynex.phase_plane_analysis
     neurodynex.test
 
