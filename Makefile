@@ -1,20 +1,26 @@
-all: sphinx pypi conda
+deploy: test pypi conda
+
+# Documentation building
 
 sphinx:
 	sphinx-apidoc -o doc/modules neurodynex -f
 	make -C doc html
 
+# Pypi deployment
+
 pypi:
 	rm -rf dist/*
 	python setup.py bdist_wheel sdist
-	twine upload dist/*
+	twine upload dist/* --config-file .pypirc
+
+# Anaconda deployment
 
 conda: conda-build conda-upload
 
 conda-build:
 	rm -rf conda_build/build
 	conda build conda_build
-	@read -p "Enter path from above: " cpath; \
+	@read -p "Enter the path to local file from above ['anaconda upload PATH']: " cpath; \
 	conda convert --platform all $$cpath -o conda_build/build;
 
 conda-upload:
@@ -25,3 +31,7 @@ conda-upload:
 	anaconda upload  conda_build/build/linux-64/*;
 	anaconda upload  conda_build/build/osx-64/*;
 
+# test
+test:
+	nosetests neurodynex --nocapture --verbosity=2
+	pep8 neurodynex
