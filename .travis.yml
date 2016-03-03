@@ -2,6 +2,7 @@ language: python
 python:
 - '2.7'
 - '3.4'
+- '3.5'
 install:
 - sudo apt-get update
 - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
@@ -24,12 +25,3 @@ before_script:
 script:
 - pep8 neurodynex
 - nosetests neurodynex --verbosity=2
-deploy:
-  provider: pypi
-  user: flinz
-  password:
-    secure: TxkbZxnyYCarEWi1fMS9P4lyzvNwDUdqeYtDDVzsXgoHHtoPKW8PsEXaHyx0iaA0oAUJ5mmC2pGVBotz8uTXiMMo7cdYdolewRB3dGQJ+djYpboPTK1BTO3BP21YUnoh7yDncfb8uFUhJ+q3AIkxbbEnsuLLnR55qsc6+y3PfGt+p6LJeLRRev5VnKNqEPq9OPc5FyIghhTg9y81dh5UYA64eFE09uBKRODnlrWFtBO3y8I/Mm/73OOviZeCL3TJthNIPk8cAIw77rnY8ezXyGaE4GhGdt3KJ9tqV9+QdSsLtElqfASTI1HpsS+ZOy+JqlZNnN5KQrwBU5sKM3BEJuQxbxp3DufiORzS+7hTp+iQAFA6LP2qZpwK88AWdDosUaC1rqEFM31PY/UmPBfL6EMWIocmq1Zx5mfzpsP+gAz6HcFhNiw5NRfk0WPk8KzwLo6kLiZypqWuNYDs+W25UizKOE8JLseYvttsjEUYKGg4SKimRkc70pCRijib+FUA7wCv123h/dUliJakg8l7N1T9wGSllF95W1GdrWE1w7RIx4Ql8svDI0MdnIrR+NmoQBUIQI4u+1Om7U0ofbE7tRTEL5fdCQ9UcYd6YxpPyd+coYtflQSGsxNGPqVldtuQbt3wYlbXYS5i7qB4l3qAYI5Fv1PVSs4AKau5KqNxT04=
-  on:
-    tags: true
-    distributions: sdist bdist_wheel
-    repo: EPFL-LCN/neuronaldynamics-exercises
