@@ -29,21 +29,9 @@ test:
   # Python imports
   imports:
     - neurodynex
-    - neurodynex.leaky_integrate_and_fire
-    - neurodynex.hodgkin_huxley
-    - neurodynex.hopfield_network
-    - neurodynex.neuron_type
-    - neurodynex.phase_plane_analysis
-    - neurodynex.ojas_rule
-    - neurodynex.test
 
   commands:
-    - nosetests --verbosity=2 neurodynex.test.test_LIF
-    - nosetests --verbosity=2 neurodynex.test.test_HH
-    - nosetests --verbosity=2 neurodynex.test.test_hopfield
-    - nosetests --verbosity=2 neurodynex.test.test_nagumo
-    - nosetests --verbosity=2 neurodynex.test.test_neuron_type
-    - nosetests --verbosity=2 neurodynex.test.test_oja
+    - python -c "from neurodynex.test import run_nose; run_nose()"
 
   requires:
     - nose
