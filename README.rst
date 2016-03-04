@@ -1,4 +1,4 @@
-|Build Status| |Doc Status| |Conda Repo|
+|Build Status| |Doc Status| |Pypi Repo| |Conda Repo|
 
 Neuronal Dynamics: Python Exercises
 ===================================
@@ -44,3 +44,5 @@ Should you reuse and publish the code for your own purposes, please point to the
    :target: http://neuronaldynamics-exercises.readthedocs.org/
 .. |Conda Repo| image:: https://anaconda.org/epfl-lcn/neurodynex/badges/version.svg
    :target: https://anaconda.org/epfl-lcn/neurodynex
+.. |Pypi Repo| image:: https://badge.fury.io/py/neurodynex.svg
+   :target: https://pypi.python.org/pypi/neurodynex
