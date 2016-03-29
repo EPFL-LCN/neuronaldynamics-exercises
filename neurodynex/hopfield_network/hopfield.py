@@ -47,7 +47,6 @@ class HopfieldNetwork:
     def __init__(self, N):
         self.N = N
         self.x = 2*np.random.randint(0,2, self.N**2)-1
-        print(self.x)
 
     def make_pattern(self, P=1, ratio=0.5, letters=None):
         """Creates and stores additional patterns to the
