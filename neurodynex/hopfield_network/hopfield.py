@@ -46,6 +46,8 @@ class HopfieldNetwork:
 
     def __init__(self, N):
         self.N = N
+        self.x = 2*np.random.randint(0,2, self.N**2)-1
+        print(self.x)
 
     def make_pattern(self, P=1, ratio=0.5, letters=None):
         """Creates and stores additional patterns to the
@@ -122,7 +124,9 @@ class HopfieldNetwork:
             mu (int): The index of the pattern to
                 compare with.
         """
-
+        elementwiseProd = np.multiply(self.patterns[mu] , self.x)
+        overlapCount = float(len(np.where(elementwiseProd ==1)[0]))
+        return overlapCount/self.N**2
         return 1./self.N**2*np.sum(self.patterns[mu]*self.x)
 
     def run(self, t_max=20, mu=0, flip_ratio=0, do_plot=True):

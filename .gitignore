@@ -5,3 +5,4 @@
 neurodynex.egg-info/*
 dist
 build
+*Marco*.py
