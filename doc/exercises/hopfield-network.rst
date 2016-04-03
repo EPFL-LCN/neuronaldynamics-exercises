@@ -12,17 +12,6 @@ See `Chapter 17 Section 2 <Chapter17_>`_ for an introduction to Hopfield network
 The :mod:`.hopfield_network.hopfield` module contains all code required for this exercise.
 At the beginning of your exercise solutions, import the contained functions by running
 
-.. code-block:: python
-
-	from neurodynex.phase_plane_analysis.fitzhugh_nagumo import *
-
-You can then simply run the exercise functions by executing the functions, e.g.
-
-.. code-block:: python
-
-	get_trajectory() 
-	get_fixed_point()
-	plot_flow()
 
 Introduction: Hopfield-networks
 -------------------------------

@@ -25,8 +25,6 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 import numpy as np
-from copy import copy
-import sys
 
 
 class HopfieldNetwork:
@@ -48,7 +46,8 @@ class HopfieldNetwork:
         self.reset_weights()
 
     def reset_weights(self):
-        self.weights = 1.0/self.nrOfNeurons * (2*np.random.rand(self.nrOfNeurons, self.nrOfNeurons)-1)
+        self.weights = 1.0/self.nrOfNeurons * \
+                       (2*np.random.rand(self.nrOfNeurons, self.nrOfNeurons)-1)
 
     def store_patterns(self, pattern_list):
         """
@@ -115,6 +114,3 @@ class HopfieldNetwork:
             self.iterate()
             states.append(self.get_state2d())
         return states
-
-
-

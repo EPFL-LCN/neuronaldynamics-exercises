@@ -36,7 +36,7 @@ plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
 
 class HopfieldNetwork:
     """
-    DEPRECATED. Use hf_plot_tools.plotDemo() to learn about the
+    DEPRECATED. Use hf_plot_tools.plot_demo() to learn about the
     new Hopfield exercise
 
     Implements a Hopfield network of size N.

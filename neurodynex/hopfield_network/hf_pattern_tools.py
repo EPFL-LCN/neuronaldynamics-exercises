@@ -15,15 +15,15 @@ class PatternFactory:
     def __init__(self, n):
         self.N = n
 
-    def create_random_pattern(self, onProbability=0.5):
-        p = np.random.binomial(1, onProbability, self.N**2)
+    def create_random_pattern(self, on_probability=0.5):
+        p = np.random.binomial(1, on_probability, self.N ** 2)
         p = p*2 - 1
-        return p.reshape((self.N,self.N))
+        return p.reshape((self.N, self.N))
 
-    def create_random_pattern_list(self, nrOfPatterns, onProbability=0.5):
+    def create_random_pattern_list(self, nr_patterns, on_probability=0.5):
         p = list()
-        for i in range(nrOfPatterns):
-           p.append(self.create_random_pattern(onProbability))
+        for i in range(nr_patterns):
+            p.append(self.create_random_pattern(on_probability))
         return p
 
     def create_all_on(self):
@@ -36,10 +36,10 @@ class PatternFactory:
         p = np.ones(self.N, np.int)
         # set every second value to -1
         nr_off = int(np.floor(self.N / 2))
-        off_idx = np.asarray(range(0,nr_off))*2
+        off_idx = np.asarray(range(0, nr_off))*2
         p[off_idx+1] = -1
         t = linalg.circulant(p)
-        t = t.reshape((self.N,self.N))
+        t = t.reshape((self.N, self.N))
         return t
 
 
@@ -78,34 +78,36 @@ def flip_n(template, nr_of_flips):
 
 def get_noisy_copy(template, noise_level):
     n = template.shape[0]
-    nrOfMutations = int(round(n ** 2 * noise_level))
-    if nrOfMutations == 0:
+    nr_mutations = int(round(n ** 2 * noise_level))
+    if nr_mutations == 0:
         return template.copy()
-    idx_reassignment = np.random.choice(n**2, nrOfMutations, replace=False)
-    linearTemplate = template.flatten()
+    idx_reassignment = np.random.choice(n**2, nr_mutations, replace=False)
+    linear_template = template.flatten()
     p = np.random.binomial(1, 0.5, n)
     p = p*2 - 1
-    linearTemplate[idx_reassignment] = p
-    return linearTemplate.reshape((n, n))
+    linear_template[idx_reassignment] = p
+    return linear_template.reshape((n, n))
 
 
 def compute_overlap(pattern1, pattern2):
-    N = pattern1.shape[0]
+    n = pattern1.shape[0]
     dot_prod = np.dot(pattern1.flatten(), pattern2.flatten())
-    return float(dot_prod)/N**2
+    return float(dot_prod)/n**2
 
-def computeOverlapList(reference_pattern, pattern_list):
+
+def compute_overlap_list(reference_pattern, pattern_list):
     overlap = np.zeros(len(pattern_list))
     for i in range(0, len(pattern_list)):
         overlap[i] = compute_overlap(reference_pattern, pattern_list[i])
     return overlap
 
-def compute_overlap_matrix(patternList):
-    nr_patterns = len(patternList)
+
+def compute_overlap_matrix(pattern_list):
+    nr_patterns = len(pattern_list)
     overlap = np.zeros((nr_patterns, nr_patterns))
     for i in range(nr_patterns):
         for k in range(i, nr_patterns):
-            overlap[i, k] = compute_overlap(patternList[i], patternList[k])
+            overlap[i, k] = compute_overlap(pattern_list[i], pattern_list[k])
             overlap[k, i] = overlap[i, k]  # because overlap is symmetric
     return overlap
 
@@ -144,5 +146,5 @@ def load_alphabet():
 
     for key in abc_dict:
         flat_pattern = abc_dict[key]
-        abc_dict[key] = flat_pattern.reshape((10,10))
+        abc_dict[key] = flat_pattern.reshape((10, 10))
     return abc_dict
