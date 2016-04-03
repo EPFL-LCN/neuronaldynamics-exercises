@@ -35,18 +35,22 @@ plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
 
 
 class HopfieldNetwork:
-    """Implements a Hopfield network of size N.
+    """
+    DEPRECATED. Use hf_plot_tools.plotDemo() to learn about the
+    new Hopfield exercise
+
+    Implements a Hopfield network of size N.
 
     Attributes:
         N (int): Square root of number of neurons
         patterns (numpy.ndarray): Array of stored patterns
         weight (numpy.ndarray): Array of stored weights
-        x (numpy.ndarray): Network state (of size N**2)
+        state (numpy.ndarray): Network state (of size N**2)
     """
 
     def __init__(self, N):
         self.N = N
-        self.x = 2*np.random.randint(0,2, self.N**2)-1
+        self.state= 2*np.random.randint(0,2, self.N**2)-1
 
     def make_pattern(self, P=1, ratio=0.5, letters=None):
         """Creates and stores additional patterns to the
@@ -113,7 +117,7 @@ class HopfieldNetwork:
         """Executes one timestep of the dynamics"""
 
         h = np.sum(self.weight*self.x, axis=1)
-        self.x = np.sign(h)
+        self.state= np.sign(h)
 
     def overlap(self, mu):
         """Computes the overlap of the current state with
@@ -122,11 +126,12 @@ class HopfieldNetwork:
         Args:
             mu (int): The index of the pattern to
                 compare with.
+
+        Returns:
+            the overlap m, a float in [-1, +1]
         """
-        elementwiseProd = np.multiply(self.patterns[mu] , self.x)
-        overlapCount = float(len(np.where(elementwiseProd ==1)[0]))
-        return overlapCount/self.N**2
-        return 1./self.N**2*np.sum(self.patterns[mu]*self.x)
+        h = float(np.dot(self.patterns[mu], self.x))
+        return h/self.N**2
 
     def run(self, t_max=20, mu=0, flip_ratio=0, do_plot=True):
         """Runs the dynamics and optionally plots it.
@@ -158,8 +163,8 @@ class HopfieldNetwork:
         except:
             raise IndexError('Pattern index too high (has to be < P)')
 
-        # set the initial state of the net
-        self.x = copy(self.patterns[mu])
+        # set the initial state of the net ??? that's wrong, no?
+        self.state= copy(self.patterns[mu])
         flip = np.random.permutation(np.arange(self.N**2))
         idx = int(self.N**2 * flip_ratio)
         self.x[flip[0:idx]] *= -1
@@ -211,8 +216,8 @@ class HopfieldNetwork:
 
             # check the exit condition
             i_fin = i+1
-            if np.sum(np.abs(x_old-self.x)) == 0:
-                break
+            # if np.sum(np.abs(x_old-self.x)) == 0:
+            #     break
             x_old = copy(self.x)
 
             # sleep for replotting
