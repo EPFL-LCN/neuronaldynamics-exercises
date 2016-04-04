@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    neurodynex.cable_equation
     neurodynex.hodgkin_huxley
     neurodynex.hopfield_network
     neurodynex.leaky_integrate_and_fire

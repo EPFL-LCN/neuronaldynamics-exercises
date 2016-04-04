@@ -34,4 +34,4 @@ conda-upload:
 # test
 test:
 	nosetests neurodynex --nocapture --verbosity=2
-	pep8 neurodynex
+	pep8 neurodynex --max-line-length=120
