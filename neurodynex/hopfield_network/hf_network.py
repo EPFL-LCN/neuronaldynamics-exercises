@@ -88,6 +88,14 @@ class HopfieldNetwork:
         idx0 = self.state == 0
         self.state[idx0] = 1
 
+        # # probabilistic update:
+        # g = np.tanh(2.6*h)
+        # prob = 0.5*(g+1)
+        # s = []
+        # for p in prob:
+        #     s.append(2*np.random.binomial(1, p)-1)
+        # self.state = np.asarray(s)
+
     def run(self, t_max=5):
         """Runs the dynamics.
         Args:

@@ -93,19 +93,13 @@ def plot_demo(initially_flipped_pixels=4, nr_random_patterns=4):
     print(overlap_matrix)
     noisy_init_state = pattern_tools.flip_n(pattern_list[reference_pattern], initially_flipped_pixels)
     hopfield_net.set_state_from_2d_pattern(noisy_init_state)
-    states = hopfield_net.run_with_monitoring(4)
+    states = hopfield_net.run_with_monitoring(5)
     plot_state_sequence_and_overlap(states, pattern_list, reference_pattern)
 
 
-def plot_demo_2():
+def plot_demo_2(pattern_size=4, nr_patterns=6, reference_pattern=0, initially_flipped_pixels=3, nr_iterations=6):
     import numpy as np
     # in your code, don't forget to import hf_plot_tools
-
-    pattern_size = 4
-    nr_patterns = 6
-    # we initialize the network with a pattern close to nr3 (3 pixels flipped)
-    reference_pattern = 3
-    initially_flipped_pixels = 3
 
     # instantiate a hofpfield network
     hopfield_net = hf_network.HopfieldNetwork(pattern_size)
@@ -126,7 +120,7 @@ def plot_demo_2():
     plt.show()
     noisy_init_state = pattern_tools.flip_n(pattern_list[reference_pattern], initially_flipped_pixels)
     hopfield_net.set_state_from_2d_pattern(noisy_init_state)
-    states = hopfield_net.run_with_monitoring(4)
+    states = hopfield_net.run_with_monitoring(nr_iterations)
     plot_state_sequence_and_overlap(states, pattern_list, reference_pattern)
 
 

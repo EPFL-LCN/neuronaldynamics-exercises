@@ -7,5 +7,5 @@ import hf_plot_tools as hfplt
 # hfplt.plot_demo(initially_flipped_pixels=7, nr_random_patterns=1)
 
 # now play with patterns
-# hfplt.plot_demo(initially_flipped_pixels=4, nr_random_patterns=4)
-hfplt.plot_demo(initially_flipped_pixels=5, nr_random_patterns=4)
+hfplt.plot_demo(initially_flipped_pixels=4, nr_random_patterns=4)
+# hfplt.plot_demo(initially_flipped_pixels=2, nr_random_patterns=1)
