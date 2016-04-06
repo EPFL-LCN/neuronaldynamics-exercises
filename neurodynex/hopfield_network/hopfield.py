@@ -36,7 +36,7 @@ plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
 
 class HopfieldNetwork:
     """
-    DEPRECATED. Use hf_plot_tools.plot_demo() to learn about the
+    DEPRECATED. Use hf_plot_tools.deleteThis() to learn about the
     new Hopfield exercise
 
     Implements a Hopfield network of size N.
@@ -241,9 +241,7 @@ def load_alphabet():
             can not be imported. Please install
             `neurodynex <pypi.python.org/pypi/neurodynex/>`_.
     """
-
     file_str = 'data/alphabet.pickle.gz'
-
     try:
         file_name = resource_filename('neurodynex', file_str)
     except ImportError:

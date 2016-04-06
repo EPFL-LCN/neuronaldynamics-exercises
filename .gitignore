@@ -6,4 +6,5 @@ neurodynex.egg-info/*
 dist
 build
 .ipynb_checkpoints
-*Marco*.py
+*.ipynb
+tmp_*.py

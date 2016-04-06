@@ -12,7 +12,18 @@ import sys
 
 
 class PatternFactory:
+    """
+    Creates patterns of size N by N
+    """
     def __init__(self, n):
+        """
+        Constructor
+        Args:
+            n: the width of a pattern
+
+        Returns:
+
+        """
         self.N = n
 
     def create_random_pattern(self, on_probability=0.5):
@@ -35,10 +46,8 @@ class PatternFactory:
     def create_checkerboard(self):
         p = np.ones(self.N, np.int)
         # set every second value to -1
-        nr_off = int(np.floor(self.N / 2))
-        off_idx = np.asarray(range(0, nr_off))*2
-        p[off_idx+1] = -1
-        t = linalg.circulant(p)
+        p[1::2] = -1
+        t = linalg.toeplitz(p)
         t = t.reshape((self.N, self.N))
         return t
 
