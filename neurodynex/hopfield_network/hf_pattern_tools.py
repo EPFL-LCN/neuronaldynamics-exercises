@@ -13,23 +13,20 @@ import sys
 
 class PatternFactory:
     """
-    Creates patterns of size N by N
+    Creates square patterns of size pattern_width x pattern_width
     """
-    def __init__(self, n):
+    def __init__(self, pattern_width):
         """
         Constructor
         Args:
-            n: the width of a pattern
-
-        Returns:
-
+            pattern_width: the width of a pattern
         """
-        self.N = n
+        self.pattern_width = pattern_width
 
     def create_random_pattern(self, on_probability=0.5):
-        p = np.random.binomial(1, on_probability, self.N ** 2)
+        p = np.random.binomial(1, on_probability, self.pattern_width ** 2)
         p = p*2 - 1
-        return p.reshape((self.N, self.N))
+        return p.reshape((self.pattern_width, self.pattern_width))
 
     def create_random_pattern_list(self, nr_patterns, on_probability=0.5):
         p = list()
@@ -38,17 +35,17 @@ class PatternFactory:
         return p
 
     def create_all_on(self):
-        return np.ones((self.N, self.N), np.int)
+        return np.ones((self.pattern_width, self.pattern_width), np.int)
 
     def create_all_off(self):
-        return -1*np.ones((self.N, self.N), np.int)
+        return -1*np.ones((self.pattern_width, self.pattern_width), np.int)
 
     def create_checkerboard(self):
-        p = np.ones(self.N, np.int)
+        p = np.ones(self.pattern_width, np.int)
         # set every second value to -1
         p[1::2] = -1
         t = linalg.toeplitz(p)
-        t = t.reshape((self.N, self.N))
+        t = t.reshape((self.pattern_width, self.pattern_width))
         return t
 
 
@@ -56,15 +53,6 @@ def get_pattern_diff(pattern1, pattern2, diff_code=0):
     diffs = np.multiply(pattern1, pattern2)
     pattern_with_diffs = np.where(diffs < 0, diff_code, pattern1)
     return pattern_with_diffs
-
-# def create3by3Cross():
-#     """
-#     creates the pattern used in one of the classroom exercises.
-#     Returns:
-#         3x3 cross
-#     """
-#     p = np.array([-1, 1, -1, 1, 1, 1, -1, 1, -1])
-#     return p.reshape((3,3))
 
 
 def flip_n(template, nr_of_flips):

@@ -9,8 +9,72 @@ See `Chapter 17 Section 2 <Chapter17_>`_ for an introduction to Hopfield network
 
 **Python classes**
 
-The :mod:`.hopfield_network.hopfield` module contains all code required for this exercise.
-At the beginning of your exercise solutions, import the contained functions by running
+You can solve this exercise by modifying the the demo code. We have implemented
+three classes: HopfieldNetwork implements the learning and the dynamics. PatternFactory
+provides convenient methods to create patterns. hf_plot_tools provide functions to
+visualize state, patterns, errors and overlaps. The demo shows how these three classes
+are used together. See the comments in the demo code and read the documentation.
+
+TODO: link doc and code
+
+
+Getting started: run the Hopfield demo
+--------------------------------------
+
+HopfieldDemos.py implements two demos of a Hopfield network: one using random patterns, and
+a second on with letters.
+
+.. figure:: exc_images/HF_CheckerboardAndPatterns.png
+   :align: center
+
+   We create 6 patterns and store them in the Hopfield network.
+
+   .. #no legend
+
+.. figure:: exc_images/HF_CheckerboardRecovered2.png
+   :align: center
+
+   The network is initialized with a (very) noisy pattern S(t=0). Then, the dynamics recover pattern P0 in 5 iterations.
+
+   .. #no legend
+
+
+Use this code to run the demo:
+
+
+.. code-block:: python
+
+   import neurodynex.hopfield_network.hopfield_demo as hf_demo
+
+   hf_demo.plot_demo()
+   # Demo2: more neurons, more patterns, more noise
+   hf_demo.plot_demo(pattern_size=6,
+                     nr_random_patterns=5,
+                     initially_flipped_pixels=9)
+
+   print('recover letter A')
+   letter_list = ['a', 'b', 'c', 's', 'x', 'y', 'z']
+   hf_demo.plot_demo_alphabet(letter_list, random_seed=76)
+
+   letter_list.append('r') # add one more pattern, 'A' is not recovered
+   hf_demo.plot_demo_alphabet(letter_list, random_seed=76)
+
+In the Alphabet demo we store eight letters in a network of 100 neurons. Initialized with
+a noisy 'A', the network is not able to recover the pattern. It's interesting to note that a after the
+first iteration, the network state corresponds to the pattern 'A' with overlap m=1, but
+that state S1 is not stable:
+
+.. figure:: exc_images/HF_LetterAandOverlap.png
+   :align: center
+
+   Alphabet demo
+
+   .. #no legend
+
+.. note::
+   The network state is a (one dimensional) vector of n neurons. For visualization we
+   use 2d patterns. For simplicity, the code assumes square patterns. Therefore we have
+   pattern_width = N and nr_of_neurons=N*N
 
 
 Introduction: Hopfield-networks

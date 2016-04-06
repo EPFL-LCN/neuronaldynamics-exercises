@@ -25,21 +25,22 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 import numpy as np
+import math
 
 
 class HopfieldNetwork:
     """Implements a Hopfield network.
 
     Attributes:
-        grid_width (int) : side length of square patterns
-        nrOfNeurons (int): Number of neurons = grid_width*grid_width
+        nrOfNeurons (int): Number of neurons
         weights (numpy.ndarray): nrOfNeurons x nrOfNeurons matrix of weights
         state (numpy.ndarray): current network state (of size N**2)
     """
 
-    def __init__(self, grid_width):
-        self.grid_width = grid_width
-        self.nrOfNeurons = grid_width ** 2
+    def __init__(self, nr_neurons):
+        math.sqrt(nr_neurons)
+        self.nrOfNeurons = nr_neurons
+        self._grid_width = int(math.floor(math.sqrt(nr_neurons)))
         self.state = 2*np.random.randint(0, 2, self.nrOfNeurons)-1
         # initialize random weights
         self.weights = 0
@@ -74,7 +75,7 @@ class HopfieldNetwork:
         Returns:
             an N by N ndarray of the network state.
         """
-        return self.state.copy().reshape((self.grid_width, self.grid_width))
+        return self.state.copy().reshape((self._grid_width, self._grid_width))
 
     def set_state_from_2d_pattern(self, pattern):
         self.state = pattern.copy().reshape(self.nrOfNeurons)

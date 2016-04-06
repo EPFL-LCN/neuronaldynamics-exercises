@@ -4,38 +4,6 @@ neurodynex.hopfield_network package
 Submodules
 ----------
 
-neurodynex.hopfield_network.Demo1 module
-----------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.Demo1
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.Demo2 module
-----------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.Demo2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.Demo3Abc module
--------------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.Demo3Abc
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.MarcoHopfield module
-------------------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.MarcoHopfield
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 neurodynex.hopfield_network.hf_network module
 ---------------------------------------------
 
@@ -64,6 +32,14 @@ neurodynex.hopfield_network.hopfield module
 -------------------------------------------
 
 .. automodule:: neurodynex.hopfield_network.hopfield
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+neurodynex.hopfield_network.hopfield_demo module
+------------------------------------------------
+
+.. automodule:: neurodynex.hopfield_network.hopfield_demo
     :members:
     :undoc-members:
     :show-inheritance:
