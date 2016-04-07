@@ -38,24 +38,42 @@ class HopfieldNetwork:
     """
 
     def __init__(self, nr_neurons):
+        """
+        Constructor
+        Args:
+            nr_neurons (int): Number of neurons. Use a square number to get the
+            visualizations properly
+        """
         math.sqrt(nr_neurons)
         self.nrOfNeurons = nr_neurons
         self._grid_width = int(math.floor(math.sqrt(nr_neurons)))
-        self.state = 2*np.random.randint(0, 2, self.nrOfNeurons)-1
+        self.state = 2 * np.random.randint(0, 2, self.nrOfNeurons) - 1
         # initialize random weights
         self.weights = 0
         self.reset_weights()
+        self._update_method = _get_sign_update_function()
 
     def reset_weights(self):
-        self.weights = 1.0/self.nrOfNeurons * \
-                       (2*np.random.rand(self.nrOfNeurons, self.nrOfNeurons)-1)
+        """
+        Resets the weights to random values
+        """
+        self.weights = 1.0 / self.nrOfNeurons * \
+                       (2 * np.random.rand(self.nrOfNeurons, self.nrOfNeurons) - 1)
+
+    def set_probabilistic_update(self, inverse_temp_beta):
+        self._update_method = _get_probabilistic_update_function(inverse_temp_beta)
+
+    def set_update_method(self, update_method):
+        self._update_method = update_method
 
     def store_patterns(self, pattern_list):
         """
         Learns the patterns by setting the network weights. The patterns
-        themselves are not stored!
+        themselves are not stored, only the weights are updated!
+        self connections are set to 0.
         Args:
-            pattern_list: a nonempty list of 2d patterns.
+            pattern_list: a nonempty list of patterns.
+            Make sure sure self.nrOfNeurons = len(pattern)
         """
         self.weights = np.zeros((self.nrOfNeurons, self.nrOfNeurons))
         # textbook formula to compute the weights:
@@ -63,7 +81,7 @@ class HopfieldNetwork:
             p_flat = p.flatten()
             for i in range(self.nrOfNeurons):
                 for k in range(self.nrOfNeurons):
-                    self.weights[i, k] += p_flat[i]*p_flat[k]
+                    self.weights[i, k] += p_flat[i] * p_flat[k]
         self.weights /= self.nrOfNeurons
         # no self connections:
         np.fill_diagonal(self.weights, 0)
@@ -82,20 +100,7 @@ class HopfieldNetwork:
 
     def iterate(self):
         """Executes one timestep of the dynamics"""
-        h = np.sum(self.weights*self.state, axis=1)
-        self.state = np.sign(h)
-        # by definition, neurons have state +/-1. If the
-        # sign function returns 0, we set 0 to +1
-        idx0 = self.state == 0
-        self.state[idx0] = 1
-
-        # # probabilistic update:
-        # g = np.tanh(2.6*h)
-        # prob = 0.5*(g+1)
-        # s = []
-        # for p in prob:
-        #     s.append(2*np.random.binomial(1, p)-1)
-        # self.state = np.asarray(s)
+        self.state = self._update_method(self.state, self.weights)
 
     def run(self, t_max=5):
         """Runs the dynamics.
@@ -123,3 +128,46 @@ class HopfieldNetwork:
             self.iterate()
             states.append(self.get_state2d())
         return states
+
+
+def _get_sign_update_function():
+    """
+    for internal use
+    Returns:
+        A function implementing a synchronous state update using sigmoid
+    """
+
+    def upd(state_s0, weights):
+        h = np.sum(weights * state_s0, axis=1)
+        s1 = np.sign(h)
+        # by definition, neurons have state +/-1. If the
+        # sign function returns 0, we set it to +1
+        idx0 = s1 == 0
+        s1[idx0] = 1
+        return s1
+
+    return upd
+
+
+def _get_probabilistic_update_function(inverse_temp_beta):
+    """
+    for internal use
+    Args:
+        inverse_temp_beta (float)>=0:
+
+    Returns:
+        A function implementing a probabilistic, synchronous state update
+        using a sigmoidal transfer function g:= tanh(beta*h).
+    """
+
+    def upd(state_s0, weights):
+        h = np.sum(weights * state_s0, axis=1)
+        g = np.tanh(inverse_temp_beta * h)  # closure: inverse_temp_beta is available
+        prob = 0.5 * (g + 1.0)
+        s = []
+        for p in prob:
+            s.append(2 * np.random.binomial(1, p) - 1)
+        s1 = np.asarray(s)
+        return s1
+
+    return upd

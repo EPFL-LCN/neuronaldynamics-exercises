@@ -72,7 +72,7 @@ that state S1 is not stable:
    .. #no legend
 
 .. note::
-   The network state is a (one dimensional) vector of n neurons. For visualization we
+   The network state is a vector of n neurons. For visualization we
    use 2d patterns. For simplicity, the code assumes square patterns. Therefore we have
    pattern_width = N and nr_of_neurons=N*N
 

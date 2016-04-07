@@ -20,6 +20,7 @@ def run_hf_demo(pattern_size=4, nr_random_patterns=3, reference_pattern=0,
     # let the hopfield network 'learn' the patterns. Note: they are not stored
     # explicitly but only network weights are updated !
     hopfield_net.store_patterns(pattern_list)
+    # hopfield_net.set_probabilistic_update(2.5) #use a noisy update
     # how similar are the random patterns? Check the overlaps
     overlap_matrix = pattern_tools.compute_overlap_matrix(pattern_list)
     hfplot.plot_overlap_matrix(overlap_matrix)
