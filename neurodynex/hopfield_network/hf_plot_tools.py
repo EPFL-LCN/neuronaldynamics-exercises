@@ -72,7 +72,7 @@ def _plot_list(axes_list, state_sequence, reference=None, title_pattern="S({0})"
         if reference is None:
             p = state_sequence[i]
         else:
-            p = pattern_tools.get_pattern_diff(state_sequence[i], reference, diff_code = -0.2)
+            p = pattern_tools.get_pattern_diff(state_sequence[i], reference, diff_code=-0.2)
         axes_list[i].imshow(p, interpolation='nearest', cmap='hot')
         axes_list[i].set_title(title_pattern.format(i))
         axes_list[i].axis('off')

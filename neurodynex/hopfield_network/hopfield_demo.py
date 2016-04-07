@@ -10,7 +10,7 @@ def run_hf_demo(pattern_size=4, nr_random_patterns=3, reference_pattern=0,
     # instantiate a hofpfield network
     hopfield_net = hf_network.HopfieldNetwork(pattern_size**2)
     # instantiate a pattern factory
-    factory = pattern_tools.PatternFactory(pattern_size)
+    factory = pattern_tools.PatternFactory(pattern_size, pattern_size)
     # create a checkerboard pattern and add it to the pattern list
     checkerboard = factory.create_checkerboard()
     pattern_list = [checkerboard]
@@ -20,7 +20,7 @@ def run_hf_demo(pattern_size=4, nr_random_patterns=3, reference_pattern=0,
     # let the hopfield network 'learn' the patterns. Note: they are not stored
     # explicitly but only network weights are updated !
     hopfield_net.store_patterns(pattern_list)
-    # uncommment the following line to enable a probabilistic network dynamic
+    # uncomment the following line to enable a probabilistic network dynamic
     # hopfield_net.set_probabilistic_update(2.5)
 
     # how similar are the random patterns? Check the overlaps
@@ -28,11 +28,13 @@ def run_hf_demo(pattern_size=4, nr_random_patterns=3, reference_pattern=0,
     hfplot.plot_overlap_matrix(overlap_matrix)
     # create a noisy version of a pattern and use that to initialize the network
     noisy_init_state = pattern_tools.flip_n(pattern_list[reference_pattern], initially_flipped_pixels)
-    hopfield_net.set_state_from_2d_pattern(noisy_init_state)
+    hopfield_net.set_state_from_pattern(noisy_init_state)
     # run the network dynamics and record the network state at every time step
     states = hopfield_net.run_with_monitoring(nr_iterations)
+    # each network state is a vector. reshape it to the same shape used to create the patterns.
+    states_as_patterns = factory.reshape_patterns(states)
     # plot the states of the network
-    hfplot.plot_state_sequence_and_overlap(states, pattern_list, reference_pattern)
+    hfplot.plot_state_sequence_and_overlap(states_as_patterns, pattern_list, reference_pattern)
     plt.show()
 
 
@@ -58,10 +60,11 @@ def run_hf_demo_alphabet(letters, initialization_noise_level=0.2, random_seed=No
     hfplot.plot_pattern_list(pattern_list)
 
     hopfield_net.store_patterns(pattern_list)
-    hopfield_net.set_state_from_2d_pattern(
+    hopfield_net.set_state_from_pattern(
         pattern_tools.get_noisy_copy(abc_dict[letters[reference_pattern]], initialization_noise_level))
     states = hopfield_net.run_with_monitoring(6)
-    hfplot.plot_state_sequence_and_overlap(states, pattern_list, reference_pattern)
+    state_patterns = pattern_tools.reshape_patterns(states, pattern_list[0].shape)
+    hfplot.plot_state_sequence_and_overlap(state_patterns, pattern_list, reference_pattern)
 
 run_hf_demo()
 

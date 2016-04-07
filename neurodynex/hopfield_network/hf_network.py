@@ -46,7 +46,7 @@ class HopfieldNetwork:
         """
         math.sqrt(nr_neurons)
         self.nrOfNeurons = nr_neurons
-        self._grid_width = int(math.floor(math.sqrt(nr_neurons)))
+        # initialize with random state
         self.state = 2 * np.random.randint(0, 2, self.nrOfNeurons) - 1
         # initialize random weights
         self.weights = 0
@@ -58,12 +58,24 @@ class HopfieldNetwork:
         Resets the weights to random values
         """
         self.weights = 1.0 / self.nrOfNeurons * \
-                       (2 * np.random.rand(self.nrOfNeurons, self.nrOfNeurons) - 1)
+            (2 * np.random.rand(self.nrOfNeurons, self.nrOfNeurons) - 1)
 
     def set_probabilistic_update(self, inverse_temp_beta):
+        """
+        Sets the network dynamics to a probabilistic update function.
+        Args:
+            inverse_temp_beta: inverse temperature
+        """
         self._update_method = _get_probabilistic_update_function(inverse_temp_beta)
 
     def set_update_method(self, update_method):
+        """
+        Sets the network dynamics to the given update function
+        Args:
+            update_method: upd(state_s0, weights) -> s1
+            any method mapping a state s0 to the next state s1 using a function of
+            s0 and weights.
+        """
         self._update_method = update_method
 
     def store_patterns(self, pattern_list):
@@ -75,6 +87,11 @@ class HopfieldNetwork:
             pattern_list: a nonempty list of patterns.
             Make sure sure self.nrOfNeurons = len(pattern)
         """
+        all_same_size_as_net = all(len(p.flatten()) == self.nrOfNeurons for p in pattern_list)
+        if not all_same_size_as_net:
+            errMsg = "Not all patterns in pattern_list have exactly the same number of states " \
+                     "as this network has neurons n={0}.".format(self.nrOfNeurons)
+            raise ValueError(errMsg)
         self.weights = np.zeros((self.nrOfNeurons, self.nrOfNeurons))
         # textbook formula to compute the weights:
         for p in pattern_list:
@@ -86,17 +103,13 @@ class HopfieldNetwork:
         # no self connections:
         np.fill_diagonal(self.weights, 0)
 
-    def get_state2d(self):
+    def set_state_from_pattern(self, pattern):
         """
-        The state is a vector of length N*N. It is more convenient to use a
-        2-D representation of the state.
-        Returns:
-            an N by N ndarray of the network state.
+        Sets the neuron states to the pattern pixel. The pattern is flattened.
+        Args:
+            pattern: pattern
         """
-        return self.state.copy().reshape((self._grid_width, self._grid_width))
-
-    def set_state_from_2d_pattern(self, pattern):
-        self.state = pattern.copy().reshape(self.nrOfNeurons)
+        self.state = pattern.copy().flatten()
 
     def iterate(self):
         """Executes one timestep of the dynamics"""
@@ -122,11 +135,11 @@ class HopfieldNetwork:
             a list of 2d network states
         """
         states = list()
-        states.append(self.get_state2d())
+        states.append(self.state.copy())
         for i in range(t_max):
             # run a step
             self.iterate()
-            states.append(self.get_state2d())
+            states.append(self.state.copy())
         return states
 
 
