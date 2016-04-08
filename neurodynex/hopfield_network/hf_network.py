@@ -60,23 +60,38 @@ class HopfieldNetwork:
         self.weights = 1.0 / self.nrOfNeurons * \
             (2 * np.random.rand(self.nrOfNeurons, self.nrOfNeurons) - 1)
 
-    def set_probabilistic_update(self, inverse_temp_beta):
+    def set_dynamics_probabilistic_sync(self, inverse_temp_beta):
         """
-        Sets the network dynamics to a probabilistic update function.
+        Sets the network dynamics to a probabilistic update function:
+        P(on/off) ~ tanh(beta*h)
+        All neurons are updated at once (synchronous update)
         Args:
             inverse_temp_beta: inverse temperature
         """
         self._update_method = _get_probabilistic_update_function(inverse_temp_beta)
 
-    def set_update_method(self, update_method):
+    def set_dynamics_sign_sync(self):
+        """
+        sets the update dynamics to the synchronous, deterministic g(h) = sign(h) function
+        """
+        self._update_method = _get_sign_update_function()
+
+    def set_dynamics_sign_async(self):
+        """
+        Sets the update dynamics to the g(h)= sign(h) functions. Neurons are updated asynchronously:
+        In random order, all neurons are updated sequentially
+        """
+        self._update_method = _get_async_sign_update_function()
+
+    def set_dynamics_to_user_function(self, update_function):
         """
         Sets the network dynamics to the given update function
         Args:
-            update_method: upd(state_s0, weights) -> s1
-            any method mapping a state s0 to the next state s1 using a function of
+            update_function: upd(state_t0, weights) -> state_t1
+            any function mapping a state s0 to the next state s1 using a function of
             s0 and weights.
         """
-        self._update_method = update_method
+        self._update_method = update_function
 
     def store_patterns(self, pattern_list):
         """
@@ -159,6 +174,21 @@ def _get_sign_update_function():
         s1[idx0] = 1
         return s1
 
+    return upd
+
+
+def _get_async_sign_update_function():
+    def upd(state_s0, weights):
+        random_neuron_idx_list = np.random.permutation(len(state_s0))
+        state_s1 = np.zeros(state_s0.shape)
+        for i in range(len(state_s0)):
+            rand_neuron_i = random_neuron_idx_list[i]
+            h_i = np.dot(weights[:, rand_neuron_i], state_s0)
+            s_i = np.sign(h_i)
+            if s_i == 0:
+                s_i = 1
+            state_s1[rand_neuron_i] = s_i
+        return state_s1
     return upd
 
 

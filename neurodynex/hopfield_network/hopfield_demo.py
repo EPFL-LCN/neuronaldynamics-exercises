@@ -20,8 +20,6 @@ def run_hf_demo(pattern_size=4, nr_random_patterns=3, reference_pattern=0,
     # let the hopfield network 'learn' the patterns. Note: they are not stored
     # explicitly but only network weights are updated !
     hopfield_net.store_patterns(pattern_list)
-    # uncomment the following line to enable a probabilistic network dynamic
-    # hopfield_net.set_probabilistic_update(2.5)
 
     # how similar are the random patterns? Check the overlaps
     overlap_matrix = pattern_tools.compute_overlap_matrix(pattern_list)
@@ -29,6 +27,12 @@ def run_hf_demo(pattern_size=4, nr_random_patterns=3, reference_pattern=0,
     # create a noisy version of a pattern and use that to initialize the network
     noisy_init_state = pattern_tools.flip_n(pattern_list[reference_pattern], initially_flipped_pixels)
     hopfield_net.set_state_from_pattern(noisy_init_state)
+
+    # uncomment the following line to enable a PROBABILISTIC network dynamic
+    # hopfield_net.set_dynamics_probabilistic_sync(2.5)
+    # uncomment the following line to enable an ASYNCHRONOUS network dynamic
+    # hopfield_net.set_dynamics_sign_async()
+
     # run the network dynamics and record the network state at every time step
     states = hopfield_net.run_with_monitoring(nr_iterations)
     # each network state is a vector. reshape it to the same shape used to create the patterns.
