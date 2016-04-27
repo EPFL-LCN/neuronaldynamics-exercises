@@ -29,7 +29,7 @@ To install the exercises with anaconda/miniconda execute:
 Brian1
 ------
 
-We are currently rewriting the python exercises to use the more recent `Brian2 Simulator <https://github.com/brian-team/brian2>`__. The old brian1 exercises are available on the `brian1 branch <https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian1>`__.
+This (master) branch is a rewrite of all python exercises for the more recent `Brian2 Simulator <https://github.com/brian-team/brian2>`__. The old exercises using brian1 are still available on the `brian1 branch <https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian1>`__.
 
 License
 -------
