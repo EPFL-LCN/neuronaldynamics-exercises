@@ -22,5 +22,5 @@ before_script:
 - sh -e /etc/init.d/xvfb start
 - sleep 3
 script:
-- pep8 neurodynex
+- pep8 neurodynex --max-line-length=120
 - nosetests neurodynex --verbosity=2

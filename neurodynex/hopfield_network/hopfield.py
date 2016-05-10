@@ -35,17 +35,22 @@ plot_dic = {'cmap': plt.cm.gray, 'interpolation': 'nearest'}
 
 
 class HopfieldNetwork:
-    """Implements a Hopfield network of size N.
+    """
+    DEPRECATED. For back compatibility.
+    Use hf_network.HopfieldNetwork. Look at hopfield_demo.
+
+    Implements a Hopfield network of size N.
 
     Attributes:
         N (int): Square root of number of neurons
         patterns (numpy.ndarray): Array of stored patterns
         weight (numpy.ndarray): Array of stored weights
-        x (numpy.ndarray): Network state (of size N**2)
+        state (numpy.ndarray): Network state (of size N**2)
     """
 
     def __init__(self, N):
         self.N = N
+        self.state = 2*np.random.randint(0, 2, self.N**2)-1
 
     def make_pattern(self, P=1, ratio=0.5, letters=None):
         """Creates and stores additional patterns to the
@@ -105,14 +110,14 @@ class HopfieldNetwork:
         if mu is not None:
             x_grid = np.reshape(self.patterns[mu], (self.N, self.N))
         else:
-            x_grid = np.reshape(self.x, (self.N, self.N))
+            x_grid = np.reshape(self.state, (self.N, self.N))
         return x_grid
 
     def dynamic(self):
         """Executes one timestep of the dynamics"""
 
-        h = np.sum(self.weight*self.x, axis=1)
-        self.x = np.sign(h)
+        h = np.sum(self.weight*self.state, axis=1)
+        self.state = np.sign(h)
 
     def overlap(self, mu):
         """Computes the overlap of the current state with
@@ -121,9 +126,12 @@ class HopfieldNetwork:
         Args:
             mu (int): The index of the pattern to
                 compare with.
-        """
 
-        return 1./self.N**2*np.sum(self.patterns[mu]*self.x)
+        Returns:
+            the overlap m, a float in [-1, +1]
+        """
+        h = float(np.dot(self.patterns[mu], self.state))
+        return h/self.N**2
 
     def run(self, t_max=20, mu=0, flip_ratio=0, do_plot=True):
         """Runs the dynamics and optionally plots it.
@@ -155,11 +163,11 @@ class HopfieldNetwork:
         except:
             raise IndexError('Pattern index too high (has to be < P)')
 
-        # set the initial state of the net
-        self.x = copy(self.patterns[mu])
+        # set the initial state of the net ??? that's wrong, no?
+        self.state = copy(self.patterns[mu])
         flip = np.random.permutation(np.arange(self.N**2))
         idx = int(self.N**2 * flip_ratio)
-        self.x[flip[0:idx]] *= -1
+        self.state[flip[0:idx]] *= -1
         t = [0]
         overlap = [self.overlap(mu)]
 
@@ -190,7 +198,7 @@ class HopfieldNetwork:
 
         # this forces pylab to update and show the fig.
         fig.show()
-        x_old = copy(self.x)
+        x_old = copy(self.state)
 
         for i in range(t_max):
 
@@ -208,12 +216,13 @@ class HopfieldNetwork:
 
             # check the exit condition
             i_fin = i+1
-            if np.sum(np.abs(x_old-self.x)) == 0:
+            if np.sum(np.abs(x_old-self.state)) == 0:
                 break
-            x_old = copy(self.x)
+            x_old = copy(self.state)
 
             # sleep for replotting
             plt.pause(0.5)
+        plt.show()
 
         print("Pattern recovered in %i time steps." % i_fin +
               " Final overlap %.3f" % overlap[-1])
@@ -232,9 +241,7 @@ def load_alphabet():
             can not be imported. Please install
             `neurodynex <pypi.python.org/pypi/neurodynex/>`_.
     """
-
     file_str = 'data/alphabet.pickle.gz'
-
     try:
         file_name = resource_filename('neurodynex', file_str)
     except ImportError:
