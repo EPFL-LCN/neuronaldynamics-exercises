@@ -1,0 +1,66 @@
+\documentclass[a4paper,10pt]{Exercises}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\increasetextheight{2cm}
+\increasetextwidth{1cm}
+\begin{document}
+\What{Neuronal Dynamics}
+\Who{Professor Wulfram Gerstner\\Laboratory of Computational Neuroscience}
+\SeriesTitle{Nonlinear Leaky Integrate-And-Fire Model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%									%%%%%%%%%
+%%%%%%%%				EXERCISE 1				%%%%%%%%%
+%%%%%%%%									%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\erf}{\textrm{erf}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The goal of these exercises is to acquire some familiarity with Exponential Leaky Integrate-And-Fire model which is a kind of Nonlinear Integrate-And-Fire model.
+Download expLIF.py from the book's \href{http://neuronaldynamics.epfl.ch/lectures.html}{webpage}.  expLIF.py is a python module containing 3 main functions:  expLIF\_Step, expLIF\_Ramp, expLIF\_Pulse. With those, you can simulate a step current, a ramp current or a short current pulse injected into the neuron.  The specific formulas implemented are described on page 124 of the book.  Once you have started ipython -pylab in the directory containing expLIF.py, simply type:
+\begin{verbatim}
+>> import expLIF
+\end{verbatim}
+to port expLIF.py onto your current session.  Then you can simulate each kind of currents in a exponential Integrate-And-Fire model by typing the following commands:
+\begin{verbatim}
+>> expLIF.expLIF_Step()
+\end{verbatim}
+\begin{verbatim}
+>> expLIF.expLIF_Ramp()
+\end{verbatim}
+\begin{verbatim}
+>> expLIF.expLIF_Pulse()
+\end{verbatim}
+which should trigger a plot with two panels.  To have information on the arguments of the function, simply open expLIF.py in any text editor.
+
+\Exercise[]
+
+Use the function \emph{expLIF.expLIF\_Step} to simulate an Exponential Leaky Integrate-And-Fire neuron stimulated by a current step of a given amplitude. The goal of this exercise is to modify the provided python functions to answer the following questions.
+
+\Question What is the minimum amplitude of current step (\emph{I\_amp}) to elicit a spike with model parameters as given in \emph{expLIF.expLIF\_model}?
+\Question What is the maximal voltage that can be reached before the neuron starts repetitive firing? How is this voltage related to the model parameters?
+\Question Plot the injected values of current step amplitude against the frequency of the spiking response (you can use the inter-spike interval to calculate this -- let the frequency be $0Hz$ if the model does not spike, or emits only a single spike) during a $500ms$ current step.
+
+
+\Exercise[]
+
+Use the function \emph{expLIF.expLIF\_Ramp} to simulate an Exponential Leaky Integrate-And-Fire neuron stimulated by a ramp current. The goal of this exercise is to use and modify the provided python functions to stimulate the neuron with ramp currents having the same maximum value  but different slopes to answer the following questions.
+
+\Question  What is the minimum value of maximum value of ramp current (applied during $300ms$) to reach firing threshold?
+\Question What is the effect of current slope on firing threshold?
+
+\Exercise[]
+
+Use the function \emph{expLIF.expLIF\_Pulse} to simulate an Exponential Leaky Integrate-And-Fire neuron stimulated by a short current pulse (duration of $1ms$).
+
+
+\Question What is the minimum  amplitude of current pulse (\emph{PulseAmp}) to elicit a spike with model parameters as given in \emph{expLIF.expLIF\_model}?
+\Question What is the effect of increasing pulse length on minimum amplitude of current pulse to elicit a spike? How do you interpret what you observe?
+
+
+
+%###################
+\end{document}
+%###################

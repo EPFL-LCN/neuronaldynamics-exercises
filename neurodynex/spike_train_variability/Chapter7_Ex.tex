@@ -1,0 +1,55 @@
+\documentclass[a4paper,10pt]{Exercises}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\increasetextheight{2cm}
+\increasetextwidth{1cm}
+\begin{document}
+\What{Neuronal Dynamics}
+\Who{Professor Wulfram Gerstner\\Laboratory of Computational Neuroscience}
+\SeriesTitle{Variability of spike trains and neural codes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%									%%%%%%%%%
+%%%%%%%%				EXERCISE 7				%%%%%%%%%
+%%%%%%%%									%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\erf}{\textrm{erf}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The goal of these exercises is to acquire some familiarity with \href{http://neuronaldynamics.epfl.ch/online/Ch7.S2.html}{variability of spike trains, and  in particular poisson model of spike generation}.
+%more introduce the topic
+Download Chapter7\_Ex.py  from  \href{http://neuronaldynamics.epfl.ch/lectures.html}{here}.  Chapter7l\_Ex.py is a python module containing 2 main functions:  Binomial\_SampleGenerator , ExpDist\_SampleGenerator . The former, generates samples from a binomial distribution and the latter, generates samples from and exponential distribution respectively. Using those, you can generate spike trains with specific statistics and compare them. Once you have started ipython -pylab in the directory containing Chapter7\_Ex.py, simply type:
+\begin{verbatim}
+>> import Chapter7_Ex
+\end{verbatim}
+to port CompartmentalModel\_Ex.py onto your current session.  \\ Then call the functions simply by typing:
+\begin{verbatim}
+>> CompartmentalModel_Ex.SpatialAndTemporal_PotentialEvolution ()
+\end{verbatim}
+or
+\begin{verbatim}
+>> CompartmentaModel_Ex.StationaryVoltage()
+\end{verbatim}
+\Exercise[]
+The aim of this exercise is to numerically solve the general cable equation. Refer to equation 3.13 for cable equation from \href{http://neuronaldynamics.epfl.ch/online/Ch3.S2.html} {here}.\\
+To do so, we can define a neuron model with extended morphology (with different compartments) using \textit{SpatialNeuron} class of \textit{Brian2} simulator. \textit{SpatialNeuron} is defined mainly by a set of equations describing transmembrane (and possibly other) currents and a morphology. \\
+Use the function \textit{SpatialAndTemporal\_PotentialEvolution(N,I0,t\_sim)} which defines a cable  with specific length and N compartments which will be stimulated with a short pulse of amplitude I0 from its middle. With calling that function you can observe temporal and spatial evolution of potential.
+\Question Describe how the potential changes over different compartments, as the time goes on. I.e. can you discriminate which curve in spatial distribution plot, is related to the earliest time instance, and which curve in time evolution plot corresponds to a further position with respect to the stimulation point by current?
+
+\Exercise[]
+
+The aim of this exercise is to find the numerical stationary solution of voltage over compartments of a cable, and compare it to its analytical solution.
+To do this, call the function \textit{StationaryVoltage(N,I0,t\_sim)}, which creates a  cable with specific length, e.g. a dendrite, with N compartments and stimulate it from one end with constant current I0.\\
+
+
+\Question  Try different values for N and observe how the numerical solution changes with respect to the analytical solution? How can you justify your observation?
+(For example you can try N=[10,100,1000]. )
+\Question Increase amplitude of injected current, what do you observe?
+
+
+
+%###################
+\end{document}
+%###################
