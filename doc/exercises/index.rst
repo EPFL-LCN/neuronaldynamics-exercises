@@ -14,3 +14,4 @@ Exercises
     neuron-type
     hopfield-network
     ojas-rule
+    passive-cable
