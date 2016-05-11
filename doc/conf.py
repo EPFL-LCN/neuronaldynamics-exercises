@@ -25,7 +25,7 @@ from setuptools_scm import get_version
 
 sys.path.insert(0, os.path.abspath('../.'))
 
-MOCK_MODULES = ['brian2', 'matplotlib.pylab', 'matplotlib.pyplot', 'matplotlib', 'pylab']
+MOCK_MODULES = []
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 
