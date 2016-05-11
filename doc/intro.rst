@@ -37,7 +37,7 @@ Requirements
 The following requirements should be met:
 
 -  Either Python 2.7 or 3.4
--  `Brian2 Simulator <https://github.com/brian-team/brian2>`__
+-  `Brian2 Simulator <https://github.com/brian-team/brian2>`__ 2.0b4
 -  Numpy
 -  Matplotlib
 -  Scipy (only required in some exercises)

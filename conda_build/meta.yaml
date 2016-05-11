@@ -14,14 +14,14 @@ requirements:
     - nose
     - numpy
     - scipy
-    - brian2 >=2.0b4
+    - brian2=2.0b4
     - matplotlib
 
   run:
     - python
     - numpy
     - scipy
-    - brian2 >=2.0b4
+    - brian2=2.0b4
     - matplotlib
     - ipython
 
