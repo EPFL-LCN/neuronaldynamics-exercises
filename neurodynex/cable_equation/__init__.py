@@ -1,1 +1,1 @@
-__all__ = ['passive_cable.py']
+__all__ = ['passive_cable']
