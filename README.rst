@@ -38,6 +38,14 @@ This free software: you can redistribute it and/or modify it under the terms of 
 
 Should you reuse and publish the code for your own purposes, please point to the webpage http://neuronaldynamics.epfl.ch or cite the book: *Wulfram Gerstner, Werner M. Kistler, Richard Naud, and Liam Paninski. Neuronal Dynamics: From Single Neurons to Networks and Models of Cognition. Cambridge University Press, 2014.*
 
+Contributors (alphabetically)
+-----------------------------
+* Parima Ahmadipouranari (LCN, EPFL)
+* Marco Lehmann (LCN, EPFL)
+* Alexander Seeholzer (LCN, EPFL)
+* Hesam Setareh (LCN, EPFL)
+* Lorric Ziegler (LCN, EPFL)
+
 .. |Build Status| image:: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=master
    :target: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises
 .. |Doc Status| image:: https://readthedocs.org/projects/neuronaldynamics-exercises/badge/?version=latest
