@@ -4,6 +4,14 @@ neurodynex.test package
 Submodules
 ----------
 
+neurodynex.test.test_AdEx module
+--------------------------------
+
+.. automodule:: neurodynex.test.test_AdEx
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 neurodynex.test.test_HH module
 ------------------------------
 
@@ -16,6 +24,22 @@ neurodynex.test.test_LIF module
 -------------------------------
 
 .. automodule:: neurodynex.test.test_LIF
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+neurodynex.test.test_cable_equation module
+------------------------------------------
+
+.. automodule:: neurodynex.test.test_cable_equation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+neurodynex.test.test_exponential_IF module
+------------------------------------------
+
+.. automodule:: neurodynex.test.test_exponential_IF
     :members:
     :undoc-members:
     :show-inheritance:

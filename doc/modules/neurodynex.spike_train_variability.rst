@@ -4,14 +4,6 @@ neurodynex.spike_train_variability package
 Submodules
 ----------
 
-neurodynex.spike_train_variability.Chapter7_Ex module
------------------------------------------------------
-
-.. automodule:: neurodynex.spike_train_variability.Chapter7_Ex
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 neurodynex.spike_train_variability.spike_train_variability module
 -----------------------------------------------------------------
 

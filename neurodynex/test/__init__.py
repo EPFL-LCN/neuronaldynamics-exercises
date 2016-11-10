@@ -6,7 +6,7 @@ def run_nose():
     """Runs nose tests, used maily for anaconda deployment"""
     import nose
     nose_argv = sys.argv
-    nose_argv += ['--detailed-errors', '--exe', '-v']
+    nose_argv += ["--detailed-errors", "--exe", "-v"]
     initial_dir = os.getcwd()
     package_file = os.path.abspath(__file__)
     package_dir = os.path.dirname(package_file)

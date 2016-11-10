@@ -1,1 +1,1 @@
-__all__ = ['neurons', 'typeXY']
+__all__ = ["neurons"]

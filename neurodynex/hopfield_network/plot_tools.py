@@ -2,14 +2,15 @@
 Helper tools to visualize patterns and network state
 """
 import matplotlib.pyplot as plt
-import hf_pattern_tools as pattern_tools
+import neurodynex.hopfield_network.pattern_tools as pattern_tools
 import numpy as np
 
 
-def plot_pattern(pattern, reference=None):
+def plot_pattern(pattern, reference=None, color_map="brg", diff_code=0):
     """
     Plots the pattern. If a (optional) reference pattern is provided, the pattern is  plotted
      with differences highlighted
+
     Args:
         pattern (numpy.ndarray): N by N pattern to plot
         reference (numpy.ndarray):  optional. If set, differences between pattern and reference are highlighted
@@ -19,18 +20,27 @@ def plot_pattern(pattern, reference=None):
         p = pattern
         overlap = 1
     else:
-        p = pattern_tools.get_pattern_diff(pattern, reference)
+        p = pattern_tools.get_pattern_diff(pattern, reference, diff_code)
         overlap = pattern_tools.compute_overlap(pattern, reference)
 
-    plt.imshow(p, interpolation='nearest', cmap='hot')
+    plt.imshow(p, interpolation="nearest", cmap=color_map)
     if reference is not None:
-        plt.title("m={:0.2f}".format(round(overlap, 2)))
-    plt.axis('off')
+        plt.title("m = {:0.2f}".format(round(overlap, 2)))
+    plt.axis("off")
     plt.show()
 
 
-def plot_overlap_matrix(overlap_matrix):
-    plt.imshow(overlap_matrix, interpolation='nearest', cmap='bwr')
+def plot_overlap_matrix(overlap_matrix, color_map="bwr"):
+    """
+    Visualizes the pattern overlap
+
+    Args:
+        overlap_matrix:
+        color_map:
+
+    """
+
+    plt.imshow(overlap_matrix, interpolation="nearest", cmap=color_map)
     plt.title("pattern overlap m(i,k)")
     plt.xlabel("pattern k")
     plt.ylabel("pattern i")
@@ -41,28 +51,28 @@ def plot_overlap_matrix(overlap_matrix):
     plt.show()
 
 
-def plot_state_sequence(state_sequence, reference=None):
+def plot_pattern_list(pattern_list, color_map="brg"):
     """
+    Plots the list of patterns
+
     Args:
-        state_sequence:
-        reference:
+        pattern_list:
+        color_map:
+
+    Returns:
+
     """
-    f, ax = plt.subplots(1, len(state_sequence))
-    _plot_list(ax, state_sequence, None, "P{0}")
-    plt.show()
-
-
-def plot_pattern_list(pattern_list):
     f, ax = plt.subplots(1, len(pattern_list))
-    _plot_list(ax, pattern_list, None, "P{0}")
+    _plot_list(ax, pattern_list, None, "P{0}", color_map)
     plt.show()
 
 
-def _plot_list(axes_list, state_sequence, reference=None, title_pattern="S({0})"):
+def _plot_list(axes_list, state_sequence, reference=None, title_pattern="S({0})", color_map="brg"):
     """
     For internal use.
     Plots all states S(t) or patterns P in state_sequence.
     If a (optional) reference pattern is provided, the patters are  plotted with differences highlighted
+
     Args:
         state_sequence: (list(numpy.ndarray))
         reference: (numpy.ndarray)
@@ -73,15 +83,16 @@ def _plot_list(axes_list, state_sequence, reference=None, title_pattern="S({0})"
             p = state_sequence[i]
         else:
             p = pattern_tools.get_pattern_diff(state_sequence[i], reference, diff_code=-0.2)
-        axes_list[i].imshow(p, interpolation='nearest', cmap='hot')
+        axes_list[i].imshow(p, interpolation="nearest", cmap=color_map)
         axes_list[i].set_title(title_pattern.format(i))
-        axes_list[i].axis('off')
+        axes_list[i].axis("off")
 
 
-def plot_state_sequence_and_overlap(state_sequence, pattern_list, reference_idx):
+def plot_state_sequence_and_overlap(state_sequence, pattern_list, reference_idx, color_map="brg", suptitle=None):
     """
-    For each time point t (=index of state_sequence), plots the sequence of states and the overlap (barplot)
+    For each time point t ( = index of state_sequence), plots the sequence of states and the overlap (barplot)
     between state(t) and each pattern.
+
     Args:
         state_sequence: (list(numpy.ndarray))
         pattern_list: (list(numpy.ndarray))
@@ -91,14 +102,31 @@ def plot_state_sequence_and_overlap(state_sequence, pattern_list, reference_idx)
         reference_idx = 0
     reference = pattern_list[reference_idx]
     f, ax = plt.subplots(2, len(state_sequence))
-    _plot_list(ax[0, :], state_sequence, reference, "S{0}")
+    _plot_list(ax[0, :], state_sequence, reference, "S{0}", color_map)
     for i in range(len(state_sequence)):
         overlap_list = pattern_tools.compute_overlap_list(state_sequence[i], pattern_list)
         ax[1, i].bar(range(len(overlap_list)), overlap_list)
-        ax[1, i].set_title("m={1}".format(i, round(overlap_list[reference_idx], 2)))
+        ax[1, i].set_title("m = {1}".format(i, round(overlap_list[reference_idx], 2)))
         ax[1, i].set_ylim([-1, 1])
         ax[1, i].get_xaxis().set_major_locator(plt.MaxNLocator(integer=True))
         if i > 0:  # show lables only for the first subplot
             ax[1, i].set_xticklabels([])
             ax[1, i].set_yticklabels([])
+    if suptitle is not None:
+        f.suptitle(suptitle)
     plt.show()
+
+
+def plot_nework_weights(hopfield_network, color_map="jet"):
+    """
+    Visualizes the network's weight matrix
+
+    Args:
+        hopfield_network:
+        color_map:
+
+    """
+
+    plt.figure()
+    plt.imshow(hopfield_network.weights, interpolation="nearest", cmap=color_map)
+    plt.colorbar()

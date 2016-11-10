@@ -36,7 +36,7 @@ class PatternFactory:
             a new random pattern
         """
         p = np.random.binomial(1, on_probability, self.pattern_length * self.pattern_width)
-        p = p*2 - 1
+        p = p * 2 - 1  # map {0, 1} to {-1 +1}
         return p.reshape((self.pattern_length, self.pattern_width))
 
     def create_random_pattern_list(self, nr_patterns, on_probability=0.5):
@@ -60,6 +60,7 @@ class PatternFactory:
         has all states of the i-th row set to active.
         This is convenient to create a list of orthogonal patterns which
         are easy to visually identify
+
         Args:
             nr_patterns:
 
@@ -86,7 +87,7 @@ class PatternFactory:
         Returns:
             2d pattern, all pixels off
         """
-        return -1*np.ones((self.pattern_length, self.pattern_width), np.int)
+        return -1 * np.ones((self.pattern_length, self.pattern_width), np.int)
 
     def create_checkerboard(self):
         """
@@ -104,9 +105,27 @@ class PatternFactory:
         t = t.reshape((self.pattern_length, self.pattern_width))
         return t
 
+    def create_L_pattern(self, l_width=1):
+        """
+        creates a pattern with column 0 (left) and row n (bottom) set to +1.
+        Increase l_width to set more columns and rows (default is 1)
+
+        Args:
+            l_width (int): nr of rows and columns to set
+
+        Returns:
+            an L shaped pattern.
+        """
+        l_pat = -1 * np.ones((self.pattern_length, self.pattern_width), np.int)
+        for i in range(l_width):
+            l_pat[-i - 1, :] = np.ones(self.pattern_length, np.int)
+            l_pat[:, i] = np.ones(self.pattern_length, np.int)
+        return l_pat
+
     def reshape_patterns(self, pattern_list):
         """
         reshapes all patterns in pattern_list to have shape = (self.pattern_length, self.pattern_width)
+
         Args:
             self:
             pattern_list:
@@ -121,6 +140,7 @@ class PatternFactory:
 def reshape_patterns(pattern_list, shape):
     """
     reshapes each pattern in pattern_list to the given shape
+
     Args:
         pattern_list:
         shape:
@@ -135,9 +155,10 @@ def reshape_patterns(pattern_list, shape):
 def get_pattern_diff(pattern1, pattern2, diff_code=0):
     """
     Creates a new pattern of same size as the two patterns.
-    the diff pattern has the values pattern1=pattern2 where the two patterns have
+    the diff pattern has the values pattern1 = pattern2 where the two patterns have
     the same value. Locations that differ between the two patterns are set to
-    diff_code (default=0)
+    diff_code (default = 0)
+
     Args:
         pattern1:
         pattern2:
@@ -177,6 +198,7 @@ def get_noisy_copy(template, noise_level):
     by the noise_level
     Note: reassigning a random value is not the same as flipping the state. This
     function reassigns a random value.
+
     Args:
         template:
         noise_level: a value in [0,1]. for 0, this returns a copy of the template.
@@ -193,7 +215,7 @@ def get_noisy_copy(template, noise_level):
     nr_mutations = int(round(n * noise_level))
     idx_reassignment = np.random.choice(n, nr_mutations, replace=False)
     rand_values = np.random.binomial(1, 0.5, n)
-    rand_values = rand_values*2 - 1  # map {0,1} to {-1, +1}
+    rand_values = rand_values * 2 - 1  # map {0,1} to {-1, +1}
     linear_template[idx_reassignment] = rand_values
     return linear_template.reshape(template.shape)
 
@@ -201,6 +223,7 @@ def get_noisy_copy(template, noise_level):
 def compute_overlap(pattern1, pattern2):
     """
     compute overlap
+
     Args:
         pattern1:
         pattern2:
@@ -212,13 +235,14 @@ def compute_overlap(pattern1, pattern2):
     if shape1 != pattern2.shape:
         raise ValueError("patterns are not of equal shape")
     dot_prod = np.dot(pattern1.flatten(), pattern2.flatten())
-    return float(dot_prod)/(np.prod(shape1))
+    return float(dot_prod) / (np.prod(shape1))
 
 
 def compute_overlap_list(reference_pattern, pattern_list):
     """
     Computes the overlap between the reference_pattern and each pattern
     in pattern_list
+
     Args:
         reference_pattern:
         pattern_list: list of patterns
@@ -235,6 +259,7 @@ def compute_overlap_list(reference_pattern, pattern_list):
 def compute_overlap_matrix(pattern_list):
     """
     For each pattern, it computes the overlap to all other patterns.
+
     Args:
         pattern_list:
 
@@ -267,10 +292,10 @@ def load_alphabet():
             `neurodynex <pypi.python.org/pypi/neurodynex/>`_.
     """
     # Todo: consider removing the zip file and explicitly store the strings here.
-    file_str = 'data/alphabet.pickle.gz'
+    file_str = "data/alphabet.pickle.gz"
 
     try:
-        file_name = resource_filename('neurodynex', file_str)
+        file_name = resource_filename("neurodynex", file_str)
     except ImportError:
         raise ImportError(
             "Could not import data file %s. " % file_str +
@@ -279,13 +304,19 @@ def load_alphabet():
 
     with gzip.open("%s" % file_name) as f:
         if sys.version_info < (3, 0, 0):
-            # python2 pickle.loads has no attribute 'encoding'
+            # python2 pickle.loads has no attribute "encoding"
             abc_dict = pickle.load(f)
         else:
             # latin1 is required for python3 compatibility
-            abc_dict = pickle.load(f, encoding='latin1')
+            abc_dict = pickle.load(f, encoding="latin1")
 
+    # shape the patterns and provide upper case keys
+    ABC_dict = dict()
     for key in abc_dict:
-        flat_pattern = abc_dict[key]
-        abc_dict[key] = flat_pattern.reshape((10, 10))
-    return abc_dict
+        ABC_dict[key.upper()] = abc_dict[key].reshape((10, 10))
+    return ABC_dict
+
+if __name__ == "__main__":
+    pf = PatternFactory(5)
+    L = pf.create_L_pattern(l_width=2)
+    print(L)

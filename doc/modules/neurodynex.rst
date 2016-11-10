@@ -8,7 +8,7 @@ Subpackages
 
     neurodynex.adex_model
     neurodynex.cable_equation
-    neurodynex.exponential_lif
+    neurodynex.exponential_integrate_fire
     neurodynex.hodgkin_huxley
     neurodynex.hopfield_network
     neurodynex.leaky_integrate_and_fire
@@ -17,6 +17,7 @@ Subpackages
     neurodynex.phase_plane_analysis
     neurodynex.spike_train_variability
     neurodynex.test
+    neurodynex.tools
 
 Module contents
 ---------------

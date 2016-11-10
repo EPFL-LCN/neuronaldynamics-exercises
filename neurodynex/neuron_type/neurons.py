@@ -31,67 +31,49 @@ Relevant book chapters:
 import brian2 as b2
 import matplotlib.pyplot as plt
 import numpy as np
+import random
+import sys
 
 
-def get_step_curr(I_tstart=20, I_tend=270, I_amp=.5):
-    """Returns a pA step current TimedArray.
-
-    Args:
-        I_tstart (float, optional): start of current step [ms]
-        I_tend (float, optional): start of end step [ms]
-        I_amp (float, optional): amplitude of current step [pA]
-
-    Returns:
-        StateMonitor: Brian2 StateMonitor with input current (I) and
-        voltage (V) recorded
-    """
-
-    # 1ms sampled step current
-    tmp = np.zeros(I_tend+1) * b2.uamp
-    tmp[int(I_tstart):int(I_tend)] = I_amp * b2.pamp
-
-    # This relies on the property of TimedArrays that
-    # the returned value is equal to the final array
-    # value of the passed array. Here, the step
-    # will be 0 for all times > I_tend.
-    return b2.TimedArray(tmp, dt=1.*b2.ms)
-
-
-def plot_data(rec, title=None, show=False):
+def plot_data(state_monitor, title=None, show=True):
     """Plots a TimedArray for values I, v and w
 
     Args:
-        rec (TimedArray): the data to plot
+        state_monitor (StateMonitor): the data to plot. expects ["v", "w", "I"] and (by default) "t"
         title (string, optional): plot title to display
         show (bool, optional): call plt.show for the plot
 
     Returns:
         StateMonitor: Brian2 StateMonitor with input current (I) and
-        voltage (V) recorded
+            voltage (V) recorded
     """
 
-    (t, v, w, I) = rec_to_tuple(rec)
+    t = state_monitor.t / b2.ms
+    v = state_monitor.v[0] / b2.mV
+    w = state_monitor.w[0] / b2.mV
+    I = state_monitor.I[0] / b2.pA
 
     # plot voltage time series
+    plt.figure()
     plt.subplot(311)
     plt.plot(t, v, lw=2)
-    plt.xlabel('t [ms]')
-    plt.ylabel('v [mV]')
+    plt.xlabel("t [ms]")
+    plt.ylabel("v [mV]")
     plt.grid()
 
     # plot activation and inactivation variables
     plt.subplot(312)
-    plt.plot(t, w, 'k', lw=2)
-    plt.xlabel('t [ms]')
-    plt.ylabel('w [mV]')
+    plt.plot(t, w, "k", lw=2)
+    plt.xlabel("t [ms]")
+    plt.ylabel("w [mV]")
     plt.grid()
 
     # plot current
     plt.subplot(313)
     plt.plot(t, I, lw=2)
-    plt.axis((0, t.max(), 0, I.max()*1.1))
-    plt.xlabel('t [ms]')
-    plt.ylabel('I [pA]')
+    plt.axis((0, t.max(), 0, I.max() * 1.1))
+    plt.xlabel("t [ms]")
+    plt.ylabel("I [pA]")
     plt.grid()
 
     if title is not None:
@@ -99,45 +81,6 @@ def plot_data(rec, title=None, show=False):
 
     if show:
         plt.show()
-
-
-def get_spiketimes(t, v, v_th=0.5, do_plot=False):
-    """Returns numpy.ndarray of spike times, for a given time and
-    voltage series.
-
-    Args:
-        t (numpy.ndarray): time dimension of timeseries [ms]
-        v (numpy.ndarray): voltage dimension of timeseries [mV]
-        v_th (float, optional): threshold voltage for spike detection [mV]
-        do_plot (bool, optional): plot the results
-
-    Returns:
-        np.ndarray: detected spike times
-    """
-
-    v_above_th = v > v_th
-    idx = np.nonzero((v_above_th[:-1] == 0) & (v_above_th[1:] == 1))
-
-    return t[idx[0]+1]
-
-
-def rec_to_tuple(rec):
-    """Extracts a tuple of numpy arrays from a brian2 StateMonitor.
-
-    Args:
-        rec (StateMonitor): state monitor with v, w, I recorded
-
-    Returns:
-        tuple: (t, v, w, I) tuple of numpy.ndarrays
-    """
-
-    # get data from rec
-    t = rec.t / b2.ms
-    v = rec.v[0] / b2.mV
-    w = rec.w[0] / b2.mV
-    I = rec.I[0] / b2.pA
-
-    return (t, v, w, I)
 
 
 class NeuronAbstract(object):
@@ -150,22 +93,36 @@ class NeuronAbstract(object):
     """
 
     def __init__(self):
-        self.make_neuron()
-        self.rec = b2.StateMonitor(self.neuron, ['v', 'w', 'I'], record=True)
+        self._make_neuron()
+        self.rec = b2.StateMonitor(self.neuron, ["v", "w", "I"], record=True)
         self.net = b2.Network([self.neuron, self.rec])
         self.net.store()
 
-    def make_neuron(self):
+    def _make_neuron(self):
         """Abstract function, which creates neuron attribute for this class."""
 
         raise NotImplementedError
 
-    def run(self, curr, simtime):
+    def get_neuron_type(self):
+        """
+        Type I or II.
+
+        Returns:
+            type as a string "Type I" or "Type II"
+\       """
+        return self._get_neuron_type()
+
+    def _get_neuron_type(self):
+        """Just a trick to have the underlying function NOT being documented by sphinx
+        (because this function's name starts with _)"""
+        raise NotImplementedError
+
+    def run(self, input_current, simtime):
         """Runs the neuron for a given current.
 
         Args:
-            curr (TimedArray): Input current injected into the neuron
-            simtime (float): Simulation time [seconds]
+            input_current (TimedArray): Input current injected into the neuron
+            simtime (Quantity): Simulation time in correct Brian units.
 
         Returns:
             StateMonitor: Brian2 StateMonitor with input current (I) and
@@ -173,97 +130,26 @@ class NeuronAbstract(object):
         """
 
         self.net.restore()
-        self.neuron.namespace["curr"] = curr
+        self.neuron.namespace["input_current"] = input_current
 
         # run the simulation
-        self.net.run(simtime * b2.ms)
+        self.net.run(simtime)
 
         return self.rec
 
-    def step(self, t_end=300., I_tstart=20,
-             I_tend=270, I_amp=.5, do_plot=True, show=True):
-        """Runs the neuron for a step current and plots the data.
 
-        Args:
-            t_end (float, optional): the simulation time of the model [ms]
-            I_tstart (float, optional): start of current step [ms]
-            I_tend (float, optional): start of end step [ms]
-            I_amp (float, optional): amplitude of current step [nA]
-            do_plot (bool, optional): plot the resulting simulation
-            show (bool, optional): call plt.show for the plot
+class _NeuronTypeOne(NeuronAbstract):
 
-        Returns:
-            StateMonitor: Brian2 StateMonitor with input current (I) and
-            voltage (V) recorded
-        """
+    def _get_neuron_type(self):
+        return "Type I"
 
-        curr = get_step_curr(I_tstart, I_tend, I_amp)
-        rec = self.run(curr, t_end)
-
-        if do_plot:
-            plot_data(
-                rec,
-                title="%s" % self.__class__.__name__,
-                show=show,
-            )
-
-        return rec_to_tuple(rec)
-
-    def get_rate(self, I_amp, t_end=1000., do_plot=False):
-        """Return the firing rate under a current step.
-
-        Args:
-            NeuronClass (type): Subclass of neurons.AbstractNeuron
-            I_amp (float): Amplitude of voltage step
-            t_end (float): Length of simulation
-            do_plot (bool, optional): plot the results
-
-        Returns:
-            float: firing rate of neuron
-        """
-
-        (t, v, w, I) = self.step(
-            t_end=t_end,
-            I_amp=I_amp,
-            I_tstart=100,
-            I_tend=t_end,
-            do_plot=do_plot,
-            show=False,
-        )
-
-        st = get_spiketimes(t, v)
-
-        if do_plot:
-            for s in st:
-                plt.subplot(311)
-                plt.plot(
-                    [s, s],
-                    [np.min(v), np.max(v)],
-                    c='#ff0000'
-                )
-            plt.show()
-
-        # if no spikes or 1 spike are detected
-        if len(st) < 2:
-            return 0.0
-
-        isi = st[1:]-st[:-1]
-
-        # rate in Hz (isi is in ms)
-        f = 1000.0 / isi.mean()
-
-        return f
-
-
-class NeuronTypeOne(NeuronAbstract):
-
-    def make_neuron(self):
+    def _make_neuron(self):
         """Sets the self.neuron attribute."""
 
         # neuron parameters
         pars = {
-            "g_1": 4.4 * (1/b2.mV),
-            "g_2": 8 * (1/b2.mV),
+            "g_1": 4.4 * (1 / b2.mV),
+            "g_2": 8 * (1 / b2.mV),
             "g_L": 2,
             "V_1": 120 * b2.mV,
             "V_2": -84 * b2.mV,
@@ -273,35 +159,88 @@ class NeuronTypeOne(NeuronAbstract):
         }
 
         # forming the neuron model using differential equations
-        eqs = '''
-        I = curr(t) : amp
+        eqs = """
+        I = input_current(t,i) : amp
         winf = (0.5*mV)*( 1 + tanh((v-12*mV)/(17*mV)) ) : volt
         tau = (1*ms)/cosh((v-12*mV)/(2*17*mV)) : second
         m = (0.5*mV)*(1+tanh((v+1.2*mV)/(18*mV))) : volt
         dv/dt = (-g_1*m*(v-V_1) - g_2*w*(v-V_2) - g_L*(v-V_L) \
             + I*R)/(20*ms) : volt
         dw/dt = phi*(winf-w)/tau : volt
-        '''
+        """
 
         self.neuron = b2.NeuronGroup(1, eqs)
         self.neuron.v = pars["V_L"]
         self.neuron.namespace.update(pars)
 
 
-class NeuronTypeTwo(NeuronAbstract):
+class _NeuronTypeTwo(NeuronAbstract):
 
-    def make_neuron(self):
+    def _get_neuron_type(self):
+        return "Type II"
+
+    def _make_neuron(self):
         """Sets the self.neuron attribute."""
 
         # forming the neuron model using differential equations
-        eqs = '''
-        I = curr(t) : amp
+        eqs = """
+        I = input_current(t,i) : amp
         dv/dt = (v - (v**3)/(3*mvolt*mvolt) - w + I*Gohm)/ms : volt
         dw/dt = (a*(v+0.7*mvolt)-w)/tau : volt
-        '''
+        """
 
         self.neuron = b2.NeuronGroup(1, eqs)
         self.neuron.v = 0
 
-        self.neuron.namespace['a'] = 1.25
-        self.neuron.namespace['tau'] = 15.6 * b2.ms
+        self.neuron.namespace["a"] = 1.25
+        self.neuron.namespace["tau"] = 15.6 * b2.ms
+
+
+def neurontype_random_reassignment():
+    """
+    Randomly reassign the two types:
+    Returns:
+
+    """
+    if random.random() < .5:
+        NeuronX = type('NeuronX', _NeuronTypeOne.__bases__, dict(_NeuronTypeOne.__dict__))
+        NeuronY = type('NeuronY', _NeuronTypeTwo.__bases__, dict(_NeuronTypeTwo.__dict__))
+    else:
+        NeuronX = type('NeuronX', _NeuronTypeTwo.__bases__, dict(_NeuronTypeTwo.__dict__))
+        NeuronY = type('NeuronY', _NeuronTypeOne.__bases__, dict(_NeuronTypeOne.__dict__))
+    thismodule = sys.modules[__name__]
+    setattr(thismodule, "NeuronX", NeuronX)
+    setattr(thismodule, "NeuronY", NeuronY)
+    # print("classes NeuronX and NeuronY reassigned")
+
+# reassign classes when the module is loaded
+neurontype_random_reassignment()
+
+
+def getting_started():
+    """
+    simple demo to get started
+
+    Returns:
+
+    """
+    from neurodynex.tools import input_factory
+
+    # create an input current
+    input_current = input_factory.get_step_current(50, 150, 1. * b2.ms, 0.5 * b2.pA)
+
+    # get an instance of class NeuronX
+    a_neuron_of_type_X = NeuronX()
+    # simulate it and get the state variables
+    state_monitor = a_neuron_of_type_X.run(input_current, 200 * b2.ms)
+    # plot state vs. time
+    plot_data(state_monitor, title="Neuron of Type X")
+
+    # get an instance of class NeuronY
+    a_neuron_of_type_Y = NeuronY()
+    state_monitor = a_neuron_of_type_Y.run(input_current, 200 * b2.ms)
+    plot_data(state_monitor, title="Neuron of Type Y")
+
+
+if __name__ == "__main__":
+    getting_started()

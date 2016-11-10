@@ -9,59 +9,68 @@ See `Chapter 17 Section 2 <Chapter17_>`_ for an introduction to Hopfield network
 
 **Python classes**
 
-You can solve this exercise by modifying the the demo code. We have implemented three classes: HopfieldNetwork implements the learning and the dynamics. PatternFactory provides convenient methods to create patterns. hf_plot_tools provide functions to visualize state, patterns, errors and overlaps. The demo shows how these three classes are used together. See the comments in the demo code and read the documentation.
+Hopfield networks can be analyzed mathematically. In this Python exercise we focus on visualization and simulation to develop our intuition about Hopfield dynamics.
 
-TODO: link doc and code
+We provide a couple of functions to easily create patterns, store them in the network and visualize the network dynamics. Check the modules :mod:`.hopfield_network.network`, :mod:`.hopfield_network.pattern_tools` and :mod:`.hopfield_network.plot_tools` to learn the building blocks we provide.
 
-
-Getting started: run the Hopfield demo
---------------------------------------
-
-HopfieldDemos.py implements two demos of a Hopfield network: one using random patterns, and a second on with letters.
-
-.. figure:: exc_images/HF_CheckerboardAndPatterns.png
-   :align: center
-
-   We create 6 patterns and store them in the Hopfield network.
-
-   .. #no legend
-
-.. figure:: exc_images/HF_CheckerboardRecovered2.png
-   :align: center
-
-   The network is initialized with a (very) noisy pattern S(t=0). Then, the dynamics recover pattern P0 in 5 iterations.
-
-   .. #no legend
+.. note::
+    If you instantiate a new object of class  :class:`network.HopfieldNetwork` it's default dynamics are **deterministic** and **synchronous**. That is, all states are updated at the same time using the sign function. We use this dynamics in all exercises described below.
 
 
-Use this code to run the demo:
-
+Getting started:
+----------------
+Run the following code. Read the inline comments and check the documentation. The patterns and the flipped pixels are randomly chosen. Therefore the result changes every time you execute this code. Run it several times and change some parameters like nr_patterns and nr_of_flips.
 
 .. code-block:: python
 
-   import neurodynex.hopfield_network.hopfield_demo as hf_demo
+    %matplotlib inline
+    from neurodynex.hopfield_network import network, pattern_tools, plot_tools
 
-   hf_demo.plot_demo()
-   # Demo2: more neurons, more patterns, more noise
-   hf_demo.plot_demo(pattern_size=6,
-                     nr_random_patterns=5,
-                     initially_flipped_pixels=9)
+    pattern_size = 5
 
-   print('recover letter A')
-   letter_list = ['a', 'b', 'c', 's', 'x', 'y', 'z']
-   hf_demo.plot_demo_alphabet(letter_list, random_seed=76)
+    # create an instance of the class HopfieldNetwork
+    hopfield_net = network.HopfieldNetwork(nr_neurons= pattern_size**2)
+    # instantiate a pattern factory
+    factory = pattern_tools.PatternFactory(pattern_size, pattern_size)
+    # create a checkerboard pattern and add it to the pattern list
+    checkerboard = factory.create_checkerboard()
+    pattern_list = [checkerboard]
 
-   letter_list.append('r') # add one more pattern, 'A' is not recovered
-   hf_demo.plot_demo_alphabet(letter_list, random_seed=76)
+    # add random patterns to the list
+    pattern_list.extend(factory.create_random_pattern_list(nr_patterns=3, on_probability=0.5))
+    plot_tools.plot_pattern_list(pattern_list)
+    # how similar are the random patterns and the checkerboard? Check the overlaps
+    overlap_matrix = pattern_tools.compute_overlap_matrix(pattern_list)
+    plot_tools.plot_overlap_matrix(overlap_matrix)
 
-In the Alphabet demo we store eight letters in a network of 100 neurons. Initialized with a noisy 'A', the network is not able to recover the pattern. It's interesting to note that a after the first iteration, the network state corresponds to the pattern 'A' with overlap m=1, but that state S1 is not stable:
+    # let the hopfield network "learn" the patterns. Note: they are not stored
+    # explicitly but only network weights are updated !
+    hopfield_net.store_patterns(pattern_list)
 
-.. figure:: exc_images/HF_LetterAandOverlap.png
-   :align: center
+    # create a noisy version of a pattern and use that to initialize the network
+    noisy_init_state = pattern_tools.flip_n(checkerboard, nr_of_flips=4)
+    hopfield_net.set_state_from_pattern(noisy_init_state)
 
-   Alphabet demo
+    # from this initial state, let the network dynamics evolve.
+    states = hopfield_net.run_with_monitoring(nr_steps=4)
 
-   .. #no legend
+    # each network state is a vector. reshape it to the same shape used to create the patterns.
+    states_as_patterns = factory.reshape_patterns(states)
+    # plot the states of the network
+    plot_tools.plot_state_sequence_and_overlap(states_as_patterns, pattern_list, reference_idx=0, suptitle="Network dynamics")
+
+
+
+.. figure:: exc_images/HF_CheckerboardAndPatterns.png
+    :align: center
+
+    Six patterns are stored in a Hopfield network.
+
+.. figure:: exc_images/HF_CheckerboardRecovered2.png
+    :align: center
+
+    The network is initialized with a (very) noisy pattern S(t=0). Then, the dynamics recover pattern P0 in 5 iterations.
+
 
 .. note::
    The network state is a vector of N neurons. For visualization we use 2d patterns which are two dimensional numpy.ndarrays of size = (length, width). To store such patterns, initialize the network with N = length x width neurons.
@@ -76,13 +85,13 @@ The dynamics is that of equation:
 
 .. math::
 
-	S_i(t+1) = sgn\left(\sum_j w_{ij} S_j(t)\right)
+    S_i(t+1) = sgn\left(\sum_j w_{ij} S_j(t)\right)
 
 In the Hopfield model each neuron is connected to every other neuron
 (full connectivity). The connection matrix is
 
 .. math:: 
-	w_{ij} = \frac{1}{N}\sum_{\mu} p_i^\mu p_j^\mu
+    w_{ij} = \frac{1}{N}\sum_{\mu} p_i^\mu p_j^\mu
 
 where N is the number of neurons, :math:`p_i^\mu` is the value of neuron
 :math:`i` in pattern number :math:`\mu` and the sum runs over all
@@ -95,68 +104,143 @@ networks (N to infinity) the number of random patterns that can be
 stored is approximately 0.14 times N.
 
 
-Exercise: 4x4 Hopfield-network
-------------------------------
-
-This exercise deals not only with Python functions, but with Python classes and objects. The class :class:`HopfieldNetwork <.hopfield_network.hopfield.HopfieldNetwork>` implements a Hopfield network. To run the exercises you will have to instantiate the network:
-
-.. code-block:: python
-
-    from neurodynex.hopfield_network.hopfield import HopfieldNetwork
-    n = HopfieldNetwork(4)  # instantiates a new HopfieldNetwork
-
-.. note::  
-	See the :class:`documentation for the HopfieldNetwork class <.hopfield_network.hopfield.HopfieldNetwork>` to see all methods you can use on a instantiated HopfieldNetwork.
-
-Storing patterns
-~~~~~~~~~~~~~~~~
-
-Create an instance of the :class:`HopfieldNetwork <.hopfield_network.hopfield.HopfieldNetwork>` with N=4. Use the :meth:`make_pattern <.hopfield_network.hopfield.HopfieldNetwork.run>` method to store a pattern (default is one random pattern with half of its pixels *on*) and test whether it can be retrieved with the :meth:`run <.hopfield_network.hopfield.HopfieldNetwork.run>` method:
-
-.. code-block:: python
-
-	n.run()  # Note: this will fail with a RuntimeError if no patterns have been stored before
-
-The :meth:`run <.hopfield_network.hopfield.HopfieldNetwork.run>` method, by defaults, runs the dynamics for the first pattern with no pixel flipped.
-
-Question: Capacity of the 4x4 network
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-What is the experimental maximum number of random patterns the 4x4 network is able to memorize? 
-
-Store more and more random patterns and test retrieval of some of them. The first few patterns should be stored perfectly, but then the performance gets worse. 
-
-Does this correspond to the theoretical maximum number of random patterns the network should be able to memorize?
-
-Exercise: 10x10 Hopfield-network
+Exercise: N=4x4 Hopfield-network
 --------------------------------
+We study how a network stores and retrieve patterns. Using a small network of only 16 neurons allows us to have a close look at the network weights and dynamics.
 
-Question: Capacity of the 10x10 network
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Increase the network size to 10x10 and repeat the steps of the previous exercise.
-
-Question: Error correction
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Instatiate a network and store a finite number of random patterns, e.g. 8. 
-
-How many wrong pixels can the network tolerate in the initial state, such that it still settles into the correct pattern?
-
-.. note::  
-	See the documentation for the :meth:`run method <.hopfield_network.hopfield.HopfieldNetwork.run>` to see how to control which percentage of pixels is flipped.
-
-Question: Storing alphabet letters
+Question: Storing a single pattern
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Modify the Python code given above to implement this exercise:
 
-Try to store alphabetic characters as the relevant patterns. How good is the retrieval of patterns? What is the reason?
+#. Create a network with N=16 neurons.
+#. Create a single 4 by 4 checkerboard pattern.
+#. Store the checkerboard in the network.
+#. Set the initial state of the network to a noisy version of the checkerboard (nr_flipped_pixels = 5).
+#. Let the network dynamics evolve for 4 iterations.
+#. Plot the sequence of network states along with the overlap of network state with the checkerboard.
 
-.. note::  
-	See the documentation for the :meth:`make_pattern method <.hopfield_network.hopfield.HopfieldNetwork.make_pattern>` on how to store alphabet characters.
+Now test whether the network can still retrieve the pattern if we increase the number of flipped pixels. What happens at nr_flipped_pixels = 8, what if nr_flipped_pixels > 8 ?
+
+Question: the weights matrix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The patterns a Hopfield network learns are not stored explicitly. Instead, the network learns by adjusting the weights to the pattern set it is presented during learning. Let's visualize this.
+
+#. Create a new 4x4 network. Do not yet store any pattern.
+#. What is the size of the network matrix?
+#. Visualize the weight matrix using the function :func:`.plot_tools.plot_nework_weights`. It takes the network as a parameter.
+#. Create a checkerboard, store it in the network.
+#. Plot the weights matrix. What weight values do occur?
+#. Create a new 4x4 network
+#. Create an L-shaped pattern (look at the pattern factory doc), store it in the network
+#. Plot the weights matrix. What weight values do occur?
+#. Create a new 4x4 network
+#. Create a checkerboard and an L-shaped pattern. Store **both** patterns in the network
+#. Plot the weights matrix. What weight values do occur? How does this matrix compare to the two previous matrices?
+
+
+.. note::
+
+    The mapping of the 2 dimensional patterns onto the one dimensional list of network neurons is internal to the implementation of the network. You cannot know which pixel (x,y) in the pattern corresponds to which network neuron i.
+
+
+Question (optional): Weights Distribution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+It's interesting to look at the weights distribution in the three previous cases. You can easily plot a histogram by adding the following two lines to your script. It assumes you have stored your network in the variable 'hopfield_net'.
+
+.. code-block:: py
+
+    plt.figure()
+    plt.hist(hopfield_net.weights.flatten())
+
+
+Exercise: Capacity of an N=100 Hopfield-network
+-----------------------------------------------
+Larger networks can store more patterns. There is a theoretical limit: the capacity of the Hopfield network. Read `chapter "17.2.4 Memory capacity" <http://neuronaldynamics.epfl.ch/online/Ch17.S2.html>`_ to learn how memory retrieval, pattern completion and the network capacity are related.
+
+Question:
+~~~~~~~~~
+A Hopfield network implements so called **associative** or **content-adressable** memory. Explain what this means.
+
+Question:
+~~~~~~~~~
+Compute the capacity C of an N=10x10 network.
+
+Question:
+~~~~~~~~~
+Create an N=10x10 network and store a checkerboard pattern together with **C random patterns**. Then initialize the network with the **unchanged** checkerboard pattern. Let the network evolve for five iterations.
+
+Rerun your script a few times. What do you observe?
+
+
+Exercise: Non-random patterns
+-----------------------------
+
+In the previous exercises we used random patterns. Now we us a list of structured patterns: the letters A to Z. Each letter is represented in a 10 by 10 grid.
+
+.. figure:: exc_images/HF_LetterAandOverlap.png
+   :align: center
+
+   Eight letters (including 'A') are stored in a Hopfield network. The letter 'A' is not recovered.
+
+
+Question:
+~~~~~~~~~
+Run the following code. Read the inline comments and look up the doc of functions you do not know.
+
+.. code-block:: Py
+
+    %matplotlib inline
+    import matplotlib.pyplot as plt
+    from neurodynex.hopfield_network import network, pattern_tools, plot_tools
+    import numpy
+
+    # the letters we want to store in the hopfield network
+    letter_list = ['A', 'B', 'C', 'S', 'X', 'Y', 'Z']
+
+    # set a seed to reproduce the same noise in the next run
+    # numpy.random.seed(123)
+
+    abc_dictionary =pattern_tools.load_alphabet()
+    print("the alphabet is stored in an object of type: {}".format(type(abc_dictionary)))
+    # access the first element and get it's size (they are all of same size)
+    pattern_shape = abc_dictionary['A'].shape
+    print("letters are patterns of size: {}. Create a network of corresponding size".format(pattern_shape))
+    # create an instance of the class HopfieldNetwork
+    hopfield_net = network.HopfieldNetwork(nr_neurons= pattern_shape[0]*pattern_shape[1])
+
+    # create a list using Pythons List Comprehension syntax:
+    pattern_list = [abc_dictionary[key] for key in letter_list ]
+    plot_tools.plot_pattern_list(pattern_list)
+
+    # store the patterns
+    hopfield_net.store_patterns(pattern_list)
+
+    # # create a noisy version of a pattern and use that to initialize the network
+    noisy_init_state = pattern_tools.get_noisy_copy(abc_dictionary['A'], noise_level=0.2)
+    hopfield_net.set_state_from_pattern(noisy_init_state)
+
+    # from this initial state, let the network dynamics evolve.
+    states = hopfield_net.run_with_monitoring(nr_steps=4)
+
+    # each network state is a vector. reshape it to the same shape used to create the patterns.
+    states_as_patterns = pattern_tools.reshape_patterns(states, pattern_list[0].shape)
+
+    # plot the states of the network
+    plot_tools.plot_state_sequence_and_overlap(
+        states_as_patterns, pattern_list, reference_idx=0, suptitle="Network dynamics")
+
+
+Question:
+~~~~~~~~~
+Add the letter 'R' to the letter list and store it in the network. Is the pattern 'A' still a fixed point? Does the overlap between the network state and the reference pattern 'A' always decrease?
+
+Question:
+~~~~~~~~~
+Make a guess of how many letters the network can store. Then create a (small) set of letters. Check if **all** letters of your list are fixed points under the network dynamics. Explain the discrepancy between the network capacity C (computed above) and your observation.
+
 
 Exercise: Bonus
 ---------------
-
-Try one of the preceding points in bigger networks.
-
-Try `downloading the source code for the network <https://raw.githubusercontent.com/EPFL-LCN/neuronaldynamics-exercises/master/neurodynex/hopfield_network/hopfield.py>`_, and modify it by adding a smooth transfer function *g* to the neurons. A short introducion on how to run the downloaded file :ref:`can be found here <exercises-hh-downloading>`.
+The implementation of the Hopfield Network in :mod:`.hopfield_network.network` offers a possibility to provide a custom update function :meth:`.HopfieldNetwork.set_dynamics_to_user_function`. Have a look at the source code of :meth:`.HopfieldNetwork.set_dynamics_sign_sync` to learn how the update dynamics are implemented. Then try to implement your own function. For example, you could implement an asynchronous update with stochastic neurons.

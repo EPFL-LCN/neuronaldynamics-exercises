@@ -1,20 +1,12 @@
-import matplotlib
-matplotlib.use('Agg')  # needed for plotting on travis
+from neurodynex.hodgkin_huxley import HH
+from neurodynex.tools import input_factory
+import brian2 as b2
 
 
-def test_runnable_Step():
-    """Test if HH_Step is runnable."""
-    from neurodynex.hodgkin_huxley.HH import HH_Step
-    HH_Step(tend=10)
-
-
-def test_runnable_Sinus():
-    """Test if HH_Sinus is runnable."""
-    from neurodynex.hodgkin_huxley.HH import HH_Sinus
-    HH_Sinus(tend=10)
-
-
-def test_runnable_Ramp():
-    """Test if HH_Ramp is runnable."""
-    from neurodynex.hodgkin_huxley.HH import HH_Ramp
-    HH_Ramp(tend=10)
+def test_simulate_HH_neuron():
+    """Test Hodgkin-Huxley model: simulate_HH_neuron()"""
+    current = input_factory.get_step_current(0, 1, b2.ms, 100. * b2.uA)
+    state_monitor = HH.simulate_HH_neuron(current, simulation_time=1. * b2.ms)
+    max_voltage = max(state_monitor.vm[0] / b2.mV)
+    # print("max_voltage:{}".format(max_voltage))
+    assert max_voltage > 50., "simulation error: max voltage is not > 50"

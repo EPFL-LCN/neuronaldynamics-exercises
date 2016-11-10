@@ -4,42 +4,34 @@ neurodynex.hopfield_network package
 Submodules
 ----------
 
-neurodynex.hopfield_network.hf_network module
+neurodynex.hopfield_network.demo module
+---------------------------------------
+
+.. automodule:: neurodynex.hopfield_network.demo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+neurodynex.hopfield_network.network module
+------------------------------------------
+
+.. automodule:: neurodynex.hopfield_network.network
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+neurodynex.hopfield_network.pattern_tools module
+------------------------------------------------
+
+.. automodule:: neurodynex.hopfield_network.pattern_tools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+neurodynex.hopfield_network.plot_tools module
 ---------------------------------------------
 
-.. automodule:: neurodynex.hopfield_network.hf_network
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.hf_pattern_tools module
----------------------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.hf_pattern_tools
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.hf_plot_tools module
-------------------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.hf_plot_tools
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.hopfield module
--------------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.hopfield
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-neurodynex.hopfield_network.hopfield_demo module
-------------------------------------------------
-
-.. automodule:: neurodynex.hopfield_network.hopfield_demo
+.. automodule:: neurodynex.hopfield_network.plot_tools
     :members:
     :undoc-members:
     :show-inheritance:

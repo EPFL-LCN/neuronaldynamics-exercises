@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def make_cloud(n=10000, ratio=1, angle=0):
+def make_cloud(n=2000, ratio=1, angle=0):
     """Returns an oriented elliptic
     gaussian cloud of 2D points
 
@@ -54,7 +54,7 @@ def make_cloud(n=10000, ratio=1, angle=0):
     return np.dot(transfo, z.T).T
 
 
-def learn(cloud, initial_angle=None, eta=0.001):
+def learn(cloud, initial_angle=None, eta=0.005):
     """Run one batch of Oja's learning over
     a cloud of datapoints
 
@@ -82,7 +82,57 @@ def learn(cloud, initial_angle=None, eta=0.001):
     return wcourse
 
 
-def run_oja(n=10000, ratio=1., angle=0., do_plot=True):
+def plot_oja_trace(data_cloud, weights_course):
+    """
+    Plots the datapoints and the time series of the weights
+    Args:
+        data_cloud (numpy.ndarray): n by 2 data
+        weights_course (numpy.ndarray): n by 2 weights
+
+    Returns:
+
+    """
+    plt.scatter(
+        data_cloud[:, 0],
+        data_cloud[:, 1],
+        marker=".",
+        facecolor="none",
+        edgecolor="#222222",
+        alpha=.2
+    )
+    plt.xlabel("x1")
+    plt.ylabel("x2")
+
+    # color time and plot with colorbar
+    time = np.arange(len(weights_course))
+    colors = plt.cm.cool(time / float(len(time)))
+    sm = plt.cm.ScalarMappable(
+        cmap=plt.cm.cool,
+        norm=plt.Normalize(vmin=0, vmax=len(data_cloud))
+    )
+    sm.set_array(time)
+    cb = plt.colorbar(sm)
+    cb.set_label("Iteration")
+    plt.scatter(
+        weights_course[:, 0],
+        weights_course[:, 1],
+        facecolor=colors,
+        edgecolor="none",
+        lw=2
+    )
+
+    # ensure rectangular plot
+    x_min = data_cloud[:, 0].min()
+    x_max = data_cloud[:, 0].max()
+    y_min = data_cloud[:, 1].min()
+    y_max = data_cloud[:, 1].max()
+    lims = [min(x_min, y_min), max(x_max, y_max)]
+    plt.xlim(lims)
+    plt.ylim(lims)
+    plt.show()
+
+
+def run_oja(n=2000, ratio=1., angle=0., learning_rate=0.01, do_plot=True):
     """Generates a point cloud and runs Oja's learning
     rule once. Optionally plots the result.
 
@@ -95,46 +145,11 @@ def run_oja(n=10000, ratio=1., angle=0., do_plot=True):
     """
 
     cloud = make_cloud(n=n, ratio=ratio, angle=angle)
-    wcourse = learn(cloud)
+    wcourse = learn(cloud, eta=learning_rate)
 
     if do_plot:
+        plot_oja_trace(cloud, wcourse)
+    return wcourse, cloud
 
-        # plot data cloud
-        plt.scatter(
-            cloud[:, 0],
-            cloud[:, 1],
-            marker='.',
-            facecolor='none',
-            edgecolor='#222222',
-            alpha=.2
-        )
-
-        # color time and plot with colorbar
-        time = np.arange(len(wcourse))
-        colors = plt.cm.cool(time/float(len(time)))
-        sm = plt.cm.ScalarMappable(
-            cmap=plt.cm.cool,
-            norm=plt.Normalize(vmin=0, vmax=n)
-        )
-        sm.set_array(time)
-        cb = plt.colorbar(sm)
-        cb.set_label("Datapoints")
-        plt.scatter(
-            wcourse[:, 0],
-            wcourse[:, 1],
-            facecolor=colors,
-            edgecolor='none',
-            lw=2
-        )
-
-        # ensure rectangular plot
-        x_min = cloud[:, 0].min()
-        x_max = cloud[:, 0].max()
-        y_min = cloud[:, 1].min()
-        y_max = cloud[:, 1].max()
-        lims = [min(x_min, y_min), max(x_max, y_max)]
-
-        plt.xlim(lims)
-        plt.ylim(lims)
-
-        plt.show()
+if __name__ == "__main__":
+    run_oja(n=2000, ratio=1.1, angle=30, learning_rate=0.2)

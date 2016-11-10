@@ -4,10 +4,10 @@ neurodynex.adex_model package
 Submodules
 ----------
 
-neurodynex.adex_model.adex module
+neurodynex.adex_model.AdEx module
 ---------------------------------
 
-.. automodule:: neurodynex.adex_model.adex
+.. automodule:: neurodynex.adex_model.AdEx
     :members:
     :undoc-members:
     :show-inheritance:

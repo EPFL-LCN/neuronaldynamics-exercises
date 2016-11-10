@@ -12,14 +12,6 @@ neurodynex.neuron_type.neurons module
     :undoc-members:
     :show-inheritance:
 
-neurodynex.neuron_type.typeXY module
-------------------------------------
-
-.. automodule:: neurodynex.neuron_type.typeXY
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

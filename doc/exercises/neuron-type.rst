@@ -11,111 +11,105 @@ models.
 
 **Python classes**
 
-The :mod:`neurodynex.neuron_type.typeXY` module contains all classes required for this exercise.
-For the exercises you will need to import the classes :class:`NeuronX <.neuron_type.typeXY.NeuronX>` and :class:`NeuronY <.neuron_type.typeXY.NeuronY>` by running
+The :mod:`neurodynex.neuron_type.neurons` module contains all classes required for this exercise. To get started, call :func:`getting_started <.neuron_type.neurons.getting_started>` or copy the following code into your Jupyter notebook:
 
 .. code-block:: python
 
-    from neurodynex.neuron_type.typeXY import NeuronX, NeuronY
+    %matplotlib inline  # needed in Notebooks, not in Python scripts
+    import brian2 as b2
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from neurodynex.tools import input_factory, plot_tools, spike_tools
+    from neurodynex.neuron_type import neurons
+
+    # create an input current
+    input_current = input_factory.get_step_current(50, 150, 1.*b2.ms, 0.5*b2.pA)
+
+    # get one instance of class NeuronX and save that object in the variable 'a_neuron_of_type_X'
+    a_neuron_of_type_X = neurons.NeuronX()  # we do not know if it's type I or II
+    # simulate it and get the state variables
+    state_monitor = a_neuron_of_type_X.run(input_current, 200*b2.ms)
+    # plot state vs. time
+    neurons.plot_data(state_monitor, title="Neuron of Type X")
+
+    # get an instance of class NeuronY
+    a_neuron_of_type_Y = neurons.NeuronY()  # we do not know if it's type I or II
+    state_monitor = a_neuron_of_type_Y.run(input_current, 200*b2.ms)
+    neurons.plot_data(state_monitor, title="Neuron of Type Y")
+
 
 .. note::
-
-    Both :class:`NeuronX <.neuron_type.typeXY.NeuronX>` and :class:`NeuronY <.neuron_type.typeXY.NeuronY>` inherit from a common base class :class:`.neuron_type.neurons.NeuronAbstract` and thus implement similar methods.
 
     For those who are interested, `here is more about classes and inheritance in Python <https://en.wikibooks.org/wiki/Python_Programming/Classes>`_.
 
 Exercise: Probing Type I and Type II neuron models
 --------------------------------------------------
 
-This exercise deals not only with Python functions, but with python objects.
+This exercise deals not only with Python functions, but with python objects. The classes :class:`NeuronX <.neuron_type.neurons.NeuronX>` and :class:`NeuronY <.neuron_type.neurons.NeuronY>` both are neurons, that have different dynamics: **one is Type I and one is Type II**. Finding out which class implements which dynamics is the goal of the exercise.
 
-The classes :class:`NeuronX <.neuron_type.typeXY.NeuronX>` and :class:`NeuronY <.neuron_type.typeXY.NeuronY>` both are neurons, that have different dynamics: **one is Type I and one is Type II**. Finding out which class implements which dynamics is the goal of the exercise.
 
-To run the exercises you will have to instantiate these classes. You can then plot step_current injections (using the :meth:`step <.neuron_type.neurons.NeuronAbstract.step>` method) or extract the firing rate for a given step current (using the :meth:`get_rate <.neuron_type.neurons.NeuronAbstract.get_rate>` method):
-
-.. code-block:: python
-
-    from neurodynex.neuron_type.typeXY import NeuronX, NeuronY
-
-    n1 = NeuronX()  # instantiates a new neuron of type X
-
-    n1.step(do_plot=True)  # plot a step current injection
-    
-
-To check your results, you can use the :meth:`get_neuron_type <.neuron_type.typeXY.NeuronX.get_neuron_type>` function, e.g.:
-
-.. code-block:: python
-
-    >> n1 = NeuronX()  # instantiates a new neuron of type X
-    >> n1.get_neuron_type()
-    neurodynex.neuron_type.neurons.NeuronTypeOne
+The types get randomly assigned each time you load the module or you call the function :func:`.neurons.neurontype_random_reassignment`.
 
 Question: Estimating the threshold
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-What is the threshold current for repetitive firing for :class:`NeuronX <.neuron_type.typeXY.NeuronX>` and :class:`NeuronY <.neuron_type.typeXY.NeuronY>`?
+What is the threshold current for repetitive firing for :class:`NeuronX <.neuron_type.neurons.NeuronX>` and :class:`NeuronY <.neuron_type.neurons.NeuronY>`?
 
-Exploring various values of ``I_amp``, find the range in which the
-threshold occurs, to a precision of 0.01.
+Exploring various values of ``I_amp``, find the range in which the threshold occurs, to a precision of 0.01.
 
 .. note::
 
-    As shown abve, use the :meth:`step <.neuron_type.neurons.NeuronAbstract.step>` functions to plot the responses to step current which starts after 100ms (to let the system equilibrate) and lasting at least 1000ms (to detect repetitive firing with a long period):
+Plot the responses to step current which starts after 100ms (to let the system equilibrate) and lasting at least 1000ms (to detect repetitive firing with a long period). You can do this by modifying the code example given above. Make sure to check the documentation of the functions you use: :func:`.input_factory.get_step_current`, :func:`.neuron_type.neurons.run` and :func:`.neuron_type.neurons.plot_data`.
 
 Already from the voltage response near threshold you might have an idea which is type I or II, but let’s investigate further.
 
 Question: Pulse response
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Plot the response to short current pulses near threshold, and
-interpret the results: which class is Type I, which is II?
+Plot the response to short current pulses near threshold, and interpret the results: which class is Type I, which is II?
 
-For example:
+The code fragment for a_neuron_of_type_X could look like this:
 
 .. code-block:: python
 
-    import matplotlib.pyplot as plt
-    plt.figure()  # new figure
-    n1 = NeuronX()  # instantiates a new neuron of type X
-    
-    t, v, w, I = n1.step(I_amp=1.05, I_tstart=100, I_tend=110, t_end=300)
-    plt.plot(t,v)
+    input_current = input_factory.get_step_current(100, 110, 1.05*b2.ms, amp)
+    state_monitor = a_neuron_of_type_X.run(input_current, 300*b2.ms)
+    neurons.plot_data(state_monitor, title="Neuron of Type X, I={}".format(amp))
 
-    t, v, w, I = n1.step(I_amp=1.1, I_tstart=100, I_tend=110, t_end=300)
-    plt.plot(t,v)
+    input_current = input_factory.get_step_current(100, 110, 1.10*b2.ms, amp)
+    state_monitor = a_neuron_of_type_X.run(input_current, 300*b2.ms)
+    neurons.plot_data(state_monitor, title="Neuron of Type X, I={}".format(amp))
 
+    # ... and so on, for different amplitudes and both neuron types.
     # can you simplify this in a loop?
 
-    plt.show()
 
 Exercise: f-I curves
 --------------------
 
-During the questions of this exercise you will write a python script that plots the f-I curve for type I and type II neuron models.
+In this exercise you will write a python script that plots the f-I curve for type I and type II neuron models.
 
 Get firing rates from simulations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We provide you with a function :func:`get_spiketimes <.neuron_type.neurons.get_spiketimes>` to determine the spike times from
-given timeseries ``t`` and ``v``:
+We provide you with a function :func:`.spike_tools.get_spike_time` to determine the spike times from a StateMonitor. The following code shows how to use that function. Note that the return value is a Brian Quantity: it has units. If you write code using units, you'll get consistency checks done by Brian.
 
 .. code-block:: python
     
-    >> from neurodynex.neuron_type.neurons import get_spiketimes
-    >> t, v, w, I = n1.step(I_amp=1.0, I_tstart=100, I_tend=1000., t_end=1000.)
-    >> st = get_spiketimes(t, v)
-    >> print st
-    [ 102.9  146.1   189.1 ... ]
+    state_monitor = a_neuron_of_type_X.run(input_current, ...)
+    spike_times = spike_tools.get_spike_time(state_monitor, ...)
+    print(spike_times)
+    print(type(spike_times))  # it's a Quantity
 
-Use this function to write a Python function (in your own `.py` file) that calculates an estimate of the firing rate, given a neuron instance and an input current:
+Now **write a new function** (in your own `.py` file or in your Jupyter Notebook) that calculates an estimate of the firing rate. In your function use :func:`.spike_tools.get_spike_time`
 
 .. code-block:: python
 
-    def get_firing_rate(neuron, I_amp):
+    def get_firing_rate(neuron, input_current, spike_threshold):
 
-        # run a step on the neuron via neuron.step()
-        # get the spike times
-        # calculate the firing rate f
+        # inject a test current into the neuron and call it's run() function.
+        # get the spike times using spike_tools.get_spike_times
+        # from the spike times, calculate the firing rate f
 
         return f
 
@@ -127,12 +121,8 @@ Use this function to write a Python function (in your own `.py` file) that calcu
 
         isi = st[1:]-st[:-1]
 
-    Then find the mean and take the reciprocal (pay attention when
-    converting from 1/ms to Hz) to yield the firing-rate:
+    Then find the mean isi and take the reciprocal to yield the firing-rate. As these are standard operations, you can expect that someone else has already implemented it. Have a look at the numpy package and look up the functions diff and mean. Once you have implemented your function, you should verify it's correctness: inject a few currents into your neuron, plot the voltage response and compare the plot with the firing rate computed by your function.
 
-    .. code-block:: python
-
-        f = 1000.0/mean(isi)
 
 .. note::
 
@@ -140,8 +130,7 @@ Use this function to write a Python function (in your own `.py` file) that calcu
         
     .. code-block:: python
         
-        # get firing rate and plot the dynamics for an injection of I_amp
-        n1.get_rate(I_amp, do_plot=True)
+        spike_tools.pretty_print_spike_train_stats(...)
 
 
 Plot the f-I curve
@@ -182,4 +171,8 @@ Add the following function skeleton to your code and complete it to plot the f-I
 * Call your ``plot_fI_curve`` function with each class ``NeuronX`` and ``NeuronY`` as argument.
 * Change the ``I`` range to zoom in near the threshold, and try running it again for both classes.
 
-Which class is Type I and which is Type II?
+Which class is Type I and which is Type II? Check your result:
+
+.. code-block:: py
+    print(a_neuron_of_type_X.get_neuron_type())
+    print(a_neuron_of_type_Y.get_neuron_type())

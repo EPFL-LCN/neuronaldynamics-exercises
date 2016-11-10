@@ -1,33 +1,26 @@
-import matplotlib
-matplotlib.use('Agg')  # needed for plotting on travis
+def test_neurons_type():
+    """Test if NeuronX and NeuronY constructors are callable"""
+    from neurodynex.neuron_type import neurons
+    a_neuron_of_type_X = neurons.NeuronX()
+    a_neuron_of_type_Y = neurons.NeuronY()
+    assert a_neuron_of_type_X is not None, "Constructor NeuronX did not return an instance"
+    assert a_neuron_of_type_Y is not None, "Constructor NeuronY did not return an instance"
 
 
-def run_neuron(c):
-    n = c()
-    n.step(t_end=10)
-    n.get_rate(1., t_end=10)
-
-
-def test_neurons():
+def test_neurons_run():
     """Test if neuron functions are runnable."""
-    from neurodynex.neuron_type.neurons import NeuronTypeOne, NeuronTypeTwo
-    for n in [NeuronTypeOne, NeuronTypeTwo]:
-        print("Test if neuron %s is runnable." % n)
-        run_neuron(n)
+    import brian2 as b2
+    from neurodynex.tools import input_factory
+    from neurodynex.neuron_type import neurons
+    # create an input current
 
+    input_current = input_factory.get_step_current(1, 2, 1. * b2.ms, 0.1 * b2.pA)
 
-def test_class_assignment():
-    """Test if NeuronX and NeuronY are properly assigned to NeuronTypeOne
-    and NeuronTypeTwo."""
-    from neurodynex.neuron_type.neurons import NeuronTypeOne, NeuronTypeTwo
-    from neurodynex.neuron_type.typeXY import NeuronX, NeuronY
-    import numpy as np
+    # get an instance of class NeuronX
+    a_neuron_of_type_X = neurons.NeuronX()  # we do not know if it's type I or II
+    state_monitor = a_neuron_of_type_X.run(input_current, 2 * b2.ms)
+    assert isinstance(state_monitor, b2.StateMonitor), "a_neuron_of_type_X.run did not return a StateMonitor"
 
-    types = np.array([
-        NeuronX.get_neuron_type(),
-        NeuronY.get_neuron_type()
-    ])
-
-    # assert we do exactly one assignment each
-    assert sum((NeuronTypeOne == types).tolist()) == 1
-    assert sum((NeuronTypeTwo == types).tolist()) == 1
+    a_neuron_of_type_Y = neurons.NeuronY()  # we do not know if it's type I or II
+    state_monitor = a_neuron_of_type_Y.run(input_current, 2 * b2.ms)
+    assert isinstance(state_monitor, b2.StateMonitor), "a_neuron_of_type_Y.run did not return a StateMonitor"

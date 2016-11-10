@@ -1,1 +1,1 @@
-__all__ = ['spike_train_variability']
+__all__ = ["spike_train_variability"]

@@ -11,80 +11,90 @@ the Hodgkin-Huxley equations and models.
 
 **Python classes**
 
-The :mod:`.hodgkin_huxley.HH` module contains all code required for this exercise.
-At the beginning of your exercise solutions, import the contained functions by running
+The :mod:`.hodgkin_huxley.HH` module contains all code required for this exercise. It implements a Hodgkin-Huxley neuron model
+At the beginning of your exercise solutions, import the modules and run the demo function.
 
 .. code-block:: py
 
-	from neurodynex.hodgkin_huxley.HH import *
+    %matplotlib inline  # needed in Jupyter notebooks, not in Python scripts.
+    import brian2 as b2
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from neurodynex.hodgkin_huxley import HH
+    from neurodynex.tools import input_factory
 
-You can then simply run the exercise functions by executing
+    HH.getting_started()
 
-.. code-block:: py
 
-	HH_Step()  # example Step-current injection
-	HH_Sinus()  # example Sinus-current injection
-	HH_Ramp()  # example Ramp-current injection
+.. figure:: exc_images/HH_getting_started.png
+   :align: center
+   :scale: 60%
+
+   Step current injection into a Hodgkin-Huxley neuron
+
 
 Exercise
 --------
+We study the response of a Hodgkin-Huxley neuron to different input currents. Have a look at the documentation of the functions :func:`.HH.simulate_HH_neuron` and :func:`.HH.plot_data` and the module :mod:`neurodynex.tools.input_factory`
 
-Use the function :func:`.HH_Step` to simulate a HH
-neuron stimulated by a current step of a given amplitude. The goal of
-this exercise is to modify the provided python functions and use the
-``numpy`` and ``matplotlib`` packages to answer the following questions.
 
 Question
 ~~~~~~~~
 
-What is the lowest step current amplitude for generating at least one spike? Hint: use binary search on ``I_amp``, with a :math:`0.1\mu A` resolution.
+What is the lowest **step current** amplitude I_min for generating at least one spike?
+
+.. code-block:: py
+
+    current = input_factory.get_step_current(5, 100, b2.ms, I_min *b2.uA)
+    state_monitor = HH.simulate_HH_neuron(current, 120 * b2.ms)
+    HH.plot_data(state_monitor, title="HH Neuron, minimal current")
 
 Question
 ~~~~~~~~
 
 What is the lowest step current amplitude to generate repetitive firing?
 
-Question
-~~~~~~~~
+Exercise: slow and fast ramp current
+------------------------------------
+The minimal current to elicit a spike does not just depend on the amplitude I or on the total charge Q of the current, but on the "shape" of the current. Let's see why:
 
-Look at :func:`.HH_Step` for ``I_amp = -5`` and ``I_amp = -1``. What is happening here? To which gating variable do you attribute this rebound spike?
-
-Exercise
---------
-
-Use the function :func:`.HH_Ramp` to simulate a HH neuron stimulated by a ramping curent.
 
 Question
 ~~~~~~~~
+Inject a slow ramp current into a HH neuron. The current has amplitude 0A at t in [0, 5] ms and linearly increases to an amplitude I_min_slow at t=50ms. At t>50ms, the current is set to 0A. What is the minimal amplitude I_min_slow to trigger one spike (vm>50mV)?
 
-What is the minimum current required to make a spike when the current is slowly increased (ramp current waveform) instead of being increased suddenly?
-
-.. _exercises-hh-downloading:
-
-Exercise
---------
-
-To solve this exercise, you will need to change the actual implementation of the model. Download directly the source file `HH.py <https://raw.githubusercontent.com/EPFL-LCN/neuronaldynamics-exercises/master/neurodynex/hodgkin_huxley/HH.py>`_. When starting Python in the directory containing the downloaded file, you run functions from it directly as follows:
+Question
+~~~~~~~~
+Now inject a fast ramp current into a HH neuron. The current has amplitude 0 at t in [0, 5] ms and linearly increases to an amplitude I_min_fast at t=10ms. At t>10ms, the current is set to 0A. What is the minimal amplitude I_min_fast to trigger one spike? Note: for a short ramp, the one milliseconds resolution for the current is not enough. You can create a more fine resolution:
 
 .. code-block:: py
-	
-	import HH  # import the HH module, i.e. the HH.py file
-	HH.HH_Step()  # access the LIF_Step function in HH.py
 
-Then use any text editor to make changes in the ``HH.py`` file. 
-
-.. note::
-	
-	You might have to reload the module for changes to become active - quitting and restarting the python interpreter reloads all modules. Alternatively, you can also force a reload by typing
-
-	.. code-block:: py
-	
-		reload(HH)
-
-	For automatic reloading you can also run ``ipython`` instead of ``python`` and `set the autoreload flag <http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html>`_. For this, make sure you have ipython installed - if you have followed :ref:`the setup instructions for anaconda/miniconda <exercises-setup-conda>` this should already work.
-
+    fast_ramp_current = input_factory.get_ramp_current(50, 100, 0.1*b2.ms, 0.*b2.uA, I_min_fast *b2.uA)
 
 Question
 ~~~~~~~~
+Compare the two previous results. By looking at the activation variables, can you explain the differences in that "current threshold"?
 
-What is the current threshold for repetitive spiking if the density of sodium channels is increased by a factor of 1.5? To solve this, change the maximum conductance of sodium channel in :func:`.HH_Neuron`.
+
+Exercise: Rebound Spike
+-----------------------
+A HH neuron can spike not only if it receives a sufficiently strong depolarizing input current but also after a hyperpolarizing current. Such a spike is called a *rebound spike*.
+
+Question
+~~~~~~~~
+Inject a hyperpolarizing step current ``I_amp = -1 uA`` for 20ms into the HH neuron. Simulate the neuron for 50 ms and plot the voltage trace and the gating variables. Repeat the simulation with ``I_amp = -5 uA``  What is happening here? To which gating variable do you attribute this rebound spike?
+
+
+Exercise: Brian implementation of a HH neuron
+---------------------------------------------
+
+In this exercise you will learn to work with the Brian2 model equations. To do so, get the source code of the function  :func:`.HH.simulate_HH_neuron` (follow the link to the documentation and then click on the [source] link). Copy the function code and paste it into your Jupyter Notebook. Change the function name from simulate_HH_neuron to a name of your choice, for example simulate_modified_HH_neuron(). Have a look at the source code and find the conductance parameters gK and gNa.
+
+Question
+~~~~~~~~
+In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.5. Stimulate this modified neuron with a step current.
+
+* What is the current threshold for repetitive spiking? Explain.
+* What is the resting potential of the neuron? Explain.
+
+

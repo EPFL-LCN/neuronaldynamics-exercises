@@ -50,11 +50,11 @@ def get_trajectory(v0=0., w0=0., I=0., eps=0.1, a=2.0, tend=500.):
         tuple: (t, v, w) tuple for solutions
     """
 
-    eqs = '''
+    eqs = """
     I_e : amp
     dv/dt = 1/ms * ( v * (1 - (v**2) / (mV**2) ) - w + I_e * Mohm ) : volt
     dw/dt = eps/ms * (v + 0.5 * (a * mV - w)) : volt
-    '''
+    """
 
     neuron = b2.NeuronGroup(1, eqs)
 
@@ -66,7 +66,7 @@ def get_trajectory(v0=0., w0=0., I=0., eps=0.1, a=2.0, tend=500.):
     neuron.I_e = I * b2.nA
 
     # record states
-    rec = b2.StateMonitor(neuron, ['v', 'w'], record=True)
+    rec = b2.StateMonitor(neuron, ["v", "w"], record=True)
 
     # run the simulation
     b2.run(tend * b2.ms)
@@ -118,7 +118,7 @@ def get_fixed_point(I=0., eps=0.1, a=2.0):
 
     # Use poly1d function from numpy to compute the
     # roots of 3rd order polynomial
-    P = np.poly1d([1, 0, 1, (a-I)], variable='x')
+    P = np.poly1d([1, 0, 1, (a - I)], variable="x")
 
     # take only the real root
     v_fp = np.real(P.r[np.isreal(P.r)])[0]

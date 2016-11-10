@@ -1,5 +1,5 @@
-Phase plane and bifurcation analysis
-====================================
+FitzHugh-Nagumo: Phase plane and bifurcation analysis
+=====================================================
 
 **Book chapters**
 
@@ -11,52 +11,39 @@ See `Chapter 4 <Chapter4_>`_ and especially `Chapter 4 Section 3 <Chapter43_>`_ 
 
 **Python classes**
 
-The :mod:`.phase_plane_analysis.fitzhugh_nagumo` module contains all code required for this exercise.
-At the beginning of your exercise solutions, import the contained functions by running
+In this exercise we study the phase plane of a two dimensional dynamical system implemented in the module :mod:`.phase_plane_analysis.fitzhugh_nagumo`. To get started, copy the following code block into your Jupyter Notebook. Check the documentation to learn how to use these functions. Make sure you understand the the parameters the functions take.
 
 .. code-block:: python
 
-	from neurodynex.phase_plane_analysis.fitzhugh_nagumo import *
+      %matplotlib inline
+      import brian2 as b2
+      import matplotlib.pyplot as plt
+      import numpy as np
+      from neurodynex.phase_plane_analysis import fitzhugh_nagumo
 
-You can then simply run the exercise functions by executing the functions, e.g.
+      fitzhugh_nagumo.plot_flow()
 
-.. code-block:: python
+      fixed_point = fitzhugh_nagumo.get_fixed_point()
+      print("fixed_point: {}".format(fixed_point))
 
-	get_trajectory() 
-	get_fixed_point()
-	plot_flow()
+      plt.figure()
+      trajectory = fitzhugh_nagumo.get_trajectory()
+      plt.plot(trajectory[0], trajectory[1])
+
+
 
 Exercise: Phase plane analysis
 ------------------------------
+We have implemented the following Fitzhugh-Nagumo model.
 
-Create a script file (e.g. ``answers.py``) and add the following header:
+.. math::
+   :label: eq1
 
-.. code-block:: python
+   \left[\begin{array}{ccll}
+   {\displaystyle \frac{du}{dt}} &=& u\left(1-u^{2}\right)-w+I \equiv F(u,w)\\[.2cm]
+   {\displaystyle \frac{dw}{dt}} &=& \varepsilon \left(u -0.5w+1\right) \equiv \varepsilon G(u,w)\, ,\\
+   \end{array}\right.
 
-	from neurodynex.phase_plane_analysis.fitznagumo import *
-
-	# your code here ..
-
-You will type the code for your answers right below, adding more code
-with each exercise. When you want to execute your code, open ipython in
-a terminal and type
-
-.. code-block:: python
-
-	run answers.py
-
-Or alternatively, from the command line execute
-
-.. code-block:: python
-
-	python answers.py
-
-For some exercises you will have to plot and analyze data. This can be done by importing ``matplotlib`` and ``numpy``:
-
-.. code-block:: python
-
-	import matplotlib.pyplot as plt
-	import numpy as np
 
 Question
 ~~~~~~~~
@@ -85,7 +72,7 @@ Plot the nullclines in the :math:`u-w` plane, for voltages in the region :math:`
 Question
 ~~~~~~~~
 
-Get the lists ``t``, ``u`` and  ``w`` by calling :func:`t, u, w = get_trajectory(u_0, w_0, I) <.phase_plane_analysis.fitzhugh_nagumo.get_trajectory>` for :math:`u_0 = 0`, :math:`w_0= 0` and :math:`I = 1.3`. They are corresponding values of :math:`t`, :math:`u(t)` and :math:`w(t)` during trajectories starting at the given point :math:`(u_0,w_0)` for a given constant current :math:`I`. Plot the nullclines for this given current and the trajectories into the :math:`u-w` plane.
+Get the lists ``t``, ``u`` and  ``w`` by calling :func:`t, u, w = get_trajectory(u_0, w_0, I) <.phase_plane_analysis.fitzhugh_nagumo.get_trajectory>` for :math:`u_0 = 0`, :math:`w_0= 0` and :math:`I = 1.3`. They are corresponding values of :math:`t`, :math:`u(t)` and :math:`w(t)` during trajectories starting at the given point :math:`(u_0,w_0)` for a given **constant** input current :math:`I`. Plot the nullclines for this given current and the trajectories into the :math:`u-w` plane.
 
 Question
 ~~~~~~~~
@@ -118,7 +105,7 @@ Exercise: Jacobian & Eigenvalues
 Consider the following two-dimensional Fitzhugh-Nagumo model:
 
 .. math::
-   :label: eq1
+   :label: eq2
 
    \left[\begin{array}{ccll}
    {\displaystyle \frac{du}{dt}} &=& u\left(1-u^{2}\right)-w+I \equiv F(u,w)\\[.2cm]

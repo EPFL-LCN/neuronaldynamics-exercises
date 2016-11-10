@@ -3,10 +3,44 @@
 Setting up Python and Brian
 ===========================
 
-Using python and pip
---------------------
+To solve the exercises you need to install Python, Brian2 and the neurodynex package. The installation procedure we described here focuses on the tools we use in the classroom sessions at EPFL. For that reason we additionally set up a **conda environment** (which we call bmnn below) and install `Jupyter <http://jupyter.readthedocs.io/en/latest/install.html>`__ .
 
-We provide the most recent versions of this repository as a `pypi package <https://pypi.python.org/pypi/neurodynex/>`__ called ``neurodynex``.
+
+
+.. _exercises-setup-conda:
+
+Using miniconda (recommended)
+-----------------------------
+
+We offer anaconda packages for the most recent releases, which is the easiest way of running the exercises.
+
+Head over to the `miniconda download page <http://conda.pydata.org/miniconda.html>`__ and install **miniconda** (for Python 2.7 preferably). You can then use conda to install Jupyter. Open a terminal and call:
+
+.. code-block:: bash
+
+    >> conda install jupyter
+
+Now execute the following commands to **install** the exercise package as well as **Brian2** and some dependencies. Note: we create a `conda environment <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_ called 'bmnn'. You may want to change that name.
+
+.. code-block:: bash
+
+    >> conda create --name bmnn python=2.7
+    >> source activate bmnn
+    >> conda install -c brian-team -c epfl-lcn neurodynex
+
+If you need to  **update** the exercise package, call:
+
+.. code-block:: bash
+
+    >> source activate bmnn
+    >> conda update -c brian-team -c epfl-lcn neurodynex
+
+
+
+Alternative procedure: Using python and pip
+-------------------------------------------
+
+If you already have Python installed and prefer using PIP, you can get the most recent versions of this repository as a `pypi package <https://pypi.python.org/pypi/neurodynex/>`__ called ``neurodynex``.
 
 To install the exercises using ``pip`` simply execute (the ``--upgrade`` flag will overwrite existing installations with the newest versions):
 
@@ -14,19 +48,6 @@ To install the exercises using ``pip`` simply execute (the ``--upgrade`` flag wi
 
    pip install --upgrade neurodynex
 
-
-.. _exercises-setup-conda:
-
-Using anaconda/miniconda
-------------------------
-
-We offer anaconda packages for the most recent releases, which is the easiest way of running the exercises.
-
-Head over to the `miniconda download page <http://conda.pydata.org/miniconda.html>`__ and install **miniconda** (for Python 2.7 preferably). To **install or update** the exercise classes for your anaconda environment, it suffices to run:
-
-.. code-block:: bash
-
-   conda install -c brian-team -c epfl-lcn neurodynex
 
 .. note::
 
@@ -42,3 +63,12 @@ Head over to the `miniconda download page <http://conda.pydata.org/miniconda.htm
 
    	This creates a new conda environment (`here is more information on conda environments <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_) in which you can use spyder together with the exercises.
 
+
+Links
+-----
+Here are some useful links to get started with Python and Brian
+
+* `<https://www.python.org/about/gettingstarted/>`_
+* `<https://brian2.readthedocs.io/en/latest/index.html>`_
+* `<http://www.scipy.org>`_
+* `<http://Matplotlib.sf.net>`_

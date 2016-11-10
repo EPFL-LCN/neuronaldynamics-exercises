@@ -1,45 +1,32 @@
-import matplotlib
+#import matplotlib
+# matplotlib.use("Agg")  # needed for plotting on travis
 
-matplotlib.use('Agg')  # needed for plotting on travis
 
-# todo: rewrite tests.
-#
-# def test_alphabet():
-#     """Test if alphabet is loadable."""
-#     from neurodynex.hopfield_network.hopfield import\
-#         load_alphabet
-#     load_alphabet()
-#
-#
-# def test_net_random():
-#     """Test hopfield network with random patterns."""
-#     from neurodynex.hopfield_network.hopfield import\
-#         HopfieldNetwork
-#
-#     size = 8
-#     n = HopfieldNetwork(size)
-#     n.make_pattern()
-#     assert n.patterns.shape == (1, size**2)
-#
-#     n.run(flip_ratio=.2)
-#     assert n.overlap(0) == 1.
-#
-#     n.run(flip_ratio=.8)
-#     assert n.overlap(0) == -1.
-#
-#
-# def test_net_alphabet():
-#     """Test hopfield network with alphabet patterns."""
-#     from neurodynex.hopfield_network.hopfield import\
-#         HopfieldNetwork
-#
-#     size = 10
-#     n = HopfieldNetwork(size)
-#     n.make_pattern(letters='lcn')
-#     assert n.patterns.shape == (3, size**2)
-#
-#     for i in range(3):
-#         n.run(mu=i, flip_ratio=.2)
-#         assert n.overlap(i) == 1.
-#         n.run(mu=i, flip_ratio=.8)
-#         assert n.overlap(i) == -1.
+def test_pattern_factory():
+    """ Test hopfield_network.pattern_tools """
+    import neurodynex.hopfield_network.pattern_tools as tools
+    pattern_size = 6
+    factory = tools.PatternFactory(pattern_size)
+    p1 = factory.create_checkerboard()
+    assert len(p1) == pattern_size
+
+
+def test_overlap():
+    """ Test hopfield_network.pattern_tools overlap"""
+    import neurodynex.hopfield_network.pattern_tools as tools
+    pattern_size = 10
+    factory = tools.PatternFactory(pattern_size)
+    p1 = factory.create_checkerboard()
+    p2 = factory.create_all_on()
+    overlap = tools.compute_overlap(p1, p2)
+    assert overlap == 0.0  # works for checkerboards with even valued size
+
+
+def test_load_alphabet():
+    """Test if the alphabet patterns can be loaded"""
+    import neurodynex.hopfield_network.pattern_tools as pattern_tools
+    abc_dictionary = pattern_tools.load_alphabet()
+    assert 'A' in abc_dictionary, \
+        "Alphabet dict not correctly loaded. Key not accessible"
+    assert abc_dictionary['A'].shape == (10, 10), \
+        "Letter is not of shape (10,10)"

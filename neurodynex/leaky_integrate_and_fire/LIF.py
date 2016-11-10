@@ -27,147 +27,198 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 import brian2 as b2
-import matplotlib.pyplot as plt
-import numpy as np
+from neurodynex.tools import input_factory, plot_tools
+import random
+
+# Neuron model default values
+V_REST = -70 * b2.mV
+V_RESET = -65 * b2.mV
+FIRING_THRESHOLD = -50 * b2.mV
+MEMBRANE_RESISTANCE = 10. * b2.Mohm
+MEMBRANE_TIME_SCALE = 8. * b2.ms
+ABSOLUTE_REFRACTORY_PERIOD = 2.0 * b2.ms
 
 
-def plot_data(rec, v_threshold=1., title=None):
-    """Plots a TimedArray for values I and v
-
-    Args:
-        rec (TimedArray): the data to plot
-        v_threshold (float): plots a threshold at this level [mV]
-        title (string): plot title to display
+def print_default_parameters():
     """
+    Prints the default values
+    Returns:
 
-    plt.subplot(211)
-    plt.plot(rec.t/b2.ms, rec.v[0]/b2.mV, lw=2)
-
-    if v_threshold is not None:
-        plt.plot(
-            (rec.t/b2.ms)[[0, -1]],
-            [v_threshold, v_threshold],
-            'r--', lw=2
-        )
-
-    plt.xlabel('t [ms]')
-    plt.ylabel('v [mV]')
-    plt.ylim(0, v_threshold * 1.2)
-    plt.grid()
-
-    plt.subplot(212)
-    plt.plot(rec.t/b2.ms, rec.I[0]/b2.namp, lw=2)
-    plt.xlabel('t [ms]')
-    plt.ylabel('I [mV]')
-    plt.grid()
-
-    if title is not None:
-        plt.suptitle(title)
-
-    plt.show()
+    """
+    print("Resting potential: {}".format(V_REST))
+    print("Reset voltage: {}".format(V_RESET))
+    print("Firing threshold: {}".format(FIRING_THRESHOLD))
+    print("Membrane resistance: {}".format(MEMBRANE_RESISTANCE))
+    print("Membrane time-scale: {}".format(MEMBRANE_TIME_SCALE))
+    print("Absolute refractory period: {}".format(ABSOLUTE_REFRACTORY_PERIOD))
 
 
-def LIF_Neuron(curr, simtime):
-    """Simple LIF neuron implemented in Brian2.
+def simulate_LIF_neuron(input_current,
+                        simulation_time=5 * b2.ms,
+                        v_rest=V_REST,
+                        v_reset=V_RESET,
+                        firing_threshold=FIRING_THRESHOLD,
+                        membrane_resistance=MEMBRANE_RESISTANCE,
+                        membrance_time_scale=MEMBRANE_TIME_SCALE,
+                        abs_refractory_period=ABSOLUTE_REFRACTORY_PERIOD):
+    """Basic leaky integrate and fire neuron implementation.
 
     Args:
-        curr (TimedArray): Input current injected into the neuron
-        simtime (float): Simulation time [seconds]
+        input_current (TimedArray): TimedArray of current amplitudes. One column per current_injection_location.
+        simulation_time (Quantity): Time for which the dynamics are simulated: 5ms
+        v_rest (Quantity): Resting potential: -70mV
+        v_reset (Quantity): Reset voltage after spike - 65mV
+        firing_threshold (Quantity) Voltage threshold for spiking -50mV
+        membrane_resistance (Quantity): 10Mohm
+        membrance_time_scale (Quantity): 8ms
+        abs_refractory_period (Quantity): 2ms
 
     Returns:
-        StateMonitor: Brian2 StateMonitor with input current (I) and
-        voltage (V) recorded
+        StateMonitor: Brian2 StateMonitor for the membrane voltage "v"
+        SpikeMonitor: Biran2 SpikeMonitor
     """
 
-    # constants
-    v_reset = 0.*b2.mV
-    v_threshold = 1.*b2.mV
-    R = 1*b2.Mohm
-    v_rest = 0*b2.mV
-    tau = 1*b2.ms
-
-    v_reset_ = "v=%f*volt" % v_reset
-    v_threshold_ = "v>%f*volt" % v_threshold
+    v_reset_str = "v={:f}*volt".format(v_reset / b2.volt)  # get a string in format "value * unit"
+    v_threshold_str = "v>{:f}*volt".format(firing_threshold / b2.volt)
 
     # differential equation of Leaky Integrate-and-Fire model
-    eqs = '''
-        dv/dt = ( -(v-v_rest) + R * I ) / tau : volt
-        I = curr(t) : amp
-    '''
+    eqs = """
+    dv/dt =
+    ( -(v-v_rest) + membrane_resistance * input_current(t,i) ) / membrance_time_scale : volt (unless refractory)"""
 
     # LIF neuron using Brian2 library
-    IF = b2.NeuronGroup(1, model=eqs, reset=v_reset_, threshold=v_threshold_)
-    IF.v = v_rest
+    neuron = b2.NeuronGroup(
+        1, model=eqs, reset=v_reset_str, threshold=v_threshold_str, refractory=abs_refractory_period)
+    neuron.v = v_rest  # set initial value
 
     # monitoring membrane potential of neuron and injecting current
-    rec = b2.StateMonitor(IF, ['v', 'I'], record=True)
-
+    state_monitor = b2.StateMonitor(neuron, ["v"], record=True)
+    spike_monitor = b2.SpikeMonitor(neuron)
     # run the simulation
-    b2.run(simtime)
-
-    return rec
-
-
-def LIF_Step(I_tstart=20, I_tend=70, I_amp=1.005,
-             tend=100, do_plot=True):
-    """Run the LIF and give a step current input.
-
-    Args:
-        tend (float, optional): the simulation time of the model [ms]
-        I_tstart (float, optional): start of current step [ms]
-        I_tend (float, optional): start of end step [ms]
-        I_amp (float, optional): amplitude of current step [nA]
-        do_plot (bool, optional): plot the resulting simulation
-
-    Returns:
-        StateMonitor: Brian2 StateMonitor with input current (I) and
-        voltage (V) recorded
-    """
-
-    # 1ms sampled step current
-    tmp = np.zeros(tend) * b2.namp
-    tmp[int(I_tstart):int(I_tend)] = I_amp * b2.namp
-    curr = b2.TimedArray(tmp, dt=1.*b2.ms)
-
-    rec = LIF_Neuron(curr, tend * b2.ms)
-
-    if do_plot:
-        plot_data(
-            rec,
-            title="Step current",
-        )
-
-    return rec
+    b2.run(simulation_time)
+    return state_monitor, spike_monitor
 
 
-def LIF_Sinus(I_freq=0.1, I_offset=0.5, I_amp=0.5,
-              tend=100, dt=.1, do_plot=True):
-    """
-    Run the LIF for a sinusoidal current
+__OBFUSCATION_FACTORS = [543, 622, 9307, 584, 2029, 211]
+
+
+def _obfuscate_params(param_set):
+    """ A helper to _obfuscate_params a parameter vector.
 
     Args:
-        tend (float, optional): the simulation time of the model [ms]
-        I_freq (float, optional): frequency of current sinusoidal [kHz]
-        I_offset (float, optional): DC offset of current [nA]
-        I_amp (float, optional): amplitude of sinusoidal [nA]
-        do_plot (bool, optional): plot the resulting simulation
+        param_set:
 
     Returns:
-        StateMonitor: Brian2 StateMonitor with input current (I) and
-        voltage (V) recorded
+        list: obfuscated list
     """
+    obfuscated_factors = [__OBFUSCATION_FACTORS[i] * param_set[i] for i in range(6)]
+    return obfuscated_factors
 
-    # dt sampled sinusoidal function
-    t = np.arange(0, tend, dt)
-    tmp = (I_amp*np.sin(2.0*np.pi*I_freq*t)+I_offset) * b2.namp
-    curr = b2.TimedArray(tmp, dt=dt*b2.ms)
 
-    rec = LIF_Neuron(curr, tend * b2.ms)
+def _deobfuscate_params(obfuscated_params):
+    """ A helper to deobfuscate a parameter set.
 
-    if do_plot:
-        plot_data(
-            rec,
-            title="Sinusoidal current",
-        )
+    Args:
+        obfuscated_params (list):
 
-    return rec
+    Returns:
+        list: de-obfuscated list
+    """
+    param_set = [obfuscated_params[i] / __OBFUSCATION_FACTORS[i] for i in range(6)]
+    return param_set
+
+
+def get_random_param_set(random_seed=None):
+    """
+    creates a set of random parameters. All values are constrained to their typical range
+    Returns:
+        list: a list of (obfuscated) parameters. Use this vector when calling simulate_random_neuron()
+    """
+    random.seed(random_seed)
+    v_rest = (-75. + random.randint(0, 15)) * b2.mV
+    v_reset = v_rest + random.randint(-10, +10) * b2.mV
+    firing_threshold = random.randint(-40, +5) * b2.mV
+    membrane_resistance = random.randint(2, 15) * b2.Mohm
+    membrane_time_scale = random.randint(2, 30) * b2.ms
+    abs_refractory_period = random.randint(1, 7) * b2.ms
+    true_rand_params = [v_rest, v_reset, firing_threshold,
+                        membrane_resistance, membrane_time_scale, abs_refractory_period]
+    return _obfuscate_params(true_rand_params)
+
+
+def print_obfuscated_parameters(obfuscated_params):
+    """ Print the de-obfuscated values to the console
+
+    Args:
+        obfuscated_params:
+
+    Returns:
+
+    """
+    true_vals = _deobfuscate_params(obfuscated_params)
+    print("Resting potential: {}".format(true_vals[0]))
+    print("Reset voltage: {}".format(true_vals[1]))
+    print("Firing threshold: {}".format(true_vals[2]))
+    print("Membrane resistance: {}".format(true_vals[3]))
+    print("Membrane time-scale: {}".format(true_vals[4]))
+    print("Absolute refractory period: {}".format(true_vals[5]))
+
+
+def simulate_random_neuron(input_current, obfuscated_param_set):
+    """
+    Simulates a LIF neuron with unknown parameters (obfuscated_param_set)
+    Args:
+        input_current (TimedArray): The current to probe the neuron
+        obfuscated_param_set (list): obfuscated parameters
+
+    Returns:
+        StateMonitor: Brian2 StateMonitor for the membrane voltage "v"
+        SpikeMonitor: Biran2 SpikeMonitor
+    """
+    vals = _deobfuscate_params(obfuscated_param_set)
+    # run the LIF model
+    state_monitor, spike_monitor = simulate_LIF_neuron(
+        input_current,
+        simulation_time=50 * b2.ms,
+        v_rest=vals[0],
+        v_reset=vals[1],
+        firing_threshold=vals[2],
+        membrane_resistance=vals[3],
+        membrance_time_scale=vals[4],
+        abs_refractory_period=vals[5])
+    return state_monitor, spike_monitor
+
+
+def getting_started():
+    """
+    An example to quickly get started with the LIF module.
+    Returns:
+
+    """
+    # specify step current
+    step_current = input_factory.get_step_current(
+        t_start=100, t_end=200, unit_time=b2.ms,
+        amplitude=1.2 * b2.namp)
+    # run the LIF model
+    (state_monitor, spike_monitor) = simulate_LIF_neuron(input_current=step_current, simulation_time=300 * b2.ms)
+
+    # plot the membrane voltage
+    plot_tools.plot_voltage_and_current_traces(state_monitor, step_current,
+                                               title="Step current", firing_threshold=FIRING_THRESHOLD)
+    print("nr of spikes: {}".format(len(spike_monitor.t)))
+
+    # second example: sinusoidal current. note the higher resolution 0.1 * b2.ms
+    sinusoidal_current = input_factory.get_sinusoidal_current(
+        500, 1500, unit_time=0.1 * b2.ms,
+        amplitude=2.5 * b2.namp, frequency=150 * b2.Hz, direct_current=2. * b2.namp)
+    # run the LIF model
+    (state_monitor, spike_monitor) = simulate_LIF_neuron(
+        input_current=sinusoidal_current, simulation_time=200 * b2.ms)
+    # plot the membrane voltage
+    plot_tools.plot_voltage_and_current_traces(
+        state_monitor, sinusoidal_current, title="Sinusoidal input current", firing_threshold=FIRING_THRESHOLD)
+    print("nr of spikes: {}".format(spike_monitor.count[0]))
+
+
+if __name__ == "__main__":
+    getting_started()

@@ -25,7 +25,7 @@ Relevant book chapters:
 # Cambridge University Press, 2014.
 
 import numpy as np
-import math
+import neurodynex.hopfield_network
 
 
 class HopfieldNetwork:
@@ -34,7 +34,7 @@ class HopfieldNetwork:
     Attributes:
         nrOfNeurons (int): Number of neurons
         weights (numpy.ndarray): nrOfNeurons x nrOfNeurons matrix of weights
-        state (numpy.ndarray): current network state (of size N**2)
+        state (numpy.ndarray): current network state. matrix of shape (nrOfNeurons, nrOfNeurons)
     """
 
     def __init__(self, nr_neurons):
@@ -44,7 +44,7 @@ class HopfieldNetwork:
             nr_neurons (int): Number of neurons. Use a square number to get the
             visualizations properly
         """
-        math.sqrt(nr_neurons)
+        # math.sqrt(nr_neurons)
         self.nrOfNeurons = nr_neurons
         # initialize with random state
         self.state = 2 * np.random.randint(0, 2, self.nrOfNeurons) - 1
@@ -60,16 +60,6 @@ class HopfieldNetwork:
         self.weights = 1.0 / self.nrOfNeurons * \
             (2 * np.random.rand(self.nrOfNeurons, self.nrOfNeurons) - 1)
 
-    def set_dynamics_probabilistic_sync(self, inverse_temp_beta):
-        """
-        Sets the network dynamics to a probabilistic update function:
-        P(on/off) ~ tanh(beta*h)
-        All neurons are updated at once (synchronous update)
-        Args:
-            inverse_temp_beta: inverse temperature
-        """
-        self._update_method = _get_probabilistic_update_function(inverse_temp_beta)
-
     def set_dynamics_sign_sync(self):
         """
         sets the update dynamics to the synchronous, deterministic g(h) = sign(h) function
@@ -78,7 +68,7 @@ class HopfieldNetwork:
 
     def set_dynamics_sign_async(self):
         """
-        Sets the update dynamics to the g(h)= sign(h) functions. Neurons are updated asynchronously:
+        Sets the update dynamics to the g(h) =  sign(h) functions. Neurons are updated asynchronously:
         In random order, all neurons are updated sequentially
         """
         self._update_method = _get_async_sign_update_function()
@@ -105,7 +95,7 @@ class HopfieldNetwork:
         all_same_size_as_net = all(len(p.flatten()) == self.nrOfNeurons for p in pattern_list)
         if not all_same_size_as_net:
             errMsg = "Not all patterns in pattern_list have exactly the same number of states " \
-                     "as this network has neurons n={0}.".format(self.nrOfNeurons)
+                     "as this network has neurons n = {0}.".format(self.nrOfNeurons)
             raise ValueError(errMsg)
         self.weights = np.zeros((self.nrOfNeurons, self.nrOfNeurons))
         # textbook formula to compute the weights:
@@ -130,28 +120,28 @@ class HopfieldNetwork:
         """Executes one timestep of the dynamics"""
         self.state = self._update_method(self.state, self.weights)
 
-    def run(self, t_max=5):
+    def run(self, nr_steps=5):
         """Runs the dynamics.
         Args:
-            t_max (float, optional): Timesteps to simulate
+            nr_steps (float, optional): Timesteps to simulate
         """
-        for i in range(t_max):
+        for i in range(nr_steps):
             # run a step
             self.iterate()
 
-    def run_with_monitoring(self, t_max=5):
+    def run_with_monitoring(self, nr_steps=5):
         """
-        Iterates at most t_max steps. records the network state after every
+        Iterates at most nr_steps steps. records the network state after every
         iteration
         Args:
-            t_max:
+            nr_steps:
 
         Returns:
             a list of 2d network states
         """
         states = list()
         states.append(self.state.copy())
-        for i in range(t_max):
+        for i in range(nr_steps):
             # run a step
             self.iterate()
             states.append(self.state.copy())
@@ -162,9 +152,8 @@ def _get_sign_update_function():
     """
     for internal use
     Returns:
-        A function implementing a synchronous state update using sigmoid
+        A function implementing a synchronous state update using sign(h)
     """
-
     def upd(state_s0, weights):
         h = np.sum(weights * state_s0, axis=1)
         s1 = np.sign(h)
@@ -173,17 +162,16 @@ def _get_sign_update_function():
         idx0 = s1 == 0
         s1[idx0] = 1
         return s1
-
     return upd
 
 
 def _get_async_sign_update_function():
     def upd(state_s0, weights):
         random_neuron_idx_list = np.random.permutation(len(state_s0))
-        state_s1 = np.zeros(state_s0.shape)
-        for i in range(len(state_s0)):
+        state_s1 = state_s0.copy()
+        for i in range(len(random_neuron_idx_list)):
             rand_neuron_i = random_neuron_idx_list[i]
-            h_i = np.dot(weights[:, rand_neuron_i], state_s0)
+            h_i = np.dot(weights[:, rand_neuron_i], state_s1)
             s_i = np.sign(h_i)
             if s_i == 0:
                 s_i = 1
@@ -191,26 +179,5 @@ def _get_async_sign_update_function():
         return state_s1
     return upd
 
-
-def _get_probabilistic_update_function(inverse_temp_beta):
-    """
-    for internal use
-    Args:
-        inverse_temp_beta (float)>=0:
-
-    Returns:
-        A function implementing a probabilistic, synchronous state update
-        using a sigmoidal transfer function g:= tanh(beta*h).
-    """
-
-    def upd(state_s0, weights):
-        h = np.sum(weights * state_s0, axis=1)
-        g = np.tanh(inverse_temp_beta * h)  # closure: inverse_temp_beta is available
-        prob = 0.5 * (g + 1.0)
-        s = []
-        for p in prob:
-            s.append(2 * np.random.binomial(1, p) - 1)
-        s1 = np.asarray(s)
-        return s1
-
-    return upd
+if __name__ == "__main__":
+    neurodynex.hopfield_network.demo.run_demo()
