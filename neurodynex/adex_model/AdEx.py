@@ -61,7 +61,7 @@ def simulate_AdEx_neuron(
         simulation_time=200 * b2.ms):
     r"""
     Implementation of the AdEx model with a single adaptation variable w.
-    
+
     The Brian2 model equations are:
 
     .. math::

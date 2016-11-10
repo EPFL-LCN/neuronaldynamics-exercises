@@ -33,7 +33,5 @@ conda-upload:
 
 # test
 test:
+	pep8 neurodynex --max-line-length=120
 	nosetests neurodynex --nocapture --verbosity=2
-	# ignore E265: allow uppercase variables in functions (for example 'I' for current etc)
-	# ignore E261: IDE typically intends after newline
-	pep8 neurodynex --max-line-length=120 --ignore=E265,W293,E261
