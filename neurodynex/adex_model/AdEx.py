@@ -59,11 +59,15 @@ def simulate_AdEx_neuron(
         tau_w=ADAPTATION_TIME_CONSTANT_tau_w,
         I_stim=input_factory.get_zero_current(),
         simulation_time=200 * b2.ms):
-    """
+    r"""
     Implementation of the AdEx model with a single adaptation variable w.
+    
     The Brian2 model equations are:
-        dv/dt = (-(v-v_rest) +delta_T*exp((v-v_rheobase)/delta_T)+ R * I_stim(t,i) - R * w)/(tau_m) : volt
-        dw/dt=(a*(v-v_rest)-w)/tau_w : amp
+
+    .. math::
+
+        \frac{dv}{dt} = (-(v-v_rest) +delta_T*exp((v-v_rheobase)/delta_T)+ R * I_stim(t,i) - R * w)/(tau_m) : volt \\
+        \frac{dw}{dt} = (a*(v-v_rest)-w)/tau_w : amp
 
     Args:
         tau_m (Quantity): membrane time scale

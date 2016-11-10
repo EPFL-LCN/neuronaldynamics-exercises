@@ -109,7 +109,7 @@ class NeuronAbstract(object):
 
         Returns:
             type as a string "Type I" or "Type II"
-\       """
+        """
         return self._get_neuron_type()
 
     def _get_neuron_type(self):
