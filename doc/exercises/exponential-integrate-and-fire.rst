@@ -84,7 +84,7 @@ Have a look at the following code: for the values i = 0, 2 and 6 we did not prov
 * Depending on the plot, increase or decrease the amplitude, repeat until you just get one spike.
 * Do the same for i = 2 and i = 6
 
-At the end of the script, the strength-duration curve is plotted. Discuss it.
+At the end of the script, the strength-duration curve is plotted. Discuss it. You may want to add a log-log plot to better see the asymptotic behaviour.
 
 .. code-block:: py
 
@@ -96,7 +96,7 @@ At the end of the script, the strength-duration curve is plotted. Discuss it.
 
     i=1  #change i and find the value that goes into min_amp
     durations = [1,   2,    5,  10,   20,   50, 100]
-    min_amp =   [0., 4.45, 0., 1.15, .70, .48, 0.]
+    min_amp =   [0., 4.42, 0., 1.10, .70, .48, 0.]
 
     t=durations[i]
     I_amp = min_amp[i]*b2.namp
