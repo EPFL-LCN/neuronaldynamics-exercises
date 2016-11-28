@@ -138,7 +138,7 @@ def get_spikes_current(t_spikes, unit_time, amplitude, append_zero=True):
         unit_time (Quantity, Time): unit of t_spikes . e.g. 1*brian2.ms
         amplitude (Quantity, Current):  amplitude of the spike. All spikes have the sampe amplitude
         append_zero (bool, optional): if true, 0Amp is appended at t_end+1. Without that trailing 0,
-        Brian reads out the last value in the array for all indices > t_end.
+            Brian reads out the last value in the array for all indices > t_end.
 
     Returns:
         TimedArray: Brian2.TimedArray
