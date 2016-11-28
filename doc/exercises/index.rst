@@ -17,3 +17,4 @@ Exercises
     neuron-type
     hopfield-network
     ojas-rule
+    brunel-network
