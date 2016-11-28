@@ -5,7 +5,7 @@ In this exercise we study a well known network of sparsely connected Leaky-Integ
 
 **Book chapters**
 
-The Brunel model is introduced in `Chapter 13 Section 4.2 <http://neuronaldynamics.epfl.ch/online/Ch13.S4.html>`_ . Read the section "Synchrony, oscillations, and irregularity" and have a look at Figure 13.7
+The Brunel model is introduced in `Chapter 13 Section 4.2 <http://neuronaldynamics.epfl.ch/online/Ch13.S4.html>`_ . Read the section "Synchrony, oscillations, and irregularity" and have a look at Figure 13.7. You can skip the explanations related to the Fokker-Planck equation.
 
 
 **Python classes**

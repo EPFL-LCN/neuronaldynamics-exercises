@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     neurodynex.adex_model
+    neurodynex.brunel_model
     neurodynex.cable_equation
     neurodynex.exponential_integrate_fire
     neurodynex.hodgkin_huxley
