@@ -59,7 +59,7 @@ def simulate_LIF_neuron(input_current,
                         v_reset=V_RESET,
                         firing_threshold=FIRING_THRESHOLD,
                         membrane_resistance=MEMBRANE_RESISTANCE,
-                        membrance_time_scale=MEMBRANE_TIME_SCALE,
+                        membrane_time_scale=MEMBRANE_TIME_SCALE,
                         abs_refractory_period=ABSOLUTE_REFRACTORY_PERIOD):
     """Basic leaky integrate and fire neuron implementation.
 
@@ -70,7 +70,7 @@ def simulate_LIF_neuron(input_current,
         v_reset (Quantity): Reset voltage after spike - 65mV
         firing_threshold (Quantity) Voltage threshold for spiking -50mV
         membrane_resistance (Quantity): 10Mohm
-        membrance_time_scale (Quantity): 8ms
+        membrane_time_scale (Quantity): 8ms
         abs_refractory_period (Quantity): 2ms
 
     Returns:
@@ -78,17 +78,14 @@ def simulate_LIF_neuron(input_current,
         SpikeMonitor: Biran2 SpikeMonitor
     """
 
-    v_reset_str = "v={:f}*volt".format(v_reset / b2.volt)  # get a string in format "value * unit"
-    v_threshold_str = "v>{:f}*volt".format(firing_threshold / b2.volt)
-
     # differential equation of Leaky Integrate-and-Fire model
     eqs = """
     dv/dt =
-    ( -(v-v_rest) + membrane_resistance * input_current(t,i) ) / membrance_time_scale : volt (unless refractory)"""
+    ( -(v-v_rest) + membrane_resistance * input_current(t,i) ) / membrane_time_scale : volt (unless refractory)"""
 
     # LIF neuron using Brian2 library
     neuron = b2.NeuronGroup(
-        1, model=eqs, reset=v_reset_str, threshold=v_threshold_str, refractory=abs_refractory_period)
+        1, model=eqs, reset="v=v_reset", threshold="v>firing_threshold", refractory=abs_refractory_period)
     neuron.v = v_rest  # set initial value
 
     # monitoring membrane potential of neuron and injecting current
@@ -184,7 +181,7 @@ def simulate_random_neuron(input_current, obfuscated_param_set):
         v_reset=vals[1],
         firing_threshold=vals[2],
         membrane_resistance=vals[3],
-        membrance_time_scale=vals[4],
+        membrane_time_scale=vals[4],
         abs_refractory_period=vals[5])
     return state_monitor, spike_monitor
 
