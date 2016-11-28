@@ -91,19 +91,14 @@ Exercise: f-I Curve
 -------------------
 For a constant input current I, a LIF neuron fires regularly with firing frequency f. If the current is to small (I < I_min) f is 0Hz; for larger I the rate increases. A neuron's firing-rate versus input-amplitude relationship is visualized in an "f-I curve".
 
-Question: plotting the f-I Curve
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Inject currents of different amplitudes into a LIF neuron. For each current, run the simulation for 500ms and determine the firing frequency in Hz. Then plot the f-I curve.
 
 Question: f-I Curve and refractoryness
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-We now study the f-I curve for a neuron with a refractory period of 2ms (see :func:`.LIF.simulate_LIF_neuron` to learn how to set a refractory period).
-Before doing a simulation:
+We now study the f-I curve for a neuron with a refractory period of 3ms (see :func:`.LIF.simulate_LIF_neuron` to learn how to set a refractory period).
 
 #. Sketch the f-I curve you expect to see
 #. What is the maximum rate at which this neuron can fire?
-
-Now simulate the neuron with 2ms refractory period and plot the f-I curve.
+#. Inject currents of different amplitudes (from 0nA to 100nA) into a LIF neuron. For each current, run the simulation for 500ms and determine the firing frequency in Hz. Then plot the f-I curve. Pay attention to the low input current.
 
 
 Exercise: "Experimentally" estimate the parameters of a LIF neuron
@@ -116,7 +111,7 @@ Question: "Read" the LIF parameters out of the vm plot
 #. Get a random parameter set
 #. Create an input current of your choice.
 #. Simulate the LIF neuron using the random parameters and your test-current. Note that the simulation runs for a fixed duration of 50ms.
-#. Plot the membrane voltage and estimate the parameters. You do not have to write code to analyse the voltage data in the StateMonitor. Simply read the values out of the plot. For the Membrane resistance and the Membrane time-scale you might have to change your current.
+#. Plot the membrane voltage and estimate the parameters. You do not have to write code to analyse the voltage data in the StateMonitor. Simply estimate the values from the plot. For the Membrane resistance and the Membrane time-scale you might have to change your current.
 #. compare your estimates with the true values.
 
 Again, you do not have to write much code. Use the helper functions:
@@ -166,11 +161,18 @@ Create a sinusoidal input current (see example below) and inject it into the LIF
 Question
 ~~~~~~~~
 
-For input frequencies between :math:`0.1kHz` and :math:`1.kHz`, plot the input frequency against the resulting *amplitude of subthreshold oscillations* of the membrane potential.
+For input frequencies between :math:`10 Hz` and :math:`1 kHz`, plot the   the resulting *amplitude of subthreshold oscillations* of the membrane potential vs. input frequency.
 
 Question
 ~~~~~~~~
 
-For input frequencies between :math:`0.1kHz` and :math:`1.kHz`, plot the
-input frequency against the resulting *frequency and phase of
-subthreshold oscillations* of the membrane potential.
+For input frequencies between :math:`10 Hz` and :math:`1 kHz`, plot the resulting *phase shift of subthreshold oscillations* of the membrane potential vs. input frequency.
+
+Question
+~~~~~~~~
+
+To what type of filter (High-Pass, Low-Pass) does this correspond?
+
+.. note::
+
+    It is not straight forward to automatically determine the phase shift in a script. For this exercise, simply get it "visually" from your plot. If you want to automatize the procedure in your Python script you could try the function scipy.signal.correlate().

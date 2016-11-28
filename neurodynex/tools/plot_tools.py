@@ -25,15 +25,14 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
     max_current = max(current(voltage_monitor.t, 0))
     min_current = min(current(voltage_monitor.t, 0))
     margin = 1.05 * (max_current - min_current)
+    # plot the input current time-aligned with the voltage monitor
     plt.plot(voltage_monitor.t / b2.ms, c, "r", lw=2)
     if margin > 0.:
         plt.ylim((min_current - margin) / b2.amp, (max_current + margin) / b2.amp)
     # plt.xlabel("t [ms]")
     plt.ylabel("Input current [A] \n min: {0} \nmax: {1}".format(min_current, max_current))
     plt.grid()
-
     axis_v = plt.subplot(212)
-
     plt.plot(time_values_ms, voltage_monitor[0].v / b2.mV, lw=2)
     if firing_threshold is not None:
         plt.plot(

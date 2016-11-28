@@ -96,8 +96,7 @@ def simulate_AdEx_neuron(
         dw/dt=(a*(v-v_rest)-w)/tau_w : amp
         """
 
-    neuron = b2.NeuronGroup(
-        1, model=eqs, threshold=v_spike_str, reset="v=v_reset;w+=b")
+    neuron = b2.NeuronGroup(1, model=eqs, threshold=v_spike_str, reset="v=v_reset;w+=b", method="euler")
 
     # initial values of v and w is set here:
     neuron.v = v_rest
@@ -123,11 +122,11 @@ def plot_adex_state(adex_state_monitor):
     plt.subplot(2, 2, 1)
     plt.plot(adex_state_monitor.t / b2.ms, adex_state_monitor.v[0] / b2.mV, lw=2)
     plt.xlabel("t [ms]")
-    plt.ylabel("v [mV]")
+    plt.ylabel("u [mV]")
     plt.title("Membrane potential")
     plt.subplot(2, 2, 2)
     plt.plot(adex_state_monitor.v[0] / b2.mV, adex_state_monitor.w[0] / b2.pA, lw=2)
-    plt.xlabel("v [mV]")
+    plt.xlabel("u [mV]")
     plt.ylabel("w [pAmp]")
     plt.title("Phase plane representation")
     plt.subplot(2, 2, 3)

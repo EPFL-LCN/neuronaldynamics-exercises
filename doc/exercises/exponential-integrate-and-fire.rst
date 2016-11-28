@@ -63,7 +63,7 @@ Question:
 
 * modify the code example given above: Call :func:`.simulate_exponential_IF_neuron` with v_spike=+10mV (instead of the default value -30mV). What do you expect to happen? How many spikes will be generated?
 
-* Compute the minimal amplitude I_rh of a constant input current such that the neuron will elicit a spike.
+* Compute the minimal amplitude I_rh of a constant input current such that the neuron will elicit a spike. If you are not sure what and how to compute I_rh, have a look at `Figure 5.1 <http://neuronaldynamics.epfl.ch/online/Ch5.S1.html>`_  and `the textbox "Rheobase threshold and interpretation of parameters" <http://neuronaldynamics.epfl.ch/online/Ch5.S2.html>`_ in the book.
 
 * Validate your result: Modify the code given above and inject a current of amplitude I_rh and 300 ms duration into the expIF neuron.
 
@@ -84,7 +84,7 @@ Have a look at the following code: for the values i = 0, 2 and 6 we did not prov
 * Depending on the plot, increase or decrease the amplitude, repeat until you just get one spike.
 * Do the same for i = 2 and i = 6
 
-At the end of the script, the strength-duration curve is plotted. Discuss it.
+At the end of the script, the strength-duration curve is plotted. Discuss it. You may want to add a log-log plot to better see the asymptotic behaviour.
 
 .. code-block:: py
 
@@ -96,7 +96,7 @@ At the end of the script, the strength-duration curve is plotted. Discuss it.
 
     i=1  #change i and find the value that goes into min_amp
     durations = [1,   2,    5,  10,   20,   50, 100]
-    min_amp =   [0., 4.45, 0., 1.15, .70, .48, 0.]
+    min_amp =   [0., 4.42, 0., 1.10, .70, .48, 0.]
 
     t=durations[i]
     I_amp = min_amp[i]*b2.namp

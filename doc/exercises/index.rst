@@ -8,13 +8,13 @@ Exercises
     :numbered:
 
     setup
-    exponential-integrate-and-fire
     leaky-integrate-and-fire
+    exponential-integrate-and-fire
     adex-model
     passive-cable
     hodgkin-huxley
     phase-plane-analysis
-    neuron-type
     hopfield-network
+    neuron-type
     ojas-rule
     brunel-network

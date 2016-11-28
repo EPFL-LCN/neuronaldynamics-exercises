@@ -76,7 +76,7 @@ def simulate_exponential_IF_neuron(
     v_spike_str = "v>{:f}*mvolt".format(v_spike / b2.mvolt)
 
     # making neuron using Brian library
-    neuron = b2.NeuronGroup(1, model=eqs, reset=v_reset_str, threshold=v_spike_str)
+    neuron = b2.NeuronGroup(1, model=eqs, reset=v_reset_str, threshold=v_spike_str, method="euler")
     # b2.reinit()
     # initialization of simulator
     neuron.v = v_rest
