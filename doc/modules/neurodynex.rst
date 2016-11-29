@@ -16,7 +16,6 @@ Subpackages
     neurodynex.neuron_type
     neurodynex.ojas_rule
     neurodynex.phase_plane_analysis
-    neurodynex.spike_train_variability
     neurodynex.test
     neurodynex.tools
 

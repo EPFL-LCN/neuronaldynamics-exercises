@@ -1,11 +1,11 @@
-Brunel Network
-==============
+Network of LIF neurons
+======================
 
-In this exercise we study a well known network of sparsely connected Leaky-Integrate-and-Fire neurons (Brunel, 2000).
+In this exercise we study a well known network of sparsely connected Leaky-Integrate-And-Fire neurons (Brunel, 2000).
 
 **Book chapters**
 
-The Brunel model is introduced in `Chapter 13 Section 4.2 <http://neuronaldynamics.epfl.ch/online/Ch13.S4.html>`_ . Read the section "Synchrony, oscillations, and irregularity" and have a look at Figure 13.7. You can skip the explanations related to the Fokker-Planck equation.
+The Brunel model is introduced in `Chapter 13 Section 4.2 <http://neuronaldynamics.epfl.ch/online/Ch13.S4.html>`_ . The network structure is shown in figure 13.6b. Read the section "Synchrony, oscillations, and irregularity" and have a look at Figure 13.7. For this exercise, you can skip the explanations related to the Fokker-Planck equation.
 
 
 **Python classes**
