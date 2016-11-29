@@ -10,110 +10,87 @@ The Brunel model is introduced in `Chapter 13 Section 4.2 <http://neuronaldynami
 
 **Python classes**
 
-The module :mod:`.brunel_model.LIF_spiking_network` implements a parametrized network.
+The module :mod:`.brunel_model.LIF_spiking_network` implements a parametrized network. The figure below shows the simulation result of a default configuration.
 
 
-.. figure:: exc_images/exp_IF_min_current.png
+.. figure:: exc_images/Brunel_Spiking_LIF.png
    :align: center
 
-   A short pulse current of 2ms duration is injected into an Exponential-Integrate-and-Fire neuron. The current amplitude is just sufficient to elicit a spike.
+   Simulation result. Top: raster plot of 150 randomly selected neurons. Three spike trains are visually highlighted. Middle: time evolution of the population activity A(t). Bottom: Membrane voltage of three neurons. The red color in the top and bottom panels identifies the same neuron.
 
 
-To get started, copy the following code into a Jupyter notebook. It follows a common pattern used in these exercises: use the input_factory to get a specific current, inject it into the neuron model we provide, and finally use the plot_tools to visualize the state variables:
+To get started, call the function  :func:`LIF_spiking_network.getting_started` or copy the following code into a Jupyter notebook.
 
 
 .. code-block:: py
 
-    % matplotlib inline
+    %matplotlib inline
+    from neurodynex.brunel_model import LIF_spiking_network
     import brian2 as b2
-    import matplotlib.pyplot as plt
-    import neurodynex.exponential_integrate_fire.exp_IF as exp_IF
-    from neurodynex.tools import plot_tools, input_factory
+
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = LIF_spiking_network.simulate_brunel_network(N_Excit=2000, sim_time=100. * b2.ms, monitored_subset_size=150)
+    LIF_spiking_network.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx)
 
 
-    input_current = input_factory.get_step_current(
-        t_start=20, t_end=120, unit_time=b2.ms, amplitude=0.8 * b2.namp)
-
-    state_monitor, spike_monitor = exp_IF.simulate_exponential_IF_neuron(
-        I_stim=input_current, simulation_time=200*b2.ms)
-
-    plot_tools.plot_voltage_and_current_traces(
-        state_monitor, input_current,title="step current",
-        firing_threshold=exp_IF.FIRING_THRESHOLD_v_spike)
-    print("nr of spikes: {}".format(spike_monitor.count[0]))
 
 
-Note that you can change all parameters of the neuron by using the named parameters of the function :func:`.simulate_exponential_IF_neuron`. If you do not specify any parameter, the default values are used (see next code block). You can access these variables in your code by prefixing them with the module name (for example exp_IF.FIRING_THRESHOLD_v_spike).
+Note that you can change all parameters of the neuron by using the named parameters of the function :func:`.simulate_brunel_network`. If you do not specify any parameter, the default values are used (see next code block). You can access these variables in your code by prefixing them with the module name (for example LIF_spiking_network.POISSON_INPUT_RATE).
 
 .. code-block:: py
 
-    MEMBRANE_TIME_SCALE_tau = 12.0 * b2.ms
-    MEMBRANE_RESISTANCE_R = 20.0 * b2.Mohm
-    V_REST = -65.0 * b2.mV
-    V_RESET = -60.0 * b2.mV
-    RHEOBASE_THRESHOLD_v_rh = -55.0 * b2.mV
-    SHARPNESS_delta_T = 2.0 * b2.mV
-    FIRING_THRESHOLD_v_spike = -30. * b2.mV
-
-Exercise: rehobase threshold
-----------------------------
-
-The goal of this exercise is to study the minimal current that can elicit a spike and to understand the different notions of a firing threshold. The Exponential-Integrate-and-Fire neuron model has two threshold related parameters. They correspond to the named parameters 'v_spike' and 'v_rheobase' in the function :func:`.simulate_exponential_IF_neuron`.
-
-Question:
-~~~~~~~~~
-
-* modify the code example given above: Call :func:`.simulate_exponential_IF_neuron` with v_spike=+10mV (instead of the default value -30mV). What do you expect to happen? How many spikes will be generated?
-
-* Compute the minimal amplitude I_rh of a constant input current such that the neuron will elicit a spike.
-
-* Validate your result: Modify the code given above and inject a current of amplitude I_rh and 300 ms duration into the expIF neuron.
+    V_REST = 0. * b2.mV
+    V_RESET = +10. * b2.mV
+    FIRING_THRESHOLD = +20. * b2.mV
+    MEMBRANE_TIME_SCALE = 20. * b2.ms
+    ABSOLUTE_REFRACTORY_PERIOD = 2.0 * b2.ms
+    # Default parameters of the network
+    SYNAPTIC_WEIGHT_W0 = 0.1 * b2.mV
+    # note: w_ee = w_ei = w0 and w_ie=w_ii = -g*w0
+    RELATIVE_INHIBITORY_STRENGTH_G = 4.  # balanced
+    CONNECTION_PROBABILITY_EPSILON = 0.1
+    SYNAPTIC_DELAY = 1.5*b2.ms
+    POISSON_INPUT_RATE = 12. * b2.Hz
+    N_POISSON_INPUT = 1000
 
 
-Exercise: strength-duration curve
----------------------------------
+Exercise: model parameters and threshold rate
+---------------------------------------------
 
-The minimal amplitude to elicit a spike depends on the duration of the current. For an infinitely long current, we've just calculated the rheobase current. For short pulses and step currents, we can "experimentally" determine the minimal currents. If we plot the amplitude versus duration, we get the strength-duration curve
+In the first question, we get familiar with the model and parameters. Make sure you have read the book chapters. Then have a look at the documentation of :func:`.simulate_brunel_network`. Note that in our implementation, the number of excitatory presynaptic poisson neurons (input from the external population) is a parameter (independent of the size of the excitatory population).
 
 
 Question:
 ~~~~~~~~~
-Have a look at the following code: for the values i = 0, 2 and 6 we did not provide the minimal amplitude, but the entries in min_amp[i] are set to 0. Complete the min_amp list.
+Run the simulation with the default parameters (see code block above). For this default configuration, what values  take the following variables :
 
-* Set the index i to 0
-* Enter an informed guess into the min_amp table
-* Run the script
-* Depending on the plot, increase or decrease the amplitude, repeat until you just get one spike.
-* Do the same for i = 2 and i = 6
+* CE, CI, w_EI, w_II
 
-At the end of the script, the strength-duration curve is plotted. Discuss it.
+* What are the units of the weights w_EI and w_II?
 
-.. code-block:: py
+* The frequency nu_threshold is is the poisson rate for which the external population drives the neurons to the firing threshold.  equation TODO. Compute nu_threshold.
 
-    % matplotlib inline
-    import brian2 as b2
-    import matplotlib.pyplot as plt
-    import neurodynex.exponential_integrate_fire.exp_IF as exp_IF
-    from neurodynex.tools import plot_tools, input_factory
+* What is the meaning of the value 1 on the y-axis (Input); what is g (the x-axis)?
 
-    i=1  #change i and find the value that goes into min_amp
-    durations = [1,   2,    5,  10,   20,   50, 100]
-    min_amp =   [0., 4.45, 0., 1.15, .70, .48, 0.]
+* Refering to Figure 13.7, left panel, what is the horizontal dashed line designating? How is it related to nu_threshold?
 
-    t=durations[i]
-    I_amp = min_amp[i]*b2.namp
-    title_txt = "I_amp={}, t={}".format(I_amp, t*b2.ms)
 
-    input_current = input_factory.get_step_current(t_start=10, t_end=10+t-1, unit_time=b2.ms, amplitude=I_amp)
+Exercise: Population activity
+-----------------------------
 
-    state_monitor, spike_monitor = exp_IF.simulate_exponential_IF_neuron(I_stim=input_current, simulation_time=(t+20)*b2.ms)
+The network of spiking LIF-neurons shows characteristic population activities. In this exercise we investigate the patterns asynchronous irregular (AI), synchronous regular (SR), fast synchronous irregular (SI fast) and slow synchronous irregular (SI slow).
 
-    plot_tools.plot_voltage_and_current_traces(state_monitor, input_current,
-                                               title=title_txt, firing_threshold=exp_IF.FIRING_THRESHOLD_v_spike,
-                                              legend_location=2)
-    print("nr of spikes: {}".format(spike_monitor.count[0]))
 
-    plt.plot(durations, min_amp)
-    plt.title("Strength-Duration curve")
-    plt.xlabel("t [ms]")
-    plt.ylabel("min amplitude [nAmp]")
+Question:
+~~~~~~~~~
+
+TODO
+
+* The function :func:`.simulate_brunel_network` gives you two options to vary the input strength (y-axis in figure 13.7, a). What options do you have?
+
+* using a network of 5000 excitatory neurons, find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow.
+
+
+
+* In SR, what is the average firing frequency of a single neuron? Use the spike monitor to ...
+
+* Simulate the network with only 2000 neurons in SR regime, what do you expect to happen?

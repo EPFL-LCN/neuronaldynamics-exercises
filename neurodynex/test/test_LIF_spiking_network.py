@@ -1,10 +1,11 @@
-from neurodynex.brunel_model import LIF_spiking_network
 import brian2 as b2
+from neurodynex.brunel_model import LIF_spiking_network
+
+print(b2.__version__)
 
 
 def test_LIF_spiking_network():
     """Test LIF model: simulate_LIF_neuron(short pulse, 1ms, default values)"""
-
     rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons =\
         LIF_spiking_network.simulate_brunel_network(
             N_Excit=10,
