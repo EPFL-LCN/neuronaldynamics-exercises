@@ -96,9 +96,10 @@ Question:
 * Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 800ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last 50ms.
 
 
-Exercise: Synchronization
--------------------------
+Exercise: Emergence of Synchronization
+--------------------------------------
 The different regimes emerge from from the recurrence and the relative strength of inhibition `g`. In the absence of recurrent feedback from the network, the network would approach a constant mean activity A(t).
+
 
 Question:
 ~~~~~~~~~
@@ -108,3 +109,8 @@ Question:
 
 * Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.
 
+
+.. figure:: exc_images/Brunel_Synchronization.png
+   :align: center
+
+   Simulation with random v_m initialization. The synchronization of the neurons is not just an artefact of the shared initial conditions, but emerges over time.

@@ -7,6 +7,7 @@ from brian2 import NeuronGroup, Synapses, PoissonInput
 from brian2.monitors import StateMonitor, SpikeMonitor, PopulationRateMonitor
 from random import sample
 from neurodynex.tools import plot_tools
+from numpy import random
 import matplotlib.pyplot as plt
 
 
@@ -44,6 +45,7 @@ def simulate_brunel_network(
         membrane_time_scale=MEMBRANE_TIME_SCALE,
         abs_refractory_period=ABSOLUTE_REFRACTORY_PERIOD,
         monitored_subset_size=100,
+        random_vm_init=False,
         sim_time=100.*b2.ms):
     """
     Implementation of a sparsely connected network of LIF neurons (Brunel 2000)
@@ -74,6 +76,8 @@ def simulate_brunel_network(
         membrane_time_scale (Quantity): tau_m
         abs_refractory_period (Quantity): absolute refractory period, tau_ref
         monitored_subset_size (int): nr of neurons for which a VoltageMonitor is recording Vm
+        random_vm_init (bool): if true, the membrane voltage of each neuron is initialized with a
+            random value drawn from Uniform(v_rest, firing_threshold)
         sim_time (Quantity): Simulation time
 
     Returns:
@@ -101,7 +105,10 @@ def simulate_brunel_network(
         N_Excit+N_Inhib, model=lif_dynamics,
         threshold="v>firing_threshold", reset="v=v_reset", refractory=abs_refractory_period,
         method="linear")
-    network.v = v_rest
+    if random_vm_init:
+        network.v = random.uniform(v_rest/b2.mV, high=firing_threshold/b2.mV, size=(N_Excit+N_Inhib))*b2.mV
+    else:
+        network.v = v_rest
     excitatory_population = network[:N_Excit]
     inhibitory_population = network[N_Excit:]
 
@@ -125,13 +132,30 @@ def simulate_brunel_network(
     b2.run(sim_time)
     return rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons
 
+def demo_emergence_of_oscillation():
+    # poisson_rate = 35*b2.Hz
+    # g=7.8
+    poisson_rate = 18 * b2.Hz
+    g = 2.5
+
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = \
+        simulate_brunel_network(N_Excit=6000, random_vm_init=True, poisson_input_rate=poisson_rate,
+                                g=g, sim_time=300. * b2.ms, monitored_subset_size=50)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=0*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_max=50*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=250*b2.ms)
+    plt.show()
+
 
 def getting_started():
     """
         A simple example to get started
     """
     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-        N_Excit=2000, sim_time=500. * b2.ms, poisson_input_rate=15*b2.Hz, monitored_subset_size=100)
+        N_Excit=200, sim_time=500. * b2.ms, poisson_input_rate=15*b2.Hz, monitored_subset_size=100)
     plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
                           spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=1)
     plt.show()
