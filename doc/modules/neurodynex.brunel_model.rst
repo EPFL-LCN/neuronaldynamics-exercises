@@ -4,14 +4,6 @@ neurodynex.brunel_model package
 Submodules
 ----------
 
-neurodynex.brunel_model.Brunel-final module
--------------------------------------------
-
-.. automodule:: neurodynex.brunel_model.Brunel-final
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 neurodynex.brunel_model.LIF_spiking_network module
 --------------------------------------------------
 

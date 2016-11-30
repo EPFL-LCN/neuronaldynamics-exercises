@@ -28,6 +28,14 @@ neurodynex.test.test_LIF module
     :undoc-members:
     :show-inheritance:
 
+neurodynex.test.test_LIF_spiking_network module
+-----------------------------------------------
+
+.. automodule:: neurodynex.test.test_LIF_spiking_network
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 neurodynex.test.test_cable_equation module
 ------------------------------------------
 

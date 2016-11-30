@@ -6,7 +6,7 @@ import brian2 as b2
 from brian2 import NeuronGroup, Synapses, PoissonInput
 from brian2.monitors import StateMonitor, SpikeMonitor, PopulationRateMonitor
 from random import sample
-import numpy
+from neurodynex.tools import plot_tools
 import matplotlib.pyplot as plt
 
 
@@ -21,15 +21,15 @@ SYNAPTIC_WEIGHT_W0 = 0.1 * b2.mV
 # note: w_ee = w_ei = w0 and w_ie=w_ii = -g*w0
 RELATIVE_INHIBITORY_STRENGTH_G = 4.  # balanced
 CONNECTION_PROBABILITY_EPSILON = 0.1
-SYNAPTIC_DELAY = 1.5*b2.ms
-POISSON_INPUT_RATE = 12. * b2.Hz
+SYNAPTIC_DELAY = 1.5 * b2.ms
+POISSON_INPUT_RATE = 13. * b2.Hz
 N_POISSON_INPUT = 1000
 
-b2.defaultclock.dt = 0.07*b2.ms
+b2.defaultclock.dt = 0.07 * b2.ms
 
 
 def simulate_brunel_network(
-        N_Excit=2000,
+        N_Excit=5000,
         N_Inhib=None,
         N_extern=N_POISSON_INPUT,
         connection_probability=CONNECTION_PROBABILITY_EPSILON,
@@ -37,13 +37,14 @@ def simulate_brunel_network(
         g=RELATIVE_INHIBITORY_STRENGTH_G,
         synaptic_delay=SYNAPTIC_DELAY,
         poisson_input_rate=POISSON_INPUT_RATE,
+        w_external = None,
         v_rest=V_REST,
         v_reset=V_RESET,
         firing_threshold=FIRING_THRESHOLD,
         membrane_time_scale=MEMBRANE_TIME_SCALE,
         abs_refractory_period=ABSOLUTE_REFRACTORY_PERIOD,
         monitored_subset_size=100,
-        sim_time=500.*b2.ms):
+        sim_time=100.*b2.ms):
     """
     Implementation of a sparsely connected network of LIF neurons (Brunel 2000)
 
@@ -61,7 +62,12 @@ def simulate_brunel_network(
         w0 (float): Synaptic strength J
         g (float): relative importance of inhibition. J_exc = w0. J_inhib = -g*w0
         synaptic_delay (Quantity): Delay
-        poisson_input_rate (Quantity): Poisson rate
+        poisson_input_rate (Quantity): Poisson rate of the external population
+        w_external (float): optional. Synaptic weight of the excitatory external poisson neurons onto all
+            neurons in the network. Default is None, in that case w_external is set to w0, which is the
+            standard value in the book and in the paper Brunel2000.
+            The purpose of this parameter is to see the effect of external input in the
+            absence of network feedback(setting w0 to 0mV and w_external>0).
         v_rest (Quantity): Resting potential
         v_reset (Quantity): Reset potential
         firing_threshold (Quantity): Spike threshold
@@ -81,9 +87,12 @@ def simulate_brunel_network(
         N_Inhib = int(N_Excit/4)
     if N_extern is None:
         N_extern = int(N_Excit*connection_probability)
+    if w_external is None:
+        w_external = w0
 
     J_excit = w0
     J_inhib = -g*w0
+
 
     lif_dynamics = """
     dv/dt = -(v-v_rest) / membrane_time_scale : volt (unless refractory)"""
@@ -103,7 +112,7 @@ def simulate_brunel_network(
     inhib_synapses.connect(p=connection_probability)
 
     external_poisson_input = PoissonInput(target=network, target_var="v", N=N_extern,
-                                          rate=poisson_input_rate, weight=J_excit)
+                                          rate=poisson_input_rate, weight=w_external)
 
     # collect data of a subset of neurons:
     monitored_subset_size = min(monitored_subset_size, (N_Excit+N_Inhib))
@@ -117,184 +126,15 @@ def simulate_brunel_network(
     return rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons
 
 
-def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spike_train_idx_list=None,
-                          t_min=None, t_max=None, N_highlighted_spiketrains=3):
-    """
-    visualizes the results of the network simulation
-
-    Args:
-        rate_monitor (PopulationRateMonitor): rate of the population
-        spike_monitor (SpikeMonitor): spike trains of individual neurons
-        voltage_monitor (StateMonitor): optional. voltage traces of some (defined in spike_train_idx_list) neurons
-        spike_train_idx_list (list): optional. If no list is provided, all spikes in the spike_monitor are plotted
-        t_min (Quantity): optional. lower bound of the plotted time interval.
-            if t_min is None, it is either set to 0 or to t_max - 150ms
-        t_max (Quantity): optional. upper bound of the plotted time interval.
-            if t_max is None, it is set to the timestamp of the last spike in
-        N_highlighted_spiketrains (int): optional. Number of spike trains visually highlighted, defaults to 3
-            If N_highlighted_spiketrains==0 and voltage_monitor is not None, then all voltage traces of
-            the voltage_monitor are plotted. Otherwise N_highlighted_spiketrains voltage traces are plotted.
-
-    """
-    assert isinstance(rate_monitor, b2.PopulationRateMonitor), \
-        "rate_monitor  is not of type PopulationRateMonitor"
-    assert isinstance(spike_monitor, b2.SpikeMonitor), \
-        "spike_monitor is not of type SpikeMonitor"
-    assert (voltage_monitor is None) or (isinstance(voltage_monitor, b2.StateMonitor)), \
-        "voltage_monitor is not of type StateMonitor"
-    assert (spike_train_idx_list is None) or (isinstance(spike_train_idx_list, list)), \
-        "spike_train_idx_list is not of type list"
-
-    all_spike_trains = spike_monitor.spike_trains()
-    if spike_train_idx_list is None:
-        if voltage_monitor is not None:
-            # if no index list is provided use the one from the voltage monitor
-            spike_train_idx_list = numpy.sort(voltage_monitor.record)
-        else:
-            # no index list AND no voltage monitor: plot all spike trains
-            spike_train_idx_list = numpy.sort(all_spike_trains.keys())
-        if len(spike_train_idx_list) > 500:
-            # avoid slow plotting of a large set
-            spike_train_idx_list = spike_train_idx_list[:500]
-
-    # get a reasonable default interval
-    if t_max is None:
-        t_max = max(spike_monitor.t/b2.ms)
-    else:
-        t_max = t_max/b2.ms
-    if t_min is None:
-        t_min = max(0., t_max-120.)  # if none, plot at most the last 120ms
-    else:
-        t_min = t_min / b2.ms
-
-    fig = None
-    ax_raster = None
-    ax_rate = None
-    ax_voltage = None
-    if voltage_monitor is None:
-        fig, (ax_raster, ax_rate) = plt.subplots(2, 1, sharex=True)
-    else:
-        fig, (ax_raster, ax_rate, ax_voltage) = plt.subplots(3, 1, sharex=True)
-
-    # nested helpers to plot the parts, note that they use parameters defined outside.
-    def get_spike_train_ts_indices(spike_train):
-        """
-        Helper. Extracts the spikes within the time window from the spike train
-        """
-        ts = spike_train/b2.ms
-        spike_within_time_window = (ts >= t_min) & (ts <= t_max)
-        idx_spikes = numpy.where(spike_within_time_window)
-        ts_spikes = ts[idx_spikes]
-        return idx_spikes, ts_spikes
-
-    def plot_raster():
-        """
-        Helper. Plots the spike trains of the spikes in spike_train_idx_list
-        """
-        neuron_counter = 0
-        for neuron_index in spike_train_idx_list:
-            idx_spikes, ts_spikes = get_spike_train_ts_indices(all_spike_trains[neuron_index])
-            ax_raster.scatter(ts_spikes, neuron_counter * numpy.ones(ts_spikes.shape),
-                              marker=".", c="k", s=15, lw=0)
-            neuron_counter += 1
-        ax_raster.set_ylim([0, neuron_counter])
-
-    def highlight_raster(neuron_idxs):
-        """
-        Helper. Highlights three spike trains
-        """
-        for i in range(len(neuron_idxs)):
-            color = "r" if i == 0 else "k"
-            raster_plot_index = neuron_idxs[i]
-            population_index = spike_train_idx_list[raster_plot_index]
-            idx_spikes, ts_spikes = get_spike_train_ts_indices(all_spike_trains[population_index])
-            ax_raster.axhline(y=raster_plot_index, linewidth=.5, linestyle="-", color=[.9, .9, .9])
-            ax_raster.scatter(
-                ts_spikes, raster_plot_index * numpy.ones(ts_spikes.shape),
-                marker=".", c=color, s=144, lw=0)
-        ax_raster.set_ylabel("neuron #")
-        ax_raster.set_title("Raster Plot (random subset)", fontsize=12)
-
-    def plot_population_activity():
-        """
-        Helper. Plots the population rate and a mean
-        """
-        ts = rate_monitor.t / b2.ms
-        idx_rate = (ts >= t_min) & (ts <= t_max)
-        # ax_rate.plot(ts[idx_rate],rate_monitor.rate[idx_rate]/b2.Hz, ".k", markersize=2)
-        smoothed_rates = rate_monitor.smooth_rate(window="flat", width=0.5*b2.ms)/b2.Hz
-        ax_rate.plot(ts[idx_rate], smoothed_rates[idx_rate])
-        ax_rate.set_ylabel("A(t) [Hz]")
-        ax_rate.set_title("Population Activity", fontsize=12)
-
-    def plot_voltage_traces(voltage_traces_i):
-        """
-        Helper. Plots three voltage traces
-        """
-        ts = voltage_monitor.t/b2.ms
-        idx_voltage = (ts >= t_min) & (ts <= t_max)
-        for i in range(len(voltage_traces_i)):
-            color = "r" if i == 0 else ".7"
-            raster_plot_index = voltage_traces_i[i]
-            population_index = spike_train_idx_list[raster_plot_index]
-            ax_voltage.plot(
-                ts[idx_voltage], voltage_monitor[population_index].v[idx_voltage]/b2.mV,
-                c=color, lw=1.)
-            ax_voltage.set_ylabel("V(t) [mV]")
-            ax_voltage.set_title("Voltage Traces", fontsize=12)
-
-    plot_raster()
-    plot_population_activity()
-    nr_neurons = len(spike_train_idx_list)
-    highlighted_neurons_i = []  # default to an empty list.
-    if N_highlighted_spiketrains > 0:
-        fract = numpy.linspace(0, 1, N_highlighted_spiketrains+2)[1:-1]
-        highlighted_neurons_i = [int(nr_neurons * v) for v in fract]
-        highlight_raster(highlighted_neurons_i)
-
-    if voltage_monitor is not None:
-        if N_highlighted_spiketrains == 0:
-            traces_i = range(nr_neurons)
-        else:
-            traces_i = highlighted_neurons_i
-        plot_voltage_traces(traces_i)
-
-    plt.xlabel("t [ms]")
-    plt.show()
-
-
 def getting_started():
     """
         A simple example to get started
     """
     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-        N_Excit=2000, sim_time=100. * b2.ms, monitored_subset_size=150)
-    plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
-                          spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=3)
+        N_Excit=2000, sim_time=500. * b2.ms, poisson_input_rate=15*b2.Hz, monitored_subset_size=100)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                          spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=1)
+    plt.show()
 
 if __name__ == "__main__":
     getting_started()
-
-
-    # SI fast
-    # rate_monitor, voltage_monitor, spike_monitor, monitored_spike_idx = simulate_brunel_network(
-    #     N_Excit=6000, N_extern=1000, g=8., poisson_input_rate=50*b2.Hz, sim_time=500.*b2.ms,
-    # monitored_subset_size=100)
-
-    # AI
-    # rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = \
-    #     simulate_brunel_network(N_Excit=6000, N_extern=1000, g=6.,
-    #                             poisson_input_rate=25*b2.Hz, sim_time=500.*b2.ms,
-    #                             monitored_subset_size=100)
-    # plot_network_activity(
-    #     rate_monitor, spike_monitor, voltage_monitor,
-    #     spike_train_idx_list=monitored_spike_idx, N_highlighted_spiketrains=3)
-
-    # rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(N_Excit=200,
-    #  sim_time=200. * b2.ms)
-    #
-    # plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, t_min=20.*b2.ms,
-    #  spike_train_idx_list=monitored_spike_idx)
-    # # plot_network_activity(rate_monitor, monitored_spike_idx, spike_monitor, voltage_monitor,
-    # N_highlighted_spiketrains=3)
-    #
