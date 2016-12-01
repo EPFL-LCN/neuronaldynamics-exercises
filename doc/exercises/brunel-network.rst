@@ -105,12 +105,17 @@ Question:
 ~~~~~~~~~
 * Simulate a network of 6000 excitatory and 1500 inhibitory neurons. Set the following parameters: poisson_rate = 35*b2.Hz, g=7.8. In which state is this network?
 
-* What would be the population activity caused by the external input only? We can simulate this. Run a simulation of the same network, but disable the recurrent feedback: simulate_brunel_network(...,w0=0.*b2.mV, w_external = LIF_spiking_network.SYNAPTIC_WEIGHT_W0).
+* What would be the population activity caused by the external input only? We can simulate this. Run a simulation of the same network, but disable the recurrent feedback: simulate_brunel_network(...,w0=0.*b2.mV, w_external = LIF_spiking_network.SYNAPTIC_WEIGHT_W0). The figure below shows a simulation of a network in the synchronous regular (SR) state.
 
 * Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.
+
+* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time (see figure below).
+
 
 
 .. figure:: exc_images/Brunel_Synchronization.png
    :align: center
 
-   Simulation with random v_m initialization. The synchronization of the neurons is not just an artefact of the shared initial conditions, but emerges over time.
+   Simulation of an SR network with random v_m initialization. The neurons become synchronized
+
+   The synchronization of the neurons is not a residue of the shared initial conditions, but emerges over time.
