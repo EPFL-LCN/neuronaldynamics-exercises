@@ -28,11 +28,13 @@ The function :func:`.passive_cable.getting_started` injects a very short pulse c
 
 .. note::
 
-    The axes in the figure above are not scaled to the physical units but show the raw matrix indices. These indices depend on the spatial resolution (number of compartments) and the temporal resolution (brian2.defaultclock.dt). For the exercises make sure you correctly scale the units using Brian's `unit system <http://brian2.readthedocs.io/en/latest/user/units.html>`_ . As an example, to plot voltage (in mVolt) vs. time (in ms) you call
+    The axes in the figure above are not scaled to the physical units but show the raw matrix indices. These indices depend on the spatial resolution (number of compartments) and the temporal resolution (brian2.defaultclock.dt). For the exercises make sure you correctly scale the units using Brian's `unit system <http://brian2.readthedocs.io/en/latest/user/units.html>`_ . As an example, to plot voltage vs. time you call
 
     .. code::
 
         pyplot.plot(voltage_monitor.t / b2.ms, voltage_monitor[0].v / b2.mV)
+
+    This way, your plot shows voltage in mV and time in ms, which is useful for visualizations. Note that this scaling (to physical units) is different from the scaling in the theoretical derivation (e.g. `chapter 3.2.1 <Chapter_>`_  where the quantities are rescaled to a unit-free characteristic length scale
 
 
 Using the module :mod:`.cable_equation.passive_cable`, we study some properties of the passive cable. Note: if you do not specify the cable parameters, the function :func:`.cable_equation.passive_cable.simulate_passive_cable` uses the following default values:
@@ -45,6 +47,15 @@ Using the module :mod:`.cable_equation.passive_cable`, we study some properties 
     R_TRANSVERSAL = 1.25 * b2.Mohm * b2.mm ** 2  # cell membrane resistance (->leak current)
     E_LEAK = -70. * b2.mV  # reversal potential of the leak current (-> resting potential)
     CAPACITANCE = 0.8 * b2.uF / b2.cm ** 2  # membrane capacitance
+
+You can easily access those values in your code:
+
+.. code-block:: py
+
+    from neurodynex.cable_equation import passive_cable
+    print(passive_cable.R_TRANSVERSAL)
+
+
 
 Exercise: spatial and temporal evolution of a pulse input
 ---------------------------------------------------------
