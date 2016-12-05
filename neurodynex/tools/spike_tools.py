@@ -77,3 +77,98 @@ def pretty_print_spike_train_stats(voltage_monitor, spike_threshold):
         print("spike times: {}".format(spike_times))
         print("ISI: {}".format(ISI))
     return spike_times, ISI, mean_isi, spike_freq, var_isi
+
+
+class PopulationSpikeStats:
+    """
+    Wraps a few spike-train related properties into a class.
+    """
+    def __init__(self, nr_neurons, nr_spikes, all_ISI):
+        """
+
+        Args:
+            nr_neurons:
+            nr_spikes:
+            mean_isi:
+            std_isi:
+            all_ISI: list of ISI values (can be used to plot a histrogram)
+
+        Returns:
+            An instance of PopulationSpikeStats
+        """
+        self._nr_neurons = nr_neurons
+        self._nr_spikes = nr_spikes
+        self._all_ISI = all_ISI
+
+    @property
+    def nr_neurons(self):
+        """
+        Number of neurons in the original population
+        """
+        return self._nr_neurons
+
+    @property
+    def nr_spikes(self):
+        """
+        Nr of spikes
+        """
+        return self._nr_spikes
+
+    @property
+    def mean_isi(self):
+        """
+        Mean Inter Spike Interval
+        """
+        mean_isi = np.mean(self._all_ISI)*b2.second
+        return mean_isi
+
+    @property
+    def std_isi(self):
+        """
+        Standard deviation of the ISI
+        """
+        std_isi = np.std(self._all_ISI)*b2.second
+        return std_isi
+
+    @property
+    def all_ISI(self):
+        """
+        all ISIs in no specific order
+        """
+        return self._all_ISI
+
+    @property
+    def CV(self):
+        """
+        Coefficient of variation
+        """
+        cv = np.nan  # init with nan
+        if self.mean_isi > 0.:
+            cv = self.std_isi / self.mean_isi
+        return cv
+
+
+
+def get_spike_train_stats(spike_monitor):
+    """
+    analyses the spike monitor and returns a PopulationSpikeStats instance.
+    Args:
+        spike_monitor (SpikeMonitor): Brian2 spike monitor
+
+    Returns:
+        PopulationSpikeStats
+    """
+    assert isinstance(spike_monitor, b2.SpikeMonitor), \
+        "spike_monitor is not of type SpikeMonitor"
+    all_spike_trains = spike_monitor.spike_trains()
+    nr_neurons = len(all_spike_trains)
+    all_ISI = []
+    for i in range(nr_neurons):
+        spike_times = all_spike_trains[i]/b2.ms
+        nr_spikes = len(spike_times)
+        if nr_spikes >= 2:
+            isi = np.diff(spike_times)
+            all_ISI = np.hstack([all_ISI, isi])
+    all_ISI = all_ISI*b2.ms
+    stats = PopulationSpikeStats(nr_neurons, spike_monitor.num_spikes, all_ISI)
+    return stats

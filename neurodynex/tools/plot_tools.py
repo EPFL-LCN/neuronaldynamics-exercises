@@ -210,3 +210,25 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
 
     plt.xlabel("t [ms]")
     return fig, ax_raster, ax_rate, ax_voltage
+
+
+def plot_ISI_distribution(spike_monitor, hist_nr_bins=50, hist_max_ISI = 100.*b2.ms):
+    """
+    Computes the ISI distribution of the given spike_monitor and displays the distribution in a histogram
+
+    Args:
+        spike_monitor (SpikeMonitor): spikes
+        hist_nr_bins: Number of histrogram bins.
+        hist_max_ISI: the plot is cut off at this ISI. Note: the CV shown in the figure title is computed using ALL spikes in the given monitor.
+
+    """
+    from neurodynex.tools import spike_tools
+    stats = spike_tools.get_spike_train_stats(spike_monitor)
+    isi_ms = stats.all_ISI/b2.ms
+    filtered_is = isi_ms <= (hist_max_ISI/b2.ms)
+    idx_isi = numpy.where(filtered_is)
+    isi_ms = isi_ms[idx_isi]
+    plt.figure()
+    plt.hist(isi_ms, bins=hist_nr_bins)
+    plt.title("ISI histogram, CV={}".format(stats.CV))
+    plt.xlabel("ISI [ms]")
