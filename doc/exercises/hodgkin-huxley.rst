@@ -11,7 +11,7 @@ the Hodgkin-Huxley equations and models.
 
 **Python classes**
 
-The :mod:`.hodgkin_huxley.HH` module contains all code required for this exercise. It implements a Hodgkin-Huxley neuron model
+The :mod:`.hodgkin_huxley.HH` module contains all code required for this exercise. It implements a Hodgkin-Huxley neuron model.
 At the beginning of your exercise solutions, import the modules and run the demo function.
 
 .. code-block:: py
@@ -33,15 +33,14 @@ At the beginning of your exercise solutions, import the modules and run the demo
    Step current injection into a Hodgkin-Huxley neuron
 
 
-Exercise
---------
-We study the response of a Hodgkin-Huxley neuron to different input currents. Have a look at the documentation of the functions :func:`.HH.simulate_HH_neuron` and :func:`.HH.plot_data` and the module :mod:`neurodynex.tools.input_factory`
-
+Exercise: step current response
+-------------------------------
+We study the response of a Hodgkin-Huxley neuron to different input currents. Have a look at the documentation of the functions :func:`.HH.simulate_HH_neuron` and :func:`.HH.plot_data` and the module :mod:`neurodynex.tools.input_factory`.
 
 Question
 ~~~~~~~~
 
-What is the lowest **step current** amplitude I_min for generating at least one spike?
+What is the lowest **step current** amplitude I_min for generating at least one spike? Determine the value by trying different input amplitudes in the code fragment:
 
 .. code-block:: py
 
@@ -61,11 +60,15 @@ The minimal current to elicit a spike does not just depend on the amplitude I or
 
 Question
 ~~~~~~~~
-Inject a slow ramp current into a HH neuron. The current has amplitude 0A at t in [0, 5] ms and linearly increases to an amplitude I_min_slow at t=50ms. At t>50ms, the current is set to 0A. What is the minimal amplitude I_min_slow to trigger one spike (vm>50mV)?
+Inject a slow ramp current into a HH neuron. The current has amplitude 0A at t in [0, 5] ms and linearly increases to an amplitude `I_min_slow` at t=50ms. At t>50ms, the current is set to 0A. What is the minimal amplitude I_min_slow to trigger one spike (vm>50mV)?
+
+.. code-block:: py
+
+    slow_ramp_current = input_factory.get_ramp_current(5, 50, b2.ms, 0.*b2.uA, I_min_slow *b2.uA)
 
 Question
 ~~~~~~~~
-Now inject a fast ramp current into a HH neuron. The current has amplitude 0 at t in [0, 5] ms and linearly increases to an amplitude I_min_fast at t=10ms. At t>10ms, the current is set to 0A. What is the minimal amplitude I_min_fast to trigger one spike? Note: for a short ramp, the one milliseconds resolution for the current is not enough. You can create a more fine resolution:
+Now inject a fast ramp current into a HH neuron. The current has amplitude 0 at t in [0, 5] ms and linearly increases to an amplitude I_min_fast at t=10ms. At t>10ms, the current is set to 0A. What is the minimal amplitude I_min_fast to trigger one spike? Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a more fine resolution:
 
 .. code-block:: py
 
@@ -73,7 +76,7 @@ Now inject a fast ramp current into a HH neuron. The current has amplitude 0 at 
 
 Question
 ~~~~~~~~
-Compare the two previous results. By looking at the activation variables, can you explain the differences in that "current threshold"?
+Compare the two previous results. By looking at the gating variables m,n, and h, can you explain the reason for the differences in that "current threshold"? Hint: have a look at `Chapter 2 Figure 2.3 b <Chapter_>`_
 
 
 Exercise: Rebound Spike
@@ -95,6 +98,7 @@ Question
 In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.5. Stimulate this modified neuron with a step current.
 
 * What is the current threshold for repetitive spiking? Explain.
-* What is the resting potential of the neuron? Explain.
+* Run a simulation with no input current to determine the resting potential of the neuron. Bonus: link your observation to the  Goldman–Hodgkin–Katz voltage equation.
+* If you increase the sodium conductance further, you can observe repetitive firing even in the absence of input, why?
 
 

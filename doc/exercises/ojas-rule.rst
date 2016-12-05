@@ -12,7 +12,7 @@ See `Chapter 19 Section 2 <Chapter_>`_ on the learning rule of Oja.
    :align: center
    :scale: 60 %
 
-   Datapoints (sequentially presented) and weight change using Oja's rule
+   grey points: Datapoints (two presynaptic firing rates, presented sequentially in random order). colored points:   weight change under Oja's rule.
 
 
 **Python classes**
