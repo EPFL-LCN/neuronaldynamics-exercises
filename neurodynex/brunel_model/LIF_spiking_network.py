@@ -155,9 +155,16 @@ def getting_started():
         A simple example to get started
     """
     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-        N_Excit=200, sim_time=500. * b2.ms, poisson_input_rate=15*b2.Hz, monitored_subset_size=100)
+        N_Excit=2000, sim_time=400. * b2.ms)
+
     plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
-                          spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=1)
+                          spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=3)
+    # rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
+    #     N_Excit=6000, sim_time=900. * b2.ms, g=7.8, poisson_input_rate=35*b2.Hz, monitored_subset_size=100)
+    #
+    # plot_tools.plot_ISI_distribution(spike_monitor)
+    # plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+    #                       spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=1)
     plt.show()
 
 if __name__ == "__main__":

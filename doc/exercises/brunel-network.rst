@@ -95,6 +95,12 @@ Question:
 
 * Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 800ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last 50ms.
 
+* What is the  population activity A(t) in each of the four conditions (in Hz, averaged over the last 200ms of your simulation)?
+
+* Access the spike-monitor and calculate the interspike-intervals. Display the ISI distribution in a histogram for each of the four conditions.
+
+* From the ISI, compute the Coefficient Of Variation (CV) for each condition. Read `Chapter 7.3.1 <http://neuronaldynamics.epfl.ch/online/Ch7.S3.html>`_ to learn more about the CV.
+
 
 Exercise: Emergence of Synchronization
 --------------------------------------
@@ -105,17 +111,14 @@ Question:
 ~~~~~~~~~
 * Simulate a network of 6000 excitatory and 1500 inhibitory neurons. Set the following parameters: poisson_rate = 35*b2.Hz, g=7.8. In which state is this network?
 
-* What would be the population activity caused by the external input only? We can simulate this. Run a simulation of the same network, but disable the recurrent feedback: simulate_brunel_network(...,w0=0.*b2.mV, w_external = LIF_spiking_network.SYNAPTIC_WEIGHT_W0). The figure below shows a simulation of a network in the synchronous regular (SR) state.
+* What would be the population activity caused by the external input only? We can simulate this. Run a simulation of the same network, but disable the recurrent feedback: simulate_brunel_network(...,w0=0.*b2.mV, w_external = LIF_spiking_network.SYNAPTIC_WEIGHT_W0).
 
 * Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.
 
 * The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time (see figure below).
 
 
-
 .. figure:: exc_images/Brunel_Synchronization.png
    :align: center
 
-   Simulation of an SR network with random v_m initialization. The neurons become synchronized
-
-   The synchronization of the neurons is not a residue of the shared initial conditions, but emerges over time.
+   Simulation of an SR network with random v_m initialization. The synchronization of the neurons is not a residue of the shared initial conditions, but emerges over time.
