@@ -56,7 +56,7 @@ def get_trajectory(v0=0., w0=0., I=0., eps=0.1, a=2.0, tend=500.):
     dw/dt = eps/ms * (v + 0.5 * (a * mV - w)) : volt
     """
 
-    neuron = b2.NeuronGroup(1, eqs)
+    neuron = b2.NeuronGroup(1, eqs, method="euler")
 
     # state initialization
     neuron.v = v0 * b2.mV

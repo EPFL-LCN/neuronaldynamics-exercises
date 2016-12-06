@@ -71,14 +71,7 @@ def simulate_exponential_IF_neuron(
     eqs = """
     dv/dt = (-(v-v_rest) +delta_T*exp((v-v_rheobase)/delta_T)+ R * I_stim(t,i))/(tau) : volt
     """
-
-    v_reset_str = "v={:f}*mvolt".format(v_reset / b2.mvolt)
-    v_spike_str = "v>{:f}*mvolt".format(v_spike / b2.mvolt)
-
-    # making neuron using Brian library
-    neuron = b2.NeuronGroup(1, model=eqs, reset=v_reset_str, threshold=v_spike_str, method="euler")
-    # b2.reinit()
-    # initialization of simulator
+    neuron = b2.NeuronGroup(1, model=eqs, reset="v=v_reset", threshold="v>v_spike", method="euler")
     neuron.v = v_rest
     # monitoring membrane potential of neuron and injecting current
     voltage_monitor = b2.StateMonitor(neuron, ["v"], record=True)

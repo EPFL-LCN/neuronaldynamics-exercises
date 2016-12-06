@@ -56,10 +56,11 @@ def make_cloud(n=2000, ratio=1, angle=0):
 
 def learn(cloud, initial_angle=None, eta=0.005):
     """Run one batch of Oja's learning over
-    a cloud of datapoints
+    a cloud of datapoints.
 
     Args:
-        cloud (numpy.ndarray): array of datapoints
+        cloud (numpy.ndarray): An N by 2 array of datapoints. You can
+            think of each of the two columns as the time series of firing rates of one presynaptic neuron.
         initial_angle (float, optional): angle of initial
             set of weights [deg]. If None, this is random.
         eta (float, optional): learning rate
@@ -77,8 +78,9 @@ def learn(cloud, initial_angle=None, eta=0.005):
     wcourse = np.zeros((len(cloud), 2), float)
     for i in range(0, len(cloud)):
         wcourse[i] = w
-        y = np.dot(w, cloud[i])  # output
-        w = w + eta * y * (cloud[i] - y * w)  # ojas rule
+        y = np.dot(w, cloud[i])  # output: postsynaptic firing rate of a linear neuron.
+        # ojas rule (cloud[i] are the two presynaptic firing rates at time point i
+        w = w + eta * y * (cloud[i] - y * w)
     return wcourse
 
 

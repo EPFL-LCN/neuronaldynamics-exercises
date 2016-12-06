@@ -169,7 +169,7 @@ class _NeuronTypeOne(NeuronAbstract):
         dw/dt = phi*(winf-w)/tau : volt
         """
 
-        self.neuron = b2.NeuronGroup(1, eqs)
+        self.neuron = b2.NeuronGroup(1, eqs, method="euler")
         self.neuron.v = pars["V_L"]
         self.neuron.namespace.update(pars)
 
@@ -189,7 +189,7 @@ class _NeuronTypeTwo(NeuronAbstract):
         dw/dt = (a*(v+0.7*mvolt)-w)/tau : volt
         """
 
-        self.neuron = b2.NeuronGroup(1, eqs)
+        self.neuron = b2.NeuronGroup(1, eqs, method="euler")
         self.neuron.v = 0
 
         self.neuron.namespace["a"] = 1.25
