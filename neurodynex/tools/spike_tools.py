@@ -148,7 +148,6 @@ class PopulationSpikeStats:
         return cv
 
 
-
 def get_spike_train_stats(spike_monitor):
     """
     analyses the spike monitor and returns a PopulationSpikeStats instance.

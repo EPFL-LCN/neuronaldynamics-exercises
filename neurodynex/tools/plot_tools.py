@@ -59,6 +59,7 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
     if do_show_plot:
         plt.show()
 
+
 def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spike_train_idx_list=None,
                           t_min=None, t_max=None, N_highlighted_spiketrains=3):
     """
@@ -212,14 +213,15 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
     return fig, ax_raster, ax_rate, ax_voltage
 
 
-def plot_ISI_distribution(spike_monitor, hist_nr_bins=50, hist_max_ISI = 100.*b2.ms):
+def plot_ISI_distribution(spike_monitor, hist_nr_bins=50, hist_max_ISI=100.*b2.ms):
     """
     Computes the ISI distribution of the given spike_monitor and displays the distribution in a histogram
 
     Args:
         spike_monitor (SpikeMonitor): spikes
         hist_nr_bins: Number of histrogram bins.
-        hist_max_ISI: the plot is cut off at this ISI. Note: the CV shown in the figure title is computed using ALL spikes in the given monitor.
+        hist_max_ISI: the plot is cut off at this ISI. Note: the CV shown in the figure
+            title is computed using ALL spikes in the given monitor.
 
     """
     from neurodynex.tools import spike_tools

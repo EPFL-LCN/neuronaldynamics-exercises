@@ -95,7 +95,7 @@ In this exercise you will learn to work with the Brian2 model equations. To do s
 
 Question
 ~~~~~~~~
-In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.5. Stimulate this modified neuron with a step current.
+In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.
 
 * What is the current threshold for repetitive spiking? Explain.
 * Run a simulation with no input current to determine the resting potential of the neuron. Bonus: link your observation to the  Goldman–Hodgkin–Katz voltage equation.

@@ -121,4 +121,4 @@ Question:
 .. figure:: exc_images/Brunel_Synchronization.png
    :align: center
 
-   Simulation of an SR network with random v_m initialization. The synchronization of the neurons is not a residue of the shared initial conditions, but emerges over time.
+   Simulation of a network with random v_m initialization. The synchronization of the neurons is not a residue of shared initial conditions, but emerges over time.

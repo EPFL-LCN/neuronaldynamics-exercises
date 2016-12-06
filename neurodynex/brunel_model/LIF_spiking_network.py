@@ -38,7 +38,7 @@ def simulate_brunel_network(
         g=RELATIVE_INHIBITORY_STRENGTH_G,
         synaptic_delay=SYNAPTIC_DELAY,
         poisson_input_rate=POISSON_INPUT_RATE,
-        w_external = None,
+        w_external=None,
         v_rest=V_REST,
         v_reset=V_RESET,
         firing_threshold=FIRING_THRESHOLD,
@@ -48,7 +48,7 @@ def simulate_brunel_network(
         random_vm_init=False,
         sim_time=100.*b2.ms):
     """
-    Implementation of a sparsely connected network of LIF neurons (Brunel 2000)
+    Fully parametrized implementation of a sparsely connected network of LIF neurons (Brunel 2000)
 
     Args:
         N_Excit (int): Size of the excitatory popluation
@@ -63,7 +63,7 @@ def simulate_brunel_network(
             Cexternal = N_extern
         w0 (float): Synaptic strength J
         g (float): relative importance of inhibition. J_exc = w0. J_inhib = -g*w0
-        synaptic_delay (Quantity): Delay
+        synaptic_delay (Quantity): Delay between presynaptic spike and postsynaptic increase of v_m
         poisson_input_rate (Quantity): Poisson rate of the external population
         w_external (float): optional. Synaptic weight of the excitatory external poisson neurons onto all
             neurons in the network. Default is None, in that case w_external is set to w0, which is the
@@ -81,7 +81,7 @@ def simulate_brunel_network(
         sim_time (Quantity): Simulation time
 
     Returns:
-        rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons
+        (rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons)
         PopulationRateMonitor: Rate Monitor
         SpikeMonitor: SpikeMonitor for ALL (N_Excit+N_Inhib) neurons
         StateMonitor: membrane voltage for a selected subset of neurons
@@ -96,7 +96,6 @@ def simulate_brunel_network(
 
     J_excit = w0
     J_inhib = -g*w0
-
 
     lif_dynamics = """
     dv/dt = -(v-v_rest) / membrane_time_scale : volt (unless refractory)"""
@@ -132,7 +131,8 @@ def simulate_brunel_network(
     b2.run(sim_time)
     return rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons
 
-def demo_emergence_of_oscillation():
+
+def _demo_emergence_of_oscillation():
     # poisson_rate = 35*b2.Hz
     # g=7.8
     poisson_rate = 18 * b2.Hz
@@ -155,16 +155,10 @@ def getting_started():
         A simple example to get started
     """
     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-        N_Excit=2000, sim_time=400. * b2.ms)
-
+        N_Excit=200, sim_time=400. * b2.ms)
     plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
-                          spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=3)
-    # rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-    #     N_Excit=6000, sim_time=900. * b2.ms, g=7.8, poisson_input_rate=35*b2.Hz, monitored_subset_size=100)
-    #
-    # plot_tools.plot_ISI_distribution(spike_monitor)
-    # plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
-    #                       spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms, N_highlighted_spiketrains=1)
+                                     spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms,
+                                     N_highlighted_spiketrains=3)
     plt.show()
 
 if __name__ == "__main__":

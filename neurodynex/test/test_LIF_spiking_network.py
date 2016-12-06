@@ -1,7 +1,7 @@
 import brian2 as b2
 from neurodynex.brunel_model import LIF_spiking_network
 
-print(b2.__version__)
+print("b2.__version__={}".format(b2.__version__))
 
 
 def test_LIF_spiking_network():
@@ -24,6 +24,12 @@ def test_LIF_spiking_network():
             monitored_subset_size=1,
             sim_time=10.*b2.ms)
     nr_spikes = spike_monitor.num_spikes
-    print("nr_spikes:{}".format(nr_spikes))
+    # print("nr_spikes:{}".format(nr_spikes))
     assert nr_spikes > 0, \
         "simulation error: Brunel Network did not spike. Check if the LIF default values did change."
+    assert isinstance(rate_monitor, b2.PopulationRateMonitor),\
+        "first return value is not of type PopulationRateMonitor"
+    assert isinstance(spike_monitor, b2.SpikeMonitor), \
+        "second return value is not of type SpikeMonitor"
+    assert (voltage_monitor is None) or (isinstance(voltage_monitor, b2.StateMonitor)), \
+        "third return value is not of type StateMonitor"
