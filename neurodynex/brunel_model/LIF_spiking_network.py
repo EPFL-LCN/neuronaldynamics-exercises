@@ -122,7 +122,7 @@ def simulate_brunel_network(
 
     # collect data of a subset of neurons:
     monitored_subset_size = min(monitored_subset_size, (N_Excit+N_Inhib))
-    idx_monitored_neurons = sample(xrange(N_Excit+N_Inhib), monitored_subset_size)
+    idx_monitored_neurons = sample(range(N_Excit+N_Inhib), monitored_subset_size)
     rate_monitor = PopulationRateMonitor(network)
     # record= some_list is not supported? :-(
     spike_monitor = SpikeMonitor(network, record=idx_monitored_neurons)
