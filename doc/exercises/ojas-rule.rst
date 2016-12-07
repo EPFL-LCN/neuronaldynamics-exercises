@@ -96,5 +96,11 @@ Try again the previous exercise, but applying the learning rule on a noncentered
 Bonus: 3 D
 ----------
 
-By modifying the source code of the given functions, try to visualize learning from a 3 dimensional time series. Make use of the PyPlot function `scatter3d <http://matplotlib.org/examples/mplot3d/scatter3d_demo.html>`_
+By modifying the source code of the given functions, try to visualize learning from a 3 dimensional time series. Here's an example of a 3D scatter plot: `scatter3d <http://matplotlib.org/examples/mplot3d/scatter3d_demo.html>`_
 
+
+.. figure:: exc_images/Oja_3D.png
+   :align: center
+   :scale: 60 %
+
+   Learning from a 3D input.
