@@ -3,6 +3,24 @@ Functions to create 2D patterns.
 Note, in the hopfield model, we define patterns as vectors. To make
 the exercise more visual, we use 2D patterns (N by N ndarrays).
 """
+
+# This file is part of the exercise code repository accompanying
+# the book: Neuronal Dynamics (see http://neuronaldynamics.epfl.ch)
+# located at http://github.com/EPFL-LCN/neuronaldynamics-exercises.
+
+# This free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License 2.0 as published by the
+# Free Software Foundation. You should have received a copy of the
+# GNU General Public License along with the repository. If not,
+# see http://www.gnu.org/licenses/.
+
+# Should you reuse and publish the code for your own purposes,
+# please cite the book or point to the webpage http://neuronaldynamics.epfl.ch.
+
+# Wulfram Gerstner, Werner M. Kistler, Richard Naud, and Liam Paninski.
+# Neuronal Dynamics: From Single Neurons to Networks and Models of Cognition.
+# Cambridge University Press, 2014.
+
 import numpy as np
 from scipy import linalg
 import pickle

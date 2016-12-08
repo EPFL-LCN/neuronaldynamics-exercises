@@ -1,7 +1,3 @@
-# import matplotlib
-# matplotlib.use("Agg")  # needed for plotting on travis
-
-
 def test_runnable_get_trajectory():
     """Test if get_trajectory is runnable."""
     from neurodynex.phase_plane_analysis.fitzhugh_nagumo import get_trajectory
