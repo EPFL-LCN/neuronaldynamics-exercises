@@ -85,7 +85,7 @@ def simulate_LIF_neuron(input_current,
 
     # LIF neuron using Brian2 library
     neuron = b2.NeuronGroup(
-        1, model=eqs, reset="v=v_reset", threshold="v>firing_threshold", refractory=abs_refractory_period)
+        1, model=eqs, reset="v=v_reset", threshold="v>firing_threshold", refractory=abs_refractory_period, method="linear")
     neuron.v = v_rest  # set initial value
 
     # monitoring membrane potential of neuron and injecting current
