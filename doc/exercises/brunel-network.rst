@@ -10,7 +10,7 @@ The Brunel model is introduced in `Chapter 13 Section 4.2 <http://neuronaldynami
 
 **Python classes**
 
-The module :mod:`.brunel_model.LIF_spiking_network` implements a parametrized network. The figure below shows the simulation result of a default configuration.
+The module :mod:`.brunel_model.LIF_spiking_network` implements a parametrized network. The figure below shows the simulation result using the default configuration.
 
 
 .. figure:: exc_images/Brunel_Spiking_LIF.png
@@ -56,7 +56,7 @@ Note that you can change all parameters of the neuron by using the named paramet
 Exercise: model parameters and threshold rate
 ---------------------------------------------
 
-In the first question, we get familiar with the model and parameters. Make sure you have read the `book chapter <http://neuronaldynamics.epfl.ch/online/Ch13.S4.html>`_ . Then have a look at the documentation of :func:`.simulate_brunel_network`. Note that in our implementation, the number of excitatory presynaptic poisson neurons (input from the external population) is a parameter `N_extern` and thus independent of `CE`.
+In the first exercise, we get familiar with the model and parameters. Make sure you have read the `book chapter <http://neuronaldynamics.epfl.ch/online/Ch13.S4.html>`_ . Then have a look at the documentation of :func:`.simulate_brunel_network`. Note that in our implementation, the number of excitatory presynaptic poisson neurons (input from the external population) is a parameter `N_extern` and thus independent of `CE`.
 
 
 Question:
@@ -88,18 +88,55 @@ Exercise: Population activity
 
 The network of spiking LIF-neurons shows characteristic population activities. In this exercise we investigate the patterns asynchronous irregular (AI), synchronous regular (SR), fast synchronous irregular (SI fast) and slow synchronous irregular (SI slow).
 
-Question:
-~~~~~~~~~
+Question: Network states
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * The function :func:`.simulate_brunel_network` gives you three options to vary the input strength (y-axis in figure 13.7, a). What options do you have?
 
-* Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 800ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last 50ms.
+* What parameter of the function :func:`.simulate_brunel_network` lets you change the relative strength of inhibition (the x-axis in figure 13.7, a)?
+
+* Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 800ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last ~50ms.
 
 * What is the  population activity A(t) in each of the four conditions (in Hz, averaged over the last 200ms of your simulation)?
 
-* Access the spike-monitor and calculate the interspike-intervals. Display the ISI distribution in a histogram for each of the four conditions.
 
-* From the ISI, compute the Coefficient Of Variation (CV) for each condition. Read `Chapter 7.3.1 <http://neuronaldynamics.epfl.ch/online/Ch7.S3.html>`_ to learn more about the CV.
+Question: Interspike interval (ISI)  and Coefficient of Variation (CV)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before answering the questions, make sure you understand the notions ISI and CV. If necessary, read `Chapter 7.3.1 <http://neuronaldynamics.epfl.ch/online/Ch7.S3.html>`_ .
+
+* What is the CV of a Poisson neuron?
+
+* Sketch the interspike interval distribution of a Poisson neuron.
+
+* From the four figures plotted in the previous question, qualitatively interpret the spike trains and the population activity in each of the four regimes:
+
+    * What is the mean firing rate of a single neuron (only a rough estimate).
+    * Sketch the ISI histogram. (is it peaked or broad? where's the maximum?)
+    * Estimate the CV. (is it <1, <<1, =1, >1 ?)
+
+* Validate your estimates using the functions :func:`spike_tools.get_spike_train_stats` and :func:`plot_tools.plot_ISI_distribution`. Use the code block provided here (assumes you're using a Jupyter Notebook).
+
+.. code-block:: py
+
+    %matplotlib inline
+    from neurodynex.brunel_model import LIF_spiking_network
+    from neurodynex.tools import plot_tools, spike_tools
+    import brian2 as b2
+
+    poisson_rate = ???*b2.Hz
+    g = ???
+    CE = ???
+    simtime = ???*b2.ms
+
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = LIF_spiking_network.simulate_brunel_network(N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=simtime)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = 0*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = simtime - 80*b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=100.*b2.ms)
+    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=100, xlim_max_ISI=250*b2.ms)
+
+
+* In the Synchronous Repetitive (SR) state, what is the dominant frequency of the population activity A(t)? Compare this frequency to the firing frequency of a single neuron. You can do this "visually" using the plots created by :func:`plot_tools.plot_network_activity` or by solving the bonus exercise below.
 
 
 Exercise: Emergence of Synchronization
@@ -115,10 +152,16 @@ Question:
 
 * Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.
 
-* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time (see figure below).
+* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time. The figure below shows a similar result but for a different regime.
 
 
 .. figure:: exc_images/Brunel_Synchronization.png
    :align: center
 
    Simulation of a network with random v_m initialization. The synchronization of the neurons is not a residue of shared initial conditions, but emerges over time.
+
+
+Bonus: Power Spectrum of the Population Activity
+------------------------------------------------
+
+Use numpy.fft to analyse the power-spectrum of the population activity (rate_monitor.rate/b2.Hz).

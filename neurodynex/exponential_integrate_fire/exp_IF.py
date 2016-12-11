@@ -93,6 +93,7 @@ def getting_started():
     plot_tools.plot_voltage_and_current_traces(
         state_monitor, input_current, title="step current", firing_threshold=FIRING_THRESHOLD_v_spike)
     print("nr of spikes: {}".format(spike_monitor.count[0]))
+    plt.show()
 
 
 def _min_curr_expl():
@@ -113,6 +114,7 @@ def _min_curr_expl():
     plot_tools.plot_voltage_and_current_traces(
         state_monitor, input_current, title="step current",
         firing_threshold=FIRING_THRESHOLD_v_spike, legend_location=2)
+    plt.show()
     print("nr of spikes: {}".format(spike_monitor.count[0]))
 
 

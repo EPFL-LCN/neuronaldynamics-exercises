@@ -84,6 +84,14 @@ neurodynex.test.test_oja module
     :undoc-members:
     :show-inheritance:
 
+neurodynex.test.test_spike_tools module
+---------------------------------------
+
+.. automodule:: neurodynex.test.test_spike_tools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

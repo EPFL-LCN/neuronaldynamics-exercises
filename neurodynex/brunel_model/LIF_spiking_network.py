@@ -44,7 +44,7 @@ SYNAPTIC_DELAY = 1.5 * b2.ms
 POISSON_INPUT_RATE = 13. * b2.Hz
 N_POISSON_INPUT = 1000
 
-b2.defaultclock.dt = 0.07 * b2.ms
+b2.defaultclock.dt = 0.08 * b2.ms
 
 
 def simulate_brunel_network(
@@ -72,9 +72,10 @@ def simulate_brunel_network(
         N_Excit (int): Size of the excitatory popluation
         N_Inhib (int): optional. Size of the inhibitory population.
             If not set (=None), N_Inhib is set to N_excit/4.
-        N_extern (int): optional. Number of presynaptic excitatory poisson neurons. Note this number does
-            NOT depend on N_Excit and NOT depend on connection_probability (unlike in the orig paper).
-            If None is provided, then N_extern is set to N_Excit*connection_probability.
+        N_extern (int): optional. Number of presynaptic excitatory poisson neurons. Note: if set to a value,
+            this number does NOT depend on N_Excit and NOT depend on connection_probability (this is different
+            from the book and paper. Only if N_extern is set to 'None', then N_extern is computed as
+            N_Excit*connection_probability.
         connection_probability (float): probability to connect to any of the (N_Excit+N_Inhib) neurons
             CE = connection_probability*N_Excit
             CI = connection_probability*N_Inhib
@@ -179,5 +180,37 @@ def getting_started():
                                      N_highlighted_spiketrains=3)
     plt.show()
 
+
+def _some_example_calls_and_tests():
+    b2.defaultclock.dt = 0.1 * b2.ms
+    from neurodynex.tools import spike_tools
+    poisson_rate = 9.5*b2.Hz
+    g = 7.5
+    sim_time = 500. * b2.ms
+    CE = 500
+
+    sampling_frequency_upper_bound = 800*b2.Hz
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
+        N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=sim_time)
+
+    plot_tools.plot_network_activity(
+        rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=0*b2.ms)
+    plot_tools.plot_network_activity(
+        rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=sim_time-100*b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=150.*b2.ms)
+    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=50. * b2.ms)
+    print(spike_stats.CV)
+
+    pop_freqs, pop_ps, downsampling_factor, nyquist_frequency = spike_tools.get_population_activity_power_spectrum(
+        rate_monitor, sampling_frequency_upper_bound=sampling_frequency_upper_bound, window_t_min=100.*b2.ms)
+    plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, nyquist_frequency)
+    plt.show()
+    freq, mean_ps, all_ps, nyquist_frequency = spike_tools.get_average_power_spectrum(
+        spike_monitor, sampling_frequency=sampling_frequency_upper_bound, window_t_min=100.*b2.ms, window_t_max=None)
+    plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency)
+    plt.show()
+
+
 if __name__ == "__main__":
-    getting_started()
+    _some_example_calls_and_tests()
+    # getting_started()

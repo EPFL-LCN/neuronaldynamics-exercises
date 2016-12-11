@@ -29,6 +29,7 @@ Relevant book chapters:
 import brian2 as b2
 from neurodynex.tools import input_factory, plot_tools
 import random
+import matplotlib.pyplot as plt
 
 # Neuron model default values
 V_REST = -70 * b2.mV
@@ -85,7 +86,8 @@ def simulate_LIF_neuron(input_current,
 
     # LIF neuron using Brian2 library
     neuron = b2.NeuronGroup(
-        1, model=eqs, reset="v=v_reset", threshold="v>firing_threshold", refractory=abs_refractory_period, method="linear")
+        1, model=eqs, reset="v=v_reset", threshold="v>firing_threshold",
+        refractory=abs_refractory_period, method="linear")
     neuron.v = v_rest  # set initial value
 
     # monitoring membrane potential of neuron and injecting current
@@ -203,6 +205,7 @@ def getting_started():
     plot_tools.plot_voltage_and_current_traces(state_monitor, step_current,
                                                title="Step current", firing_threshold=FIRING_THRESHOLD)
     print("nr of spikes: {}".format(len(spike_monitor.t)))
+    plt.show()
 
     # second example: sinusoidal current. note the higher resolution 0.1 * b2.ms
     sinusoidal_current = input_factory.get_sinusoidal_current(
@@ -215,6 +218,7 @@ def getting_started():
     plot_tools.plot_voltage_and_current_traces(
         state_monitor, sinusoidal_current, title="Sinusoidal input current", firing_threshold=FIRING_THRESHOLD)
     print("nr of spikes: {}".format(spike_monitor.count[0]))
+    plt.show()
 
 
 if __name__ == "__main__":

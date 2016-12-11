@@ -21,8 +21,7 @@ import brian2 as b2
 import numpy
 
 
-def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing_threshold=None,
-                                    do_show_plot=True, legend_location=1):
+def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing_threshold=None, legend_location=1):
     """plots voltage and current .
 
     Args:
@@ -30,7 +29,9 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
         current (TimedArray): injected current
         title (string, optional): title of the figure
         firing_threshold (Quantity, optional): if set to a value, the firing threshold is plotted.
-        do_show_plot (bool): optional, default=True. Set it to False to suppress the blocking pyplot.show() call.
+
+    Returns:
+        the figure
     """
 
     assert isinstance(voltage_monitor, b2.StateMonitor), "voltage_monitor is not of type StateMonitor"
@@ -74,8 +75,7 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
 
     if title is not None:
         plt.suptitle(title)
-    if do_show_plot:
-        plt.show()
+    return axis_c, axis_v
 
 
 def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spike_train_idx_list=None,
@@ -150,8 +150,9 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         Helper. Extracts the spikes within the time window from the spike train
         """
         ts = spike_train/b2.ms
-        spike_within_time_window = (ts >= t_min) & (ts <= t_max)
-        idx_spikes = numpy.where(spike_within_time_window)
+        # spike_within_time_window = (ts >= t_min) & (ts <= t_max)
+        # idx_spikes = numpy.where(spike_within_time_window)
+        idx_spikes = (ts >= t_min) & (ts <= t_max)
         ts_spikes = ts[idx_spikes]
         return idx_spikes, ts_spikes
 
@@ -231,24 +232,84 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
     return fig, ax_raster, ax_rate, ax_voltage
 
 
-def plot_ISI_distribution(spike_monitor, hist_nr_bins=50, hist_max_ISI=100.*b2.ms):
+def plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=None):
     """
     Computes the ISI distribution of the given spike_monitor and displays the distribution in a histogram
 
     Args:
-        spike_monitor (SpikeMonitor): spikes
-        hist_nr_bins: Number of histrogram bins.
-        hist_max_ISI: the plot is cut off at this ISI. Note: the CV shown in the figure
-            title is computed using ALL spikes in the given monitor.
+        spike_stats (neurodynex.tools.spike_tools.PopulationSpikeStats): statistics of a population activity
+        hist_nr_bins (int): Number of histrogram bins. Default:50
+        xlim_max_ISI (Quantity):  Default: None. In not None, the upper xlim of the plot is set to xlim_max_ISI.
+            The CV does not change if this bound is set.
 
+    Returns:
+        the figure
     """
     from neurodynex.tools import spike_tools
-    stats = spike_tools.get_spike_train_stats(spike_monitor)
-    isi_ms = stats.all_ISI/b2.ms
-    filtered_is = isi_ms <= (hist_max_ISI/b2.ms)
-    idx_isi = numpy.where(filtered_is)
-    isi_ms = isi_ms[idx_isi]
-    plt.figure()
+    assert isinstance(spike_stats, spike_tools.PopulationSpikeStats), \
+        "spike_stats is not of type spike_tools.PopulationSpikeStats"
+    isi_ms = spike_stats.all_ISI/b2.ms
+
+    if xlim_max_ISI is not None:
+        lim = xlim_max_ISI/b2.ms
+        idx = isi_ms<lim
+        isi_ms = isi_ms[idx]
+
+    f = plt.figure()
     plt.hist(isi_ms, bins=hist_nr_bins)
-    plt.title("ISI histogram, CV={}".format(stats.CV))
+    if xlim_max_ISI is not None:
+        xmax = xlim_max_ISI / b2.ms
+        plt.xlim([0, xmax])
+    plt.title("ISI histogram, CV={}".format(round(spike_stats.CV, 3)))
     plt.xlabel("ISI [ms]")
+    return f
+
+
+def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency):
+    """
+    Visualizes the power spectrum of the spike trains.
+
+    Args:
+        freq: frequencies (= x axis)
+        mean_ps: average power taken over all neurons.
+        all_ps: power spectra for each single neuron
+        nyquist_frequency: half the sampling frequency of the spike train discretization.
+
+    Returns:
+        the figure
+    """
+    nr_neurons = all_ps.shape[0]
+    f = plt.figure()
+    plt.plot(freq, mean_ps, ".b")
+    plt.plot(freq, all_ps[0], ".r")
+    plt.legend(["averaged PS", "PS of a single neuron"])
+    plt.xlim([-0.1*nyquist_frequency/b2.Hz, 1.1*nyquist_frequency/b2.Hz])
+    plt.axvline(x=0., lw=1, color="k")
+    plt.grid()
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Power")
+    plt.title("Power Spectrum averaged across {} spike trains".format(nr_neurons))
+    return f
+
+
+def plot_population_activity_power_spectrum(freq, ps, nyquist_frequency):
+    """
+
+    Args:
+        freq: frequencies (= x axis)
+        ps: power spectrum of the population activity
+        nyquist_frequency: half the sampling frequency of the population activity.
+
+    Returns:
+        the figure
+    """
+    f = plt.figure()
+    plt.plot(freq, ps, ".b")
+    plt.axvline(x=0., lw=1, color="k")
+    plt.xlim([-0.1*nyquist_frequency/b2.Hz, 1.1*nyquist_frequency/b2.Hz])
+    plt.grid()
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Power")
+    plt.title("Power Spectrum of population activity A(t). Sampling Freq: {}Hz"
+              .format(round(2*nyquist_frequency), 1))
+    return f
