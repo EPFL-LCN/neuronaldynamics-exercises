@@ -252,7 +252,7 @@ def plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=None):
 
     if xlim_max_ISI is not None:
         lim = xlim_max_ISI/b2.ms
-        idx = isi_ms<lim
+        idx = isi_ms < lim
         isi_ms = isi_ms[idx]
 
     f = plt.figure()
@@ -265,7 +265,7 @@ def plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=None):
     return f
 
 
-def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency):
+def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency, nr_highlighted_neurons=2):
     """
     Visualizes the power spectrum of the spike trains.
 
@@ -276,20 +276,34 @@ def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency):
         nyquist_frequency: half the sampling frequency of the spike train discretization.
 
     Returns:
-        the figure
+        the figure and the index of the random neuron for which the PS is computed: all_ps[random_neuron_index]
     """
-    nr_neurons = all_ps.shape[0]
+    nr_neurons = len(all_ps)
     f = plt.figure()
+    color = "r"
+    msize = 10
+    legend_text = []
+    random_neuron_index = []
+    for i in range(nr_highlighted_neurons):
+        rand_idx = numpy.random.randint(nr_neurons)
+        rand_key = all_ps.keys()[rand_idx]
+        rand_neuron_ps = all_ps[rand_key]
+        plt.plot(freq, rand_neuron_ps, marker=".", linestyle=" ", markersize=msize, c=color)
+        color = [.8, .8, .8]  # print the first neuron in red and all others in gray
+        msize = 8
+        random_neuron_index.append(rand_idx)
+        legend_text.append("PS neuron #{}".format(rand_key))
+
     plt.plot(freq, mean_ps, ".b")
-    plt.plot(freq, all_ps[0], ".r")
-    plt.legend(["averaged PS", "PS of a single neuron"])
+    legend_text.append("averaged PS")
+    plt.legend(legend_text)
     plt.xlim([-0.1*nyquist_frequency/b2.Hz, 1.1*nyquist_frequency/b2.Hz])
     plt.axvline(x=0., lw=1, color="k")
     plt.grid()
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Power")
-    plt.title("Power Spectrum averaged across {} spike trains".format(nr_neurons))
-    return f
+    plt.title("Single neuron power spectrum and average")
+    return f, random_neuron_index
 
 
 def plot_population_activity_power_spectrum(freq, ps, nyquist_frequency):

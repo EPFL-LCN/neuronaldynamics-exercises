@@ -177,7 +177,7 @@ class PopulationSpikeStats:
         return cv
 
 
-def filter_spike_trains(spike_trains, window_t_min=0.*b2.ms, window_t_max=None):
+def filter_spike_trains(spike_trains, window_t_min=0.*b2.ms, window_t_max=None, idx_subset=None):
     """
     creates a new dictionary neuron_idx=>spike_times where all spike_times are in the
         half open interval [window_t_min,window_t_max)
@@ -188,27 +188,38 @@ def filter_spike_trains(spike_trains, window_t_min=0.*b2.ms, window_t_max=None):
         window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Default is 0ms.
         window_t_max (Quantity): Upper bound of the time window: t<window_t_max.
             Default is None, in which case no upper bound is set.
+        idx_subset (list, optional): a list of neuron indexes (dict keys) specifying a subset of neurons.
+            Neurons NOT in the key list are NOT added to the resulting dictionary. Default is None, in which case
+            all neurons are added to the resulting list.
 
     Returns:
         a filtered copy of spike_trains
     """
     assert isinstance(spike_trains, dict), \
         "spike_trains is not of type dict"
-    nr_neurons = len(spike_trains)
+
+    if idx_subset is None:
+        idx_subset = spike_trains.keys()
+
+    spike_trains_subset = dict()
+    for k in idx_subset:
+        spike_trains_subset[k] = spike_trains[k].copy()
+
+    nr_neurons = len(idx_subset)
     filtered_spike_trains = dict()
     if (window_t_min == 0.*b2.ms) & (window_t_max is None):
         # print("just copy")
-        filtered_spike_trains = spike_trains.copy()
+        filtered_spike_trains = spike_trains_subset
     elif (window_t_max is None):
         # print("only lower bound")
-        for i in range(nr_neurons):
-            idx = (spike_trains[i] >= window_t_min)
-            filtered_spike_trains[i] = spike_trains[i][idx]
+        for i in idx_subset:
+            idx = (spike_trains_subset[i] >= window_t_min)
+            filtered_spike_trains[i] = spike_trains_subset[i][idx]
     else:
         # print("lower and upper bound")
-        for i in range(nr_neurons):
-            idx = (spike_trains[i] >= window_t_min) & (spike_trains[i] < window_t_max)
-            filtered_spike_trains[i] = spike_trains[i][idx]
+        for i in idx_subset:
+            idx = (spike_trains_subset[i] >= window_t_min) & (spike_trains_subset[i] < window_t_max)
+            filtered_spike_trains[i] = spike_trains_subset[i][idx]
 
     return filtered_spike_trains
 
@@ -266,10 +277,12 @@ def _spike_train_2_binary_vector(spike_train, vector_length, discretization_dt):
     return vec
 
 
-def _get_spike_train_power_spectrum(spike_train, time_step):
+def _get_spike_train_power_spectrum(spike_train, time_step, subtract_mean=False):
     st = spike_train/b2.ms
-    # data = st-(np.mean(st))
-    data = st
+    if subtract_mean:
+        data = st-(np.mean(st))
+    else:
+        data = st
     ps = np.abs(np.fft.fft(data))**2
     freqs = np.fft.fftfreq(data.size, time_step)
     idx = np.argsort(freqs)
@@ -278,11 +291,13 @@ def _get_spike_train_power_spectrum(spike_train, time_step):
     return ps, freqs
 
 
-def get_average_power_spectrum(spike_monitor, sampling_frequency, window_t_min=0.*b2.ms, window_t_max=None):
+def get_average_power_spectrum(spike_monitor, sampling_frequency,
+                               window_t_min=0.*b2.ms, window_t_max=None, max_nr_neurons=100, subtract_mean=False):
     """
     averaged power-spectrum of spike trains in the time window [window_t_min, window_t_max).
         The power spectrum of every single neuron's spike train is computed. Then the average
-        across all single-neuron powers is computed.
+        across all single-neuron powers is computed. In order to limit the compuation time, the
+        number of neurons taken to compute the average is limited to max_nr_neurons which defaults to 100
 
     Args:
         spike_monitor (SpikeMonitor) : Brian2 SpikeMonitor
@@ -292,6 +307,8 @@ def get_average_power_spectrum(spike_monitor, sampling_frequency, window_t_min=0
             transient in the population activity)
         window_t_max (Quantity): Upper bound of the time window: t<window_t_max. Default is None, in which
             case no upper bound is set.
+        max_nr_neurons (int): Number of neurons over which the average is taken.
+        subtract_mean (bool): If true, the mean value of the signal is subtracted. Default is False
 
     Returns:
         freq, mean_ps, all_ps, nyquist_frequency.
@@ -299,25 +316,61 @@ def get_average_power_spectrum(spike_monitor, sampling_frequency, window_t_min=0
 
     assert isinstance(spike_monitor, b2.SpikeMonitor), \
         "spike_monitor is not of type SpikeMonitor"
-    sptrs = filter_spike_trains(spike_monitor.spike_trains(), window_t_min, window_t_max)
-    nr_neurons = len(sptrs)
+
+    spiketrains = spike_monitor.spike_trains()
+    nr_neurons = len(spiketrains)
+
+    sample_neurons = []
+    nr_samples = 0
+    if nr_neurons <= max_nr_neurons:
+        sample_neurons = range(nr_neurons)
+        nr_samples = nr_neurons
+    else:
+        idxs = np.arange(nr_neurons)
+        np.random.shuffle(idxs)
+        sample_neurons = idxs[:(max_nr_neurons)]
+        nr_samples = max_nr_neurons
+
+    sptrs = filter_spike_trains(spike_monitor.spike_trains(), window_t_min, window_t_max, sample_neurons)
     discretization_dt = 1./sampling_frequency
     if window_t_max is None:
         window_t_max = max(spike_monitor.t)
     vector_length = 1+int(math.ceil((window_t_max-window_t_min)/discretization_dt))
     freq = 0
-    all_ps = np.zeros([nr_neurons, vector_length], float)
-    for i in range(nr_neurons):
+
+    all_ps = np.zeros([nr_samples, vector_length], float)
+    all_ps_dict = dict()
+    for i in range(nr_samples):
+        idx = sample_neurons[i]
         vec = _spike_train_2_binary_vector(
-            sptrs[i]-window_t_min, vector_length, discretization_dt=discretization_dt)
-        ps, freq = _get_spike_train_power_spectrum(vec, discretization_dt)
+            sptrs[idx]-window_t_min, vector_length, discretization_dt=discretization_dt)
+        ps, freq = _get_spike_train_power_spectrum(vec, discretization_dt, subtract_mean)
         all_ps[i, :] = ps
+        all_ps_dict[idx] = ps
     mean_ps = np.mean(all_ps, 0)
+
     nyquist_frequency = sampling_frequency/2.
-    return freq, mean_ps, all_ps, nyquist_frequency
+    return freq, mean_ps, all_ps_dict, nyquist_frequency
 
 
 def downsample_population_activity(rate_monitor, downsampling_factor, window_t_min=0.*b2.ms, window_t_max=None):
+    """
+    Downsamples the rate_monitor.rate signal by downsampling_factor (integer).
+    Values < window_t_min and >=window_t_max are dropped.
+
+    Args:
+        rate_monitor (RateMonitor): Brian2 rate monitor
+        downsampling_factor (int): the signal is computed by taking the mean
+            over (non-overlapping) windows of length downsampling_factor
+        window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Default is 0ms. Set a lower
+            bound if you want to exclude an initial transient in the population activity.
+        window_t_max (Quantity): Upper bound of the time window: t<window_t_max. Default is None, in which
+            case no upper bound is set.
+
+    Returns:
+        downsampled_rates, nr_dropped_samples
+    """
+
     # get the population rates within the time window:
     idx = rate_monitor.t >= window_t_min
     if window_t_max is not None:
@@ -337,6 +390,23 @@ def downsample_population_activity(rate_monitor, downsampling_factor, window_t_m
 def get_population_activity_power_spectrum(
         rate_monitor, sampling_frequency_upper_bound,
         window_t_min=0.*b2.ms, window_t_max=None, subtract_mean_activity=True):
+    """
+    Computes the power spectrum of the population activity A(t) (=rate_monitor.rate)
+
+    Args:
+        rate_monitor (RateMonitor): Brian2 rate monitor
+        sampling_frequency_upper_bound: The signal is downsampled by an int-factor. The int factor is
+            chosen such that the resulting frequency is the largest possible
+            frequency <= sampling_frequency_upper_bound.
+        window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Default is 0ms. Set a lower
+            bound if you want to exclude an initial transient in the population activity.
+        window_t_max (Quantity): Upper bound of the time window: t<window_t_max. Default is None, in which
+            case no upper bound is set.
+        subtract_mean_activity (bool): If true, the mean value of the signal is subtracted. Default is False
+
+    Returns:
+
+    """
     downsampling_factor = int(math.ceil((1./rate_monitor.clock.dt)/sampling_frequency_upper_bound))
     if downsampling_factor < 1:
         # int(0.987654321) = 0 would correspond to oversampling
@@ -345,13 +415,12 @@ def get_population_activity_power_spectrum(
         raise Exception(exc_msg)
     downsampled_fequency = 1. / rate_monitor.clock.dt / downsampling_factor
     nyquist_frequency = downsampled_fequency / 2.
-
-    print("downsampling_factor={}".format(downsampling_factor))
     downsampled_rates, nr_dropped_samples = downsample_population_activity(
         rate_monitor, downsampling_factor, window_t_min, window_t_max)
-    if subtract_mean_activity:
-        downsampled_rates = downsampled_rates - np.mean(downsampled_rates)
     data = downsampled_rates / b2.Hz
+    if subtract_mean_activity:
+        data = data - np.mean(data)
+
     ps = np.abs(np.fft.fft(data))**2
     freqs = np.fft.fftfreq(data.size, 1./downsampled_fequency)
     idx = np.argsort(freqs)

@@ -182,24 +182,24 @@ def getting_started():
 
 
 def _some_example_calls_and_tests():
-    b2.defaultclock.dt = 0.1 * b2.ms
+    b2.defaultclock.dt = 0.2 * b2.ms
     from neurodynex.tools import spike_tools
     poisson_rate = 9.5*b2.Hz
     g = 7.5
-    sim_time = 500. * b2.ms
+    sim_time = 800. * b2.ms
     CE = 500
 
     sampling_frequency_upper_bound = 800*b2.Hz
     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
         N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=sim_time)
 
-    plot_tools.plot_network_activity(
-        rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=0*b2.ms)
-    plot_tools.plot_network_activity(
-        rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=sim_time-100*b2.ms)
-    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=150.*b2.ms)
-    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=50. * b2.ms)
-    print(spike_stats.CV)
+    # plot_tools.plot_network_activity(
+    #     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=0*b2.ms)
+    # plot_tools.plot_network_activity(
+    #     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=sim_time-100*b2.ms)
+    # spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=150.*b2.ms)
+    # plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=50. * b2.ms)
+    # print(spike_stats.CV)
 
     pop_freqs, pop_ps, downsampling_factor, nyquist_frequency = spike_tools.get_population_activity_power_spectrum(
         rate_monitor, sampling_frequency_upper_bound=sampling_frequency_upper_bound, window_t_min=100.*b2.ms)
@@ -212,5 +212,5 @@ def _some_example_calls_and_tests():
 
 
 if __name__ == "__main__":
-    _some_example_calls_and_tests()
-    # getting_started()
+    # _some_example_calls_and_tests()
+    getting_started()

@@ -19,7 +19,7 @@ The module :mod:`.brunel_model.LIF_spiking_network` implements a parametrized ne
    Simulation result. Top: raster plot of 150 randomly selected neurons. Three spike trains are visually highlighted. Middle: time evolution of the population activity A(t). Bottom: Membrane voltage of three neurons. The red color in the top and bottom panels identifies the same neuron.
 
 
-To get started, call the function  :func:`LIF_spiking_network.getting_started` or copy the following code into a Jupyter notebook.
+To get started, call the function  :func:`.brunel_model.LIF_spiking_network.getting_started` or copy the following code into a Jupyter notebook.
 
 
 .. code-block:: py
@@ -93,9 +93,9 @@ Question: Network states
 
 * The function :func:`.simulate_brunel_network` gives you three options to vary the input strength (y-axis in figure 13.7, a). What options do you have?
 
-* What parameter of the function :func:`.simulate_brunel_network` lets you change the relative strength of inhibition (the x-axis in figure 13.7, a)?
+* Which parameter of the function :func:`.simulate_brunel_network` lets you change the relative strength of inhibition (the x-axis in figure 13.7, a)?
 
-* Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 800ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last ~50ms.
+* Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 1000ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last ~50ms.
 
 * What is the  population activity A(t) in each of the four conditions (in Hz, averaged over the last 200ms of your simulation)?
 
@@ -107,15 +107,16 @@ Before answering the questions, make sure you understand the notions ISI and CV.
 
 * What is the CV of a Poisson neuron?
 
-* Sketch the interspike interval distribution of a Poisson neuron.
-
 * From the four figures plotted in the previous question, qualitatively interpret the spike trains and the population activity in each of the four regimes:
 
     * What is the mean firing rate of a single neuron (only a rough estimate).
     * Sketch the ISI histogram. (is it peaked or broad? where's the maximum?)
     * Estimate the CV. (is it <1, <<1, =1, >1 ?)
 
-* Validate your estimates using the functions :func:`spike_tools.get_spike_train_stats` and :func:`plot_tools.plot_ISI_distribution`. Use the code block provided here (assumes you're using a Jupyter Notebook).
+* Validate your estimates using the functions :func:`.spike_tools.get_spike_train_stats` and :func:`.plot_tools.plot_ISI_distribution`. Use the code block provided here.
+
+* Make sure you understand the code block. Why is the function `.spike_tools.get_spike_train_stats` called with the parameter `window_t_min=100.*b2.ms`?
+
 
 .. code-block:: py
 
@@ -124,19 +125,19 @@ Before answering the questions, make sure you understand the notions ISI and CV.
     from neurodynex.tools import plot_tools, spike_tools
     import brian2 as b2
 
-    poisson_rate = ???*b2.Hz
+    poisson_rate = ??? *b2.Hz
     g = ???
     CE = ???
-    simtime = ???*b2.ms
+    simtime = ??? *b2.ms
 
     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = LIF_spiking_network.simulate_brunel_network(N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=simtime)
     plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = 0*b2.ms)
-    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = simtime - 80*b2.ms)
-    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=100.*b2.ms)
-    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=100, xlim_max_ISI=250*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = simtime - ??? *b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min= 100 *b2.ms)
+    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=100, xlim_max_ISI= ??? *b2.ms)
 
 
-* In the Synchronous Repetitive (SR) state, what is the dominant frequency of the population activity A(t)? Compare this frequency to the firing frequency of a single neuron. You can do this "visually" using the plots created by :func:`plot_tools.plot_network_activity` or by solving the bonus exercise below.
+* In the Synchronous Repetitive (SR) state, what is the dominant frequency of the population activity A(t)? Compare this frequency to the firing frequency of a single neuron. You can do this "visually" using the plots created by :func:`.plot_tools.plot_network_activity` or by solving the bonus exercise below.
 
 
 Exercise: Emergence of Synchronization
@@ -152,7 +153,7 @@ Question:
 
 * Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.
 
-* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time. The figure below shows a similar result but for a different regime.
+* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time. The figure below shows a *similar result but for a different regime*.
 
 
 .. figure:: exc_images/Brunel_Synchronization.png
@@ -163,5 +164,68 @@ Question:
 
 Bonus: Power Spectrum of the Population Activity
 ------------------------------------------------
+We can get more insights into the statistics of the network activity by analysing the power spectrum of the spike trains and the population activity. The four regimes (SR, AI, SI fast, SI slow) are characterized by *two* properties: the regularity/irregularity of individual neuron's spike trains *and* the stationary/oscillatory pattern of the population activity A(t). We transform the spike trains and A(t) into the frequency domain to identify regularities.
 
-Use numpy.fft to analyse the power-spectrum of the population activity (rate_monitor.rate/b2.Hz).
+Question: Single Neuron activity vs. Population Activity
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* In the Synchronous Repetitive (SR) state, what is the dominant frequency of the population activity A(t)? Compare this frequency to the firing frequency of a single neuron. (no computation, estimate it from the raster plot and A(t) plotted in one of the previous questions.
+
+* Sampling and Frequencies
+    * What range of frequency is of interest when analysing the population activity A(t)?
+    * When running a Brian simulation with defaultclock.dt = 0.1ms, what is the sampling rate of the population activity A(t) (=RateMonitor.rate) in Hz ?
+    * If you transform that raw signal into frequency domain what maximal frequency could you resolve?
+    * Which parameter in the function :func:`.spike_tools.get_population_activity_power_spectrum` specifies the downsampling of the signal ?
+    * The analysis of the individual neuron's spike train is slightly different because in that case, the signal is given as a list of timestamps (SpikeMonitor.spike_trains) and needs to be transformed into a binary vector. Read the doc of :func:`.spike_tools.get_average_power_spectrum` to learn how to control the sampling rate.
+    * How is the power in low frequencies related to the simulation time?
+
+* For each network states SR, AI, SI fast, SI slow, compute and plot the power spectrum using the script given here. Make sure you understand the script and read the documentation of the functions :func:`.spike_tools.get_average_power_spectrum`, :func:`.plot_tools.plot_spike_train_power_spectrum`, :func:`.spike_tools.get_population_activity_power_spectrum`, and :func:`.plot_tools.plot_population_activity_power_spectrum`.
+
+* Discuss power spectra of the states SR, AI, SI fast and SI slow. Compare the individual neuron's spike train powers to the averaged power spectrum and to the power spectrum of A(t).
+
+.. code-block:: py
+
+    %matplotlib inline
+    from neurodynex.brunel_model import LIF_spiking_network
+    from neurodynex.tools import plot_tools, spike_tools
+    import brian2 as b2
+
+    poisson_rate = ??? *b2.Hz
+    g= ???
+    CE= ???
+    simtime = ??? *b2.ms
+
+    # b2.defaultclock.dt = 0.1 * b2.ms
+
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = LIF_spiking_network.simulate_brunel_network(N_Excit=CE,poisson_input_rate=poissofifig2fig2
+    g2n_rate, g=g, sim_time=simtime)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = 0*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = simtime - ??? *b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=100.*b2.ms)
+    plot_tools.plot_ISI_distribution(spike_stats,hist_nr_bins=50, xlim_max_ISI= ??? *b2.ms)
+
+    # Power Spectrum
+    sampling_frequency_upper_bound = ??? *b2.Hz
+
+    pop_freqs, pop_ps, downsampling_factor, pop_nyquist_frequency = spike_tools.get_population_activity_power_spectrum(
+        rate_monitor, sampling_frequency_upper_bound=sampling_frequency_upper_bound, window_t_min=100.*b2.ms)
+    plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, pop_nyquist_frequency)
+
+    freq, mean_ps, all_ps, nyquist_frequency = spike_tools.get_average_power_spectrum(
+        spike_monitor, sampling_frequency=sampling_frequency_upper_bound, window_t_min=100.*b2.ms, subtract_mean=True, max_nr_neurons= ???)
+    plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency)
+    print("done")
+
+The figures below show the type of analysis you can do with this script. The first figure shows the last 80ms of a network simulation. The second figure the power spectrum of the population activity A(t) and the third figure shows the power spectrum of single neurons (individual and averaged). Note the qualitative differences between the power spectra.
+
+.. figure:: exc_images/Brunel_SIfast_activity.png
+   :align: center
+   :width: 80%
+.. figure:: exc_images/Brunel_SIfast_PSpop.png
+   :align: center
+   :width: 80%
+.. figure:: exc_images/Brunel_SIfast_PSsingle.png
+   :align: center
+   :width: 80%
+
+   On average, the power spectrum of the single neuron spike trains is flat while the power spectrum of the population activity is oscillating.

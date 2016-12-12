@@ -19,6 +19,18 @@ Subpackages
     neurodynex.test
     neurodynex.tools
 
+Submodules
+----------
+
+neurodynex.quick_test module
+----------------------------
+
+.. automodule:: neurodynex.quick_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
 Module contents
 ---------------
 
