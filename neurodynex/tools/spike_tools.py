@@ -1,3 +1,11 @@
+"""
+This the spike_tools submodule provides functions to analyse the
+Brian2 SpikeMonitors and Brian2 StateMonitors. The code provided here is
+not optimized for performance and there is no guarantee for correctness.
+
+Relevant book chapters:
+    - http://neuronaldynamics.epfl.ch/online/Ch19.S2.html#SS1.p6
+"""
 
 # This file is part of the exercise code repository accompanying
 # the book: Neuronal Dynamics (see http://neuronaldynamics.epfl.ch)
@@ -19,7 +27,6 @@
 import brian2 as b2
 import numpy as np
 import math
-
 
 # def get_spike_time(voltage_monitor, spike_threshold):
 #     """

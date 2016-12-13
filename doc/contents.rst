@@ -2,8 +2,8 @@ Python exercise modules
 -----------------------
 
 All exercises are contained in subpackages of the python package `neurodynex`.
-The subpackages contain modules used for each exercise, along with a file
-called `exercise.pdf` with the actual exercises using the python code.
+The subpackages contain modules used for each exercise. The module `neurodynex.tools` provides functions shared
+across exercises. Note that the code is not optimized for performance and there is no guarantee for correctness.
 
 .. toctree::
     :maxdepth: 4

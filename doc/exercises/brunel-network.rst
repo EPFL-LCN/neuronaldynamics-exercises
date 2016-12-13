@@ -228,4 +228,4 @@ The figures below show the type of analysis you can do with this script. The fir
    :align: center
    :width: 80%
 
-   On average, the power spectrum of the single neuron spike trains is flat while the power spectrum of the population activity is oscillating.
+   On average, the power spectrum of the single neuron spike trains is flat while the population activity is oscillating.

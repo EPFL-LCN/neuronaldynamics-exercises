@@ -178,9 +178,7 @@ def get_spikes_current(t_spikes, unit_time, amplitude, append_zero=True):
 
 def plot_step_current_example():
     """
-    Example for get_step_current
-    Returns:
-
+    Example for get_step_current.
     """
     current = get_step_current(10, 30, b2.ms, amplitude=5. * b2.uA, append_zero=False)
     data = current.values[:, 0] / b2.uamp
@@ -193,12 +191,10 @@ def plot_step_current_example():
 def plot_ramp_current_example():
     """
     Example for get_ramp_current
-    Returns:
-
     """
     current = get_ramp_current(10, 25, b2.ms, 20 * b2.uamp, 50 * b2.uamp, append_zero=True)
     data = current.values[:, 0] / b2.uamp
-    plt.plot(data, LineWidth=3)
+    plt.plot(data, lw=3)
     plt.title("get_ramp_current(10, 25, b2.ms, 20*b2.uamp, 50*b2.uamp, append_zero=True)")
     plt.xlabel("index")
     plt.ylabel("value")
@@ -207,15 +203,13 @@ def plot_ramp_current_example():
 def plot_sinusoidal_current_example():
     """
     Example for get_sinusoidal_current
-    Returns:
-
     """
     current = get_sinusoidal_current(
         100, 1100, b2.us,
         amplitude=2 * b2.uamp, frequency=1.5 * b2.kHz, direct_current=1.5 * b2.uamp, phase_offset=math.pi / 6,
         append_zero=False)
     data = current.values[:, 0] / b2.uamp
-    plt.plot(data, LineWidth=3)
+    plt.plot(data, lw=3)
     plt.title("get_sinusoidal_current(100, 1100, b2.us, amplitude=2*b2.uamp, frequency=1.5*b2.kHz, \n"
               "direct_current=1.5*b2.uamp, phase_offset=pi/6, append_zero=False)")
     plt.xlabel("index")
