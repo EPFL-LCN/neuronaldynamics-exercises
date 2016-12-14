@@ -1,5 +1,5 @@
-Network of LIF neurons
-======================
+Network of LIF neurons (Brunel)
+===============================
 
 In this exercise we study a well known network of sparsely connected Leaky-Integrate-And-Fire neurons (Brunel, 2000).
 
@@ -166,20 +166,56 @@ Bonus: Power Spectrum of the Population Activity
 ------------------------------------------------
 We can get more insights into the statistics of the network activity by analysing the power spectrum of the spike trains and the population activity. The four regimes (SR, AI, SI fast, SI slow) are characterized by *two* properties: the regularity/irregularity of individual neuron's spike trains *and* the stationary/oscillatory pattern of the population activity A(t). We transform the spike trains and A(t) into the frequency domain to identify regularities.
 
+Question: Sampling the Population Activity
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* When analysing the population activity A(t), what is the lowest/highest frequency we are interested?
+
+Assume you simulated `2100 ms` with defaultclock.dt = :math:`0.1ms = \Delta t`. This simulation returns a RateMonitor giving you access to the population activity A(t) (=RateMonitor.rate). Have a look at the equations :eq:`eq_fourier_transform_params` and answer the following questions about the signal A(t). For the moment, let k=1.
+
+* what is the sampling frequency :math:`f_{sampling}` of the population activity A(t) in `Hz`?
+* ignoring the first :math:`T_{init}=100 ms` of the simulation (initial transient), what is the size :math:`N` (= number of samples) of the signal?
+* what is the maximal frequency :math:`f_{max}` you can resolve from that signal?
+* what is the lowest frequency :math:`\Delta f` you can resolve from that signal?
+
+The highest frequency :math:`f_{max}` is determined by :math:`\Delta t`. Even if we are not interested in such high frequencies, we should not increase :math:`\Delta t` (too much) because it may affect the accuracy of the simulation.
+
+The lowest frequency :math:`\Delta f` is determined by the signal length :math:`T_{Simulation}`. We could therefore decrease the simulation duration if we accept decreasing the resolution in the frequency domain. But there is another option: We still use a "too long" simulation time :math:`T_{Simulation}` but then split the RateMonitor.rate signal into :math:`k` chunks of duration :math:`T_{Signal}`. We can then average the power across the :math:`k` repetitions. This is what the function :func:`.spike_tools.get_population_activity_power_spectrum` does -  we just have to get the parameters first:
+
+* Given the values :math:`\Delta f = 5 Hz, \Delta t = 0.1ms, T_{init}=100ms, k=5`, compute :math:`T_{Signal}` and :math:`T_{Simulation}`.
+
+.. math::
+   :label: eq_fourier_transform_params
+
+   \begin{array}{ccll}
+    f_{max} = \frac{f_{Sampling}}{2} = \frac{1}{2 \cdot \Delta t} \\[.2cm]
+   N \cdot \Delta t = T_{Signal} \\[.2cm]
+   2 \cdot f_{max} = N \cdot \Delta f \\[.2cm]
+   T_{Simulation} = k \cdot T_{Signal} + T_{init};  k \in N \\
+   \end{array}
+
+:math:`f_{Sampling}`: sampling frequency of the signal;
+:math:`f_{max}`: highest frequency component;
+:math:`\Delta f`: frequency resolution in fourier domain = lowest frequency component;
+:math:`T_{Signal}` length of the signal;
+:math:`\Delta t`: temporal resolution of the signal;
+:math:`N`: Number of samples (same in time- and frequency- domain)
+:math:`T_{Simulation}`: simulation time;
+:math:`k`: k repetitions of the signal;
+:math:`T_{init}`: initial part of the simulation (not used for data analysis);
+
+Question: Sampling a Single Neuron Spike Train
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* The sampling of the individual neuron's spike train is slightly different because in that case, the signal is given as a list of timestamps (SpikeMonitor.spike_trains) and needs to be transformed into a binary vector. This is done inside the function :func:`.spike_tools.get_averaged_single_neuron_power_spectrum`. Read the doc to learn how to control the sampling rate.
+
+* The firing rate of a single neuron can be very low and very different from one neuron to another. For that reason, we do not split the spike train into k realizations but we analyse the full spike train (:math:`T_{Simulation}-T_{init}`). From the simulation, we get many (CE+CI) spike trains and we can  average across a subset of neurons. Check the doc of :func:`.spike_tools.get_averaged_single_neuron_power_spectrum` to learn how to control the number of neurons of this subset.
+
+
 Question: Single Neuron activity vs. Population Activity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We can now compute and plot the power spectrum.
 
-* In the Synchronous Repetitive (SR) state, what is the dominant frequency of the population activity A(t)? Compare this frequency to the firing frequency of a single neuron. (no computation, estimate it from the raster plot and A(t) plotted in one of the previous questions.
-
-* Sampling and Frequencies
-    * What range of frequency is of interest when analysing the population activity A(t)?
-    * When running a Brian simulation with defaultclock.dt = 0.1ms, what is the sampling rate of the population activity A(t) (=RateMonitor.rate) in Hz ?
-    * If you transform that raw signal into frequency domain what maximal frequency could you resolve?
-    * Which parameter in the function :func:`.spike_tools.get_population_activity_power_spectrum` specifies the downsampling of the signal ?
-    * The analysis of the individual neuron's spike train is slightly different because in that case, the signal is given as a list of timestamps (SpikeMonitor.spike_trains) and needs to be transformed into a binary vector. Read the doc of :func:`.spike_tools.get_average_power_spectrum` to learn how to control the sampling rate.
-    * How is the power in low frequencies related to the simulation time?
-
-* For each network states SR, AI, SI fast, SI slow, compute and plot the power spectrum using the script given here. Make sure you understand the script and read the documentation of the functions :func:`.spike_tools.get_average_power_spectrum`, :func:`.plot_tools.plot_spike_train_power_spectrum`, :func:`.spike_tools.get_population_activity_power_spectrum`, and :func:`.plot_tools.plot_population_activity_power_spectrum`.
+* For each network states SR, AI, SI fast, SI slow, find the parameters, then compute and plot the power spectrum using the script given here. Make sure you understand the script and read the documentation of the functions :func:`.spike_tools.get_averaged_single_neuron_power_spectrum`, :func:`.plot_tools.plot_spike_train_power_spectrum`, :func:`.spike_tools.get_population_activity_power_spectrum`, and :func:`.plot_tools.plot_population_activity_power_spectrum`.
 
 * Discuss power spectra of the states SR, AI, SI fast and SI slow. Compare the individual neuron's spike train powers to the averaged power spectrum and to the power spectrum of A(t).
 
@@ -190,33 +226,57 @@ Question: Single Neuron activity vs. Population Activity
     from neurodynex.tools import plot_tools, spike_tools
     import brian2 as b2
 
+    # Specify the parameters of the desired network state (e.g. SI fast)
     poisson_rate = ??? *b2.Hz
-    g= ???
-    CE= ???
-    simtime = ??? *b2.ms
+    g = ???
+    CE = ???
 
-    # b2.defaultclock.dt = 0.1 * b2.ms
+    # Specify the signal and simulation properties:
+    delta_t = ??? * b2.ms
+    delta_f = ??? * b2.Hz
+    T_init = ??? * b2.ms
+    k = ???
 
-    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = LIF_spiking_network.simulate_brunel_network(N_Excit=CE,poisson_input_rate=poissofifig2fig2
-    g2n_rate, g=g, sim_time=simtime)
-    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = 0*b2.ms)
-    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = simtime - ??? *b2.ms)
-    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=100.*b2.ms)
-    plot_tools.plot_ISI_distribution(spike_stats,hist_nr_bins=50, xlim_max_ISI= ??? *b2.ms)
+    # compute the remaining values:
+    f_max = ???
+    N_samples = ???
+    T_signal = ???
+    T_sim = k * T_signal + T_init
 
-    # Power Spectrum
-    sampling_frequency_upper_bound = ??? *b2.Hz
+    # replace the ??? by appropriate values:
 
-    pop_freqs, pop_ps, downsampling_factor, pop_nyquist_frequency = spike_tools.get_population_activity_power_spectrum(
-        rate_monitor, sampling_frequency_upper_bound=sampling_frequency_upper_bound, window_t_min=100.*b2.ms)
-    plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, pop_nyquist_frequency)
+    print("Start simulation. T_sim={}, T_signal={}, N_samples={}".format(T_sim, T_signal, N_samples))
+    b2.defaultclock.dt = delta_t
+    # for technical reason (solves rounding issues), we add a few extra samples:
+    stime = T_sim + (10 + k) * b2.defaultclock.dt
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = \
+        LIF_spiking_network.simulate_brunel_network(
+            N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=stime)
 
-    freq, mean_ps, all_ps, nyquist_frequency = spike_tools.get_average_power_spectrum(
-        spike_monitor, sampling_frequency=sampling_frequency_upper_bound, window_t_min=100.*b2.ms, subtract_mean=True, max_nr_neurons= ???)
-    plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=0*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=T_sim - ??? *b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min= ??? *b2.ms)
+    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins= ???, xlim_max_ISI= ??? *b2.ms)
+
+    #  Power Spectrum
+    pop_freqs, pop_ps, average_population_rate = \
+        spike_tools.get_population_activity_power_spectrum(
+            rate_monitor, delta_f, k, T_init)
+    plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, ??? *b2.Hz, average_population_rate)
+    freq, mean_ps, all_ps, mean_firing_rate, all_mean_firing_freqs = \
+        spike_tools.get_averaged_single_neuron_power_spectrum(
+            spike_monitor, sampling_frequency=1./delta_t, window_t_min= ??? *b2.ms,
+            window_t_max=T_sim, nr_neurons_average= ??? )
+    plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, max_freq= ??? * b2.Hz,
+                                               mean_firing_freqs_per_neuron=all_mean_firing_freqs,
+                                               nr_highlighted_neurons=2)
     print("done")
 
-The figures below show the type of analysis you can do with this script. The first figure shows the last 80ms of a network simulation. The second figure the power spectrum of the population activity A(t) and the third figure shows the power spectrum of single neurons (individual and averaged). Note the qualitative differences between the power spectra.
+
+
+The figures below show the type of analysis you can do with this script. The first figure shows the last 80ms of a network simulation. The second figure the power spectrum of the population activity A(t) and the third figure shows the power spectrum of single neurons (individual neurons and averaged across neurons). Note the qualitative difference between the spectral density of the population and that of the individual neurons.
 
 .. figure:: exc_images/Brunel_SIfast_activity.png
    :align: center
@@ -228,4 +288,4 @@ The figures below show the type of analysis you can do with this script. The fir
    :align: center
    :width: 80%
 
-   On average, the power spectrum of the single neuron spike trains is flat while the population activity is oscillating.
+   Single neurons (red, grey) fire irregularly **(I)** while the population activity oscillates **(S)**.

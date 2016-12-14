@@ -279,46 +279,48 @@ def _spike_train_2_binary_vector(spike_train, vector_length, discretization_dt):
     """
     vec = np.zeros(vector_length, int)
     idx = spike_train / discretization_dt
-    idx = (np.round(idx)).astype(int)
+    idx = np.floor(idx).astype(int)
     vec[idx] = 1
     return vec
 
 
-def _get_spike_train_power_spectrum(spike_train, time_step, subtract_mean=False):
+def _get_spike_train_power_spectrum(spike_train, delta_t, subtract_mean=False):
     st = spike_train/b2.ms
     if subtract_mean:
-        data = st-(np.mean(st))
+        data = st-np.mean(st)
     else:
         data = st
+    N_signal = data.size
     ps = np.abs(np.fft.fft(data))**2
-    freqs = np.fft.fftfreq(data.size, time_step)
-    idx = np.argsort(freqs)
-    ps = ps[idx]
-    freqs = freqs[idx]
+    # normalize
+    ps = ps * delta_t / N_signal  # TODO: verify: subtract 1 (N_signal-1)?
+    freqs = np.fft.fftfreq(N_signal, delta_t)
+    ps = ps[:(N_signal/2)]
+    freqs = freqs[:(N_signal/2)]
     return ps, freqs
 
 
-def get_average_power_spectrum(spike_monitor, sampling_frequency,
-                               window_t_min=0.*b2.ms, window_t_max=None, max_nr_neurons=100, subtract_mean=False):
+def get_averaged_single_neuron_power_spectrum(spike_monitor, sampling_frequency,
+                                              window_t_min, window_t_max,
+                                              nr_neurons_average=100, subtract_mean=False):
     """
     averaged power-spectrum of spike trains in the time window [window_t_min, window_t_max).
         The power spectrum of every single neuron's spike train is computed. Then the average
         across all single-neuron powers is computed. In order to limit the compuation time, the
-        number of neurons taken to compute the average is limited to max_nr_neurons which defaults to 100
+        number of neurons taken to compute the average is limited to nr_neurons_average which defaults to 100
 
     Args:
         spike_monitor (SpikeMonitor) : Brian2 SpikeMonitor
         sampling_frequency (Quantity): sampling frequency used to discretize the spike trains.
-        window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Default is 0ms. Spikes
+        window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Spikes
             before window_t_min are not taken into account (set a lower bound if you want to exclude an initial
             transient in the population activity)
-        window_t_max (Quantity): Upper bound of the time window: t<window_t_max. Default is None, in which
-            case no upper bound is set.
-        max_nr_neurons (int): Number of neurons over which the average is taken.
-        subtract_mean (bool): If true, the mean value of the signal is subtracted. Default is False
+        window_t_max (Quantity): Upper bound of the time window: t<window_t_max.
+        nr_neurons_average (int): Number of neurons over which the average is taken.
+        subtract_mean (bool): If true, the mean value of the signal is subtracted before FFT. Default is False
 
     Returns:
-        freq, mean_ps, all_ps, nyquist_frequency.
+        freq, mean_ps, all_ps_dict, mean_firing_rate, mean_firing_freqs_per_neuron
     """
 
     assert isinstance(spike_monitor, b2.SpikeMonitor), \
@@ -329,24 +331,26 @@ def get_average_power_spectrum(spike_monitor, sampling_frequency,
 
     sample_neurons = []
     nr_samples = 0
-    if nr_neurons <= max_nr_neurons:
+    if nr_neurons <= nr_neurons_average:
         sample_neurons = range(nr_neurons)
         nr_samples = nr_neurons
     else:
         idxs = np.arange(nr_neurons)
         np.random.shuffle(idxs)
-        sample_neurons = idxs[:(max_nr_neurons)]
-        nr_samples = max_nr_neurons
+        sample_neurons = idxs[:(nr_neurons_average)]
+        nr_samples = nr_neurons_average
 
     sptrs = filter_spike_trains(spike_monitor.spike_trains(), window_t_min, window_t_max, sample_neurons)
+    time_window_size = window_t_max - window_t_min
     discretization_dt = 1./sampling_frequency
     if window_t_max is None:
         window_t_max = max(spike_monitor.t)
-    vector_length = 1+int(math.ceil((window_t_max-window_t_min)/discretization_dt))
+    vector_length = 1+int(math.ceil(time_window_size/discretization_dt))  # +1: space for rounding issues
     freq = 0
-
-    all_ps = np.zeros([nr_samples, vector_length], float)
+    spike_count = 0
+    all_ps = np.zeros([nr_samples, vector_length/2], float)
     all_ps_dict = dict()
+    mean_firing_freqs_per_neuron = dict()
     for i in range(nr_samples):
         idx = sample_neurons[i]
         vec = _spike_train_2_binary_vector(
@@ -354,83 +358,66 @@ def get_average_power_spectrum(spike_monitor, sampling_frequency,
         ps, freq = _get_spike_train_power_spectrum(vec, discretization_dt, subtract_mean)
         all_ps[i, :] = ps
         all_ps_dict[idx] = ps
+        nr_spikes = len(sptrs[idx])
+        nu_avg = nr_spikes / time_window_size
+        # print(nu_avg)
+        mean_firing_freqs_per_neuron[idx] = nu_avg
+        spike_count += nr_spikes  # count in the subsample which is filtered to [window_t_min, window_t_max]
+
     mean_ps = np.mean(all_ps, 0)
-
-    nyquist_frequency = sampling_frequency/2.
-    return freq, mean_ps, all_ps_dict, nyquist_frequency
-
-
-def downsample_population_activity(rate_monitor, downsampling_factor, window_t_min=0.*b2.ms, window_t_max=None):
-    """
-    Downsamples the rate_monitor.rate signal by downsampling_factor (integer).
-    Values < window_t_min and >=window_t_max are dropped.
-
-    Args:
-        rate_monitor (RateMonitor): Brian2 rate monitor
-        downsampling_factor (int): the signal is computed by taking the mean
-            over (non-overlapping) windows of length downsampling_factor
-        window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Default is 0ms. Set a lower
-            bound if you want to exclude an initial transient in the population activity.
-        window_t_max (Quantity): Upper bound of the time window: t<window_t_max. Default is None, in which
-            case no upper bound is set.
-
-    Returns:
-        downsampled_rates, nr_dropped_samples
-    """
-
-    # get the population rates within the time window:
-    idx = rate_monitor.t >= window_t_min
-    if window_t_max is not None:
-        idx = idx & (rate_monitor.t < window_t_max)
-    rates = rate_monitor.rate[idx]
-    # get a multiple of the downsampling factor
-    nr_rates = len(rates)
-    nr_dropped_samples = nr_rates % downsampling_factor
-    if nr_dropped_samples > 0:
-        rates = rates[:-nr_dropped_samples]
-    nr_rows = len(rates)/downsampling_factor
-    r = np.reshape(rates, (nr_rows, downsampling_factor))
-    downsampled_rates = np.mean(r, 1)
-    return downsampled_rates, nr_dropped_samples
+    mean_firing_rate = spike_count / nr_samples / time_window_size
+    print("mean_firing_rate:{}".format(mean_firing_rate))
+    return freq, mean_ps, all_ps_dict, mean_firing_rate, mean_firing_freqs_per_neuron
 
 
 def get_population_activity_power_spectrum(
-        rate_monitor, sampling_frequency_upper_bound,
-        window_t_min=0.*b2.ms, window_t_max=None, subtract_mean_activity=True):
+        rate_monitor, delta_f, k_repetitions, T_init=100*b2.ms, subtract_mean_activity=False):
     """
     Computes the power spectrum of the population activity A(t) (=rate_monitor.rate)
 
     Args:
-        rate_monitor (RateMonitor): Brian2 rate monitor
-        sampling_frequency_upper_bound: The signal is downsampled by an int-factor. The int factor is
-            chosen such that the resulting frequency is the largest possible
-            frequency <= sampling_frequency_upper_bound.
-        window_t_min (Quantity): Lower bound of the time window: t>=window_t_min. Default is 0ms. Set a lower
-            bound if you want to exclude an initial transient in the population activity.
-        window_t_max (Quantity): Upper bound of the time window: t<window_t_max. Default is None, in which
-            case no upper bound is set.
+        rate_monitor (RateMonitor): Brian2 rate monitor. rate_monitor.rate is the signal being
+            analysed here. The temporal resolution is read from rate_monitor.clock.dt
+        delta_f (Quantity): The desired frequency resolution.
+        k_repetitions (int): The data rate_monitor.rate is split into k_repetitions which are FFT'd
+            independently and then averaged in frequency domain.
+        T_init (Quantity): Rates in the time interval [0, T_init] are removed before doing the
+            Fourier transform. Use this parameter to ignore the initial transient signals of the simulation.
         subtract_mean_activity (bool): If true, the mean value of the signal is subtracted. Default is False
 
     Returns:
-
+        freqs, ps, average_population_rate
     """
-    downsampling_factor = int(math.ceil((1./rate_monitor.clock.dt)/sampling_frequency_upper_bound))
-    if downsampling_factor < 1:
-        # int(0.987654321) = 0 would correspond to oversampling
-        exc_msg = "sampling frequency is {}, sampling_frequency_upper_bound is {}. Oversampling is not supported."\
-            .format(1./rate_monitor.clock.dt, sampling_frequency_upper_bound)
-        raise Exception(exc_msg)
-    downsampled_fequency = 1. / rate_monitor.clock.dt / downsampling_factor
-    nyquist_frequency = downsampled_fequency / 2.
-    downsampled_rates, nr_dropped_samples = downsample_population_activity(
-        rate_monitor, downsampling_factor, window_t_min, window_t_max)
-    data = downsampled_rates / b2.Hz
-    if subtract_mean_activity:
-        data = data - np.mean(data)
+    data = rate_monitor.rate/b2.Hz
+    delta_t = rate_monitor.clock.dt
+    f_max = 1./(2. * delta_t)
+    N_signal = int(2 * f_max / delta_f)
+    T_signal = N_signal * delta_t
+    N_init = int(T_init/delta_t)
+    N_required = k_repetitions * N_signal + N_init
+    N_data = len(data)
 
-    ps = np.abs(np.fft.fft(data))**2
-    freqs = np.fft.fftfreq(data.size, 1./downsampled_fequency)
-    idx = np.argsort(freqs)
-    ps = ps[idx]
-    freqs = freqs[idx]
-    return freqs, ps, downsampling_factor, nyquist_frequency
+    # print("N_data={}, N_required={}".format(N_data,N_required))
+    if (N_data < N_required):
+        err_msg = "Inconsistent parameters. k_repetitions require {} samples." \
+                  " rate_monitor.rate contains {} samples.".format(N_required, N_data)
+        raise ValueError(err_msg)
+    if N_data > N_required:
+        # print("drop samples")
+        data = data[:N_required]
+    # print("length after dropping end:{}".format(len(data)))
+    data = data[N_init:]
+    # print("length after dropping init:{}".format(len(data)))
+    average_population_rate = np.mean(data)
+    if subtract_mean_activity:
+        data = data - average_population_rate
+    average_population_rate *= b2.Hz
+    data = data.reshape(k_repetitions, N_signal)  # reshape into one row per repetition (k)
+    k_ps = np.abs(np.fft.fft(data))**2
+    ps = np.mean(k_ps, 0)
+    # normalize
+    ps = ps * delta_t / N_signal  # TODO: verify: subtract 1 (N_signal-1)?
+    freqs = np.fft.fftfreq(N_signal, delta_t)
+    ps = ps[:(N_signal/2)]
+    freqs = freqs[:(N_signal/2)]
+    return freqs, ps, average_population_rate

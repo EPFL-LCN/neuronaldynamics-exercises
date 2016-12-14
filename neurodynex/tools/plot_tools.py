@@ -265,16 +265,19 @@ def plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=None):
     return f
 
 
-def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency, nr_highlighted_neurons=2):
+def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, max_freq,
+                                    nr_highlighted_neurons=2, mean_firing_freqs_per_neuron=None, plot_f0=False):
     """
     Visualizes the power spectrum of the spike trains.
 
     Args:
         freq: frequencies (= x axis)
-        mean_ps: average power taken over all neurons.
-        all_ps: power spectra for each single neuron
-        nyquist_frequency: half the sampling frequency of the spike train discretization.
-
+        mean_ps: average power taken over all neurons (typically all of a subsample).
+        all_ps (dict): power spectra for each single neuron
+        max_freq (Quantity): The x-lim of the plot is [-0.05*max_freq, max_freq]
+        mean_firing_freqs_per_neuron (float): None or the mean firing rate averaged across the neurons. Default is
+            None in which case the value is not shown in the legend
+        plot_f0 (bool): if true, the power at frequency 0 is plotted. Default is False and the value is not plotted.
     Returns:
         the figure and the index of the random neuron for which the PS is computed: all_ps[random_neuron_index]
     """
@@ -284,20 +287,33 @@ def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency, nr
     msize = 10
     legend_text = []
     random_neuron_index = []
+
+    first_idx_to_plot = 0 if plot_f0 else 1
     for i in range(nr_highlighted_neurons):
         rand_idx = numpy.random.randint(nr_neurons)
         rand_key = all_ps.keys()[rand_idx]
         rand_neuron_ps = all_ps[rand_key]
-        plt.plot(freq, rand_neuron_ps, marker=".", linestyle=" ", markersize=msize, c=color)
-        color = [.8, .8, .8]  # print the first neuron in red and all others in gray
+        plt.plot(freq[first_idx_to_plot:], rand_neuron_ps[first_idx_to_plot:],
+                 marker=".", linestyle=" ", markersize=msize, c=color)
+        color = [.75, .75, .75]  # print the first neuron in red and all others in gray
         msize = 8
-        random_neuron_index.append(rand_idx)
-        legend_text.append("PS neuron #{}".format(rand_key))
+        random_neuron_index.append(rand_key)
+        if mean_firing_freqs_per_neuron is None:
+            legend_text.append("PS Neuron #{}".format(rand_key))
+        else:
+            legend_text.append("PS Neuron #{}, avg rate={}"
+                               .format(rand_key, round(mean_firing_freqs_per_neuron[rand_key], 1)))
 
-    plt.plot(freq, mean_ps, ".b")
-    legend_text.append("averaged PS")
+    plt.plot(freq[first_idx_to_plot:], mean_ps[first_idx_to_plot:], ".b")
+
+    if mean_firing_freqs_per_neuron is None:
+        legend_text.append("averaged PS")
+    else:
+        avg_rate = numpy.mean(mean_firing_freqs_per_neuron.values())
+        legend_text.append("averaged PS, avg rate={}".format(round(avg_rate, 1)))
+
     plt.legend(legend_text)
-    plt.xlim([-0.1*nyquist_frequency/b2.Hz, 1.1*nyquist_frequency/b2.Hz])
+    plt.xlim([-0.05*max_freq/b2.Hz, max_freq/b2.Hz])
     plt.axvline(x=0., lw=1, color="k")
     plt.grid()
     plt.xlabel("Frequency [Hz]")
@@ -306,24 +322,29 @@ def plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency, nr
     return f, random_neuron_index
 
 
-def plot_population_activity_power_spectrum(freq, ps, nyquist_frequency):
+def plot_population_activity_power_spectrum(freq, ps, max_freq, average_At=None, plot_f0=False):
     """
+    Plots the power spectrum of the population activity A(t)
 
     Args:
         freq: frequencies (= x axis)
         ps: power spectrum of the population activity
-        nyquist_frequency: half the sampling frequency of the population activity.
+        max_freq (Quantity): The data is plotted in the interval [-.05*max_freq, max_freq]
+        plot_f0 (bool): if true, the power at frequency 0 is plotted. Default is False and the value is not plotted.
 
     Returns:
         the figure
     """
+    first_idx_to_plot = 0 if plot_f0 else 1
     f = plt.figure()
-    plt.plot(freq, ps, ".b")
+    plt.plot(freq[first_idx_to_plot:], ps[first_idx_to_plot:], ".b")
     plt.axvline(x=0., lw=1, color="k")
-    plt.xlim([-0.1*nyquist_frequency/b2.Hz, 1.1*nyquist_frequency/b2.Hz])
+    plt.xlim([-.05*max_freq/b2.Hz, max_freq/b2.Hz])
     plt.grid()
     plt.xlabel("Frequency [Hz]")
     plt.ylabel("Power")
-    plt.title("Power Spectrum of population activity A(t). Sampling Freq: {}Hz"
-              .format(round(2*nyquist_frequency), 1))
+    if average_At is None:
+        plt.title("Power Spectrum of population activity A(t).")
+    else:
+        plt.title("Power Spectrum of population activity A(t). Avg. rate = {}".format(round(average_At, 1)))
     return f

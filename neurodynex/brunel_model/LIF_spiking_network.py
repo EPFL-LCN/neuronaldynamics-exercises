@@ -151,9 +151,19 @@ def simulate_brunel_network(
     return rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons
 
 
+def getting_started():
+    """
+        A simple example to get started
+    """
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
+        N_Excit=2000, sim_time=800. * b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms,
+                                     N_highlighted_spiketrains=3)
+    plt.show()
+
+
 def _demo_emergence_of_oscillation():
-    # poisson_rate = 35*b2.Hz
-    # g=7.8
     poisson_rate = 18 * b2.Hz
     g = 2.5
 
@@ -169,48 +179,55 @@ def _demo_emergence_of_oscillation():
     plt.show()
 
 
-def getting_started():
-    """
-        A simple example to get started
-    """
-    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-        N_Excit=200, sim_time=400. * b2.ms)
-    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
-                                     spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms,
-                                     N_highlighted_spiketrains=3)
-    plt.show()
-
-
 def _some_example_calls_and_tests():
-    b2.defaultclock.dt = 0.2 * b2.ms
     from neurodynex.tools import spike_tools
-    poisson_rate = 9.5*b2.Hz
-    g = 7.5
-    sim_time = 800. * b2.ms
-    CE = 500
+    poisson_rate = 35*b2.Hz
+    g = 4
+    CE = 5000
 
-    sampling_frequency_upper_bound = 800*b2.Hz
-    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = simulate_brunel_network(
-        N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=sim_time)
+    delta_t = 0.1 * b2.ms
+    delta_f = 5. * b2.Hz
+    T_init = 100 * b2.ms
+    k = 9
 
-    # plot_tools.plot_network_activity(
-    #     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=0*b2.ms)
-    # plot_tools.plot_network_activity(
-    #     rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx, t_min=sim_time-100*b2.ms)
-    # spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=150.*b2.ms)
-    # plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=50, xlim_max_ISI=50. * b2.ms)
-    # print(spike_stats.CV)
+    f_max = 1./(2. * delta_t)
+    N_samples = 2. * f_max / delta_f
+    T_signal = N_samples * delta_t
+    T_sim = k * T_signal + T_init
 
-    pop_freqs, pop_ps, downsampling_factor, nyquist_frequency = spike_tools.get_population_activity_power_spectrum(
-        rate_monitor, sampling_frequency_upper_bound=sampling_frequency_upper_bound, window_t_min=100.*b2.ms)
-    plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, nyquist_frequency)
+    print("Start simulation. T_sim={}, T_signal={}. N_samples={}".format(T_sim, T_signal, N_samples))
+    b2.defaultclock.dt = delta_t
+    stime = T_sim + (10 + k) * b2.defaultclock.dt  # add a few extra samples (solves rounding issues)
+    rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = \
+        simulate_brunel_network(
+            N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=stime)
+
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=0*b2.ms)
+    plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                     spike_train_idx_list=monitored_spike_idx, t_min=T_sim - 80*b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min=150.*b2.ms)
+    plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=77, xlim_max_ISI=100*b2.ms)
+
+    #     # Power Spectrum
+    pop_freqs, pop_ps, average_population_rate = \
+        spike_tools.get_population_activity_power_spectrum(
+            rate_monitor, delta_f, k, T_init, subtract_mean_activity=True)
+
+    plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, 1000*b2.Hz, average_population_rate)
     plt.show()
-    freq, mean_ps, all_ps, nyquist_frequency = spike_tools.get_average_power_spectrum(
-        spike_monitor, sampling_frequency=sampling_frequency_upper_bound, window_t_min=100.*b2.ms, window_t_max=None)
-    plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, nyquist_frequency)
+
+    freq, mean_ps, all_ps, mean_firing_rate, all_mean_firing_freqs = \
+        spike_tools.get_averaged_single_neuron_power_spectrum(
+            spike_monitor, sampling_frequency=1./delta_t, window_t_min=100.*b2.ms,
+            window_t_max=T_sim,  subtract_mean=False, nr_neurons_average=200)
+    print("plot_spike_train_power_spectrum")
+    plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, 1000 * b2.Hz,
+                                               mean_firing_freqs_per_neuron=all_mean_firing_freqs,
+                                               nr_highlighted_neurons=2)
     plt.show()
+    print("done")
 
 
 if __name__ == "__main__":
-    # _some_example_calls_and_tests()
     getting_started()
