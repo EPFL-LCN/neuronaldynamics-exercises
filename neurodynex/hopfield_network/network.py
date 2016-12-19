@@ -1,5 +1,5 @@
 """
-This file implements a Hopfield Network network. It provides functions to
+This file implements a Hopfield network. It provides functions to
 set and retrieve the network state, store patterns.
 
 Relevant book chapters:
@@ -40,6 +40,7 @@ class HopfieldNetwork:
     def __init__(self, nr_neurons):
         """
         Constructor
+
         Args:
             nr_neurons (int): Number of neurons. Use a square number to get the
             visualizations properly
@@ -76,10 +77,11 @@ class HopfieldNetwork:
     def set_dynamics_to_user_function(self, update_function):
         """
         Sets the network dynamics to the given update function
+
         Args:
-            update_function: upd(state_t0, weights) -> state_t1
-            any function mapping a state s0 to the next state s1 using a function of
-            s0 and weights.
+            update_function: upd(state_t0, weights) -> state_t1.
+                Any function mapping a state s0 to the next state
+                s1 using a function of s0 and weights.
         """
         self._update_method = update_function
 
@@ -88,9 +90,9 @@ class HopfieldNetwork:
         Learns the patterns by setting the network weights. The patterns
         themselves are not stored, only the weights are updated!
         self connections are set to 0.
+
         Args:
             pattern_list: a nonempty list of patterns.
-            Make sure sure self.nrOfNeurons = len(pattern)
         """
         all_same_size_as_net = all(len(p.flatten()) == self.nrOfNeurons for p in pattern_list)
         if not all_same_size_as_net:
@@ -111,6 +113,7 @@ class HopfieldNetwork:
     def set_state_from_pattern(self, pattern):
         """
         Sets the neuron states to the pattern pixel. The pattern is flattened.
+
         Args:
             pattern: pattern
         """
@@ -122,6 +125,7 @@ class HopfieldNetwork:
 
     def run(self, nr_steps=5):
         """Runs the dynamics.
+
         Args:
             nr_steps (float, optional): Timesteps to simulate
         """
@@ -133,6 +137,7 @@ class HopfieldNetwork:
         """
         Iterates at most nr_steps steps. records the network state after every
         iteration
+
         Args:
             nr_steps:
 
@@ -151,6 +156,7 @@ class HopfieldNetwork:
 def _get_sign_update_function():
     """
     for internal use
+
     Returns:
         A function implementing a synchronous state update using sign(h)
     """

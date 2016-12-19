@@ -63,26 +63,6 @@ Plot the responses to step current which starts after 100ms (to let the system e
 
 Already from the voltage response near threshold you might have an idea which is type I or II, but let’s investigate further.
 
-Question: Pulse response
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Plot the response to short current pulses near threshold, and interpret the results: which class is Type I, which is II?
-
-The code fragment for a_neuron_of_type_X could look like this:
-
-.. code-block:: python
-
-    input_current = input_factory.get_step_current(100, 110, 1.05*b2.ms, amp)
-    state_monitor = a_neuron_of_type_X.run(input_current, 300*b2.ms)
-    neurons.plot_data(state_monitor, title="Neuron of Type X, I={}".format(amp))
-
-    input_current = input_factory.get_step_current(100, 110, 1.10*b2.ms, amp)
-    state_monitor = a_neuron_of_type_X.run(input_current, 300*b2.ms)
-    neurons.plot_data(state_monitor, title="Neuron of Type X, I={}".format(amp))
-
-    # ... and so on, for different amplitudes and both neuron types.
-    # can you simplify this in a loop?
-
 
 Exercise: f-I curves
 --------------------
@@ -95,7 +75,8 @@ Get firing rates from simulations
 We provide you with a function :func:`.spike_tools.get_spike_time` to determine the spike times from a StateMonitor. The following code shows how to use that function. Note that the return value is a Brian Quantity: it has units. If you write code using units, you'll get consistency checks done by Brian.
 
 .. code-block:: python
-    
+
+    input_current = input_factory.get_step_current(100, 110, b2.ms, 0.5*b2.pA)
     state_monitor = a_neuron_of_type_X.run(input_current, ...)
     spike_times = spike_tools.get_spike_time(state_monitor, ...)
     print(spike_times)
@@ -151,7 +132,7 @@ Add the following function skeleton to your code and complete it to plot the f-I
         
         neuron = NeuronClass()  # instantiate the neuron class
 
-        I = np.arange(0.0,1.05,0.1)  # a range of current inputs
+        I = np.arange(0.0,1.1,0.1)  # a range of current inputs
         f = []
 
         # loop over current values
@@ -169,10 +150,11 @@ Add the following function skeleton to your code and complete it to plot the f-I
 
 
 * Call your ``plot_fI_curve`` function with each class ``NeuronX`` and ``NeuronY`` as argument.
-* Change the ``I`` range to zoom in near the threshold, and try running it again for both classes.
+* Change the ``I`` range (and reduce the step size) to zoom in near the threshold, and try running it again for both classes.
 
 Which class is Type I and which is Type II? Check your result:
 
 .. code-block:: py
-    print(a_neuron_of_type_X.get_neuron_type())
-    print(a_neuron_of_type_Y.get_neuron_type())
+
+    print("a_neuron_of_type_X is : {}".format(a_neuron_of_type_X.get_neuron_type()))
+    print("a_neuron_of_type_Y is : {}".format(a_neuron_of_type_Y.get_neuron_type()))

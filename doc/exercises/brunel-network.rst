@@ -147,13 +147,13 @@ The different regimes emerge from from the recurrence and the relative strength 
 
 Question:
 ~~~~~~~~~
-* Simulate a network of 6000 excitatory and 1500 inhibitory neurons. Set the following parameters: poisson_rate = 35*b2.Hz, g=7.8. In which state is this network?
+* Simulate a network of 6000 excitatory and 1500 inhibitory neurons. Set the following parameters: poisson_rate = 14*b2.Hz, g=2.5. In which state is this network?
 
 * What would be the population activity caused by the external input only? We can simulate this. Run a simulation of the same network, but disable the recurrent feedback: simulate_brunel_network(...,w0=0.*b2.mV, w_external = LIF_spiking_network.SYNAPTIC_WEIGHT_W0).
 
 * Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.
 
-* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time. The figure below shows a *similar result but for a different regime*.
+* The non recurrent network is strongly synchronized in the beginning. Is the connected network simply "locked" to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with `random_vm_init=True` to see how the synchronization emerges over time.
 
 
 .. figure:: exc_images/Brunel_Synchronization.png
@@ -171,14 +171,7 @@ Question: Sampling the Population Activity
 
 * When analysing the population activity A(t), what is the lowest/highest frequency we are interested?
 
-Assume you simulated `2100 ms` with defaultclock.dt = :math:`0.1ms = \Delta t`. This simulation returns a RateMonitor giving you access to the population activity A(t) (=RateMonitor.rate). Have a look at the equations :eq:`eq_fourier_transform_params` and answer the following questions about the signal A(t). For the moment, let k=1.
-
-* what is the sampling frequency :math:`f_{sampling}` of the population activity A(t) in `Hz`?
-* ignoring the first :math:`T_{init}=100 ms` of the simulation (initial transient), what is the size :math:`N` (= number of samples) of the signal?
-* what is the maximal frequency :math:`f_{max}` you can resolve from that signal?
-* what is the lowest frequency :math:`\Delta f` you can resolve from that signal?
-
-The highest frequency :math:`f_{max}` is determined by :math:`\Delta t`. Even if we are not interested in such high frequencies, we should not increase :math:`\Delta t` (too much) because it may affect the accuracy of the simulation.
+The highest frequency :math:`f_{max}`one can resolve from the time series A(t) is determined by :math:`\Delta t`. Even if we are not interested in very high frequencies, we should not increase :math:`\Delta t` (too much) because it may affect the accuracy of the simulation.
 
 The lowest frequency :math:`\Delta f` is determined by the signal length :math:`T_{Simulation}`. We could therefore decrease the simulation duration if we accept decreasing the resolution in the frequency domain. But there is another option: We still use a "too long" simulation time :math:`T_{Simulation}` but then split the RateMonitor.rate signal into :math:`k` chunks of duration :math:`T_{Signal}`. We can then average the power across the :math:`k` repetitions. This is what the function :func:`.spike_tools.get_population_activity_power_spectrum` does -  we just have to get the parameters first:
 

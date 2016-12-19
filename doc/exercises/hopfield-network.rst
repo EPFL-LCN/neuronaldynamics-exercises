@@ -165,11 +165,11 @@ A Hopfield network implements so called **associative** or **content-adressable*
 
 Question:
 ~~~~~~~~~
-Compute the capacity C of an N=10x10 network.
+Using the value :math:`C_{store}` given in the book, how many patterns can you store in a N=10x10 network? Use this number **K** in the next question:
 
 Question:
 ~~~~~~~~~
-Create an N=10x10 network and store a checkerboard pattern together with **C random patterns**. Then initialize the network with the **unchanged** checkerboard pattern. Let the network evolve for five iterations.
+Create an N=10x10 network and store a checkerboard pattern together with **(K-1) random patterns**. Then initialize the network with the **unchanged** checkerboard pattern. Let the network evolve for five iterations.
 
 Rerun your script a few times. What do you observe?
 
