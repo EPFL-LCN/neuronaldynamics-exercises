@@ -206,7 +206,7 @@ The lowest frequency :math:`\Delta f` is determined by the signal length :math:`
 
 Question: Sampling a Single Neuron Spike Train
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-* The sampling of the individual neuron's spike train is slightly different because in that case, the signal is given as a list of timestamps (SpikeMonitor.spike_trains) and needs to be transformed into a binary vector. This is done inside the function :func:`.spike_tools.get_averaged_single_neuron_power_spectrum`. Read the doc to learn how to control the sampling rate.
+* The sampling of the individual neuron's spike train is different because in that case, the signal is given as a list of timestamps (SpikeMonitor.spike_trains) and needs to be transformed into a binary vector. This is done inside the function :func:`.spike_tools.get_averaged_single_neuron_power_spectrum`. Read the doc to learn how to control the sampling rate.
 
 * The firing rate of a single neuron can be very low and very different from one neuron to another. For that reason, we do not split the spike train into k realizations but we analyse the full spike train (:math:`T_{Simulation}-T_{init}`). From the simulation, we get many (CE+CI) spike trains and we can  average across a subset of neurons. Check the doc of :func:`.spike_tools.get_averaged_single_neuron_power_spectrum` to learn how to control the number of neurons of this subset.
 
@@ -257,7 +257,7 @@ We can now compute and plot the power spectrum.
                                      spike_train_idx_list=monitored_spike_idx, t_min=0*b2.ms)
     plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
                                      spike_train_idx_list=monitored_spike_idx, t_min=T_sim - ??? *b2.ms)
-    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min= ??? *b2.ms)
+    spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min= T_init)
     plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins= ???, xlim_max_ISI= ??? *b2.ms)
 
     #  Power Spectrum
@@ -267,7 +267,7 @@ We can now compute and plot the power spectrum.
     plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, ??? *b2.Hz, average_population_rate)
     freq, mean_ps, all_ps, mean_firing_rate, all_mean_firing_freqs = \
         spike_tools.get_averaged_single_neuron_power_spectrum(
-            spike_monitor, sampling_frequency=1./delta_t, window_t_min= ??? *b2.ms,
+            spike_monitor, sampling_frequency=1./delta_t, window_t_min= T_init,
             window_t_max=T_sim, nr_neurons_average= ??? )
     plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, max_freq= ??? * b2.Hz,
                                                mean_firing_freqs_per_neuron=all_mean_firing_freqs,

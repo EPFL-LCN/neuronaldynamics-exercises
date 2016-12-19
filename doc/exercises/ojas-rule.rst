@@ -12,7 +12,7 @@ See `Chapter 19 Section 2 <Chapter_>`_ on the learning rule of Oja.
    :align: center
    :scale: 60 %
 
-   grey points: Datapoints (two presynaptic firing rates, presented sequentially in random order). colored points:   weight change under Oja's rule.
+   Grey points: Datapoints (two presynaptic firing rates, presented sequentially in random order). Colored points:   weight change under Oja's rule.
 
 
 **Python classes**
@@ -36,7 +36,7 @@ A complete script using these functions could look like this:
 
 .. code-block:: py
 
-	%matplotlib inline
+	%matplotlib inline  # used for Jupyter Notebook
 	import neurodynex.ojas_rule.oja as oja
 	import matplotlib.pyplot as plt
 
@@ -53,10 +53,20 @@ A complete script using these functions could look like this:
 
 Exercise: getting started
 -------------------------
-#. Run the above script. Make sure you understand what the functions are doing.
-#. How many presynaptic neurons do we model?
-#. Run the script with a large learning rate eta = 0.2. What do you observe?
-#. Modify the script: plot the time course of the norm of the weights vector.
+The figure below shows the configuration of a neuron learning from the joint input of two presynaptic neurons. Run the above script. Make sure you understand what the functions are doing.
+
+Question: The norm of the weights
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Run the script with a large learning rate eta = 0.2. What do you observe?
+
+* Modify the script: plot the time course of the norm of the weights vector.
+
+
+.. figure:: exc_images/Oja_setup.png
+   :align: center
+   :scale: 30 %
+
+   One linear neuron gets input from two presynaptic neurons.
 
 
 Exercise: Circular data
@@ -67,23 +77,20 @@ Use the functions :func:`make_cloud <.ojas_rule.oja.make_cloud>` and :func:`lear
 of both components of the weight vector. Repeat this many times (:func:`learn <.ojas_rule.oja.learn>` will choose random initial conditions on each run), and plot this into the same plot. Can you explain what happens? Try different learning rates eta.
 
 
-Exercise: Elliptic data
------------------------
+Exercise: What is the neuron leaning?
+-------------------------------------
 
-Repeat the previous question with an **elongated** elliptic data cloud (e.g. ``ratio=0.3``). Again, repeat this several times. 
+* Repeat the previous question with an **elongated** elliptic data cloud (e.g. ``ratio=0.3``). Again, repeat this several times.
 
-Question
-~~~~~~~~
 
-What difference in terms of learning do you observe with respect to the circular data clouds?
+* What difference in terms of learning do you observe with respect to the circular data clouds?
 
-Question
-~~~~~~~~
+* The "goal" of the neuron is not to change weights, but to produce a meaningful output y. After learning, what does the output y tell about the input?
 
-Try to change the orientation of the ellipsoid (try several different angles). Can you explain what Oja's rule does?
+* Take the final weights [w31, w32], then calculate a single input vector (v1=?, v2=?) that leads to a **maximal** output firing y. Constrain your input to norm([v1,v2]) =1.
 
-.. note::
-	To gain more insight, plot the learned weight vector in 2D space, and relate its orientation to that of the ellipsoid of data clouds.
+* Calculate an input which leads to a **minimal** output firing y.
+
 
 Exercise: Non-centered data
 ---------------------------
