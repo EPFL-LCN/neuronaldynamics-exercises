@@ -28,6 +28,7 @@ import brian2 as b2
 import numpy as np
 import math
 
+
 def get_spike_time(voltage_monitor, spike_threshold):
     """
     Detects the spike times in the voltage. The spike time is the value in voltage_monitor.t for
