@@ -171,7 +171,7 @@ Question: Sampling the Population Activity
 
 * When analysing the population activity A(t), what is the lowest/highest frequency we are interested?
 
-The highest frequency :math:`f_{max}`one can resolve from the time series A(t) is determined by :math:`\Delta t`. Even if we are not interested in very high frequencies, we should not increase :math:`\Delta t` (too much) because it may affect the accuracy of the simulation.
+The highest frequency :math:`f_{max}` one can resolve from the time series A(t) is determined by :math:`\Delta t`. Even if we are not interested in very high frequencies, we should not increase :math:`\Delta t` (too much) because it may affect the accuracy of the simulation.
 
 The lowest frequency :math:`\Delta f` is determined by the signal length :math:`T_{Simulation}`. We could therefore decrease the simulation duration if we accept decreasing the resolution in the frequency domain. But there is another option: We still use a "too long" simulation time :math:`T_{Simulation}` but then split the RateMonitor.rate signal into :math:`k` chunks of duration :math:`T_{Signal}`. We can then average the power across the :math:`k` repetitions. This is what the function :func:`.spike_tools.get_population_activity_power_spectrum` does -  we just have to get the parameters first:
 
