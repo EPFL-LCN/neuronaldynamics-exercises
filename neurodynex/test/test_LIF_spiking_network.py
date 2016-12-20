@@ -5,7 +5,7 @@ print("b2.__version__={}".format(b2.__version__))
 
 
 def test_LIF_spiking_network():
-    """Test LIF model: simulate_LIF_neuron(short pulse, 1ms, default values)"""
+    """Test LIF spiking network: simulate_brunel_network(short pulse, 1ms, default values)"""
     rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons =\
         LIF_spiking_network.simulate_brunel_network(
             N_Excit=10,
