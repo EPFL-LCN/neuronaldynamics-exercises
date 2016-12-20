@@ -41,6 +41,7 @@ Should you reuse and publish the code for your own purposes, please point to the
 Contributors (alphabetically)
 -----------------------------
 * Parima Ahmadipouranari (LCN, EPFL)
+* Bernd Illing (LCN, EPFL)
 * Marco Lehmann (LCN, EPFL)
 * Alexander Seeholzer (LCN, EPFL)
 * Hesam Setareh (LCN, EPFL)
