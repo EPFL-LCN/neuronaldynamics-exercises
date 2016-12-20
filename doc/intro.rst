@@ -44,6 +44,13 @@ The following requirements should be met:
 -  Scipy (only required in some exercises)
 
 
+If you are not using anaconda/miniconda, you can install all requirements by running:
+
+.. code-block:: bash
+
+   pip install -r requirements.txt
+
+
 Disclaimer
 ----------
 
