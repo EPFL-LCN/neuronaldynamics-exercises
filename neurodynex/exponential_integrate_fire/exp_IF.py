@@ -78,7 +78,9 @@ def simulate_exponential_IF_neuron(
     spike_monitor = b2.SpikeMonitor(neuron)
 
     # run the simulation
-    b2.run(simulation_time)
+    net = b2.Network(neuron, voltage_monitor, spike_monitor)
+    net.run(simulation_time)
+
     return voltage_monitor, spike_monitor
 
 
