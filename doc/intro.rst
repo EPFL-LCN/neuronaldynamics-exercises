@@ -10,22 +10,22 @@ the book homepage.
 Quickstart
 ----------
 
-See the indiviual :ref:`exercises <exercises-index>` - they contain instructions on how to use the python code to solve them.
+See :ref:`the setup instructions <exercises-setup>` for details on how to install the python classes needed for the exercises.
 
-To install the exercises with anaconda/miniconda execute:
+To install the exercises with anaconda/miniconda (recommended) execute:
 
 .. code-block:: bash
 
    conda install -c brian-team -c epfl-lcn neurodynex
 
-To install the exercises using ``pip`` simply execute:
+Alternatively, you can use pip to install the exercises:
 
 .. code-block:: bash
 
    pip install --upgrade neurodynex
 
+See the indiviual :ref:`exercises <exercises-index>` - they contain instructions on how to use the python code to solve them.
 
-See :ref:`the setup instructions <exercises-setup>` for details on how to install the python classes needed for the exercises. 
 
 Brian1
 ------

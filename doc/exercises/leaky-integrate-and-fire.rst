@@ -18,7 +18,7 @@ A typical Jupyter notebook looks like this:
 
 .. code-block:: py
 
-	%matplotlib inline  # only needed in notebooks, not in Python scripts
+	%matplotlib inline
     import brian2 as b2
     import matplotlib.pyplot as plt
     import numpy as np
