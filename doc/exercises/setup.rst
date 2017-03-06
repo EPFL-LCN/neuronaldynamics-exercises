@@ -14,19 +14,18 @@ Using miniconda (recommended)
 
 We offer anaconda packages for the most recent releases, which is the easiest way of running the exercises.
 
-Head over to the `miniconda download page <http://conda.pydata.org/miniconda.html>`__ and install **miniconda** (for Python 2.7 preferably). You can then use conda to install Jupyter. Open a terminal and call:
+Head over to the `miniconda download page <http://conda.pydata.org/miniconda.html>`__ and install **miniconda** (for Python 2.7 preferably).
 
-.. code-block:: bash
+Now execute the following commands to **install** the exercise package as well as **Brian2** and some dependencies. Note: we create a `conda environment <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_ called 'bmnn'. You may want to change that name. In the last command, we install `Jupyter <http://jupyter.org>`_, a handy tool to create solution documents.
 
-    >> conda install jupyter
-
-Now execute the following commands to **install** the exercise package as well as **Brian2** and some dependencies. Note: we create a `conda environment <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_ called 'bmnn'. You may want to change that name.
 
 .. code-block:: bash
 
     >> conda create --name bmnn python=2.7
     >> source activate bmnn
     >> conda install -c brian-team -c epfl-lcn neurodynex
+    >> conda install jupyter
+
 
 If you need to  **update** the exercise package, call:
 
