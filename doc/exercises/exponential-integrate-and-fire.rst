@@ -61,7 +61,7 @@ The goal of this exercise is to study the minimal current that can elicit a spik
 Question:
 ~~~~~~~~~
 
-* modify the code example given above: Call :func:`.simulate_exponential_IF_neuron` with v_spike=+10mV (instead of the default value -30mV). What do you expect to happen? How many spikes will be generated?
+* Modify the code example given above: Call :func:`.simulate_exponential_IF_neuron` and set the function parameter v_spike=+10mV (which overrides the default value -30mV). What do you expect to happen? How many spikes will be generated?
 
 * Compute the minimal amplitude I_rh of a constant input current such that the neuron will elicit a spike. If you are not sure what and how to compute I_rh, have a look at `Figure 5.1 <http://neuronaldynamics.epfl.ch/online/Ch5.S1.html>`_  and `the textbox "Rheobase threshold and interpretation of parameters" <http://neuronaldynamics.epfl.ch/online/Ch5.S2.html>`_ in the book.
 
