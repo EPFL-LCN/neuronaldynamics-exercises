@@ -175,8 +175,8 @@ Question
 
  :math:`\lambda=\sqrt{\frac{r_{Membrane}}{r_{Longitudinal}}}`
 
-Question
-~~~~~~~~
+Question (Bonus)
+~~~~~~~~~~~~~~~~
 You observed that the membrane voltage reaches a location dependent steady-state value. Here we compare those simulation results to the analytical solution.
 
 
@@ -185,3 +185,5 @@ You observed that the membrane voltage reaches a location dependent steady-state
 #. Plot the analytical solution and the simulation result in one figure.
 
 #. Run the simulation with different resolution parameters (change defaultclock.dt and/or the number of compartments). Compare the simulation with the analytical solution.
+
+#. If you need help to get started, or if you're not sure about the analytical solution, you can find a solution in the `Brian2 docs <http://brian2.readthedocs.io/en/latest/examples/compartmental.cylinder.html>`_ :
