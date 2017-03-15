@@ -60,23 +60,33 @@ The minimal current to elicit a spike does not just depend on the amplitude I or
 
 Question
 ~~~~~~~~
-Inject a slow ramp current into a HH neuron. The current has amplitude 0A at t in [0, 5] ms and linearly increases to an amplitude `I_min_slow` at t=50ms. At t>50ms, the current is set to 0A. What is the minimal amplitude I_min_slow to trigger one spike (vm>50mV)?
+Inject a slow ramp current into a HH neuron. The current has amplitude ``0A`` at t in [0, 5] ms and linearly increases to an amplitude of ``12.0uAmp`` at ``t=ramp_t_end``. At ``t>ramp_t_end``, the current is set to ``0A``. Using the following code, find the maximal duration of the ramp current, such that the neuron does **not** spike (vm<15mV). Make sure you simulate system for at least 30ms after the current stops.
+
+* What is the maximal voltage the neuron reaches during the simulation?
 
 .. code-block:: py
 
-    slow_ramp_current = input_factory.get_ramp_current(5, 50, b2.ms, 0.*b2.uA, I_min_slow *b2.uA)
+    ramp_t_end = ???
+    slow_ramp_current = input_factory.get_ramp_current(5, ramp_t_end, b2.ms, 0.*b2.uA, 12.*b2.uA)
+    state_monitor = HH.simulate_HH_neuron(slow_ramp_current, ??? * b2.ms)
+    max_voltage_slow = np.amax(state_monitor.vm)
+
+
 
 Question
 ~~~~~~~~
-Now inject a fast ramp current into a HH neuron. The current has amplitude 0 at t in [0, 5] ms and linearly increases to an amplitude I_min_fast at t=10ms. At t>10ms, the current is set to 0A. What is the minimal amplitude I_min_fast to trigger one spike? Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a more fine resolution:
+Do the same as before but for a fast ramp current: The maximal amplitude at ``t=ramp_t_end`` is ``4.5uAmp``.
+Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a finer resolution:
 
 .. code-block:: py
 
-    fast_ramp_current = input_factory.get_ramp_current(50, 100, 0.1*b2.ms, 0.*b2.uA, I_min_fast *b2.uA)
+    fast_ramp_current = input_factory.get_ramp_current(50, ???, 0.1*b2.ms, 0.*b2.uA, 4.5*b2.uA)
+    state_monitor = HH.simulate_HH_neuron(fast_ramp_current, ??? * b2.ms)
+    max_voltage_fast = np.amax(state_monitor.vm)
 
 Question
 ~~~~~~~~
-Compare the two previous results. By looking at the gating variables m,n, and h, can you explain the reason for the differences in that "current threshold"? Hint: have a look at `Chapter 2 Figure 2.3 b <Chapter_>`_
+Use the function :func:`.HH.plot_data` to visualize the dynamics of the system for the fast and the slow case above. Discuss the differences between the two situations. Why are the two "threshold" voltages different? Link your observation to the gating variables m,n, and h. Hint: have a look at `Chapter 2 Figure 2.3 <Chapter_>`_
 
 
 Exercise: Rebound Spike
@@ -97,8 +107,8 @@ Question
 ~~~~~~~~
 In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.
 
-* What is the current threshold for repetitive spiking? Explain.
-* Run a simulation with no input current to determine the resting potential of the neuron. Bonus: link your observation to the  Goldman–Hodgkin–Katz voltage equation.
+* What is the minimal current leading to repetitive spiking? Explain.
+* Run a simulation with no input current to determine the resting potential of the neuron. Link your observation to the  Goldman–Hodgkin–Katz voltage equation.
 * If you increase the sodium conductance further, you can observe repetitive firing even in the absence of input, why?
 
 
