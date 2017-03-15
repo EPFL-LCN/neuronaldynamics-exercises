@@ -16,7 +16,7 @@ At the beginning of your exercise solutions, import the modules and run the demo
 
 .. code-block:: py
 
-    %matplotlib inline  # needed in Jupyter notebooks, not in Python scripts.
+    %matplotlib inline
     import brian2 as b2
     import matplotlib.pyplot as plt
     import numpy as np
@@ -101,11 +101,11 @@ Inject a hyperpolarizing step current ``I_amp = -1 uA`` for 20ms into the HH neu
 Exercise: Brian implementation of a HH neuron
 ---------------------------------------------
 
-In this exercise you will learn to work with the Brian2 model equations. To do so, get the source code of the function  :func:`.HH.simulate_HH_neuron` (follow the link to the documentation and then click on the [source] link). Copy the function code and paste it into your Jupyter Notebook. Change the function name from simulate_HH_neuron to a name of your choice, for example simulate_modified_HH_neuron(). Have a look at the source code and find the conductance parameters gK and gNa.
+In this exercise you will learn to work with the Brian2 model equations. To do so, get the source code of the function  :func:`.HH.simulate_HH_neuron` (follow the link to the documentation and then click on the [source] link). Copy the function code and paste it into your Jupyter Notebook. Change the function name from simulate_HH_neuron to a name of your choice. Have a look at the source code and find the conductance parameters gK and gNa.
 
 Question
 ~~~~~~~~
-In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.
+In the source code of your function, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.
 
 * What is the minimal current leading to repetitive spiking? Explain.
 * Run a simulation with no input current to determine the resting potential of the neuron. Link your observation to the  Goldman–Hodgkin–Katz voltage equation.
