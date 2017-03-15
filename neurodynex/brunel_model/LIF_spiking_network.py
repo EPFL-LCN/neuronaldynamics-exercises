@@ -44,7 +44,7 @@ SYNAPTIC_DELAY = 1.5 * b2.ms
 POISSON_INPUT_RATE = 13. * b2.Hz
 N_POISSON_INPUT = 1000
 
-b2.defaultclock.dt = 0.08 * b2.ms
+b2.defaultclock.dt = 0.05 * b2.ms
 
 
 def simulate_brunel_network(
@@ -159,7 +159,7 @@ def getting_started():
         N_Excit=2000, sim_time=800. * b2.ms)
     plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
                                      spike_train_idx_list=monitored_spike_idx, t_min=0.*b2.ms,
-                                     N_highlighted_spiketrains=3)
+                                     N_highlighted_spiketrains=3, window_width=1.*b2.ms)
     plt.show()
 
 

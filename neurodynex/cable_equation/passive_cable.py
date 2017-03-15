@@ -77,12 +77,12 @@ def simulate_passive_cable(current_injection_location=DEFAULT_INPUT_LOCATION, in
     # Iext is  injected current at a specific position on dendrite
     EL = e_leak
     RT = r_transversal
-    my_equs = """
+    eqs = """
     Iext = current(t, location_index): amp (point current)
     location_index : integer (constant)
     Im = (EL-v)/RT : amp/meter**2
     """
-    cable_model = b2.SpatialNeuron(morphology=cable_morphology, model=my_equs, Cm=capacitance, Ri=r_longitudinal)
+    cable_model = b2.SpatialNeuron(morphology=cable_morphology, model=eqs, Cm=capacitance, Ri=r_longitudinal)
     monitor_v = b2.StateMonitor(cable_model, "v", record=True)
 
     # inject all input currents at the specified location:
@@ -98,7 +98,7 @@ def simulate_passive_cable(current_injection_location=DEFAULT_INPUT_LOCATION, in
     # set initial values and run for 1 ms
     cable_model.v = initial_voltage
     b2.run(simulation_time)
-    return (monitor_v, cable_model)
+    return monitor_v, cable_model
 
 
 def getting_started():

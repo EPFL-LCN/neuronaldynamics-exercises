@@ -16,7 +16,7 @@ We offer anaconda packages for the most recent releases, which is the easiest wa
 
 Head over to the `miniconda download page <http://conda.pydata.org/miniconda.html>`__ and install **miniconda** (for Python 2.7 preferably).
 
-Now execute the following commands to **install** the exercise package as well as **Brian2** and some dependencies. Note: we create a `conda environment <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_ called 'bmnn'. You may want to change that name. In the last command, we install `Jupyter <http://jupyter.org>`_, a handy tool to create solution documents.
+Now execute the following commands to **install** the exercise package as well as **Brian2** and some dependencies. Note: we create a `conda environment <http://conda.pydata.org/docs/test-drive.html#managing-envs>`_ called 'bmnn'. You may want to change that name. In the last command we install `Jupyter <http://jupyter.org>`_ , a handy tool to create solution documents.
 
 
 .. code-block:: bash
@@ -49,7 +49,7 @@ You now have the tools you need to solve the python exercises. To get started, o
    Starting Jupyter will open your browser. Select NEW, Python2 to get a new notebook page. Depending on what else you have installed on your computer, you may have to specify the kernel. In the case shown here, it's the Python-bmnn installation.
 
 
-   Once you've create a new notebook, copy-pase the code of exercise one into the notebook and run it. Note that the first time you do this, the execution may take a little longer and, in some cases, you may see compilation warnings.
+   Once you've create a new notebook, copy-paste the code of exercise one into the notebook and run it. Note that the first time you do this, the execution may take a little longer and, in some cases, you may see compilation warnings.
 
 .. figure:: exc_images/StartJupyter_2.png
    :align: center
