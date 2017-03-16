@@ -60,29 +60,38 @@ The minimal current to elicit a spike does not just depend on the amplitude I or
 
 Question
 ~~~~~~~~
-Inject a slow ramp current into a HH neuron. The current has amplitude ``0A`` at t in [0, 5] ms and linearly increases to an amplitude of ``12.0uAmp`` at ``t=ramp_t_end``. At ``t>ramp_t_end``, the current is set to ``0A``. Using the following code, find the maximal duration of the ramp current, such that the neuron does **not** spike (vm<15mV). Make sure you simulate system for at least 30ms after the current stops.
+Inject a slow ramp current into a HH neuron. The current has amplitude ``0A`` at t in [0, 5] ms and linearly increases to an amplitude of ``12.0uAmp`` at ``t=ramp_t_end``. At ``t>ramp_t_end``, the current is set to ``0A``. Using the following code, reduce ``slow_ramp_t_end`` to the maximal duration of the ramp current, such that the neuron does **not** spike. Make sure you simulate system for at least 20ms after the current stops.
 
-* What is the maximal voltage the neuron reaches during the simulation?
+* What is the membrane voltage at the time when the current injection stops (t=slow_ramp_t_end)?
 
 .. code-block:: py
 
-    ramp_t_end = ???
-    slow_ramp_current = input_factory.get_ramp_current(5, ramp_t_end, b2.ms, 0.*b2.uA, 12.*b2.uA)
-    state_monitor = HH.simulate_HH_neuron(slow_ramp_current, ??? * b2.ms)
-    max_voltage_slow = np.amax(state_monitor.vm)
-
+    b2.defaultclock.dt = 0.02*b2.ms
+    slow_ramp_t_end = 60  # no spike. make it shorter
+    slow_ramp_current = input_factory.get_ramp_current(5, slow_ramp_t_end, b2.ms, 0.*b2.uA, 12.0*b2.uA)
+    state_monitor = HH.simulate_HH_neuron(slow_ramp_current, 90 * b2.ms)
+    idx_t_end = int(round(slow_ramp_t_end*b2.ms / b2.defaultclock.dt))
+    voltage_slow = state_monitor.vm[0,idx_t_end]
+    print("voltage_slow={}".format(voltage_slow))
 
 
 Question
 ~~~~~~~~
-Do the same as before but for a fast ramp current: The maximal amplitude at ``t=ramp_t_end`` is ``4.5uAmp``.
-Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a finer resolution:
+Do the same as before but for a fast ramp current: The maximal amplitude at ``t=ramp_t_end`` is ``4.5uAmp``. Start with ``fast_ramp_t_end = 8ms`` and then increase it until you observe a spike.
+Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a finer resolution by setting the parameter ``unit_time`` in the function :func:`.input_factory.get_ramp_current` (see next code block)
+
+* What is the membrane voltage at the time when the current injection stops (t=fast_ramp_t_end)?
 
 .. code-block:: py
 
-    fast_ramp_current = input_factory.get_ramp_current(50, ???, 0.1*b2.ms, 0.*b2.uA, 4.5*b2.uA)
-    state_monitor = HH.simulate_HH_neuron(fast_ramp_current, ??? * b2.ms)
-    max_voltage_fast = np.amax(state_monitor.vm)
+    b2.defaultclock.dt = 0.02*b2.ms
+    fast_ramp_t_end = 80  # no spike. make it longer
+    fast_ramp_current = input_factory.get_ramp_current(50, fast_ramp_t_end, 0.1*b2.ms, 0.*b2.uA, 4.5*b2.uA)
+    state_monitor = HH.simulate_HH_neuron(fast_ramp_current, 40 * b2.ms)
+    idx_t_end = int(round(fast_ramp_t_end*0.1*b2.ms / b2.defaultclock.dt))
+    voltage_fast = state_monitor.vm[0,idx_t_end]
+    print("voltage_fast={}".format(voltage_fast))
+
 
 Question
 ~~~~~~~~
