@@ -39,8 +39,7 @@ We study the response of a Hodgkin-Huxley neuron to different input currents. Ha
 
 Question
 ~~~~~~~~
-
-What is the lowest **step current** amplitude I_min for generating at least one spike? Determine the value by trying different input amplitudes in the code fragment:
+What is the lowest step current amplitude I_min for generating **at least one spike**? Determine the value by trying different input amplitudes in the code fragment:
 
 .. code-block:: py
 
@@ -50,8 +49,8 @@ What is the lowest **step current** amplitude I_min for generating at least one 
 
 Question
 ~~~~~~~~
-
-What is the lowest step current amplitude to generate repetitive firing?
+* What is the lowest step current amplitude to generate **repetitive firing**?
+* Discuss the difference between the two regimes.
 
 Exercise: slow and fast ramp current
 ------------------------------------
