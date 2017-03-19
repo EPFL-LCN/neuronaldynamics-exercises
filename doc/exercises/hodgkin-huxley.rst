@@ -16,7 +16,7 @@ At the beginning of your exercise solutions, import the modules and run the demo
 
 .. code-block:: py
 
-    %matplotlib inline  # needed in Jupyter notebooks, not in Python scripts.
+    %matplotlib inline
     import brian2 as b2
     import matplotlib.pyplot as plt
     import numpy as np
@@ -39,8 +39,7 @@ We study the response of a Hodgkin-Huxley neuron to different input currents. Ha
 
 Question
 ~~~~~~~~
-
-What is the lowest **step current** amplitude I_min for generating at least one spike? Determine the value by trying different input amplitudes in the code fragment:
+What is the lowest step current amplitude I_min for generating **at least one spike**? Determine the value by trying different input amplitudes in the code fragment:
 
 .. code-block:: py
 
@@ -50,8 +49,8 @@ What is the lowest **step current** amplitude I_min for generating at least one 
 
 Question
 ~~~~~~~~
-
-What is the lowest step current amplitude to generate repetitive firing?
+* What is the lowest step current amplitude to generate **repetitive firing**?
+* Discuss the difference between the two regimes.
 
 Exercise: slow and fast ramp current
 ------------------------------------
@@ -60,23 +59,42 @@ The minimal current to elicit a spike does not just depend on the amplitude I or
 
 Question
 ~~~~~~~~
-Inject a slow ramp current into a HH neuron. The current has amplitude 0A at t in [0, 5] ms and linearly increases to an amplitude `I_min_slow` at t=50ms. At t>50ms, the current is set to 0A. What is the minimal amplitude I_min_slow to trigger one spike (vm>50mV)?
+Inject a slow ramp current into a HH neuron. The current has amplitude ``0A`` at t in [0, 5] ms and linearly increases to an amplitude of ``12.0uAmp`` at ``t=ramp_t_end``. At ``t>ramp_t_end``, the current is set to ``0A``. Using the following code, reduce ``slow_ramp_t_end`` to the maximal duration of the ramp current, such that the neuron does **not** spike. Make sure you simulate system for at least 20ms after the current stops.
+
+* What is the membrane voltage at the time when the current injection stops (t=slow_ramp_t_end)?
 
 .. code-block:: py
 
-    slow_ramp_current = input_factory.get_ramp_current(5, 50, b2.ms, 0.*b2.uA, I_min_slow *b2.uA)
+    b2.defaultclock.dt = 0.02*b2.ms
+    slow_ramp_t_end = 60  # no spike. make it shorter
+    slow_ramp_current = input_factory.get_ramp_current(5, slow_ramp_t_end, b2.ms, 0.*b2.uA, 12.0*b2.uA)
+    state_monitor = HH.simulate_HH_neuron(slow_ramp_current, 90 * b2.ms)
+    idx_t_end = int(round(slow_ramp_t_end*b2.ms / b2.defaultclock.dt))
+    voltage_slow = state_monitor.vm[0,idx_t_end]
+    print("voltage_slow={}".format(voltage_slow))
+
 
 Question
 ~~~~~~~~
-Now inject a fast ramp current into a HH neuron. The current has amplitude 0 at t in [0, 5] ms and linearly increases to an amplitude I_min_fast at t=10ms. At t>10ms, the current is set to 0A. What is the minimal amplitude I_min_fast to trigger one spike? Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a more fine resolution:
+Do the same as before but for a fast ramp current: The maximal amplitude at ``t=ramp_t_end`` is ``4.5uAmp``. Start with ``fast_ramp_t_end = 8ms`` and then increase it until you observe a spike.
+Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a finer resolution by setting the parameter ``unit_time`` in the function :func:`.input_factory.get_ramp_current` (see next code block)
+
+* What is the membrane voltage at the time when the current injection stops (t=fast_ramp_t_end)?
 
 .. code-block:: py
 
-    fast_ramp_current = input_factory.get_ramp_current(50, 100, 0.1*b2.ms, 0.*b2.uA, I_min_fast *b2.uA)
+    b2.defaultclock.dt = 0.02*b2.ms
+    fast_ramp_t_end = 80  # no spike. make it longer
+    fast_ramp_current = input_factory.get_ramp_current(50, fast_ramp_t_end, 0.1*b2.ms, 0.*b2.uA, 4.5*b2.uA)
+    state_monitor = HH.simulate_HH_neuron(fast_ramp_current, 40 * b2.ms)
+    idx_t_end = int(round(fast_ramp_t_end*0.1*b2.ms / b2.defaultclock.dt))
+    voltage_fast = state_monitor.vm[0,idx_t_end]
+    print("voltage_fast={}".format(voltage_fast))
+
 
 Question
 ~~~~~~~~
-Compare the two previous results. By looking at the gating variables m,n, and h, can you explain the reason for the differences in that "current threshold"? Hint: have a look at `Chapter 2 Figure 2.3 b <Chapter_>`_
+Use the function :func:`.HH.plot_data` to visualize the dynamics of the system for the fast and the slow case above. Discuss the differences between the two situations. Why are the two "threshold" voltages different? Link your observation to the gating variables m,n, and h. Hint: have a look at `Chapter 2 Figure 2.3 <Chapter_>`_
 
 
 Exercise: Rebound Spike
@@ -91,14 +109,14 @@ Inject a hyperpolarizing step current ``I_amp = -1 uA`` for 20ms into the HH neu
 Exercise: Brian implementation of a HH neuron
 ---------------------------------------------
 
-In this exercise you will learn to work with the Brian2 model equations. To do so, get the source code of the function  :func:`.HH.simulate_HH_neuron` (follow the link to the documentation and then click on the [source] link). Copy the function code and paste it into your Jupyter Notebook. Change the function name from simulate_HH_neuron to a name of your choice, for example simulate_modified_HH_neuron(). Have a look at the source code and find the conductance parameters gK and gNa.
+In this exercise you will learn to work with the Brian2 model equations. To do so, get the source code of the function  :func:`.HH.simulate_HH_neuron` (follow the link to the documentation and then click on the [source] link). Copy the function code and paste it into your Jupyter Notebook. Change the function name from simulate_HH_neuron to a name of your choice. Have a look at the source code and find the conductance parameters gK and gNa.
 
 Question
 ~~~~~~~~
-In the source code of your function simulate_modified_HH_neuron, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.
+In the source code of your function, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.
 
-* What is the current threshold for repetitive spiking? Explain.
-* Run a simulation with no input current to determine the resting potential of the neuron. Bonus: link your observation to the  Goldman–Hodgkin–Katz voltage equation.
+* What is the minimal current leading to repetitive spiking? Explain.
+* Run a simulation with no input current to determine the resting potential of the neuron. Link your observation to the  Goldman–Hodgkin–Katz voltage equation.
 * If you increase the sodium conductance further, you can observe repetitive firing even in the absence of input, why?
 
 

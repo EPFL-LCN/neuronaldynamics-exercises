@@ -79,7 +79,7 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
 
 
 def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spike_train_idx_list=None,
-                          t_min=None, t_max=None, N_highlighted_spiketrains=3):
+                          t_min=None, t_max=None, N_highlighted_spiketrains=3, window_width=1.0*b2.ms):
     """
     Visualizes the results of a network simulation: spike-train, population activity and voltage-traces.
 
@@ -96,6 +96,8 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         N_highlighted_spiketrains (int): optional. Number of spike trains visually highlighted, defaults to 3
             If N_highlighted_spiketrains==0 and voltage_monitor is not None, then all voltage traces of
             the voltage_monitor are plotted. Otherwise N_highlighted_spiketrains voltage traces are plotted.
+        window_width (Quantity): optional. Before plotting the population rate (PopulationRateMonitor), the rate
+            is smoothed using a window of width = window_width. Defaults is 1.0ms
 
     Returns:
         Figure: The whole figure
@@ -184,14 +186,14 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         ax_raster.set_ylabel("neuron #")
         ax_raster.set_title("Raster Plot (random subset)", fontsize=10)
 
-    def plot_population_activity():
+    def plot_population_activity(window_width=0.5*b2.ms):
         """
         Helper. Plots the population rate and a mean
         """
         ts = rate_monitor.t / b2.ms
         idx_rate = (ts >= t_min) & (ts <= t_max)
         # ax_rate.plot(ts[idx_rate],rate_monitor.rate[idx_rate]/b2.Hz, ".k", markersize=2)
-        smoothed_rates = rate_monitor.smooth_rate(window="flat", width=0.5*b2.ms)/b2.Hz
+        smoothed_rates = rate_monitor.smooth_rate(window="flat", width=window_width)/b2.Hz
         ax_rate.plot(ts[idx_rate], smoothed_rates[idx_rate])
         ax_rate.set_ylabel("A(t) [Hz]")
         ax_rate.set_title("Population Activity", fontsize=10)
@@ -213,7 +215,7 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
             ax_voltage.set_title("Voltage Traces", fontsize=10)
 
     plot_raster()
-    plot_population_activity()
+    plot_population_activity(window_width)
     nr_neurons = len(spike_train_idx_list)
     highlighted_neurons_i = []  # default to an empty list.
     if N_highlighted_spiketrains > 0:
