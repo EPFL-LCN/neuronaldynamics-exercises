@@ -21,7 +21,7 @@ import brian2 as b2
 import numpy
 
 
-def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing_threshold=None, legend_location=1):
+def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing_threshold=None, legend_location=0):
     """plots voltage and current .
 
     Args:
@@ -29,6 +29,7 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
         current (TimedArray): injected current
         title (string, optional): title of the figure
         firing_threshold (Quantity, optional): if set to a value, the firing threshold is plotted.
+        legend_location (int): legend location. default = 0 (="best")
 
     Returns:
         the figure

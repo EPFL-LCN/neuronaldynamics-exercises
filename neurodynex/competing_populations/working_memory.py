@@ -1,5 +1,7 @@
 """
 Implementation of a working memory model.
+Literature:
+Compte, A., Brunel, N., Goldman-Rakic, P. S., & Wang, X. J. (2000). Synaptic mechanisms and network dynamics underlying spatial working memory in a cortical network model. Cerebral Cortex, 10(9), 910-923.
 This exercise is inspired by material found at
 Stanford Univeristy, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen and Tatiana Engel, 2013
 
@@ -251,7 +253,7 @@ def getting_started():
         rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib\
         = simulate_wm()
     plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit,
-                                     t_min=0. * b2.ms)
+                                     t_min=0. * b2.ms, window_width=5*b2.ms)
     plot_tools.plot_network_activity(rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib,
                                      t_min=0. * b2.ms)
     plt.show()

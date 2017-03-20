@@ -2,8 +2,11 @@
 Implementation of a decision making model of
 [1] Wang, Xiao-Jing. "Probabilistic decision making by slow reverberation in cortical circuits."
 Neuron 36.5 (2002): 955-968.
+
 Some parts of this exercise are inspired by material found at
 Stanford Univeristy, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen and Tatiana Engel, 2013
+
+Most parameters do NOT match those found in the original publication!
 """
 
 # This file is part of the exercise code repository accompanying
@@ -38,15 +41,14 @@ from numpy.fft import rfft, irfft
 b2.defaultclock.dt = 0.02 * b2.ms
 
 
-def simulate_wm(sim_time=100. * b2.ms):
+def simulate_wm(
+        N_extern=1500, firing_rate_extern=6.4 * b2.Hz,
+        N_Excit=1600, w_pos=1.7,
+        N_Inhib=400,
+        sim_time=100. * b2.ms):
     print("sim wm")
 
-    # external poisson input:
-    N_extern = 1500  # verify
-    firing_rate_extern = 2.4 * b2.Hz
-
     # specify the excitatory pyramidal cells:
-    N_Excit = 1600
     # N_Excit = 800
     f_Subpop_size = 0.15  # as in publication [1]
     N_Group_A = int(N_Excit * f_Subpop_size)  # size of the excitatory subpopulation sensitive to stimulus A
@@ -56,18 +58,19 @@ def simulate_wm(sim_time=100. * b2.ms):
     G_leak_excit = 25.0 * b2.nS  # leak conductance
     E_leak_excit = -70.0 * b2.mV  # reversal potential
     v_spike_thr_excit = -50.0 * b2.mV  # spike condition
-    v_reset_excit = -55.0 * b2.mV  # reset voltage after spike
-    t_abs_refract_excit = 2.0 * b2.ms  # absolute refractory period
+    v_reset_excit = -57.0 * b2.mV  # reset voltage after spike
+    # t_abs_refract_excit = 2.0 * b2.ms  # absolute refractory period
+    t_abs_refract_excit = "(1.5 + 1.*rand())*ms"
 
     # specify the inhibitory interneurons:
-    N_Inhib = 400
     # N_Inhib = 200
     Cm_inhib = 0.2 * b2.nF
     G_leak_inhib = 20.0 * b2.nS
     E_leak_inhib = -70.0 * b2.mV
     v_spike_thr_inhib = -50.0 * b2.mV
-    v_reset_inhib = -55.0 * b2.mV
-    t_abs_refract_inhib = 1.0 * b2.ms
+    v_reset_inhib = -57.0 * b2.mV
+    # t_abs_refract_inhib = 1.0 * b2.ms
+    t_abs_refract_inhib = "(.5 + 1.*rand())*ms"
 
     # specify the AMPA synapses
     E_AMPA = 0.0 * b2.mV
@@ -85,21 +88,21 @@ def simulate_wm(sim_time=100. * b2.ms):
 
     # projections from the external population
     g_AMPA_extern2inhib = 1.62 * b2.nS
-    g_AMPA_extern2excit = 2.1 * b2.nS
+    g_AMPA_extern2excit = 2.1 * b2.nS  # 2.1
 
     # projectsions from the inhibitory populations
-    g_GABA_inhib2inhib = 5. * 1.0 * b2.nS
-    g_GABA_inhib2excit = 5. * 1.3 * b2.nS
+    g_GABA_inhib2inhib = 5.2 * 1.0 * b2.nS
+    g_GABA_inhib2excit = 5.2 * 1.3 * b2.nS  # 1.3
 
     # projections from the excitatory population
     g_AMPA_excit2excit = 0.05 * b2.nS
-    g_AMPA_excit2inhib = 0.04 * b2.nS
+    g_AMPA_excit2inhib = 1.5 * 0.04 * b2.nS
     g_NMDA_excit2excit = 0.165 * b2.nS
-    g_NMDA_excit2inhib = 1.15 * 0.130 * b2.nS  # todo: verify this scaling
+    g_NMDA_excit2inhib = 1.2 * 0.130 * b2.nS  # todo: verify this scaling
 
     # weights and "adjusted" weights.
     # w_1 = 1.
-    w_pos = 1.6
+    # w_pos = 1.6
     w_neg = 1. - f_Subpop_size * (w_pos - 1.) / (1. - f_Subpop_size)
     # We use the same postsyn AMPA and NMDA conductances. Adjust the weights coming from different sources:
     # ... - g_AMPA_extern2inhib * s_AMPA * (v-E_AMPA) ... in the inhib pop
@@ -133,7 +136,7 @@ def simulate_wm(sim_time=100. * b2.ms):
         threshold="v>v_spike_thr_inhib", reset="v=v_reset_inhib", refractory=t_abs_refract_inhib,
         method="rk2")
     # initialize with random voltages:
-    inhib_pop.v = uniform(v_reset_inhib / b2.mV, high=v_spike_thr_inhib / b2.mV, size=N_Inhib) * b2.mV
+    inhib_pop.v = uniform(E_leak_inhib / b2.mV, high=v_spike_thr_inhib / b2.mV, size=N_Inhib) * b2.mV
 
     # specify the excitatory population:
     excit_lif_dynamics = """
@@ -167,60 +170,102 @@ def simulate_wm(sim_time=100. * b2.ms):
                               refractory=t_abs_refract_excit, method="rk2")
     excit_pop_Z.v = uniform(E_leak_excit / b2.mV, high=v_spike_thr_excit / b2.mV, size=excit_pop_Z.N) * b2.mV
 
-    # now define the connections:
-    # projections FROM EXTERNAL POISSON GROUP: ####################################################
+    # define the external input: ##################################################################
+
+# now define the connections:
+# projections FROM EXTERNAL POISSON GROUP: ####################################################
+
     poisson2Inhib = PoissonInput(target=inhib_pop, target_var="s_AMPA",
                                  N=N_extern, rate=firing_rate_extern, weight=w_ext2inhib)
     poisson2A = PoissonInput(target=excit_pop_A, target_var="s_AMPA",
                              N=N_extern, rate=firing_rate_extern, weight=w_ext2excit)
+
+    # ToDo: stimulus!
     poisson2B = PoissonInput(target=excit_pop_B, target_var="s_AMPA",
                              N=N_extern, rate=firing_rate_extern, weight=1.05 * w_ext2excit)
     poisson2Z = PoissonInput(target=excit_pop_Z, target_var="s_AMPA",
                              N=N_extern, rate=firing_rate_extern, weight=w_ext2excit)
+
+
+
+
+    # Pg_ext2Ihnib = PoissonGroup(5*N_extern, firing_rate_extern)
+    # syn_ext2Inhib = Synapses(Pg_ext2Ihnib, target=inhib_pop, on_pre="s_AMPA += w_ext2inhib")
+    # syn_ext2Inhib.connect(p=.1)
+    #
+    # Pg_ext2A = PoissonGroup(5*N_extern, firing_rate_extern)
+    # syn_ext2A = Synapses(Pg_ext2A, target=excit_pop_A, on_pre="s_AMPA += w_ext2excit")
+    # syn_ext2A.connect(p=.1)
+    #
+    # Pg_ext2B = PoissonGroup(5*N_extern, firing_rate_extern)
+    # syn_ext2B = Synapses(Pg_ext2B, target=excit_pop_B, on_pre="s_AMPA += w_ext2excit")
+    # syn_ext2B.connect(p=.1)
+    #
+    # Pg_ext2Z = PoissonGroup(5*N_extern, firing_rate_extern)
+    # syn_ext2Z = Synapses(Pg_ext2Z, target=excit_pop_Z, on_pre="s_AMPA += w_ext2excit")
+    # syn_ext2Z.connect(p=.1)
+
+    # t_stimulus_start = 5. * b2.ms
+    # t_stimulus_end = 250. * b2.ms
+    # stim_mean = 0.05
+    # # stim_sigma =
+    # coherence = 1.
+    # # @network_operation(dt=10 * b2.ms)
+    # def stimulate_network(t):
+    #     print("stimulate_network nw op")
+    #     if t >= t_stimulus_start and t < t_stimulus_end:
+    #         Pg_ext2A.rates_ = firing_rate_extern + stim_mean * (1.0 + coherence) * b2.Hz  # + math.rand()* sigmaMu
+    #         Pg_ext2B.rates_ = firing_rate_extern + stim_mean * (1.0 - coherence) * b2.Hz  # + math.rand() * sigmaMu
+    #     else:
+    #         Pg_ext2A.rates_ = firing_rate_extern
+    #         Pg_ext2B.rates_ = firing_rate_extern
+
     ###############################################################################################
+
+    # now define the connections:
 
     # GABA projections FROM INHIBITORY population: ################################################
     syn_inhib2inhib = Synapses(inhib_pop, target=inhib_pop, on_pre="s_GABA += 1.0", delay=0.5 * b2.ms)
-    syn_inhib2inhib.connect(condition="i!=j", p=0.6)  # condition not really necessary.
+    syn_inhib2inhib.connect(p=.45)
     syn_inhib2A = Synapses(inhib_pop, target=excit_pop_A, on_pre="s_GABA += 1.0", delay=0.5 * b2.ms)
-    syn_inhib2A.connect(p=0.6)
+    syn_inhib2A.connect(p=.45)
     syn_inhib2B = Synapses(inhib_pop, target=excit_pop_B, on_pre="s_GABA += 1.0", delay=0.5 * b2.ms)
-    syn_inhib2B.connect(p=0.6)
+    syn_inhib2B.connect(p=.45)
     syn_inhib2Z = Synapses(inhib_pop, target=excit_pop_Z, on_pre="s_GABA += 1.0", delay=0.5 * b2.ms)
-    syn_inhib2Z.connect(p=0.6)
+    syn_inhib2Z.connect(p=.45)
     ###############################################################################################
 
     # AMPA projections FROM EXCITATORY A: #########################################################
     syn_AMPA_A2A = Synapses(excit_pop_A, target=excit_pop_A, on_pre="s_AMPA += w_pos", delay=0.5 * b2.ms)
-    syn_AMPA_A2A.connect(p=0.6)
+    syn_AMPA_A2A.connect(p=1.)
     syn_AMPA_A2B = Synapses(excit_pop_A, target=excit_pop_B, on_pre="s_AMPA += w_neg", delay=0.5 * b2.ms)
-    syn_AMPA_A2B.connect(p=0.6)
+    syn_AMPA_A2B.connect(p=1.)
     syn_AMPA_A2Z = Synapses(excit_pop_A, target=excit_pop_Z, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_A2Z.connect(p=0.6)
+    syn_AMPA_A2Z.connect(p=1.)
     syn_AMPA_A2inhib = Synapses(excit_pop_A, target=inhib_pop, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_A2inhib.connect(p=0.6)
+    syn_AMPA_A2inhib.connect(p=1.)
     ###############################################################################################
 
     # AMPA projections FROM EXCITATORY B: #########################################################
     syn_AMPA_B2A = Synapses(excit_pop_B, target=excit_pop_A, on_pre="s_AMPA += w_neg", delay=0.5 * b2.ms)
-    syn_AMPA_B2A.connect(p=0.6)
+    syn_AMPA_B2A.connect(p=1.)
     syn_AMPA_B2B = Synapses(excit_pop_B, target=excit_pop_B, on_pre="s_AMPA += w_pos", delay=0.5 * b2.ms)
-    syn_AMPA_B2B.connect(p=0.6)
+    syn_AMPA_B2B.connect(p=1.)
     syn_AMPA_B2Z = Synapses(excit_pop_B, target=excit_pop_Z, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_B2Z.connect(p=0.6)
+    syn_AMPA_B2Z.connect(p=1.)
     syn_AMPA_B2inhib = Synapses(excit_pop_B, target=inhib_pop, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_B2inhib.connect(p=0.6)
+    syn_AMPA_B2inhib.connect(p=1.)
     ###############################################################################################
 
     # AMPA projections FROM EXCITATORY Z: #########################################################
     syn_AMPA_Z2A = Synapses(excit_pop_Z, target=excit_pop_A, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_Z2A.connect(p=0.6)
+    syn_AMPA_Z2A.connect(p=1.)
     syn_AMPA_Z2B = Synapses(excit_pop_Z, target=excit_pop_B, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_Z2B.connect(p=0.6)
+    syn_AMPA_Z2B.connect(p=1.)
     syn_AMPA_Z2Z = Synapses(excit_pop_Z, target=excit_pop_Z, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_Z2Z.connect(p=0.6)
+    syn_AMPA_Z2Z.connect(p=1.)
     syn_AMPA_Z2inhib = Synapses(excit_pop_Z, target=inhib_pop, on_pre="s_AMPA += 1.0", delay=0.5 * b2.ms)
-    syn_AMPA_Z2inhib.connect(p=0.6)
+    syn_AMPA_Z2inhib.connect(p=1.)
     ###############################################################################################
 
     # NMDA projections FROM EXCITATORY to INHIB, A,B,Z
@@ -229,10 +274,11 @@ def simulate_wm(sim_time=100. * b2.ms):
         sum_sNMDA_A = sum(excit_pop_A.s_NMDA)
         sum_sNMDA_B = sum(excit_pop_B.s_NMDA)
         sum_sNMDA_Z = sum(excit_pop_Z.s_NMDA)
-        inhib_pop.s_NMDA_total = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
-        excit_pop_A.s_NMDA_total = (w_pos * sum_sNMDA_A + w_neg * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
-        excit_pop_B.s_NMDA_total = (w_neg * sum_sNMDA_A + w_pos * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
-        excit_pop_Z.s_NMDA_total = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
+        # underscore switches off unit checking.
+        inhib_pop.s_NMDA_total_ = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
+        excit_pop_A.s_NMDA_total_ = (w_pos * sum_sNMDA_A + w_neg * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
+        excit_pop_B.s_NMDA_total_ = (w_neg * sum_sNMDA_A + w_pos * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
+        excit_pop_Z.s_NMDA_total_ = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
 
     # set a self-recurrent synapse to introduce a delay when updating the intermediate
     # gating variable x
@@ -243,19 +289,6 @@ def simulate_wm(sim_time=100. * b2.ms):
     syn_x_Z2Z = Synapses(excit_pop_Z, excit_pop_Z, on_pre="x += 1.", delay=0.5 * b2.ms)
     syn_x_Z2Z.connect(j="i")
     ###############################################################################################
-
-    # @network_operation(dt=5. * b2.second)
-    # def print_update(t):
-    #     print(t)
-
-    # stim_start = 200 * b2.ms
-    # stim_end = 450 * b2.ms
-    # stim_start_i = int(N_Group_A / 2)
-
-    # @network_operation(dt=2 * b2.ms)
-    # def stimulate_network(t):
-    #     if t > stim_start and t < stim_end:
-    #         excit_pop_A[stim_start_i - 50:stim_start_i + 50].v += 1 * b2.mV
 
     def get_monitors(pop, monitored_subset_size):
         monitored_subset_size = min(monitored_subset_size, pop.N)
@@ -282,11 +315,11 @@ def simulate_wm(sim_time=100. * b2.ms):
     b2.run(sim_time)
 
     fig, ax_raster, ax_rate, ax_voltage = plot_tools.plot_network_activity(
-        rate_monitor_A, spike_monitor_A, voltage_monitor_A, t_min=0. * b2.ms)
+        rate_monitor_A, spike_monitor_A, voltage_monitor_A, t_min=0. * b2.ms, window_width=40. * b2.ms)
     fig.canvas.set_window_title('Population A')
 
     fig, ax_raster, ax_rate, ax_voltage = plot_tools.plot_network_activity(
-        rate_monitor_B, spike_monitor_B, voltage_monitor_B, t_min=0. * b2.ms)
+        rate_monitor_B, spike_monitor_B, voltage_monitor_B, t_min=0. * b2.ms, window_width=40. * b2.ms)
     fig.canvas.set_window_title('Population B')
 
     fig, ax_raster, ax_rate, ax_voltage = plot_tools.plot_network_activity(
@@ -309,8 +342,11 @@ def getting_started():
     # rate_monitor_A, spike_monitor_A, voltage_monitor_A, idx_monitored_neurons_A, \
     #        rate_monitor_B, spike_monitor_B, voltage_monitor_B, idx_monitored_neurons_B,\
     #        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib = \
-    simulate_wm(sim_time=500. * b2.ms)
-
+    simulate_wm(
+        N_extern=1500, firing_rate_extern=5.8 * b2.Hz,
+        N_Excit=800, w_pos=1.6,
+        N_Inhib=200,
+        sim_time=250. * b2.ms)
 
 if __name__ == "__main__":
     getting_started()
