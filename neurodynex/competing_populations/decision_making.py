@@ -186,9 +186,6 @@ def simulate_wm(
     poisson2Z = PoissonInput(target=excit_pop_Z, target_var="s_AMPA",
                              N=N_extern, rate=firing_rate_extern, weight=w_ext2excit)
 
-
-
-
     # Pg_ext2Ihnib = PoissonGroup(5*N_extern, firing_rate_extern)
     # syn_ext2Inhib = Synapses(Pg_ext2Ihnib, target=inhib_pop, on_pre="s_AMPA += w_ext2inhib")
     # syn_ext2Inhib.connect(p=.1)

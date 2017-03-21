@@ -1,7 +1,9 @@
 """
 Implementation of a working memory model.
 Literature:
-Compte, A., Brunel, N., Goldman-Rakic, P. S., & Wang, X. J. (2000). Synaptic mechanisms and network dynamics underlying spatial working memory in a cortical network model. Cerebral Cortex, 10(9), 910-923.
+Compte, A., Brunel, N., Goldman-Rakic, P. S., & Wang, X. J. (2000). Synaptic mechanisms and
+network dynamics underlying spatial working memory in a cortical network model.
+Cerebral Cortex, 10(9), 910-923.
 This exercise is inspired by material found at
 Stanford Univeristy, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen and Tatiana Engel, 2013
 
