@@ -81,6 +81,8 @@ def plot_pattern_list(pattern_list, color_map="brg"):
 
     """
     f, ax = plt.subplots(1, len(pattern_list))
+    if len(pattern_list) == 1:
+        ax = [ax]  # for n=1, subplots() does not return a list
     _plot_list(ax, pattern_list, None, "P{0}", color_map)
     plt.show()
 
@@ -120,6 +122,8 @@ def plot_state_sequence_and_overlap(state_sequence, pattern_list, reference_idx,
         reference_idx = 0
     reference = pattern_list[reference_idx]
     f, ax = plt.subplots(2, len(state_sequence))
+    if len(state_sequence) == 1:
+        ax = [ax]
     _plot_list(ax[0, :], state_sequence, reference, "S{0}", color_map)
     for i in range(len(state_sequence)):
         overlap_list = pattern_tools.compute_overlap_list(state_sequence[i], pattern_list)
