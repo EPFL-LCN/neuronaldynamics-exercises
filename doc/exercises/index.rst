@@ -8,6 +8,7 @@ Exercises
     :numbered:
 
     setup
+    spatial-working-memory
     leaky-integrate-and-fire
     exponential-integrate-and-fire
     adex-model

@@ -37,18 +37,23 @@ import math
 from scipy.special import erf
 from numpy.fft import rfft, irfft
 
-b2.defaultclock.dt = 0.02 * b2.ms
+b2.defaultclock.dt = 0.05 * b2.ms
 
+                      # N_extern_poisson=1000, poisson_firing_rate=1.5 * b2.Hz,
+                      # weight_scaling_factor= 4.,
+                      # sigma_weight_profile=20., Jpos_excit2excit=1.6,
+                      # t_stimulus_start=500 * b2.ms, t_stimulus_end=700 * b2.ms, stimulus_center_deg=180,
+                      # stimulus_width_deg=30, stimulus_strength=0.15 * b2.namp
 
 def simulate_wm(
-        N_excitatory=2048, N_inhibitory=512,
-        N_extern_poisson=1000, poisson_firing_rate=1.8 * b2.Hz,
-        sigma_weight_profile=14.4, Jpos_excit2excit=1.62,
-        stimulus_center_deg=180, stimulus_width_deg=20, stimulus_strength=0.15 * b2.namp,
-        t_stimulus_start=100 * b2.ms, t_stimulus_end=250 * b2.ms,
-        monitored_subset_size=100, sim_time=400. * b2.ms):
+        N_excitatory=512, N_inhibitory=128,
+        N_extern_poisson=1000, poisson_firing_rate=1.4 * b2.Hz,
+        sigma_weight_profile=20., Jpos_excit2excit=1.6,
+        weight_scaling_factor=4.,
+        stimulus_center_deg=180, stimulus_width_deg=40, stimulus_strength=0.07 * b2.namp,
+        t_stimulus_start=200 * b2.ms, t_stimulus_duration=200 * b2.ms,
+        monitored_subset_size=1024, sim_time=800. * b2.ms):
     """
-
     Args:
         N_excitatory (int): Size of the excitatory population
         N_inhibitory (int): Size of the inhibitory population
@@ -98,7 +103,7 @@ def simulate_wm(
 
     # specify the AMPA synapses
     E_AMPA = 0.0 * b2.mV
-    tau_AMPA = 2.0 * b2.ms
+    tau_AMPA = .9 * 2.0 * b2.ms
 
     # specify the GABA synapses
     E_GABA = -70.0 * b2.mV
@@ -106,8 +111,8 @@ def simulate_wm(
 
     # specify the NMDA synapses
     E_NMDA = 0.0 * b2.mV
-    tau_NMDA_s = 100.0 * b2.ms
-    tau_NMDA_x = 2.0 * b2.ms
+    tau_NMDA_s = .65 * 100.0 * b2.ms  # orig: 100
+    tau_NMDA_x = .94 * 2.0 * b2.ms
     alpha_NMDA = 0.5 * b2.kHz
 
     # projections from the external population
@@ -115,19 +120,20 @@ def simulate_wm(
     G_extern2excit = 3.1 * b2.nS
 
     # projectsions from the inhibitory populations
-    G_inhib2inhib = 1.024 * b2.nS
-    G_inhib2excit = 1.336 * b2.nS
+    G_inhib2inhib = weight_scaling_factor * .35 * 1.024 * b2.nS
+    G_inhib2excit = weight_scaling_factor * .35 * 1.336 * b2.nS
 
     # projections from the excitatory population
-    G_excit2excit = 1. * 0.381 * b2.nS
-    G_excit2inhib = 1.2 * 0.292 * b2.nS  # todo: verify this scaling
+    G_excit2excit = weight_scaling_factor * .35 * 0.381 * b2.nS
+    G_excit2inhib = weight_scaling_factor * .35 * 1.2 * 0.292 * b2.nS  # todo: verify this scaling
 
+    t_stimulus_end = t_stimulus_start + t_stimulus_duration
     # compute the simulus index
     stim_center_idx = int(round(N_excitatory / 360. * stimulus_center_deg))
     stim_width_idx = int(round(N_excitatory / 360. * stimulus_width_deg / 2))
     stim_target_idx = [idx % N_excitatory
                        for idx in
-                       range(stim_center_idx - stim_width_idx, stim_center_idx + stim_width_idx)]
+                       range(stim_center_idx - stim_width_idx, stim_center_idx + stim_width_idx + 1)]
 
     # precompute the weight profile for the recurrent population
     tmp = math.sqrt(2. * math.pi) * sigma_weight_profile * erf(180. / math.sqrt(2.) / sigma_weight_profile) / 360.
@@ -222,13 +228,17 @@ def simulate_wm(
         if t > t_stimulus_start and t < t_stimulus_end:
             # excit_pop[stim_start_i - 15:stim_start_i + 15].I_stim = 0.25 * b2.namp
             # Todo: review indexing
+            # print("stim on")
             excit_pop.I_stim[stim_target_idx] = stimulus_strength
         else:
+            # print("stim off")
             excit_pop.I_stim = 0. * b2.namp
 
-    def get_monitors(pop, monitored_subset_size, N):
-        monitored_subset_size = min(monitored_subset_size, (N))
-        idx_monitored_neurons = sample(range(N), monitored_subset_size)
+    def get_monitors(pop, nr_monitored, N):
+        nr_monitored = min(nr_monitored, (N))
+        idx_monitored_neurons = \
+            [int(math.ceil(k))
+             for k in numpy.linspace(0, N - 1, nr_monitored + 2)][1:-1] # sample(range(N), nr_monitored)
         rate_monitor = PopulationRateMonitor(pop)
         # record= some_list is not supported? :-(
         spike_monitor = SpikeMonitor(pop, record=idx_monitored_neurons)
@@ -250,16 +260,33 @@ def simulate_wm(
 
 def getting_started():
     # b2.defaultclock.dt = 0.1 * b2.ms
-    b2.defaultclock.dt = 0.1 * b2.ms
+    b2.defaultclock.dt = 0.05 * b2.ms
     rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit,\
         rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib\
-        = simulate_wm()
+    = simulate_wm(N_excitatory=256, N_inhibitory=64,
+                  weight_scaling_factor=8.,
+                  sim_time=800. * b2.ms, t_stimulus_start=200 * b2.ms)
     plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit,
-                                     t_min=0. * b2.ms, window_width=5*b2.ms)
+                                     t_min=0. * b2.ms, window_width=5. * b2.ms)
     plot_tools.plot_network_activity(rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib,
-                                     t_min=0. * b2.ms)
+                                     t_min=0. * b2.ms, window_width=5. * b2.ms)
+    plt.show()
+
+def create_doc_fig_1():
+    # b2.defaultclock.dt = 0.1 * b2.ms
+    b2.defaultclock.dt = 0.05 * b2.ms
+    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit,\
+        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib\
+    = simulate_wm(N_excitatory=1024, N_inhibitory=256,
+                  weight_scaling_factor=2.,
+                  sim_time=800. * b2.ms, t_stimulus_start=200 * b2.ms, stimulus_center_deg=120)
+    plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit,
+                                     t_min=0. * b2.ms, window_width=5. * b2.ms)
+    plot_tools.plot_network_activity(rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib,
+                                     t_min=0. * b2.ms, window_width=5. * b2.ms)
     plt.show()
 
 
 if __name__ == "__main__":
-    getting_started()
+    # getting_started()
+    create_doc_fig_1()
