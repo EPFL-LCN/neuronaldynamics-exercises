@@ -89,7 +89,8 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         spike_monitor (SpikeMonitor): spike trains of individual neurons
         voltage_monitor (StateMonitor): optional. voltage traces of some (same as in spike_train_idx_list) neurons
         spike_train_idx_list (list): optional. A list of neuron indices whose spike-train is plotted.
-            If no list is provided, all (up to 500) spike-trains in the spike_monitor are plotted.
+            If no list is provided, all (up to 500) spike-trains in the spike_monitor are plotted. If None, the
+            the list in voltage_monitor.record is used.
         t_min (Quantity): optional. lower bound of the plotted time interval.
             if t_min is None, it is set to the larger of [0ms, (t_max - 100ms)]
         t_max (Quantity): optional. upper bound of the plotted time interval.
@@ -124,17 +125,18 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         else:
             # no index list AND no voltage monitor: plot all spike trains
             spike_train_idx_list = numpy.sort(all_spike_trains.keys())
-        if len(spike_train_idx_list) > 500:
+        if len(spike_train_idx_list) > 5000:
             # avoid slow plotting of a large set
-            spike_train_idx_list = spike_train_idx_list[:500]
+            print("Warning: raster plot with more than 5000 neurons truncated!")
+            spike_train_idx_list = spike_train_idx_list[:5000]
 
     # get a reasonable default interval
     if t_max is None:
-        t_max = max(rate_monitor.t/b2.ms)
+        t_max = max(rate_monitor.t / b2.ms)
     else:
-        t_max = t_max/b2.ms
+        t_max = t_max / b2.ms
     if t_min is None:
-        t_min = max(0., t_max-100.)  # if none, plot at most the last 100ms
+        t_min = max(0., t_max - 100.)  # if none, plot at most the last 100ms
     else:
         t_min = t_min / b2.ms
 
@@ -185,7 +187,7 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
                 ts_spikes, raster_plot_index * numpy.ones(ts_spikes.shape),
                 marker=".", c=color, s=144, lw=0)
         ax_raster.set_ylabel("neuron #")
-        ax_raster.set_title("Raster Plot (random subset)", fontsize=10)
+        ax_raster.set_title("Raster Plot", fontsize=10)
 
     def plot_population_activity(window_width=0.5*b2.ms):
         """
@@ -220,7 +222,7 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
     nr_neurons = len(spike_train_idx_list)
     highlighted_neurons_i = []  # default to an empty list.
     if N_highlighted_spiketrains > 0:
-        fract = numpy.linspace(0, 1, N_highlighted_spiketrains+2)[1:-1]
+        fract = numpy.linspace(0, 1, N_highlighted_spiketrains + 2)[1:-1]
         highlighted_neurons_i = [int(nr_neurons * v) for v in fract]
         highlight_raster(highlighted_neurons_i)
 
