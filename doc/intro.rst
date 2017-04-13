@@ -45,3 +45,8 @@ Disclaimer
    * You can download, use and modify the software we provide here. It has been tested but it can still contain errors.
 
    * The content of this site can change at any moment. We may change, add or remove code/exercises without notification.
+
+Bug reports
+-----------
+Did you find a bug? Open an issue on `github <https://github.com/EPFL-LCN/neuronaldynamics-exercises/issues>`_ . Thank you!
+

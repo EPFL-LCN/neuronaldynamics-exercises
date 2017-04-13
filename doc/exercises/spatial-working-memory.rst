@@ -122,8 +122,8 @@ Run the stimulation given above. Then answer the following questions qualitative
 * Increase the stimulus strength to 0.5namp. What happens when the stimulus stops?
 * Increase the **stimulus** width to 60deg (stimulus_strength=0.1 * b2.namp, stimulus center = 120deg). How does the **bump** shape change?
 
-Question: Role of the inhibitatory population
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Question: Role of the inhibitory population
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We can remove the inhibitory population by setting it's size to the minimal size N_inhibitory = 1. If we also deactivate the external input we can study the effect of the recurrent weights within the excitatory population:
 
 Parameters: N_inhibitory = 1, stimulus_strength=0.65 * b2.namp, t_stimulus_start=5 * b2.ms, t_stimulus_duration=25 * b2.ms, sim_time=80. * b2.ms
@@ -143,7 +143,7 @@ Now run again a "normal" simulation:
 
 Exercise: Decoding the population activity into a population vector
 -------------------------------------------------------------------
-In the raster plot above we see that the population of spiking neurons keeps a memory of the stimulus. In this exercise we decode the population vector (i.e. the  angle ``theta`` stored in the working memory) from the spiking activity. The population vector is defined as the **weighted (by spike counts) mean of the preferred directions of the neurons**. To do so, we access the data in the  Brian2 SpikeMonitor returned by the simulation. Read the `Brian2 documentation <http://brian2.readthedocs.io/en/stable/user/recording.html>`_ to see how one can access spike trains. Then implement the readout following the steps given here:
+In the raster plot above we see that the population of spiking neurons keeps a memory of the stimulus. In this exercise we decode the population vector (i.e. the  angle ``theta`` stored in the working memory) from the spiking activity. The population vector is defined as the **weighted (by spike counts) mean of the preferred directions of the neurons**. We access the data in the  Brian2 SpikeMonitor returned by the simulation to calculate population vector. Read the `Brian2 documentation <http://brian2.readthedocs.io/en/stable/user/recording.html>`_ to see how one can access spike trains. Then implement the readout following the steps given here:
 
 
 Mapping the neuron index onto it's preferred direction
@@ -209,11 +209,11 @@ Computing the population vector
 
 Exercise: Visualize the diffusion of the population vector
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The population vector changes over time due to drift and diffusion. In our implementation, because of homogeneous neuron properties (equal parameters, equal weights, equal presynaptic neurons) the diffusion is zero.
+The population vector changes over time due to drift and diffusion. In our implementation, because of homogeneous neuron properties (equal parameters, equal weights, shared presynaptic neurons) the drift is zero.
 
 Use your functions developed in the previous questions to study the diffusion of the population vector:
 
-* Simulate a network of size ``N_excitatory`` = 2048 (adjust the parameters ``N_inhibitory`` and ``weight_scaling_factor`` accordingly). Apply a stimulus from t=100ms to t=300ms. Plot theta(t).
+* Simulate a network of size ``N_excitatory`` = 2048. Apply a stimulus from t=100ms to t=300ms. Plot theta(t). *Note that when you increase the size of the excitatory population you also have to increase the inhibitory population and the weights (''N_inhibitory'' and ''weight_scaling_factor''). When doubling the number of presynaptic neurons, you have to scale the weights by 0.5 to keep the total synaptic input the same.*
 
 * Repeat the simulation at least 3 times. Plot each time series theta(t) into the same figure.
 
