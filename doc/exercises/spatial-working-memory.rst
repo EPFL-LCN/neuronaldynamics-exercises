@@ -7,7 +7,14 @@ In this exercise we study a model of spatial working memory. The model has been 
 .. figure:: exc_images/WorkingMemory_Demo.png
    :align: center
 
-   A weak stimulus (blue box in top panel) , centered at 120deg, is applied to the network from t=200ms to t=400ms. This creates an activity bump bump in the excitatory subpopulation. The activity sustains after the end of the stimulation.
+   A weak stimulus, centered at 120deg, is applied to a subset of the excitatory population from t=200ms to t=400ms (blue box in top panel). This creates an activity bump in the excitatory subpopulation. The activity sustains after the end of the stimulation.
+
+
+Neurons map to preferred direction
+
+Figure `18.4 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ in chapter 18.1 shows the kind of ring model we are studying here
+
+Ring model/structure, and preferred direction
 
 
 **Book chapters**
@@ -18,7 +25,7 @@ If you have access to a scientific library, you may also want to read the origin
 
 **Python classes**
 
-The module :mod:`.working_memory_network.wm_model` implements a parametrized network [2]. To get started, call the function  :func:`.working_memory_network.wm_model.getting_started` or copy the following code into a Jupyter notebook.
+The module :mod:`.working_memory_network.wm_model` implements a working memory circuit adapted from [1, 2]. To get started, call the function  :func:`.working_memory_network.wm_model.getting_started` or copy the following code into a Jupyter notebook.
 
 
 .. code-block:: py
@@ -33,24 +40,24 @@ The module :mod:`.working_memory_network.wm_model` implements a parametrized net
 
 Exercise: Spontanous bump formation
 -----------------------------------
-We study the structure and activity of the following network. **TODO** Change figure
+We study the structure and activity of the following network. **TODO** Change figure.
 
 .. figure:: exc_images/WorkingMemory_NetworkStructure.png
    :align: center
 
-   The network structure. **Todo**: Change to the NW actually used here and adapt Figure 1 from Compte Wang.[1]. Make figure that shows weight profile and input structure.
+   Network structure. Look at Figure `18.4 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ in chapter 18.1 to see how the excitatory population is spatially arranged on a ring and has a specific connectivity profile. **Todo change figure**
 
 
 Question: External poisson population
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The parameters which are not explicitly specified are set to default values. Read the documentation of the function :func:`.working_memory_network.wm_model.simulate_wm` to answer the following questions:
+Parameters that are not explicitly specified are set to default values. Read the documentation of the function :func:`.working_memory_network.wm_model.simulate_wm` to answer the following questions:
 
 * By default, how many neurons are in the external poisson population?
 * Using the default parameters, what is the average number of spikes/second an excitatory neuron receives from the external population?
 
-From the documentation, follow the 'source' link to go to the implementation of :func:`.working_memory_network.wm_model.simulate_wm`. Answer the following questions about the external poisson input:
+From the documentation, follow the 'source' link to go to the implementation of :func:`.working_memory_network.wm_model.simulate_wm`. Answer the following questions about the external poisson population:
 
-* The `Brian2 class PoissonInput <http://brian2.readthedocs.io/en/stable/user/input.html>`_ is used to implement the poisson input. Which post-synaptic variable is targeted by a presynaptic (poisson) spike?
+* We use the `Brian2 PoissonInput <http://brian2.readthedocs.io/en/stable/user/input.html>`_ to implement the external population. Which post-synaptic variable is targeted by a presynaptic (poisson) spike?
 * The dynamics of that variable are defined in the equations ``excit_lif_dynamics`` (still in the source code of simulate_wm). What is the time-scale of that variable (in milliseconds)?
 
 Question: Unstructured input
@@ -64,19 +71,20 @@ Run the following code to simulate a network that receives unstructured poisson 
     from neurodynex.working_memory_network import wm_model
     from neurodynex.tools import plot_tools
 
-    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit,        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib, w_profile = wm_model.simulate_wm(sim_time=800. * b2.ms, poisson_firing_rate=1.3 * b2.Hz, sigma_weight_profile=20., Jpos_excit2excit=1.6)
+    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit, rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib, w_profile = wm_model.simulate_wm(sim_time=800. * b2.ms, poisson_firing_rate=1.3 * b2.Hz, sigma_weight_profile=20., Jpos_excit2excit=1.6)
     plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, t_min=0. * b2.ms)
 
 
-* What is the population activity (mean firing rate) of the excitatory?
+* What is the population activity (mean firing rate) of the excitatory population?
 * Change the firing rate of the external population to 2.2Hz. What do you observe?
 * Run the simulation a few times with r_ext = 2.2 Hz. Describe your observations.
 
 Question: Weight profile
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
 The function :func:`.working_memory_network.wm_model.simulate_wm` takes two parameters to define the weight profile: ``sigma_weight_profile`` and ``Jpos_excit2excit``. After the simulation you can access the return value weight_profile_45. This array contains the synaptic weights between the one postsynaptic neuron whose preferred direction is 45deg and all other (presynaptic) neurons. Our choice of 45deg is arbitrary, the profile for other neurons are shifted versions of this one.
 
-* Simulate the network using the following code/parameters. As found in the previous quesiton, no bump is formed.
+* Run the following code to simulate the network.
 * Increase ``Jpos_excit2excit``. How does the weight profile change (look at short and long ranges)?
 * Simulate with ``Jpos_excit2excit`` = 2.3. What do you observe?
 * How does the weight profile change with the parameter ``sigma_weight_profile``? How does the bump change with this parameter?
@@ -87,6 +95,7 @@ The function :func:`.working_memory_network.wm_model.simulate_wm` takes two para
     import brian2 as b2
     from neurodynex.working_memory_network import wm_model
     from neurodynex.tools import plot_tools
+    import matplotlib.pyplot as plt
 
     rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit, rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib, weight_profile_45 = wm_model.simulate_wm(sim_time=800. * b2.ms, poisson_firing_rate=1.3 * b2.Hz, sigma_weight_profile=20., Jpos_excit2excit=1.6)
     plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, t_min=0. * b2.ms)
@@ -94,9 +103,9 @@ The function :func:`.working_memory_network.wm_model.simulate_wm` takes two para
     plt.figure()
     plt.plot(weight_profile_45)
 
-Exercise: Network response to an input stimulus
------------------------------------------------
-The network has the property of integrating input over time and keep a memory of the input stimulus. Using the following code, you can run a simulation with a weak input stimulus.
+Exercise: Network response to a structured input stimulus
+---------------------------------------------------------
+We now apply a stimulus to a subset of the excitatory population. The network has the property of integrating input over time and keep a memory of the input stimulus. Using the following code, you can run a simulation with a weak input stimulus.
 
 .. code-block:: py
 
@@ -117,19 +126,19 @@ Run the stimulation given above. Then answer the following questions qualitative
 
 * At which time can you identify a change in the population activity? How does that compare to the time when the stimulus is applied?
 * What is the population activity at the end of the simulation?
-* For t=400ms, sketch the mean firing rate across the population (neuron index on the x-axis, per-neuron firing rate on the y-axis).
+* For the time point t=400ms, sketch the mean firing rate across the population (neuron index on the x-axis, per-neuron firing rate on the y-axis).
 
 * Increase the stimulus strength to 0.5namp. What happens when the stimulus stops?
-* Increase the **stimulus** width to 60deg (stimulus_strength=0.1 * b2.namp, stimulus center = 120deg). How does the **bump** shape change?
+* Increase the stimulus width to 60deg (stimulus_strength=0.1 * b2.namp, stimulus center = 120deg). How does the bump shape change?
 
 Question: Role of the inhibitory population
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-We can remove the inhibitory population by setting it's size to the minimal size N_inhibitory = 1. If we also deactivate the external input we can study the effect of the recurrent weights within the excitatory population:
+We can remove the inhibitory population by setting its size to the minimal size N_inhibitory = 1. If we also deactivate the external input we can study the effect of the recurrent weights within the excitatory population:
 
 Parameters: N_inhibitory = 1, stimulus_strength=0.65 * b2.namp, t_stimulus_start=5 * b2.ms, t_stimulus_duration=25 * b2.ms, sim_time=80. * b2.ms
 
-* Before running the simulation. What do you expect to see?
-* Run the simulation with the given parameters. Describe your observations
+* Before running the simulation: What do you expect to see?
+* Run the simulation with the given parameters. Describe your observations.
 
 Now run again a "normal" simulation:
 
@@ -138,7 +147,7 @@ Now run again a "normal" simulation:
     rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit, rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib, w_profile = wm_model.simulate_wm(stimulus_center_deg=120, stimulus_width_deg=30, stimulus_strength=.06 * b2.namp, t_stimulus_start=100 * b2.ms, t_stimulus_duration=200 * b2.ms, sim_time=500. * b2.ms)
 
 * As for the excitatory population, plot the raster, population activity and voltage traces for the inhibitory population.
-* What is the the role of the inhibitory population?
+* What is the role of the inhibitory population?
 
 
 Exercise: Decoding the population activity into a population vector
@@ -146,9 +155,9 @@ Exercise: Decoding the population activity into a population vector
 In the raster plot above we see that the population of spiking neurons keeps a memory of the stimulus. In this exercise we decode the population vector (i.e. the  angle ``theta`` stored in the working memory) from the spiking activity. The population vector is defined as the **weighted (by spike counts) mean of the preferred directions of the neurons**. We access the data in the  Brian2 SpikeMonitor returned by the simulation to calculate population vector. Read the `Brian2 documentation <http://brian2.readthedocs.io/en/stable/user/recording.html>`_ to see how one can access spike trains. Then implement the readout following the steps given here:
 
 
-Mapping the neuron index onto it's preferred direction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Write a function **get_orientation(idx_list, N)** which maps a vector of neuron indexes ``idx_list`` onto a vector of preferred directions. ``idx_list`` is the subset of ``k`` monitored neurons. The second parameter ``N`` is the total number of neurons in the excitatory population. Verify your implementation by calling the function with the following example input:
+Mapping the neuron index onto its preferred direction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Write a function **get_orientation(idx_list, N)** which maps a vector of neuron indices ``idx_list`` onto a vector of preferred directions. ``idx_list`` is the subset of ``k`` monitored neurons. The second parameter ``N`` is the total number of neurons in the excitatory population. Verify your implementation by calling the function with the following example input:
 
 .. code-block:: py
 
@@ -161,7 +170,7 @@ Write a function **get_orientation(idx_list, N)** which maps a vector of neuron 
 
 Extracting spikes from the spike monitor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The population vector ``theta`` changes over time due to drift and diffusion which is why we are interested in ``theta(t)``. As we are dealing with spikes (discrete point events), and a small number of neurons, we have to average the population activity over some time window [t_min=t - t_window_width/2, t_max =t + t_window_width/2] to get an estimate of ``theta(t)``.
+The population vector ``theta`` changes over time due to drift and diffusion which is why we are interested in ``theta(t)``. As we are dealing with spikes (discrete point events), and a small number of neurons, we have to average the population activity over some time window around t, [t_min=t - t_window_width/2, t_max =t + t_window_width/2], to get an estimate of ``theta(t)``.
 
 Write a function ``get_spike_count(spike_monitor, spike_index_list, t_min, t_max)`` which returns an array of spike counts per monitored neuron. Be careful about the indexing: ``spike_index_list`` is a list of ``k`` neuron indices in [0, N-1] while the returned array ``spike_count_list`` is of length ``k``.
 
@@ -186,7 +195,7 @@ Computing the population vector
 
  * Combine the two previous functions to calculate theta(t). For our purpose, it is sufficient to calculate a weighted mean of preferred directions. It is not necessary to correctly decode an angle close to 0deg = 360deg.
 
- * Run a simulation  and and decode the population vector at the time when the **stimulation** ends. You should get a value close to the stimulus location.
+ * Run a simulation and decode the population vector at the time when the **stimulation** ends. You should get a value close to the stimulus location.
 
  * Pack the calculation of theta(t) into a function ``get_theta_time_series`` which takes an additional parameter ``t_snapshots`` (an array of time points at which you want to decode the population vector). Use your function to  readout and visualize the evolution of theta. You can take some inspiration from the following code fragment:
 
@@ -209,7 +218,7 @@ Computing the population vector
 
 Exercise: Visualize the diffusion of the population vector
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The population vector changes over time due to drift and diffusion. In our implementation, because of homogeneous neuron properties (equal parameters, equal weights, shared presynaptic neurons) the drift is zero.
+As mentioned above, the population vector changes over time due to drift and diffusion. In our implementation, because of homogeneous network properties (equal parameters, equal weights, shared presynaptic neurons) the drift is zero.
 
 Use your functions developed in the previous questions to study the diffusion of the population vector:
 
@@ -238,7 +247,7 @@ Question:
 
 The dynamics of the NMDA receptor are implemented in the function :func:`.working_memory_network.wm_model.simulate_wm`. Look for the equations ``excit_lif_dynamics`` in the source code.
 
-* In the model used here, what is the timescale (in milliseconds) of the fast rise. What is the timescale of the slow decay?
+* In the model used here, what is the timescale (in milliseconds) of the fast rise? What is the timescale of the slow decay?
 
 **References**
 --------------
