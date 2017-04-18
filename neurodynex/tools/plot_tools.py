@@ -80,7 +80,8 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
 
 
 def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spike_train_idx_list=None,
-                          t_min=None, t_max=None, N_highlighted_spiketrains=3, window_width=1.0*b2.ms):
+                          t_min=None, t_max=None, N_highlighted_spiketrains=3, avg_window_width=1.0 * b2.ms,
+                          sup_title=None):
     """
     Visualizes the results of a network simulation: spike-train, population activity and voltage-traces.
 
@@ -98,8 +99,9 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         N_highlighted_spiketrains (int): optional. Number of spike trains visually highlighted, defaults to 3
             If N_highlighted_spiketrains==0 and voltage_monitor is not None, then all voltage traces of
             the voltage_monitor are plotted. Otherwise N_highlighted_spiketrains voltage traces are plotted.
-        window_width (Quantity): optional. Before plotting the population rate (PopulationRateMonitor), the rate
-            is smoothed using a window of width = window_width. Defaults is 1.0ms
+        avg_window_width (Quantity): optional. Before plotting the population rate (PopulationRateMonitor), the rate
+            is smoothed using a window of width = avg_window_width. Defaults is 1.0ms
+        sup_title (String): figure suptitle. Default is None.
 
     Returns:
         Figure: The whole figure
@@ -218,7 +220,7 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
             ax_voltage.set_title("Voltage Traces", fontsize=10)
 
     plot_raster()
-    plot_population_activity(window_width)
+    plot_population_activity(avg_window_width)
     nr_neurons = len(spike_train_idx_list)
     highlighted_neurons_i = []  # default to an empty list.
     if N_highlighted_spiketrains > 0:
@@ -234,6 +236,10 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         plot_voltage_traces(traces_i)
 
     plt.xlabel("t [ms]")
+
+    if sup_title is not None:
+        plt.suptitle(sup_title)
+
     return fig, ax_raster, ax_rate, ax_voltage
 
 

@@ -7,14 +7,9 @@ In this exercise we study a model of spatial working memory. The model has been 
 .. figure:: exc_images/WorkingMemory_Demo.png
    :align: center
 
-   A weak stimulus, centered at 120deg, is applied to a subset of the excitatory population from t=200ms to t=400ms (blue box in top panel). This creates an activity bump in the excitatory subpopulation. The activity sustains after the end of the stimulation.
+   A weak stimulus, centered at 120deg, is applied to a subset of the excitatory population from t=200ms to t=400ms (blue box in top panel). This creates an activity bump in the excitatory subpopulation. The activity sustains after the end of the stimulation. The active neurons have a preferred direction close to the stimulus location.
 
-
-Neurons map to preferred direction
-
-Figure `18.4 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ in chapter 18.1 shows the kind of ring model we are studying here
-
-Ring model/structure, and preferred direction
+Figure `18.4 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ in chapter 18.1 shows the kind of ring model we are studying here.
 
 
 **Book chapters**
@@ -40,12 +35,14 @@ The module :mod:`.working_memory_network.wm_model` implements a working memory c
 
 Exercise: Spontanous bump formation
 -----------------------------------
-We study the structure and activity of the following network. **TODO** Change figure.
+We study the structure and activity of the following network.
 
 .. figure:: exc_images/WorkingMemory_NetworkStructure.png
-   :align: center
+    :align: center
+    :width: 65%
 
-   Network structure. Look at Figure `18.4 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ in chapter 18.1 to see how the excitatory population is spatially arranged on a ring and has a specific connectivity profile. **Todo change figure**
+    Network structure. Look at Figure `18.4 in chapter 18.1 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ to see how the excitatory population is spatially arranged on a ring and has a specific connectivity profile.
+
 
 
 Question: External poisson population
@@ -126,7 +123,7 @@ Run the stimulation given above. Then answer the following questions qualitative
 
 * At which time can you identify a change in the population activity? How does that compare to the time when the stimulus is applied?
 * What is the population activity at the end of the simulation?
-* For the time point t=400ms, sketch the mean firing rate across the population (neuron index on the x-axis, per-neuron firing rate on the y-axis).
+* For the time point t=400ms, sketch the firing rate across the population (neuron index on the x-axis, per-neuron firing rate on the y-axis).
 
 * Increase the stimulus strength to 0.5namp. What happens when the stimulus stops?
 * Increase the stimulus width to 60deg (stimulus_strength=0.1 * b2.namp, stimulus center = 120deg). How does the bump shape change?
@@ -188,6 +185,24 @@ The parameter ``spike_monitor`` is the spike_monitor_excit returned by the funct
             (spike_trains[i]>=t_min) & (spike_trains[i]<(t_max))  # try sum(list of booleans)
         ...
     return spike_count_list
+
+Do a plausibility check of your implementation: In one of the previous questions you have sketched the firing rates across the population at t=400ms. Use ``get_spike_count`` to plot the profile. Compare to your sketch. You can use the following code block. It's assumed you have run a simulation and the two variables ``spike_monitor_excit`` and ``idx_monitored_neurons_excit`` are defined. Then play with the ``t_window`` parameter to get an intuition for  'good' values.
+
+.. code-block:: py
+
+    import matplotlib.pyplot as plt
+
+    t = 400*b2.ms  # time point of interest
+    t_window = 10*b2.ms # width of the window over which the average is taken
+
+    t_min = t-t_window/2
+    t_max = t+t_window/2
+    spike_counts = get_spike_count(spike_monitor_excit, idx_monitored_neurons_excit, t_min, t_max)
+    spike_rates = spike_counts/(t_max-t_min)/b2.second
+    plt.plot(spike_rates, ".b")
+    plt.title("Bump profile in the time interval[{},{}]".format(t_min, t_max))
+    plt.xlabel("Neuron index")
+    plt.ylabel("Spike rate [Hz]")
 
 
 Computing the population vector

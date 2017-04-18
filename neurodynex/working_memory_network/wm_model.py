@@ -222,9 +222,9 @@ def simulate_wm(
         s_NMDA_tot = irfft(fft_s_NMDA_total)
         excit_pop.s_NMDA_total_ = s_NMDA_tot
 
-    @network_operation(dt=5 * b2.ms)
+    @network_operation(dt=1 * b2.ms)
     def stimulate_network(t):
-        if t > t_stimulus_start and t < t_stimulus_end:
+        if t >= t_stimulus_start and t < t_stimulus_end:
             # excit_pop[stim_start_i - 15:stim_start_i + 15].I_stim = 0.25 * b2.namp
             # Todo: review indexing
             # print("stim on")

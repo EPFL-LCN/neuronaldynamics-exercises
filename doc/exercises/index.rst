@@ -8,7 +8,7 @@ Exercises
     :numbered:
 
     setup
-    spatial-working-memory
+    perceptual-decision-making
     leaky-integrate-and-fire
     exponential-integrate-and-fire
     adex-model
@@ -19,3 +19,4 @@ Exercises
     neuron-type
     ojas-rule
     brunel-network
+    spatial-working-memory

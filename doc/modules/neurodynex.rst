@@ -9,6 +9,7 @@ Subpackages
     neurodynex.adex_model
     neurodynex.brunel_model
     neurodynex.cable_equation
+    neurodynex.competing_populations
     neurodynex.exponential_integrate_fire
     neurodynex.hodgkin_huxley
     neurodynex.hopfield_network
@@ -18,6 +19,7 @@ Subpackages
     neurodynex.phase_plane_analysis
     neurodynex.test
     neurodynex.tools
+    neurodynex.working_memory_network
 
 Submodules
 ----------
