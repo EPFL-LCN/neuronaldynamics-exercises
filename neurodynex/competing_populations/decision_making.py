@@ -31,29 +31,62 @@ import brian2 as b2
 from brian2 import NeuronGroup, Synapses, PoissonInput, PoissonGroup, network_operation
 from brian2.monitors import StateMonitor, SpikeMonitor, PopulationRateMonitor
 from random import sample
-from numpy.random import uniform
+import numpy.random as rnd
 from neurodynex.tools import plot_tools
 import numpy
 import matplotlib.pyplot as plt
-from math import ceil, floor
+from math import floor
 import time
 
-b2.defaultclock.dt = 0.10 * b2.ms
+b2.defaultclock.dt = 0.12 * b2.ms
+
 
 def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5.33,
                                 t_stimulus_start=100 * b2.ms, t_stimulus_duration=9999 * b2.ms, coherence_level=0.,
-                                stimulus_update_interval=25 * b2.ms, nu0_mean_stimulus_Hz=45.,
-                                nu0_std_stimulus_Hz = 10.,
+                                stimulus_update_interval=50 * b2.ms, nu0_mean_stimulus_Hz=80.,
+                                nu0_std_stimulus_Hz=20.,
                                 N_extern=1000, firing_rate_extern=9.5 * b2.Hz,
-                                w_pos=2.0,
+                                w_pos=1.90, f_Subpop_size=0.25,  # .15 in publication [1]
                                 max_sim_time=200. * b2.ms, stop_condition_rate=None,
                                 monitored_subset_size=512):
+    """
+
+    Args:
+        N_Excit (int): total number of neurons in the excitatory population
+        N_Inhib (int): nr of neurons in the inhibitory populations
+        weight_scaling_factor: When increasing the number of neurons by 2, the weights should be scaled down by 1/2
+        t_stimulus_start (Quantity): time when the stimulation starts
+        t_stimulus_duration (Quantity): duration of the stimulation
+        coherence_level (int): coherence of the stimulus.
+            Difference in mean between the PoissonGroups "left" stimulus and "right" stimulus
+        stimulus_update_interval (Quantity): the mean of the stimulating PoissonGroups is
+            re-sampled every at this interval
+        nu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=1
+        nu0_std_stimulus_Hz (float): std deviation of the stimulating PoissonGroups.
+        N_extern (int): nr of neurons in the stimulus independent poisson background population
+        firing_rate_extern (int): firing rate of the stimulus independent poisson background population
+        w_pos (float): Scaling (strengthening) of the recurrent weights within the
+            subpopulations "Left" and "Right"
+        f_Subpop_size (float): fraction of the neurons in the subpopulations "Left" and "Right".
+            #left = #right = f_Subpop_size*N_Excit.
+        max_sim_time (Quantity): simulated time.
+        stop_condition_rate (Quantity): An optional stopping criteria: If not None, the simulation stops if the
+            firing rate of either subpopulation "Left" or "Right" is above stop_condition_rate.
+        monitored_subset_size (int): max nr of neurons for which a state monitor is registered.
+
+    Returns:
+
+        A dictionary with the following keys (strings):
+        "rate_monitor_A", "spike_monitor_A", "voltage_monitor_A", "idx_monitored_neurons_A", "rate_monitor_B",
+         "spike_monitor_B", "voltage_monitor_B", "idx_monitored_neurons_B", "rate_monitor_Z", "spike_monitor_Z",
+         "voltage_monitor_Z", "idx_monitored_neurons_Z", "rate_monitor_inhib", "spike_monitor_inhib",
+         "voltage_monitor_inhib", "idx_monitored_neurons_inhib"
+
+    """
 
     print("sim start: {}".format(time.ctime()))
     t_stimulus_end = t_stimulus_start + t_stimulus_duration
 
-
-    f_Subpop_size = 0.25  # .15 in publication [1]
     N_Group_A = int(N_Excit * f_Subpop_size)  # size of the excitatory subpopulation sensitive to stimulus A
     N_Group_B = N_Group_A  # size of the excitatory subpopulation sensitive to stimulus B
     N_Group_Z = N_Excit - N_Group_A - N_Group_B  # (1-2f)Ne excitatory neurons do not respond to either stimulus.
@@ -110,7 +143,6 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
     # other weights are 1
     # print("w_neg={}, w_ext2inhib={}, w_ext2excit={}".format(w_neg, w_ext2inhib, w_ext2excit))
 
-
     # Define the inhibitory population
     # dynamics:
     inhib_lif_dynamics = """
@@ -130,7 +162,7 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
         threshold="v>v_spike_thr_inhib", reset="v=v_reset_inhib", refractory=t_abs_refract_inhib,
         method="rk2")
     # initialize with random voltages:
-    inhib_pop.v = uniform(v_spike_thr_inhib / b2.mV - 5., high=v_spike_thr_inhib / b2.mV - 2., size=N_Inhib) * b2.mV
+    inhib_pop.v = rnd.uniform(v_spike_thr_inhib / b2.mV - 4., high=v_spike_thr_inhib / b2.mV - 1., size=N_Inhib) * b2.mV
 
     # Specify the excitatory population:
     # dynamics:
@@ -153,17 +185,17 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
     excit_pop_A = NeuronGroup(N_Group_A, model=excit_lif_dynamics,
                               threshold="v>v_spike_thr_excit", reset="v=v_reset_excit",
                               refractory=t_abs_refract_excit, method="rk2")
-    excit_pop_A.v = uniform(E_leak_excit / b2.mV, high=E_leak_excit / b2.mV + 5., size=excit_pop_A.N) * b2.mV
+    excit_pop_A.v = rnd.uniform(E_leak_excit / b2.mV, high=E_leak_excit / b2.mV + 5., size=excit_pop_A.N) * b2.mV
 
     # B: subpop receiving stimulus B
     excit_pop_B = NeuronGroup(N_Group_B, model=excit_lif_dynamics, threshold="v>v_spike_thr_excit",
                               reset="v=v_reset_excit", refractory=t_abs_refract_excit, method="rk2")
-    excit_pop_B.v = uniform(E_leak_excit / b2.mV, high=E_leak_excit / b2.mV + 5., size=excit_pop_B.N) * b2.mV
+    excit_pop_B.v = rnd.uniform(E_leak_excit / b2.mV, high=E_leak_excit / b2.mV + 5., size=excit_pop_B.N) * b2.mV
     # Z: non-sensitive
     excit_pop_Z = NeuronGroup(N_Group_Z, model=excit_lif_dynamics,
                               threshold="v>v_spike_thr_excit", reset="v=v_reset_excit",
                               refractory=t_abs_refract_excit, method="rk2")
-    excit_pop_Z.v = uniform(E_leak_excit / b2.mV, high=E_leak_excit / b2.mV + 5., size=excit_pop_Z.N) * b2.mV
+    excit_pop_Z.v = rnd.uniform(v_reset_excit / b2.mV, high=v_spike_thr_excit / b2.mV - 1., size=excit_pop_Z.N) * b2.mV
 
     # now define the connections:
     # projections FROM EXTERNAL POISSON GROUP: ####################################################
@@ -229,10 +261,11 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
         sum_sNMDA_A = sum(excit_pop_A.s_NMDA)
         sum_sNMDA_B = sum(excit_pop_B.s_NMDA)
         sum_sNMDA_Z = sum(excit_pop_Z.s_NMDA)
-        inhib_pop.s_NMDA_total = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
-        excit_pop_A.s_NMDA_total = (w_pos * sum_sNMDA_A + w_neg * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
-        excit_pop_B.s_NMDA_total = (w_neg * sum_sNMDA_A + w_pos * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
-        excit_pop_Z.s_NMDA_total = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
+        # note the _ at the end of s_NMDA_total_ disables unit checking
+        inhib_pop.s_NMDA_total_ = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
+        excit_pop_A.s_NMDA_total_ = (w_pos * sum_sNMDA_A + w_neg * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
+        excit_pop_B.s_NMDA_total_ = (w_neg * sum_sNMDA_A + w_pos * sum_sNMDA_B + w_neg * sum_sNMDA_Z)
+        excit_pop_Z.s_NMDA_total_ = (1.0 * sum_sNMDA_A + 1.0 * sum_sNMDA_B + 1.0 * sum_sNMDA_Z)
 
     # set a self-recurrent synapse to introduce a delay when updating the intermediate
     # gating variable x
@@ -271,11 +304,18 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
             poissonStimulus2A.rates = 0.
             poissonStimulus2B.rates = 0.
 
-
     ###############################################################################################
 
-
     def get_monitors(pop, monitored_subset_size):
+        """
+        Internal helper.
+        Args:
+            pop:
+            monitored_subset_size:
+
+        Returns:
+
+        """
         monitored_subset_size = min(monitored_subset_size, pop.N)
         idx_monitored_neurons = sample(range(pop.N), monitored_subset_size)
         rate_monitor = PopulationRateMonitor(pop)
@@ -342,7 +382,40 @@ def run_multiple_simulations(
         max_sim_time=123 * b2.ms, rate_threshold=5 * b2.Hz, avg_window_width=5 * b2.ms,
         N_excit=384, N_inhib=96, weight_scaling=5.33,
         t_stim_start=100 * b2.ms, t_stim_duration=9999 * b2.ms,
-        nu0_mean_stim_Hz=50., nu0_std_stim_Hz = 12., stim_upd_interval=20*b2.ms):
+        nu0_mean_stim_Hz=80., nu0_std_stim_Hz=20., stim_upd_interval=20 * b2.ms):
+    """
+
+    Args:
+        f_get_decision_time (Function): a function that implements the decision criterion.
+        coherence_levels (array): A list of coherence levels
+        nr_repetitions (int): Number of repetitions (independent simulations).
+        max_sim_time (Quantity): max simulation time
+        rate_threshold (Quantity): A firing rate threshold. The simulation stops before max_sim_time if one
+            of the two subpopulations "Left" or "Right" fires above this threshold (averaged over some time window)
+        avg_window_width (Quantity): window size when smoothing the firing rates.
+        N_excit (int): total number of neurons in the excitatory population
+        N_inhib (int): nr of neurons in the inhibitory populations
+        weight_scaling (float): When increasing the number of neurons by 2, the weights should be scaled down by 1/2
+        t_stim_start (Quantity): Start of the stimulation
+        t_stim_duration (Quantity): Duration of the stimulation
+        nu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=1
+        nu0_std_stimulus_Hz (float): std deviation of the stimulating PoissonGroups.
+        stim_upd_interval (Quantity): the mean of the stimulating PoissonGroups is
+            re-sampled every at this interval
+
+    Returns:
+
+        results_tuple (array):
+        Five values are returned. [1] time_to_A: A matrix of size
+        [nr_of_c_levels x nr_of_repetitions], where for each entry the time stamp
+        for decision A is recorded. If decision B was made, the entry is 0ms.
+        [2] time_to_B (array): A matrix of size [nr_of_c_levels x nr_of_repetitions],
+        where for each entry the time stamp for decision B is recorded.
+        If decision A was made, the entry is 0ms. [3] count_A (int): Nr of times decision A is made.
+        [4] count_B (int): Nr of times decision B is made.
+        [5] count_No (int): Nr of times no decision is made within the simulation time.
+
+    """
 
     nr_coherence = len(coherence_levels)
     count_A = numpy.zeros(nr_coherence, dtype=numpy.int8)
@@ -384,31 +457,23 @@ def run_multiple_simulations(
 
 
 def getting_started():
+    """
+    A simple example to get started.
+    Returns:
+
+    """
     results = sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5.33,
-                                          t_stimulus_start= 100. * b2.ms, t_stimulus_duration=1000 * b2.ms,
-                                          coherence_level=-0.3,
-                                          max_sim_time=800. * b2.ms)
+                                          t_stimulus_start=100. * b2.ms, t_stimulus_duration=1000 * b2.ms,
+                                          coherence_level=+0.8,
+                                          max_sim_time=1000. * b2.ms)
     plot_tools.plot_network_activity(results["rate_monitor_A"], results["spike_monitor_A"],
-                                     results["voltage_monitor_A"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
+                                     results["voltage_monitor_A"], t_min=0. * b2.ms, avg_window_width=25. * b2.ms,
                                      sup_title="Left")
     plot_tools.plot_network_activity(results["rate_monitor_B"], results["spike_monitor_B"],
-                                     results["voltage_monitor_B"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
+                                     results["voltage_monitor_B"], t_min=0. * b2.ms, avg_window_width=25. * b2.ms,
                                      sup_title="Right")
 
-    plot_tools.plot_network_activity(results["rate_monitor_Z"], results["spike_monitor_Z"],
-                                     results["voltage_monitor_Z"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
-                                     sup_title="Neutral excitatory sub-population")
-
-    plot_tools.plot_network_activity(results["rate_monitor_inhib"], results["spike_monitor_inhib"],
-                                     results["voltage_monitor_inhib"],
-                                     t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
-                                     sup_title="Inhib")
-
     plt.show()
-
-    # plot_rates(results["rate_monitor_A"], results["rate_monitor_B"])
-    # plt.show()
-
 
 if __name__ == "__main__":
     getting_started()

@@ -138,5 +138,47 @@ def run_demo():
     letter_list.append('R')
     run_hf_demo_alphabet(letter_list, initialization_noise_level=0.2, random_seed=76)
 
+
+def run_user_function_demo():
+    def upd_random(state_s0, weights):
+        nr_neurons = len(state_s0)
+        random_neuron_idx_list = np.random.permutation(int(len(state_s0)/2))
+        state_s1 = state_s0.copy()
+        for i in range(len(random_neuron_idx_list)):
+            state_s1[i] = -1 if (np.random.rand() < .5) else +1
+        return state_s1
+
+    hopfield_net = network.HopfieldNetwork(6**2)
+    hopfield_net.set_dynamics_to_user_function(upd_random)
+
+    # for the demo, use a seed to get a reproducible pattern
+    # instantiate a pattern factory
+    factory = pattern_tools.PatternFactory(6, 6)
+    # create a checkerboard pattern and add it to the pattern list
+    checkerboard = factory.create_checkerboard()
+    pattern_list = [checkerboard]
+    # add random patterns to the list
+    pattern_list.extend(factory.create_random_pattern_list(4, on_probability=0.5))
+    hfplot.plot_pattern_list(pattern_list)
+    # let the hopfield network "learn" the patterns. Note: they are not stored
+    # explicitly but only network weights are updated !
+    hopfield_net.store_patterns(pattern_list)
+    hopfield_net.set_state_from_pattern(pattern_list[0])
+
+    # uncomment the following line to enable a PROBABILISTIC network dynamic
+    # hopfield_net.set_dynamics_probabilistic_sync(2.5)
+    # uncomment the following line to enable an ASYNCHRONOUS network dynamic
+    # hopfield_net.set_dynamics_sign_async()
+
+    # run the network dynamics and record the network state at every time step
+    states = hopfield_net.run_with_monitoring(5)
+    # each network state is a vector. reshape it to the same shape used to create the patterns.
+    states_as_patterns = factory.reshape_patterns(states)
+    # plot the states of the network
+    hfplot.plot_state_sequence_and_overlap(states_as_patterns, pattern_list, 0)
+    plt.show()
+
+
 if __name__ == '__main__':
-    run_demo()
+    # run_demo()
+    run_user_function_demo()

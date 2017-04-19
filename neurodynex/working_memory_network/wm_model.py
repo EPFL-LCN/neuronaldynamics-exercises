@@ -40,6 +40,7 @@ from numpy.fft import rfft, irfft
 
 b2.defaultclock.dt = 0.05 * b2.ms
 
+
 def simulate_wm(
         N_excitatory=1024, N_inhibitory=256,
         N_extern_poisson=1000, poisson_firing_rate=1.4 * b2.Hz, weight_scaling_factor=2.,
@@ -66,7 +67,7 @@ def simulate_wm(
             stimulus_center_deg +\- (stimulus_width_deg/2) receive the same input current
         stimulus_strength (Quantity): Input current to the neurons at stimulus_center_deg +\- (stimulus_width_deg/2)
         t_stimulus_start (Quantity): time when the input stimulus is turned on
-        t_stimulus_end (Quantity): time when the input stimulus is turned off
+        t_stimulus_duration (Quantity): duration of the stimulus.
         monitored_subset_size (int): nr of neurons for which a Spike- and Voltage monitor is registered.
         sim_time (Quantity): simulation time
 
@@ -143,7 +144,6 @@ def simulate_wm(
     weight_profile_45 = deque(presyn_weight_kernel)
     rot_dist = int(round(len(weight_profile_45) / 8))
     weight_profile_45.rotate(rot_dist)
-
 
     # define the inhibitory population
     inhib_lif_dynamics = """
@@ -237,7 +237,7 @@ def simulate_wm(
         nr_monitored = min(nr_monitored, (N))
         idx_monitored_neurons = \
             [int(math.ceil(k))
-             for k in numpy.linspace(0, N - 1, nr_monitored + 2)][1:-1] # sample(range(N), nr_monitored)
+             for k in numpy.linspace(0, N - 1, nr_monitored + 2)][1:-1]  # sample(range(N), nr_monitored)
         rate_monitor = PopulationRateMonitor(pop)
         # record= some_list is not supported? :-(
         spike_monitor = SpikeMonitor(pop, record=idx_monitored_neurons)
@@ -260,23 +260,15 @@ def simulate_wm(
 
 def getting_started():
     b2.defaultclock.dt = 0.1 * b2.ms
-    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit,\
-        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib,\
-        weight_profile = simulate_wm(N_excitatory=256, N_inhibitory=64, weight_scaling_factor=8.,
-                  sim_time=500. * b2.ms,
-                  stimulus_center_deg=120, t_stimulus_start=100 * b2.ms, t_stimulus_duration=200 * b2.ms, stimulus_strength=.07 * b2.namp)
+    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, \
+        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, \
+        idx_monitored_neurons_inhib, weight_profile\
+        = simulate_wm(N_excitatory=256, N_inhibitory=64, weight_scaling_factor=8., sim_time=500. * b2.ms,
+                      stimulus_center_deg=120, t_stimulus_start=100 * b2.ms, t_stimulus_duration=200 * b2.ms,
+                      stimulus_strength=.07 * b2.namp)
     plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit,
                                      t_min=0. * b2.ms)
-    # plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit,
-    #                                  t_min=0. * b2.ms, window_width=5. * b2.ms)
     plt.show()
 
 if __name__ == "__main__":
     getting_started()
-
-    # b2.defaultclock.dt = 0.15 * b2.ms
-    # rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit, rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib, w_profile = simulate_wm(stimulus_center_deg=90, stimulus_width_deg=30, stimulus_strength=.5 * b2.namp, t_stimulus_start=100 * b2.ms, t_stimulus_duration=200 * b2.ms, sim_time=400. * b2.ms)
-    # fig, ax_raster, ax_rate, ax_voltage = plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit,
-    #                                  t_min=0. * b2.ms)
-    # plt.show()
-
