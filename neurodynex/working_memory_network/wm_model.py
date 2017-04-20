@@ -260,9 +260,9 @@ def simulate_wm(
 
 def getting_started():
     b2.defaultclock.dt = 0.1 * b2.ms
-    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, \
-        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, \
-        idx_monitored_neurons_inhib, weight_profile\
+    rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit,\
+        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib,\
+        weight_profile\
         = simulate_wm(N_excitatory=256, N_inhibitory=64, weight_scaling_factor=8., sim_time=500. * b2.ms,
                       stimulus_center_deg=120, t_stimulus_start=100 * b2.ms, t_stimulus_duration=200 * b2.ms,
                       stimulus_strength=.07 * b2.namp)
