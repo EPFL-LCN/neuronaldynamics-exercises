@@ -382,7 +382,7 @@ def run_multiple_simulations(
         max_sim_time=123 * b2.ms, rate_threshold=5 * b2.Hz, avg_window_width=5 * b2.ms,
         N_excit=384, N_inhib=96, weight_scaling=5.33,
         t_stim_start=100 * b2.ms, t_stim_duration=9999 * b2.ms,
-        nu0_mean_stim_Hz=80., nu0_std_stim_Hz=20., stim_upd_interval=20 * b2.ms):
+        nu0_mean_stim_Hz=70., nu0_std_stim_Hz=20., stim_upd_interval=80 * b2.ms):
     """
 
     Args:
