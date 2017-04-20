@@ -4,9 +4,12 @@ Literature:
 Compte, A., Brunel, N., Goldman-Rakic, P. S., & Wang, X. J. (2000). Synaptic mechanisms and
 network dynamics underlying spatial working memory in a cortical network model.
 Cerebral Cortex, 10(9), 910-923.
-This exercise is inspired by material found at
-Stanford Univeristy, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen and Tatiana Engel, 2013
 
+Some parts of this implementation are inspired by material from
+*Stanford University, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen & Tatiana Engel, 2013*,
+online available.
+
+Note: Most parameters differ from the original publication.
 """
 
 # This file is part of the exercise code repository accompanying
@@ -61,7 +64,7 @@ def simulate_wm(
             the excitatory population.
         Jpos_excit2excit (float): Strength of the recurrent input within the excitatory population.
             Jneg_excit2excit is computed from sigma_weight_profile, Jpos_excit2excit and the normalization
-             condition.
+            condition.
         stimulus_center_deg (float): Center of the stimulus in [0, 360]
         stimulus_width_deg (float): width of the stimulus. All neurons in
             stimulus_center_deg +\- (stimulus_width_deg/2) receive the same input current
@@ -72,7 +75,12 @@ def simulate_wm(
         sim_time (Quantity): simulation time
 
     Returns:
-        weight_profile_45
+
+       results (tuple):
+       rate_monitor_excit (Brian2 PopulationRateMonitor for the excitatory population),
+        spike_monitor_excit, voltage_monitor_excit, idx_monitored_neurons_excit,\
+        rate_monitor_inhib, spike_monitor_inhib, voltage_monitor_inhib, idx_monitored_neurons_inhib,\
+        weight_profile_45 (The weights profile for the neuron with preferred direction = 45deg).
     """
     # specify the excitatory pyramidal cells:
     Cm_excit = 0.5 * b2.nF  # membrane capacitance of excitatory neurons

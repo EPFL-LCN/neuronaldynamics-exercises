@@ -3,10 +3,11 @@ Implementation of a decision making model of
 [1] Wang, Xiao-Jing. "Probabilistic decision making by slow reverberation in cortical circuits."
 Neuron 36.5 (2002): 955-968.
 
-Some parts of this exercise are inspired by material found at
-Stanford Univeristy, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen and Tatiana Engel, 2013
+Some parts of this implementation are inspired by material from
+*Stanford University, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen & Tatiana Engel, 2013*,
+online available.
 
-Most parameters do NOT match those found in the original publication!
+Note: Most parameters differ from the original publication.
 """
 
 # This file is part of the exercise code repository accompanying
@@ -84,7 +85,7 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
 
     """
 
-    print("sim start: {}".format(time.ctime()))
+    print("simulating {} neurons. Start: {}".format(N_Excit + N_Inhib, time.ctime()))
     t_stimulus_end = t_stimulus_start + t_stimulus_duration
 
     N_Group_A = int(N_Excit * f_Subpop_size)  # size of the excitatory subpopulation sensitive to stimulus A
@@ -379,10 +380,13 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
 
 def run_multiple_simulations(
         f_get_decision_time, coherence_levels, nr_repetitions,
-        max_sim_time=123 * b2.ms, rate_threshold=5 * b2.Hz, avg_window_width=5 * b2.ms,
-        N_excit=384, N_inhib=96, weight_scaling=5.33,
+        max_sim_time=1. * b2.ms, rate_threshold=1. * b2.Hz, avg_window_width=1. * b2.ms,
+        N_excit=384, N_inhib=96, weight_scaling=5.33, w_pos=1.90,
+        # N_excit=512, N_inhib=128, weight_scaling=4., w_pos=1.85,
         t_stim_start=100 * b2.ms, t_stim_duration=9999 * b2.ms,
-        nu0_mean_stim_Hz=70., nu0_std_stim_Hz=20., stim_upd_interval=80 * b2.ms):
+        # nu0_mean_stim_Hz=100., nu0_std_stim_Hz=25., stim_upd_interval=80 * b2.ms
+        nu0_mean_stim_Hz=80., nu0_std_stim_Hz=20., stim_upd_interval=70 * b2.ms
+):
     """
 
     Args:
@@ -432,7 +436,7 @@ def run_multiple_simulations(
         for i_run in range(nr_repetitions):
             print("i_run={}".format(i_run))
             results = sim_decision_making_network(
-                N_Excit=N_excit, N_Inhib=N_inhib, weight_scaling_factor=weight_scaling,
+                N_Excit=N_excit, N_Inhib=N_inhib, weight_scaling_factor=weight_scaling, w_pos=w_pos,
                 t_stimulus_start=t_stim_start, t_stimulus_duration=t_stim_duration, coherence_level=c,
                 max_sim_time=max_sim_time, stop_condition_rate=rate_threshold,
                 nu0_mean_stimulus_Hz=nu0_mean_stim_Hz, nu0_std_stimulus_Hz=nu0_std_stim_Hz,
@@ -462,15 +466,15 @@ def getting_started():
     Returns:
 
     """
-    results = sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5.33,
-                                          t_stimulus_start=100. * b2.ms, t_stimulus_duration=1000 * b2.ms,
-                                          coherence_level=+0.8,
+    results = sim_decision_making_network(N_Excit=341, N_Inhib=85, weight_scaling_factor=6.0,
+                                          t_stimulus_start=150. * b2.ms, t_stimulus_duration=1000 * b2.ms,
+                                          coherence_level=+0.95, w_pos=2.0, nu0_mean_stimulus_Hz=150 * b2.Hz,
                                           max_sim_time=1000. * b2.ms)
     plot_tools.plot_network_activity(results["rate_monitor_A"], results["spike_monitor_A"],
-                                     results["voltage_monitor_A"], t_min=0. * b2.ms, avg_window_width=25. * b2.ms,
+                                     results["voltage_monitor_A"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
                                      sup_title="Left")
     plot_tools.plot_network_activity(results["rate_monitor_B"], results["spike_monitor_B"],
-                                     results["voltage_monitor_B"], t_min=0. * b2.ms, avg_window_width=25. * b2.ms,
+                                     results["voltage_monitor_B"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
                                      sup_title="Right")
 
     plt.show()

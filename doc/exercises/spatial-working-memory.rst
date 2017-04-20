@@ -52,7 +52,7 @@ Parameters that are not explicitly specified are set to default values. Read the
 * By default, how many neurons are in the external poisson population?
 * Using the default parameters, what is the average number of spikes/second an excitatory neuron receives from the external population?
 
-From the documentation, follow the 'source' link to go to the implementation of :func:`.working_memory_network.wm_model.simulate_wm`. Answer the following questions about the external poisson population:
+From the documentation, follow the 'source' link to go to the implementation of :func:`.simulate_wm`. Answer the following questions about the external poisson population:
 
 * We use the `Brian2 PoissonInput <http://brian2.readthedocs.io/en/stable/user/input.html>`_ to implement the external population. Which post-synaptic variable is targeted by a presynaptic (poisson) spike?
 * The dynamics of that variable are defined in the equations ``excit_lif_dynamics`` (still in the source code of simulate_wm). What is the time-scale of that variable (in milliseconds)?
@@ -79,7 +79,7 @@ Run the following code to simulate a network that receives unstructured poisson 
 Question: Weight profile
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The function :func:`.working_memory_network.wm_model.simulate_wm` takes two parameters to define the weight profile: ``sigma_weight_profile`` and ``Jpos_excit2excit``. After the simulation you can access the return value weight_profile_45. This array contains the synaptic weights between the one postsynaptic neuron whose preferred direction is 45deg and all other (presynaptic) neurons. Our choice of 45deg is arbitrary, the profile for other neurons are shifted versions of this one.
+The function :func:`.simulate_wm` takes two parameters to define the weight profile: ``sigma_weight_profile`` and ``Jpos_excit2excit``. After the simulation you can access the return value weight_profile_45. This array contains the synaptic weights between the one postsynaptic neuron whose preferred direction is 45deg and all other (presynaptic) neurons. Our choice of 45deg is arbitrary, the profile for other neurons are shifted versions of this one.
 
 * Run the following code to simulate the network.
 * Increase ``Jpos_excit2excit``. How does the weight profile change (look at short and long ranges)?
@@ -171,7 +171,7 @@ The population vector ``theta`` changes over time due to drift and diffusion whi
 
 Write a function ``get_spike_count(spike_monitor, spike_index_list, t_min, t_max)`` which returns an array of spike counts per monitored neuron. Be careful about the indexing: ``spike_index_list`` is a list of ``k`` neuron indices in [0, N-1] while the returned array ``spike_count_list`` is of length ``k``.
 
-The parameter ``spike_monitor`` is the spike_monitor_excit returned by the function :func:`.working_memory_network.wm_model.simulate_wm`. The following pseudo-code and fragments are useful to implement ``get_spike_count``:
+The parameter ``spike_monitor`` is the spike_monitor_excit returned by the function :func:`.simulate_wm`. The following pseudo-code and fragments are useful to implement ``get_spike_count``:
 
 
 .. code-block:: py
@@ -260,7 +260,7 @@ The working memory circuit we study in this exercise combines three different re
 Question:
 ~~~~~~~~~
 
-The dynamics of the NMDA receptor are implemented in the function :func:`.working_memory_network.wm_model.simulate_wm`. Look for the equations ``excit_lif_dynamics`` in the source code.
+The dynamics of the NMDA receptor are implemented in the function :func:`.simulate_wm`. Look for the equations ``excit_lif_dynamics`` in the source code.
 
 * In the model used here, what is the timescale (in milliseconds) of the fast rise? What is the timescale of the slow decay?
 

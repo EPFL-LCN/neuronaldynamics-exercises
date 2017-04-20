@@ -3,15 +3,20 @@ Perceptual Decision Making (Wong & Wang)
 
 In this exercise we study decision making in a network of competing populations of spiking neurons. The network has been proposed by Wong and Wang in 2006 [1] as a model of decision making in a visual motion detection task. The decision making task and the network are described in the book and in the original publication (see :ref:`location-references` [1]).
 
-To get a better understanding of the network, we recommend to solve the exercise :doc:`spatial-working-memory` first.
 
-The parameters of our implementation differ from the original paper. In particular, the default network simulates only 512 spiking neurons which leads to relatively short simulation time even on less powerful computers.
+.. _location-phase_plane:
 
 .. figure:: exc_images/DecisionMaking_PhasePlane_3.png
     :align: center
     :width: 100%
 
-    Phase plane. Each point represents the firing rates of the two subpopulation "Left" and "Right" at a given point in time (averaged over a short time window). The color encodes time. In this example, the decision "Right" is made after about 900 milliseconds.
+    Decision Space.
+    Each point represents the firing rates of the two subpopulations "Left" and "Right" at a given point in time (averaged over a short time window). The color encodes time. In this example, the decision "Right" is made after about 900 milliseconds.
+
+
+To get a better understanding of the network dynamics, we recommend to solve the exercise :doc:`spatial-working-memory`.
+
+The parameters of our implementation differ from the original paper. In particular, the default network simulates only 480 spiking neurons which leads to relatively short simulation time even on less powerful computers.
 
 
 **Book chapters**
@@ -53,7 +58,7 @@ Before we can analyse the decision making process and the simulation results, we
 Question: Understanding Brian2 Monitors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The network shown in the figure above is implemented in Brian2 in the function  :func:`.competing_populations.decision_making.sim_decision_making_network`. Each subpopulation is a `Brian2 NeuronGroup <http://brian2.readthedocs.io/en/stable/user/models.html>`_. Look at the source code of the function :func:`.competing_populations.decision_making.sim_decision_making_network` to answer the following questions:
+The network shown in the figure above is implemented in Brian2 in the function  :func:`.competing_populations.decision_making.sim_decision_making_network`. Each subpopulation is a `Brian2 NeuronGroup <http://brian2.readthedocs.io/en/stable/user/models.html>`_. Look at the source code of the function :func:`.sim_decision_making_network` to answer the following questions:
 
 
 * For each of the four subpopulations, find the variable name of the corresponding `NeuronGroup <http://brian2.readthedocs.io/en/stable/user/models.html>`_.
@@ -112,12 +117,12 @@ The input stimulus is implemented by two inhomogenous Poisson processes: The sub
    \mu_{right} &=& \mu_0 * (0.5 - 0.5c)\\
    c &\in& [-1, +1]
 
-The coherence level ``c``, the maximum mean :math:`\mu_0` and the standard deviation :math:`\sigma` are parameters of :func:`.competing_populations.decision_making.sim_decision_making_network`.
+The coherence level ``c``, the maximum mean :math:`\mu_0` and the standard deviation :math:`\sigma` are parameters of :func:`.sim_decision_making_network`.
 
 Question: Coherence Level
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Given the equation above and the documentation of the function :func:`.competing_populations.decision_making.sim_decision_making_network`, what are the mean firing rates :math:`\mu_{left}` and :math:`\mu_{right}` for each of the following values: c=-1, c= 0, c=0.2, c= +1
+* Given the equation above and the documentation of the function :func:`.sim_decision_making_network`, what are the mean firing rates :math:`\mu_{left}` and :math:`\mu_{right}` for each of the following values: c=-1, c= 0, c=0.2, c= +1
 
 * How does the default noise level :math:`\sigma` compare to the difference :math:`\mu_{left}-\mu_{right}`?
 
@@ -131,10 +136,10 @@ Run a few simulations with ``c=-0.3`` and ``c=+1``. Then plot the network activi
 * Look at the population rates. How long does it take the network to make a decision?
 
 
-Exercise: Visualizing the population rates in a phase plane
------------------------------------------------------------
+Exercise: Decision Space
+------------------------
 
-We can visualize the dynamics of the decision making process by plotting the activities of the two subpopulation representing "Left" / "Right" in a phase plane (see figure at the top of this page).
+We can visualize the dynamics of the decision making process by plotting the activities of the two subpopulation "Left" / "Right" in a phase plane (see figure at the top of this page). Such a phase plane of competing states is also known as the *Decision Space*. A discussion of the decision making process in the decision space is out of the scope of this exercise but we refer to :ref:`location-references` [1].
 
 Question: Plotting the phase plane
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -182,18 +187,20 @@ You can pass your function get_decision_time() to :func:`.competing_populations.
 
     time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=?? avg_window_width=??)
 
-The return value ``time_to_A`` is a matrix of size [nr_of_c_levels x nr_of_repetitions]. ``count_A`` is the number of times the network decides for A (= "Left" by convention). The other values are analogous. When calling run_multiple_simulations, you have to set at least the parameters ``max_sim_time``, ``rate_threshold`` and ``avg_window_width``.
+The return value ``time_to_A`` is a matrix of size [nr_of_c_levels x nr_of_repetitions]. ``count_A`` is the number of times the network decides for A (= "Left" by convention). The other values are analogous.
+
+Check the documentation of :func:`.run_multiple_simulations` and set the parameters according to the findings in previous questions.
 
 Question: Percent-Correct, Time-to-decision, Time-to-wrong-decision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using :func:`.competing_populations.decision_making.run_multiple_simulations`, run at least 7 simulations for 2 different levels of coherence. If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Set the parameters according to the findings in previous questions. Limit the simulated time to 1500ms.
+Using :func:`.run_multiple_simulations`, run at least 7 simulations for 2 different levels of coherence. The simulation stops either when a decision is made or after a maximum simulation time (set it to ~1500ms). If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Then analyse your simulation results by visualizing the following statistics. For each of the questions, ignore the simulations with "no decision".
 
-* Visualize ``Percent correct`` versus ``coherence level``. You can treat the case "no decision" as "wrong decision".
+* Visualize ``Percent correct`` versus ``coherence level``.
 
-* Visualize ``Time to decision`` versus ``coherence level``. Ignore the case "no decision".
+* Visualize ``Time to decision`` versus ``coherence level``.
 
-* For each coherence-level, compare ``Time to correct decision`` to ``Time to wrong decision``. Ignore the case "no decision".
+* For each coherence-level, compare ``Time to correct decision`` to ``Time to wrong decision``.
 
 * Discuss your results
 
