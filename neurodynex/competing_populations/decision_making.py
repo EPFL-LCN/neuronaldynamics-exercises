@@ -44,7 +44,7 @@ b2.defaultclock.dt = 0.12 * b2.ms
 
 def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5.33,
                                 t_stimulus_start=100 * b2.ms, t_stimulus_duration=9999 * b2.ms, coherence_level=0.,
-                                stimulus_update_interval=50 * b2.ms, nu0_mean_stimulus_Hz=80.,
+                                stimulus_update_interval=70 * b2.ms, nu0_mean_stimulus_Hz=80.,
                                 nu0_std_stimulus_Hz=20.,
                                 N_extern=1000, firing_rate_extern=9.5 * b2.Hz,
                                 w_pos=1.90, f_Subpop_size=0.25,  # .15 in publication [1]
