@@ -1,11 +1,11 @@
-neurodynex.cable_equation package
-=================================
+neurodynex\.cable\_equation package
+===================================
 
 Submodules
 ----------
 
-neurodynex.cable_equation.passive_cable module
-----------------------------------------------
+neurodynex\.cable\_equation\.passive\_cable module
+--------------------------------------------------
 
 .. automodule:: neurodynex.cable_equation.passive_cable
     :members:

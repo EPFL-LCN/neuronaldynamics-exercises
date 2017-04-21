@@ -1,11 +1,11 @@
-neurodynex.brunel_model package
-===============================
+neurodynex\.brunel\_model package
+=================================
 
 Submodules
 ----------
 
-neurodynex.brunel_model.LIF_spiking_network module
---------------------------------------------------
+neurodynex\.brunel\_model\.LIF\_spiking\_network module
+-------------------------------------------------------
 
 .. automodule:: neurodynex.brunel_model.LIF_spiking_network
     :members:

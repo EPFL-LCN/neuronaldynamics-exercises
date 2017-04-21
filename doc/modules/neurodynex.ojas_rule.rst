@@ -1,11 +1,11 @@
-neurodynex.ojas_rule package
-============================
+neurodynex\.ojas\_rule package
+==============================
 
 Submodules
 ----------
 
-neurodynex.ojas_rule.oja module
--------------------------------
+neurodynex\.ojas\_rule\.oja module
+----------------------------------
 
 .. automodule:: neurodynex.ojas_rule.oja
     :members:

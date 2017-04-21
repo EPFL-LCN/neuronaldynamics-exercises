@@ -1,11 +1,11 @@
-neurodynex.neuron_type package
-==============================
+neurodynex\.neuron\_type package
+================================
 
 Submodules
 ----------
 
-neurodynex.neuron_type.neurons module
--------------------------------------
+neurodynex\.neuron\_type\.neurons module
+----------------------------------------
 
 .. automodule:: neurodynex.neuron_type.neurons
     :members:

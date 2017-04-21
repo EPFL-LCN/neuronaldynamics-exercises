@@ -1,11 +1,11 @@
-neurodynex.leaky_integrate_and_fire package
-===========================================
+neurodynex\.leaky\_integrate\_and\_fire package
+===============================================
 
 Submodules
 ----------
 
-neurodynex.leaky_integrate_and_fire.LIF module
-----------------------------------------------
+neurodynex\.leaky\_integrate\_and\_fire\.LIF module
+---------------------------------------------------
 
 .. automodule:: neurodynex.leaky_integrate_and_fire.LIF
     :members:

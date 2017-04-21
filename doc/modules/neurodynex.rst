@@ -24,8 +24,8 @@ Subpackages
 Submodules
 ----------
 
-neurodynex.quick_test module
-----------------------------
+neurodynex\.quick\_test module
+------------------------------
 
 .. automodule:: neurodynex.quick_test
     :members:

@@ -1,11 +1,11 @@
-neurodynex.hodgkin_huxley package
-=================================
+neurodynex\.hodgkin\_huxley package
+===================================
 
 Submodules
 ----------
 
-neurodynex.hodgkin_huxley.HH module
------------------------------------
+neurodynex\.hodgkin\_huxley\.HH module
+--------------------------------------
 
 .. automodule:: neurodynex.hodgkin_huxley.HH
     :members:

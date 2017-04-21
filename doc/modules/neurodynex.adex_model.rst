@@ -1,11 +1,11 @@
-neurodynex.adex_model package
-=============================
+neurodynex\.adex\_model package
+===============================
 
 Submodules
 ----------
 
-neurodynex.adex_model.AdEx module
----------------------------------
+neurodynex\.adex\_model\.AdEx module
+------------------------------------
 
 .. automodule:: neurodynex.adex_model.AdEx
     :members:

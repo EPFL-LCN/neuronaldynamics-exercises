@@ -1,13 +1,13 @@
-neurodynex\.phase\_plane\_analysis package
+neurodynex\.competing\_populations package
 ==========================================
 
 Submodules
 ----------
 
-neurodynex\.phase\_plane\_analysis\.fitzhugh\_nagumo module
+neurodynex\.competing\_populations\.decision\_making module
 -----------------------------------------------------------
 
-.. automodule:: neurodynex.phase_plane_analysis.fitzhugh_nagumo
+.. automodule:: neurodynex.competing_populations.decision_making
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,7 +16,7 @@ neurodynex\.phase\_plane\_analysis\.fitzhugh\_nagumo module
 Module contents
 ---------------
 
-.. automodule:: neurodynex.phase_plane_analysis
+.. automodule:: neurodynex.competing_populations
     :members:
     :undoc-members:
     :show-inheritance:

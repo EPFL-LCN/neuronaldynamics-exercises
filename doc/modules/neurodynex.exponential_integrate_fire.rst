@@ -1,11 +1,11 @@
-neurodynex.exponential_integrate_fire package
-=============================================
+neurodynex\.exponential\_integrate\_fire package
+================================================
 
 Submodules
 ----------
 
-neurodynex.exponential_integrate_fire.exp_IF module
----------------------------------------------------
+neurodynex\.exponential\_integrate\_fire\.exp\_IF module
+--------------------------------------------------------
 
 .. automodule:: neurodynex.exponential_integrate_fire.exp_IF
     :members:
