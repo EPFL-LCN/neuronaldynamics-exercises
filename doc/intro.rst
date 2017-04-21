@@ -15,11 +15,6 @@ See :ref:`the setup instructions <exercises-setup>` for details on how to instal
 Every :ref:`exercise <exercises-index>` comes with instructions and a demo function to get started. We recommend to create one jupyter notebook per exercise.
 
 
-Brian1
-------
-All exercises are rewritten and use the more recent `Brian2 Simulator <https://github.com/brian-team/brian2>`__.
-The old brian1 exercises are available on the `brian1 branch <https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian1>`__.
-
 Requirements
 ------------
 
