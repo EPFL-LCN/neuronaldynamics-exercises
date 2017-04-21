@@ -29,7 +29,7 @@ conda-upload:
 	anaconda upload -u epfl-lcn conda_build/build/win-64/*;
 	anaconda upload -u epfl-lcn conda_build/build/linux-32/*;
 	anaconda upload -u epfl-lcn conda_build/build/linux-64/*;
-	anaconda upload  conda_build/build/osx-64/*;
+	anaconda upload -u epfl-lcn conda_build/build/osx-64/*;
 
 # test
 test:
