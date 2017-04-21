@@ -8,7 +8,6 @@ Exercises
     :numbered:
 
     setup
-    perceptual-decision-making
     leaky-integrate-and-fire
     exponential-integrate-and-fire
     adex-model
@@ -20,3 +19,4 @@ Exercises
     ojas-rule
     brunel-network
     spatial-working-memory
+..    perceptual-decision-making
