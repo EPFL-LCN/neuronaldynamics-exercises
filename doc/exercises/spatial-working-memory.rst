@@ -7,7 +7,7 @@ In this exercise we study a model of spatial working memory. The model has been 
 .. figure:: exc_images/WorkingMemory_Demo.png
    :align: center
 
-   A weak stimulus, centered at 120deg, is applied to a subset of the excitatory population from t=200ms to t=400ms (blue box in top panel). This creates an activity bump in the excitatory subpopulation. The activity sustains after the end of the stimulation. The active neurons have a preferred direction close to the stimulus location.
+   *Top:* A weak stimulus, centered at 120deg, is applied to a subset of the excitatory population from t=200ms to t=400ms (blue box in top panel). This creates an activity bump in the excitatory subpopulation. The activity sustains after the end of the stimulation. The active neurons have a preferred direction close to the stimulus location. *Middle:* The population activity increases over time when the stimulus is applied. *Bottom:* Voltage traces for three selected neurons. The spikes of the red neuron are visible in the top and bottom panel.
 
 Figure `18.4 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ in chapter 18.1 shows the kind of ring model we are studying here.
 
@@ -41,7 +41,7 @@ We study the structure and activity of the following network.
     :align: center
     :width: 65%
 
-    Network structure. Look at Figure `18.4 in chapter 18.1 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ to see how the excitatory population is spatially arranged on a ring and has a specific connectivity profile.
+    Network structure. Look at Figure `18.4 in chapter 18.1 <http://neuronaldynamics.epfl.ch/online/Ch18.S1.html>`_ to see how the excitatory population is spatially arranged on a ring and has a specific connectivity profile. In our implementation, every excitatory neuron receives unstructured input from all inhibitory neurons and structured input from all excitatory neurons. The inhibitory neurons receive unstructured input from all excitatory and all inhibitory neurons.
 
 
 
@@ -72,7 +72,7 @@ Run the following code to simulate a network that receives unstructured poisson 
     plot_tools.plot_network_activity(rate_monitor_excit, spike_monitor_excit, voltage_monitor_excit, t_min=0. * b2.ms)
 
 
-* What is the population activity (mean firing rate) of the excitatory population?
+* Without coding, from the plot: What is the population activity (mean firing rate) of the excitatory population at different points in time?
 * Change the firing rate of the external population to 2.2Hz. What do you observe?
 * Run the simulation a few times with r_ext = 2.2 Hz. Describe your observations.
 
@@ -149,7 +149,7 @@ Now run again a "normal" simulation:
 
 Exercise: Decoding the population activity into a population vector
 -------------------------------------------------------------------
-In the raster plot above we see that the population of spiking neurons keeps a memory of the stimulus. In this exercise we decode the population vector (i.e. the  angle ``theta`` stored in the working memory) from the spiking activity. The population vector is defined as the **weighted (by spike counts) mean of the preferred directions of the neurons**. We access the data in the  Brian2 SpikeMonitor returned by the simulation to calculate population vector. Read the `Brian2 documentation <http://brian2.readthedocs.io/en/stable/user/recording.html>`_ to see how one can access spike trains. Then implement the readout following the steps given here:
+In the raster plot above we see that the population of spiking neurons keeps a memory of the stimulus. In this exercise we decode the population vector (i.e. the  angle ``theta`` stored in the working memory) from the spiking activity. The population vector is defined as the **weighted (by spike counts) mean of the preferred directions of the neurons**. We access the data in the  Brian2 SpikeMonitor returned by the simulation to calculate the population vector. Read the `Brian2 documentation <http://brian2.readthedocs.io/en/stable/user/recording.html>`_ to see how one can access spike trains. Then implement the readout following the steps given here:
 
 
 Mapping the neuron index onto its preferred direction
@@ -169,7 +169,7 @@ Extracting spikes from the spike monitor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The population vector ``theta`` changes over time due to drift and diffusion which is why we are interested in ``theta(t)``. As we are dealing with spikes (discrete point events), and a small number of neurons, we have to average the population activity over some time window around t, [t_min=t - t_window_width/2, t_max =t + t_window_width/2], to get an estimate of ``theta(t)``.
 
-Write a function ``get_spike_count(spike_monitor, spike_index_list, t_min, t_max)`` which returns an array of spike counts per monitored neuron. Be careful about the indexing: ``spike_index_list`` is a list of ``k`` neuron indices in [0, N-1] while the returned array ``spike_count_list`` is of length ``k``.
+Write a function ``get_spike_count(spike_monitor, spike_index_list, t_min, t_max)`` which returns an array of spike counts (one value for each neuron in ``spike_index_list``). Be careful about the indexing: ``spike_index_list`` is a list of ``k`` neuron indices in [0, N-1] while the returned array ``spike_count_list`` is of length ``k``.
 
 The parameter ``spike_monitor`` is the spike_monitor_excit returned by the function :func:`.simulate_wm`. The following pseudo-code and fragments are useful to implement ``get_spike_count``:
 
@@ -208,19 +208,19 @@ Do a plausibility check of your implementation: In one of the previous questions
 Computing the population vector
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- * Combine the two previous functions to calculate theta(t). For our purpose, it is sufficient to calculate a weighted mean of preferred directions. It is not necessary to correctly decode an angle close to 0deg = 360deg.
+ * Combine the two previous functions to calculate theta(t). For our purpose, it is sufficient to calculate a weighted mean of preferred directions. It is not necessary to correctly decode an angle close to 0deg = 360deg (You can stimulate the network at 350deg to see the problem).
 
  * Run a simulation and decode the population vector at the time when the **stimulation** ends. You should get a value close to the stimulus location.
 
- * Pack the calculation of theta(t) into a function ``get_theta_time_series`` which takes an additional parameter ``t_snapshots`` (an array of time points at which you want to decode the population vector). Use your function to  readout and visualize the evolution of theta. You can take some inspiration from the following code fragment:
+ * Pack the calculation of theta(t) into a function ``get_theta_time_series`` which takes an additional parameter ``t_snapshots`` (an array of time points at which you want to decode the population vector). ``get_theta_time_series`` loops over all t_snapshots and calls ``get_spike_count``. Use your function to  readout and visualize the evolution of theta. You can take some inspiration from the following code fragment:
 
 
 .. code-block:: py
 
     # Example how to create an array of timestamps spaced by snapshot_interval in the interval of interest.
     t_snapshots = range(
-        int(floor((t_stimulus_start+t_stimulus_duration)/b2.ms)),  # lower bound
-        int(floor((t_sim-t_window_width/2)/b2.ms)),  # Subtract half window. Avoids an out-of-bound error later.
+        int(math.floor((t_stimulus_start+t_stimulus_duration)/b2.ms)),  # lower bound
+        int(math.floor((t_sim-t_window_width/2)/b2.ms)),  # Subtract half window. Avoids an out-of-bound error later.
         int(round(snapshot_interval/b2.ms))  # spacing between time stamps
         )*b2.ms
 

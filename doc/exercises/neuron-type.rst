@@ -57,8 +57,6 @@ What is the threshold current for repetitive firing for :class:`NeuronX <.neuron
 
 Exploring various values of ``I_amp``, find the range in which the threshold occurs, to a precision of 0.01.
 
-.. note::
-
 Plot the responses to step current which starts after 100ms (to let the system equilibrate) and lasting at least 1000ms (to detect repetitive firing with a long period). You can do this by modifying the code example given above. Make sure to check the documentation of the functions you use: :func:`.input_factory.get_step_current`, :func:`.neuron_type.neurons.run` and :func:`.neuron_type.neurons.plot_data`.
 
 Already from the voltage response near threshold you might have an idea which is type I or II, but let’s investigate further.

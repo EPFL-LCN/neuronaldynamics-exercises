@@ -109,7 +109,6 @@ The input stimulus is implemented by two inhomogenous Poisson processes: The sub
 
 
 .. math::
-   :label: eq1
 
    \nu_{left} &\sim& \mathcal{N}(\mu_{left},\,\sigma^{2})\\
    \nu_{right} &\sim& \mathcal{N}(\mu_{right},\,\sigma^{2})\\
