@@ -14,22 +14,18 @@ The full documentation and the exercises `can be found at readthedocs <http://ne
 Quickstart
 ----------
 
-To install the exercises using ``pip`` simply execute:
-
-.. code-block:: bash
-
-   pip install --upgrade neurodynex
-
-To install the exercises with anaconda/miniconda execute: 
+To install the exercises with anaconda/miniconda execute:
 
 .. code-block:: bash
 
    conda install -c brian-team -c epfl-lcn neurodynex
 
-Brian1
-------
 
-This (master) branch is a rewrite of all python exercises for the more recent `Brian2 Simulator <https://github.com/brian-team/brian2>`__. The old exercises using brian1 are still available on the `brian1 branch <https://github.com/EPFL-LCN/neuronaldynamics-exercises/tree/brian1>`__.
+To install the exercises using ``pip`` simply execute:
+
+.. code-block:: bash
+
+   pip install --upgrade neurodynex
 
 License
 -------
@@ -46,6 +42,19 @@ Contributors (alphabetically)
 * Alexander Seeholzer (LCN, EPFL)
 * Hesam Setareh (LCN, EPFL)
 * Lorric Ziegler (LCN, EPFL)
+
+Disclaimer
+----------
+
+   * You can download, use and modify the software we provide here. It has been tested but it can still contain errors.
+
+   * The content of this site can change at any moment. We may change, add or remove code/exercises without notification.
+
+Bug reports
+-----------
+Did you find a bug? Open an issue on `github <https://github.com/EPFL-LCN/neuronaldynamics-exercises/issues>`_ . Thank you!
+
+
 
 .. |Build Status| image:: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises.svg?branch=master
    :target: https://travis-ci.org/EPFL-LCN/neuronaldynamics-exercises
