@@ -9,3 +9,4 @@ build
 *.ipynb
 tmp_*.py
 NotesMarcoParima2016.docx
+doc/modules/

@@ -21,18 +21,6 @@ Subpackages
     neurodynex.tools
     neurodynex.working_memory_network
 
-Submodules
-----------
-
-neurodynex\.quick\_test module
-------------------------------
-
-.. automodule:: neurodynex.quick_test
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
 Module contents
 ---------------
 
