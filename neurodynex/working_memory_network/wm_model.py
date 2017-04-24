@@ -56,8 +56,8 @@ def simulate_wm(
         N_excitatory (int): Size of the excitatory population
         N_inhibitory (int): Size of the inhibitory population
         weight_scaling_factor (float): weight prefactor. When increasing the size of the populations,
-            the synaptic weights have to be decreased. The default values are
-            N_excitatory*weight_scaling_factor = 2048 and
+            the synaptic weights have to be decreased. Using the default values, we have
+            N_excitatory*weight_scaling_factor = 2048 and N_inhibitory*weight_scaling_factor=512
         N_extern_poisson (int): Size of the external input population (Poisson input)
         poisson_firing_rate (Quantity): Firing rate of the external population
         sigma_weight_profile (float): standard deviation of the gaussian input profile in

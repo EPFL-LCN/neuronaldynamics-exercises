@@ -19,4 +19,4 @@ Exercises
     ojas-rule
     brunel-network
     spatial-working-memory
-..    perceptual-decision-making
+    perceptual-decision-making
