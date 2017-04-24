@@ -81,7 +81,7 @@ def plot_voltage_and_current_traces(voltage_monitor, current, title=None, firing
 
 def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spike_train_idx_list=None,
                           t_min=None, t_max=None, N_highlighted_spiketrains=3, avg_window_width=1.0 * b2.ms,
-                          sup_title=None):
+                          sup_title=None, figure_size=(10, 4)):
     """
     Visualizes the results of a network simulation: spike-train, population activity and voltage-traces.
 
@@ -102,6 +102,7 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
         avg_window_width (Quantity): optional. Before plotting the population rate (PopulationRateMonitor), the rate
             is smoothed using a window of width = avg_window_width. Defaults is 1.0ms
         sup_title (String): figure suptitle. Default is None.
+        figure_size (tuple): (width,height) tuple passed to pyplot's figsize parameter.
 
     Returns:
         Figure: The whole figure
@@ -147,9 +148,9 @@ def plot_network_activity(rate_monitor, spike_monitor, voltage_monitor=None, spi
     ax_rate = None
     ax_voltage = None
     if voltage_monitor is None:
-        fig, (ax_raster, ax_rate) = plt.subplots(2, 1, sharex=True)
+        fig, (ax_raster, ax_rate) = plt.subplots(2, 1, sharex=True, figsize=figure_size)
     else:
-        fig, (ax_raster, ax_rate, ax_voltage) = plt.subplots(3, 1, sharex=True)
+        fig, (ax_raster, ax_rate, ax_voltage) = plt.subplots(3, 1, sharex=True, figsize=figure_size)
 
     # nested helpers to plot the parts, note that they use parameters defined outside.
     def get_spike_train_ts_indices(spike_train):
