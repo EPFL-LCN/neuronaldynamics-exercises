@@ -52,7 +52,7 @@ Before we can analyse the decision making process and the simulation results, we
     :align: center
     :width: 65%
 
-    Structure within the excitatory population. The "Left" and "Right" subpopulations have strong recurrent weights :math:`(w^+ > w^0)` and weak projections to the other :math:`(w^- < w^0)`. All neurons receive a poisson input from an exernal source. Additionally, the neurons in the "Left" subpopulation receive poisson input with some rate :math:`\nu_{Left}`; the "Right" subpopulation receives a poisson input with a different rate :math:`\nu_{right}`.
+    Structure within the excitatory population. The "Left" and "Right" subpopulations have strong recurrent weights :math:`(w^+ > w^0)` and weak projections to the other :math:`(w^- < w^0)`. All neurons receive a poisson input from an external source. Additionally, the neurons in the "Left" subpopulation receive poisson input with some rate :math:`\nu_{Left}`; the "Right" subpopulation receives a poisson input with a different rate :math:`\nu_{right}`.
 
 
 Question: Understanding Brian2 Monitors
@@ -73,7 +73,7 @@ Question: Accessing a dictionary to plot the population rates
 
 The monitors are returned in a `Python dictionary <https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries>`_ providing access to objects by name. Read the `Python documentation <https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries>`_ and look at the code block below or the function :func:`.competing_populations.decision_making.getting_started` to learn how dictionaries are used.
 
-* Extend the following code block to include plots for the all four subplopulations.
+* Extend the following code block to include plots for all four subpopulations.
 * Run the simulation for 800ms. What are the "typical" population rates of the four populations towards the end of the simulation? (In case the network did not decide, run the simulation again).
 * Without running the simulation again, but by using the same ``results`` `dictionary <https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries>`_, plot the rates using different values of ``avg_window_width``.
 
@@ -138,14 +138,14 @@ Run a few simulations with ``c=-0.3`` and ``c=+1``. Then plot the network activi
 Exercise: Decision Space
 ------------------------
 
-We can visualize the dynamics of the decision making process by plotting the activities of the two subpopulation "Left" / "Right" in a phase plane (see figure at the top of this page). Such a phase plane of competing states is also known as the *Decision Space*. A discussion of the decision making process in the decision space is out of the scope of this exercise but we refer to :ref:`location-references` [1].
+We can visualize the dynamics of the decision making process by plotting the activities of the two subpopulations "Left" / "Right" in a phase plane (see figure at the top of this page). Such a phase plane of competing states is also known as the *Decision Space*. A discussion of the decision making process in the decision space is out of the scope of this exercise but we refer to :ref:`location-references` [1].
 
 Question: Plotting the phase plane
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Write a function that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ and creates a plot similar to the one given above.
 
-* Add a parameter ``avg_window_width`` to your function (same semantics as in the exercise above.). Run a few simulations and plot the phase plane for different values of ``avg_window_width``.
+* Add a parameter ``avg_window_width`` to your function (same semantics as in the exercise above). Run a few simulations and plot the phase plane for different values of ``avg_window_width``.
 
 * Think about a decision criterion. What are appropriate values for ``avg_window_width`` and some ``rate threshold`` to detect a decision from the two rates?
 
@@ -153,7 +153,7 @@ Question: Plotting the phase plane
 Question: Implementing a decision criterion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple (decision_time_Left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decison "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
+* Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple (decision_time_Left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
 
  The following code block shows how your function should be called.
 
@@ -175,7 +175,7 @@ Run a few simulations to test your function.
 
 Exercise: Percent-correct and Decision-time as a function of coherence level
 ----------------------------------------------------------------------------
-We now systematically investigate how the coherence level influences the decision making procsess. Running multiple repetitions for different coherence levels, we can study how well the network is able to make correct decisions.
+We now systematically investigate how the coherence level influences the decision making process. Running multiple repetitions for different coherence levels, we can study how well the network is able to make correct decisions.
 
 You can pass your function get_decision_time() to :func:`.competing_populations.decision_making.run_multiple_simulations` as shown here:
 
@@ -201,7 +201,7 @@ Using :func:`.run_multiple_simulations`, run at least 7 simulations for 2 differ
 
 * For each coherence-level, compare ``Time to correct decision`` to ``Time to wrong decision``.
 
-* Discuss your results
+* Discuss your results.
 
 
 .. _location-references:

@@ -8,5 +8,4 @@ build
 .ipynb_checkpoints
 *.ipynb
 tmp_*.py
-NotesMarcoParima2016.docx
 doc/modules/
