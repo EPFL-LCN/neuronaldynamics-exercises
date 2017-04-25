@@ -129,10 +129,10 @@ Question: Coherence Level
 Question: Input stimuli with different coherence levels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run a few simulations with ``c=-0.3`` and ``c=+1``. Then plot the network activity.
+Run a few simulations with ``c=-0.10`` and ``c=+0.3``. Plot the network activity.
 
 * Does the network always make the correct decision?
-* Look at the population rates. How long does it take the network to make a decision?
+* Look at the population rates and estimate how long it takes the network to make a decision.
 
 
 Exercise: Decision Space
@@ -143,7 +143,7 @@ We can visualize the dynamics of the decision making process by plotting the act
 Question: Plotting the phase plane
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Write a function that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ and creates a plot similar to the one given above.
+* Write a function that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ and plots the *Decision Space*.
 
 * Add a parameter ``avg_window_width`` to your function (same semantics as in the exercise above). Run a few simulations and plot the phase plane for different values of ``avg_window_width``.
 
@@ -155,18 +155,18 @@ Question: Implementing a decision criterion
 
 * Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple (decision_time_Left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
 
- The following code block shows how your function should be called.
+ The following code block shows how your function is called.
 
 .. code-block:: py
 
-    >> get_decision_time(results["rate_monitor_A"], results["rate_monitor_B"], avg_window_width=123*b2.ms, rate_threshold=456*b2.Hz)
+    >> get_decision_time(results["rate_monitor_A"], results["rate_monitor_B"], avg_window_width=123*b2.ms, rate_threshold=45.6*b2.Hz)
     >> (0.543 * second, 0. * second)
 
 The following code fragments could be useful:
 
 .. code-block:: py
 
-    smoothed_rates_A = (rate_monitor_A.smooth_rate(window="flat", width=avg_window_width) / b2.Hz)
+    smoothed_rates_A = rate_monitor_A.smooth_rate(window="flat", width=avg_window_width) / b2.Hz
     idx_A = numpy.argmax(smoothed_rates_A > rate_threshold/b2.Hz)
     t_A = idx_A * b2.defaultclock.dt
 
@@ -177,11 +177,11 @@ Exercise: Percent-correct and Decision-time as a function of coherence level
 ----------------------------------------------------------------------------
 We now systematically investigate how the coherence level influences the decision making process. Running multiple repetitions for different coherence levels, we can study how well the network is able to make correct decisions.
 
-You can pass your function get_decision_time() to :func:`.competing_populations.decision_making.run_multiple_simulations` as shown here:
+You can pass your *function get_decision_time* as an argument to :func:`.competing_populations.decision_making.run_multiple_simulations` as shown here:
 
 .. code-block:: py
 
-    coherence_levels = [0., 1.]
+    coherence_levels = [0.15, 0.8]
     nr_repetitions = 3
 
     time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=?? avg_window_width=??)
@@ -193,7 +193,7 @@ Check the documentation of :func:`.run_multiple_simulations` and set the paramet
 Question: Percent-Correct, Time-to-decision, Time-to-wrong-decision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using :func:`.run_multiple_simulations`, run at least 7 simulations for 2 different levels of coherence. The simulation stops either when a decision is made or after a maximum simulation time (set it to ~1500ms). If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Then analyse your simulation results by visualizing the following statistics. For each of the questions, ignore the simulations with "no decision".
+Using :func:`.run_multiple_simulations`, run at least 7 simulations for 2 different levels of coherence. The simulation stops either when a decision is made or after a maximum simulation time (set it to ~1200ms). If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Then analyse your simulation results by visualizing the following statistics. For each of the questions, ignore the simulations with "no decision".
 
 * Visualize ``Percent correct`` versus ``coherence level``.
 

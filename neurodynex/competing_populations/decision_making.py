@@ -39,16 +39,16 @@ import matplotlib.pyplot as plt
 from math import floor
 import time
 
-b2.defaultclock.dt = 0.12 * b2.ms
+b2.defaultclock.dt = 0.10 * b2.ms
 
 
 def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5.33,
                                 t_stimulus_start=100 * b2.ms, t_stimulus_duration=9999 * b2.ms, coherence_level=0.,
-                                stimulus_update_interval=70 * b2.ms, nu0_mean_stimulus_Hz=80.,
+                                stimulus_update_interval=30 * b2.ms, nu0_mean_stimulus_Hz=160.,
                                 nu0_std_stimulus_Hz=20.,
-                                N_extern=1000, firing_rate_extern=9.5 * b2.Hz,
+                                N_extern=1000, firing_rate_extern=9.8 * b2.Hz,
                                 w_pos=1.90, f_Subpop_size=0.25,  # .15 in publication [1]
-                                max_sim_time=200. * b2.ms, stop_condition_rate=None,
+                                max_sim_time=1000. * b2.ms, stop_condition_rate=None,
                                 monitored_subset_size=512):
     """
 
@@ -134,7 +134,7 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
     g_AMPA_excit2excit = weight_scaling_factor * 0.012 * b2.nS
     g_AMPA_excit2inhib = weight_scaling_factor * 0.015 * b2.nS
     g_NMDA_excit2excit = weight_scaling_factor * 0.040 * b2.nS
-    g_NMDA_excit2inhib = weight_scaling_factor * 0.045 * b2.nS
+    g_NMDA_excit2inhib = weight_scaling_factor * 0.045 * b2.nS  # stronger projection to inhib.
 
     # weights and "adjusted" weights.
     w_neg = 1. - f_Subpop_size * (w_pos - 1.) / (1. - f_Subpop_size)
@@ -381,11 +381,10 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
 def run_multiple_simulations(
         f_get_decision_time, coherence_levels, nr_repetitions,
         max_sim_time=1. * b2.ms, rate_threshold=1. * b2.Hz, avg_window_width=1. * b2.ms,
-        N_excit=384, N_inhib=96, weight_scaling=5.33, w_pos=1.90,
-        # N_excit=512, N_inhib=128, weight_scaling=4., w_pos=1.85,
+        N_excit=384, N_inhib=96, weight_scaling=5.33, w_pos=1.9,
         t_stim_start=100 * b2.ms, t_stim_duration=9999 * b2.ms,
-        # nu0_mean_stim_Hz=100., nu0_std_stim_Hz=25., stim_upd_interval=80 * b2.ms
-        nu0_mean_stim_Hz=80., nu0_std_stim_Hz=20., stim_upd_interval=70 * b2.ms
+        nu0_mean_stim_Hz=160., nu0_std_stim_Hz=20., stim_upd_interval=30 * b2.ms,
+        N_extern=1000, firing_rate_extern=9.8 * b2.Hz
 ):
     """
 
@@ -406,6 +405,8 @@ def run_multiple_simulations(
         nu0_std_stimulus_Hz (float): std deviation of the stimulating PoissonGroups.
         stim_upd_interval (Quantity): the mean of the stimulating PoissonGroups is
             re-sampled every at this interval
+        N_extern=1000 (int): Size of the external PoissonGroup (unstructured input)
+        firing_rate_extern (Quantity): Firing frequency of the external PoissonGroup
 
     Returns:
 
@@ -440,7 +441,8 @@ def run_multiple_simulations(
                 t_stimulus_start=t_stim_start, t_stimulus_duration=t_stim_duration, coherence_level=c,
                 max_sim_time=max_sim_time, stop_condition_rate=rate_threshold,
                 nu0_mean_stimulus_Hz=nu0_mean_stim_Hz, nu0_std_stimulus_Hz=nu0_std_stim_Hz,
-                stimulus_update_interval=stim_upd_interval
+                stimulus_update_interval=stim_upd_interval,
+                N_extern=1000, firing_rate_extern=9.5 * b2.Hz,
             )
             t_A, t_B = f_get_decision_time(results["rate_monitor_A"],
                                            results["rate_monitor_B"],
@@ -466,10 +468,13 @@ def getting_started():
     Returns:
 
     """
+    stim_start = 150. * b2.ms
+    stim_duration = 350 * b2.ms
+    print("stimulus start: {}, stimulus end: {}".format(stim_start, stim_start+stim_duration))
     results = sim_decision_making_network(N_Excit=341, N_Inhib=85, weight_scaling_factor=6.0,
-                                          t_stimulus_start=150. * b2.ms, t_stimulus_duration=1000 * b2.ms,
-                                          coherence_level=+0.95, w_pos=2.0, nu0_mean_stimulus_Hz=150 * b2.Hz,
-                                          max_sim_time=1000. * b2.ms)
+                                          t_stimulus_start=stim_start, t_stimulus_duration=stim_duration,
+                                          coherence_level=+0.90, w_pos=2.0, nu0_mean_stimulus_Hz=500 * b2.Hz,
+                                          max_sim_time=800. * b2.ms)
     plot_tools.plot_network_activity(results["rate_monitor_A"], results["spike_monitor_A"],
                                      results["voltage_monitor_A"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,
                                      sup_title="Left")
