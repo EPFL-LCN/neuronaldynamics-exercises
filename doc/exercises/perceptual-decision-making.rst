@@ -108,7 +108,7 @@ Remark: The parameter ``avg_window_width`` is passed to the function `Population
 
 Exercise: Stimulating the decision making circuit
 -------------------------------------------------
-The input stimulus is implemented by two inhomogenous Poisson processes: The subpopulation "Left" and "Right" receive input from two different PoissonGroups (see Figure "Network Structure"). The input has a ``coherence level c`` and is noisy. We have implemented this in the following way: every 70ms, the firing rates :math:`\nu_{left}` and :math:`\nu_{right}` of each of the two PoissonGroups are drawn from a normal distribution:
+The input stimulus is implemented by two inhomogenous Poisson processes: The subpopulation "Left" and "Right" receive input from two different PoissonGroups (see Figure "Network Structure"). The input has a ``coherence level c`` and is noisy. We have implemented this in the following way: every 30ms, the firing rates :math:`\nu_{left}` and :math:`\nu_{right}` of each of the two PoissonGroups are drawn from a normal distribution:
 
 
 .. math::
