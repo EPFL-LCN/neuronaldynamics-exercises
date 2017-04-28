@@ -75,7 +75,10 @@ The monitors are returned in a `Python dictionary <https://docs.python.org/3/tut
 
 * Extend the following code block to include plots for all four subpopulations.
 * Run the simulation for 800ms. What are the "typical" population rates of the four populations towards the end of the simulation? (In case the network did not decide, run the simulation again).
-* Without running the simulation again, but by using the same ``results`` `dictionary <https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries>`_, plot the rates using different values of ``avg_window_width``.
+* Without running the simulation again, but by using the same ``results`` `dictionary <https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries>`_, plot the rates using different values for ``avg_window_width``.
+* Interpret the effect of a very short and a very long averaging window.
+* Find a value ``avg_window_width`` for which the population activity plot gives meaningful rates.
+
 
  .. code-block:: py
 
@@ -121,15 +124,22 @@ The coherence level ``c``, the maximum mean :math:`\mu_0` and the standard devia
 Question: Coherence Level
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Given the equation above and the documentation of the function :func:`.sim_decision_making_network`, what are the mean firing rates :math:`\mu_{left}` and :math:`\mu_{right}` for each of the following values: c=-1, c= 0, c=0.2, c= +1
+* From the equation above, express the difference :math:`\mu_{left}-\mu_{right}` in terms of :math:`\mu_0` and :math:`c`.
 
-* How does the default noise level :math:`\sigma` compare to the difference :math:`\mu_{left}-\mu_{right}`?
+* Find the distribution of the difference :math:`\nu_{left}-\nu_{right}`. Hint: the difference of two Gaussian distributions is another Gaussian distribution.
+
+
+Now look at the documentation of the function :func:`.sim_decision_making_network` and find the default values of :math:`\mu_0` and :math:`\sigma`. Using those values, answer the following questions:
+
+* What are the mean firing rates (in Hz) :math:`\mu_{left}` and :math:`\mu_{right}` for the coherence level c= -0.2?
+
+* For c= -0.2, how does the difference :math:`\mu_{left}-\mu_{right}` compare to the variance of :math:`\nu_{left}-\nu_{right}`.
 
 
 Question: Input stimuli with different coherence levels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run a few simulations with ``c=-0.10`` and ``c=+0.3``. Plot the network activity.
+Run a few simulations with ``c=-0.1`` and ``c=+0.6``. Plot the network activity.
 
 * Does the network always make the correct decision?
 * Look at the population rates and estimate how long it takes the network to make a decision.
@@ -140,14 +150,22 @@ Exercise: Decision Space
 
 We can visualize the dynamics of the decision making process by plotting the activities of the two subpopulations "Left" / "Right" in a phase plane (see figure at the top of this page). Such a phase plane of competing states is also known as the *Decision Space*. A discussion of the decision making process in the decision space is out of the scope of this exercise but we refer to :ref:`location-references` [1].
 
-Question: Plotting the phase plane
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Question: Plotting the Decision Space
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Write a function that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ and plots the *Decision Space*.
 
 * Add a parameter ``avg_window_width`` to your function (same semantics as in the exercise above). Run a few simulations and plot the phase plane for different values of ``avg_window_width``.
 
-* Think about a decision criterion. What are appropriate values for ``avg_window_width`` and some ``rate threshold`` to detect a decision from the two rates?
+* We can use a rate threshold as a decision criterion: We say the network has made a decision if one of the (smoothed) rates crosses a threshold. What are appropriate values for ``avg_window_width`` and ``rate threshold`` to detect a decision from the two rates?
+
+
+Hint: Use Brian's smooth_rate function:
+
+.. code-block:: py
+
+    avg_window_width = 123*b2.ms
+    sr = results["rate_monitor_A"].smooth_rate(window="flat", width=avg_window_width)/b2.Hz
 
 
 Question: Implementing a decision criterion
@@ -177,14 +195,14 @@ Exercise: Percent-correct and Decision-time as a function of coherence level
 ----------------------------------------------------------------------------
 We now systematically investigate how the coherence level influences the decision making process. Running multiple repetitions for different coherence levels, we can study how well the network is able to make correct decisions.
 
-You can pass your *function get_decision_time* as an argument to :func:`.competing_populations.decision_making.run_multiple_simulations` as shown here:
+You can pass your function *get_decision_time* as an argument to :func:`.competing_populations.decision_making.run_multiple_simulations` as shown here:
 
 .. code-block:: py
 
     coherence_levels = [0.15, 0.8]
     nr_repetitions = 3
 
-    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=?? avg_window_width=??)
+    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=??, avg_window_width=??)
 
 The return value ``time_to_A`` is a matrix of size [nr_of_c_levels x nr_of_repetitions]. ``count_A`` is the number of times the network decides for A (= "Left" by convention). The other values are analogous.
 
@@ -193,13 +211,11 @@ Check the documentation of :func:`.run_multiple_simulations` and set the paramet
 Question: Percent-Correct, Time-to-decision, Time-to-wrong-decision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using :func:`.run_multiple_simulations`, run at least 7 simulations for 2 different levels of coherence. The simulation stops either when a decision is made or after a maximum simulation time (set it to ~1200ms). If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Then analyse your simulation results by visualizing the following statistics. For each of the questions, ignore the simulations with "no decision".
+Using :func:`.run_multiple_simulations`, run at least 10 simulations for each of the two ``coherence_levels = [0.1, 0.8]``. The simulation stops either when a decision is made or after a maximum simulation time (set it to ~1200ms). If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Then analyse your simulation results by visualizing the following statistics. For each of the questions, ignore the simulations with "no decision".
 
 * Visualize ``Percent correct`` versus ``coherence level``.
 
 * Visualize ``Time to decision`` versus ``coherence level``.
-
-* For each coherence-level, compare ``Time to correct decision`` to ``Time to wrong decision``.
 
 * Discuss your results.
 

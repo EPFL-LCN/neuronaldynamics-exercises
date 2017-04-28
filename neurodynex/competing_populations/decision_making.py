@@ -320,7 +320,7 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
         monitored_subset_size = min(monitored_subset_size, pop.N)
         idx_monitored_neurons = sample(range(pop.N), monitored_subset_size)
         rate_monitor = PopulationRateMonitor(pop)
-        # record= some_list is not supported? :-(
+        # record parameter: record=idx_monitored_neurons is not supported???
         spike_monitor = SpikeMonitor(pop, record=idx_monitored_neurons)
         voltage_monitor = StateMonitor(pop, "v", record=idx_monitored_neurons)
         return rate_monitor, spike_monitor, voltage_monitor, idx_monitored_neurons
@@ -460,6 +460,10 @@ def run_multiple_simulations(
                 print("no decision")
                 count_No += 1
     return time_to_A, time_to_B, count_A, count_B, count_No
+
+
+def print_version():
+    print("Version: 01 May 2017")
 
 
 def getting_started():
