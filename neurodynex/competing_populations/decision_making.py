@@ -398,7 +398,8 @@ def run_multiple_simulations(
         avg_window_width (Quantity): window size when smoothing the firing rates. Passed to f_get_decision_time.
         N_excit (int): total number of neurons in the excitatory population
         N_inhib (int): nr of neurons in the inhibitory populations
-        weight_scaling (float): When increasing the number of neurons by 2, the weights should be scaled down by 1/2
+        weight_scaling (float): When increasing the number of neurons by 2, the weights should be scaled
+            down by 1/2
         w_pos (float): Scaling (strengthening) of the recurrent weights within the
             subpopulations "Left" and "Right"
         f_Subpop_size (float): fraction of the neurons in the subpopulations "Left" and "Right".

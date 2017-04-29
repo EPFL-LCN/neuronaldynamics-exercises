@@ -208,7 +208,9 @@ Check the documentation of :func:`.run_multiple_simulations` and set the paramet
 Question: Percent-Correct, Time-to-decision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using :func:`.run_multiple_simulations`, run at least 15 simulations for each of the two ``coherence_levels = [+0.15, +0.8]`` and visualize the results. For each of the questions, ignore the simulations with "no decision". If you have sufficient time/computing-power, you could run more repetitions and more levels and you could even try a larger network.
+Using :func:`.run_multiple_simulations`, run at least 15 simulations for each of the two ``coherence_levels = [+0.15, +0.8]`` and visualize the results. For each of the questions, ignore the simulations with "no decision". Optionally, if you have sufficient time/computing-power, you could run more repetitions and more levels.
+
+try a larger network.
 
 * Visualize ``Percent correct`` versus ``coherence level``.
 
