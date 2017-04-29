@@ -44,8 +44,8 @@ b2.defaultclock.dt = 0.10 * b2.ms
 
 def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5.33,
                                 t_stimulus_start=100 * b2.ms, t_stimulus_duration=9999 * b2.ms, coherence_level=0.,
-                                stimulus_update_interval=30 * b2.ms, nu0_mean_stimulus_Hz=160.,
-                                nu0_std_stimulus_Hz=20.,
+                                stimulus_update_interval=30 * b2.ms, mu0_mean_stimulus_Hz=160.,
+                                stimulus_std_Hz=20.,
                                 N_extern=1000, firing_rate_extern=9.8 * b2.Hz,
                                 w_pos=1.90, f_Subpop_size=0.25,  # .15 in publication [1]
                                 max_sim_time=1000. * b2.ms, stop_condition_rate=None,
@@ -62,14 +62,15 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
             Difference in mean between the PoissonGroups "left" stimulus and "right" stimulus
         stimulus_update_interval (Quantity): the mean of the stimulating PoissonGroups is
             re-sampled every at this interval
-        nu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=1
-        nu0_std_stimulus_Hz (float): std deviation of the stimulating PoissonGroups.
+        mu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=+1 or c=-1. Each neuron
+            in the populations "Left" and "Right" receives an independent poisson input.
+        stimulus_std_Hz (float): std deviation of the stimulating PoissonGroups.
         N_extern (int): nr of neurons in the stimulus independent poisson background population
         firing_rate_extern (int): firing rate of the stimulus independent poisson background population
         w_pos (float): Scaling (strengthening) of the recurrent weights within the
             subpopulations "Left" and "Right"
         f_Subpop_size (float): fraction of the neurons in the subpopulations "Left" and "Right".
-            #left = #right = f_Subpop_size*N_Excit.
+            #left = #right = int(f_Subpop_size*N_Excit).
         max_sim_time (Quantity): simulated time.
         stop_condition_rate (Quantity): An optional stopping criteria: If not None, the simulation stops if the
             firing rate of either subpopulation "Left" or "Right" is above stop_condition_rate.
@@ -289,12 +290,12 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
     @network_operation(dt=stimulus_update_interval)
     def update_poisson_stimulus(t):
         if t >= t_stimulus_start and t < t_stimulus_end:
-            offset_A = nu0_mean_stimulus_Hz * (0.5 + 0.5 * coherence_level)
-            offset_B = nu0_mean_stimulus_Hz * (0.5 - 0.5 * coherence_level)
+            offset_A = mu0_mean_stimulus_Hz * (0.5 + 0.5 * coherence_level)
+            offset_B = mu0_mean_stimulus_Hz * (0.5 - 0.5 * coherence_level)
 
-            rate_A = numpy.random.normal(offset_A, nu0_std_stimulus_Hz)
+            rate_A = numpy.random.normal(offset_A, stimulus_std_Hz)
             rate_A = (max(0, rate_A)) * b2.Hz  # avoid negative rate
-            rate_B = numpy.random.normal(offset_B, nu0_std_stimulus_Hz)
+            rate_B = numpy.random.normal(offset_B, stimulus_std_Hz)
             rate_B = (max(0, rate_B)) * b2.Hz
 
             poissonStimulus2A.rates = rate_A
@@ -380,10 +381,10 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
 
 def run_multiple_simulations(
         f_get_decision_time, coherence_levels, nr_repetitions,
-        max_sim_time=1. * b2.ms, rate_threshold=1. * b2.Hz, avg_window_width=1. * b2.ms,
-        N_excit=384, N_inhib=96, weight_scaling=5.33, w_pos=1.9,
-        t_stim_start=100 * b2.ms, t_stim_duration=9999 * b2.ms,
-        nu0_mean_stim_Hz=160., nu0_std_stim_Hz=20., stim_upd_interval=30 * b2.ms,
+        max_sim_time=1200 * b2.ms, rate_threshold=25 * b2.Hz, avg_window_width=30 * b2.ms,
+        N_excit=384, N_inhib=96, weight_scaling=5.33, w_pos=1.9, f_Subpop_size=0.25,
+        t_stim_start=100 * b2.ms, t_stim_duration=99999 * b2.ms,
+        mu0_mean_stim_Hz=160., stimulus_StdDev_Hz=20., stim_upd_interval=30 * b2.ms,
         N_extern=1000, firing_rate_extern=9.8 * b2.Hz
 ):
     """
@@ -392,17 +393,20 @@ def run_multiple_simulations(
         f_get_decision_time (Function): a function that implements the decision criterion.
         coherence_levels (array): A list of coherence levels
         nr_repetitions (int): Number of repetitions (independent simulations).
-        max_sim_time (Quantity): max simulation time
-        rate_threshold (Quantity): A firing rate threshold. The simulation stops before max_sim_time if one
-            of the two subpopulations "Left" or "Right" fires above this threshold (averaged over some time window)
-        avg_window_width (Quantity): window size when smoothing the firing rates.
+        max_sim_time (Quantity): max simulation time.
+        rate_threshold (Quantity): A firing rate threshold passed to f_get_decision_time.
+        avg_window_width (Quantity): window size when smoothing the firing rates. Passed to f_get_decision_time.
         N_excit (int): total number of neurons in the excitatory population
         N_inhib (int): nr of neurons in the inhibitory populations
         weight_scaling (float): When increasing the number of neurons by 2, the weights should be scaled down by 1/2
+        w_pos (float): Scaling (strengthening) of the recurrent weights within the
+            subpopulations "Left" and "Right"
+        f_Subpop_size (float): fraction of the neurons in the subpopulations "Left" and "Right".
+            #left = #right = int(f_Subpop_size*N_Excit).
         t_stim_start (Quantity): Start of the stimulation
         t_stim_duration (Quantity): Duration of the stimulation
-        nu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=1
-        nu0_std_stimulus_Hz (float): std deviation of the stimulating PoissonGroups.
+        mu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=+1 or c=-1
+        stimulus_StdDev_Hz (float): std deviation of the stimulating PoissonGroups.
         stim_upd_interval (Quantity): the mean of the stimulating PoissonGroups is
             re-sampled every at this interval
         N_extern=1000 (int): Size of the external PoissonGroup (unstructured input)
@@ -437,10 +441,11 @@ def run_multiple_simulations(
         for i_run in range(nr_repetitions):
             print("i_run={}".format(i_run))
             results = sim_decision_making_network(
-                N_Excit=N_excit, N_Inhib=N_inhib, weight_scaling_factor=weight_scaling, w_pos=w_pos,
+                N_Excit=N_excit, N_Inhib=N_inhib, weight_scaling_factor=weight_scaling,
+                w_pos=w_pos, f_Subpop_size=f_Subpop_size,
                 t_stimulus_start=t_stim_start, t_stimulus_duration=t_stim_duration, coherence_level=c,
                 max_sim_time=max_sim_time, stop_condition_rate=rate_threshold,
-                nu0_mean_stimulus_Hz=nu0_mean_stim_Hz, nu0_std_stimulus_Hz=nu0_std_stim_Hz,
+                mu0_mean_stimulus_Hz=mu0_mean_stim_Hz, stimulus_std_Hz=stimulus_StdDev_Hz,
                 stimulus_update_interval=stim_upd_interval,
                 N_extern=1000, firing_rate_extern=9.5 * b2.Hz,
             )
@@ -477,7 +482,7 @@ def getting_started():
     print("stimulus start: {}, stimulus end: {}".format(stim_start, stim_start+stim_duration))
     results = sim_decision_making_network(N_Excit=341, N_Inhib=85, weight_scaling_factor=6.0,
                                           t_stimulus_start=stim_start, t_stimulus_duration=stim_duration,
-                                          coherence_level=+0.90, w_pos=2.0, nu0_mean_stimulus_Hz=500 * b2.Hz,
+                                          coherence_level=+0.90, w_pos=2.0, mu0_mean_stimulus_Hz=500 * b2.Hz,
                                           max_sim_time=800. * b2.ms)
     plot_tools.plot_network_activity(results["rate_monitor_A"], results["spike_monitor_A"],
                                      results["voltage_monitor_A"], t_min=0. * b2.ms, avg_window_width=20. * b2.ms,

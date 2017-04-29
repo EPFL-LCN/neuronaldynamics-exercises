@@ -128,7 +128,6 @@ Question: Coherence Level
 
 * Find the distribution of the difference :math:`\nu_{left}-\nu_{right}`. Hint: the difference of two Gaussian distributions is another Gaussian distribution.
 
-
 Now look at the documentation of the function :func:`.sim_decision_making_network` and find the default values of :math:`\mu_0` and :math:`\sigma`. Using those values, answer the following questions:
 
 * What are the mean firing rates (in Hz) :math:`\mu_{left}` and :math:`\mu_{right}` for the coherence level c= -0.2?
@@ -193,25 +192,23 @@ Run a few simulations to test your function.
 
 Exercise: Percent-correct and Decision-time as a function of coherence level
 ----------------------------------------------------------------------------
-We now systematically investigate how the coherence level influences the decision making process. Running multiple repetitions for different coherence levels, we can study how well the network is able to make correct decisions.
-
-You can pass your function *get_decision_time* as an argument to :func:`.competing_populations.decision_making.run_multiple_simulations` as shown here:
+We now investigate how the coherence level influences the decision making process. In order to estimate quantities like ``Percent-correct`` or ``Decision-time``, we have to run multiple repetitions and then average. Use the function :func:`.competing_populations.decision_making.run_multiple_simulations` to get the values for multiple runs. Pass your function *get_decision_time* to :func:`.run_multiple_simulations` as shown here:
 
 .. code-block:: py
 
-    coherence_levels = [0.15, 0.8]
+    coherence_levels = [-0.1, -0.5]
     nr_repetitions = 3
 
     time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=??, avg_window_width=??)
 
-The return value ``time_to_A`` is a matrix of size [nr_of_c_levels x nr_of_repetitions]. ``count_A`` is the number of times the network decides for A (= "Left" by convention). The other values are analogous.
+The return value ``time_to_A`` is a matrix of size [nr_of_c_levels x nr_of_repetitions]. ``count_A`` is the number of times the network decides for A (= "Left" by convention). The other values are analogous. ``count_No`` is the number of runs where the network has not made a decision within the simulation time.
 
 Check the documentation of :func:`.run_multiple_simulations` and set the parameters according to the findings in previous questions.
 
-Question: Percent-Correct, Time-to-decision, Time-to-wrong-decision
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Question: Percent-Correct, Time-to-decision
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using :func:`.run_multiple_simulations`, run at least 10 simulations for each of the two ``coherence_levels = [0.1, 0.8]``. The simulation stops either when a decision is made or after a maximum simulation time (set it to ~1200ms). If you have sufficient time/computing-power, you should run more repetitions and more levels, and you could even try larger networks. Then analyse your simulation results by visualizing the following statistics. For each of the questions, ignore the simulations with "no decision".
+Using :func:`.run_multiple_simulations`, run at least 15 simulations for each of the two ``coherence_levels = [+0.15, +0.8]`` and visualize the results. For each of the questions, ignore the simulations with "no decision". If you have sufficient time/computing-power, you could run more repetitions and more levels and you could even try a larger network.
 
 * Visualize ``Percent correct`` versus ``coherence level``.
 
@@ -219,6 +216,20 @@ Using :func:`.run_multiple_simulations`, run at least 10 simulations for each of
 
 * Discuss your results.
 
+
+.. code-block:: py
+
+    import brian2 as b2
+    from neurodynex.competing_populations import decision_making
+
+    coherence_levels = [0.15, 0.8]
+    nr_repetitions = 15
+
+    # do not set other parameters (=defaults are used).
+    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time, coherence_levels, nr_repetitions)
+
+    # you may want to wrap the visualization into a function
+    # plot_simulation_stats(coherence_levels, time_to_A, time_to_B, count_A, count_B, count_No)
 
 .. _location-references:
 

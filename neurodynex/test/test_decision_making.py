@@ -9,7 +9,7 @@ def test_sim_decision_making_network():
         .sim_decision_making_network(
             N_Excit=20, N_Inhib=5, weight_scaling_factor=10., t_stimulus_start=0 * b2.ms,
             t_stimulus_duration=9999 * b2.ms, coherence_level=.5, stimulus_update_interval=2 * b2.ms,
-            nu0_mean_stimulus_Hz=100., nu0_std_stimulus_Hz=2., N_extern=10, firing_rate_extern=9.5 * b2.Hz,
+            mu0_mean_stimulus_Hz=160., stimulus_std_Hz=20., N_extern=10, firing_rate_extern=9.5 * b2.Hz,
             w_pos=1.70, f_Subpop_size=0.30, max_sim_time=3. * b2.ms,
             stop_condition_rate=None, monitored_subset_size=5)
 
