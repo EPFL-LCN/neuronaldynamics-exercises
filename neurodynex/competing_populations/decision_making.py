@@ -61,7 +61,7 @@ def sim_decision_making_network(N_Excit=384, N_Inhib=96, weight_scaling_factor=5
         coherence_level (int): coherence of the stimulus.
             Difference in mean between the PoissonGroups "left" stimulus and "right" stimulus
         stimulus_update_interval (Quantity): the mean of the stimulating PoissonGroups is
-            re-sampled every at this interval
+            re-sampled at this interval
         mu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=+1 or c=-1. Each neuron
             in the populations "Left" and "Right" receives an independent poisson input.
         stimulus_std_Hz (float): std deviation of the stimulating PoissonGroups.
@@ -406,10 +406,10 @@ def run_multiple_simulations(
             #left = #right = int(f_Subpop_size*N_Excit).
         t_stim_start (Quantity): Start of the stimulation
         t_stim_duration (Quantity): Duration of the stimulation
-        mu0_mean_stimulus_Hz (float): maximum mean firing rate of the stimulus if c=+1 or c=-1
+        mu0_mean_stim_Hz (float): maximum mean firing rate of the stimulus if c=+1 or c=-1
         stimulus_StdDev_Hz (float): std deviation of the stimulating PoissonGroups.
         stim_upd_interval (Quantity): the mean of the stimulating PoissonGroups is
-            re-sampled every at this interval
+            re-sampled at this interval
         N_extern=1000 (int): Size of the external PoissonGroup (unstructured input)
         firing_rate_extern (Quantity): Firing frequency of the external PoissonGroup
 
@@ -456,15 +456,19 @@ def run_multiple_simulations(
             time_to_A[i_coherence, i_run] = t_A
             time_to_B[i_coherence, i_run] = t_B
             print("t_A={}, t_B={}".format(t_A, t_B))
-            if t_A > 0.:
-                print("decision: A")
-                count_A += 1
-            elif t_B > 0.:
-                print("decision: B")
-                count_B += 1
-            else:
+            if (t_A > 0) and (t_B > 0.):
+                print("no decision/error: f_get_decision_time returns > 0 for A and B ")
+                count_No[i_coherence] += 1
+            elif(t_A == 0) and (t_B == 0):
                 print("no decision")
-                count_No += 1
+                count_No[i_coherence] += 1
+            elif t_A > 0.:
+                print("decision: A")
+                count_A[i_coherence] += 1
+            else:
+                print("decision: B")
+                count_B[i_coherence] += 1
+
     return time_to_A, time_to_B, count_A, count_B, count_No
 
 
