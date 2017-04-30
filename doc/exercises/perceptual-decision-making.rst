@@ -1,7 +1,7 @@
 Perceptual Decision Making (Wong & Wang)
 ========================================
 
-In this exercise we study decision making in a network of competing populations of spiking neurons. The network has been proposed by Wong and Wang in 2006 [1] as a model of decision making in a visual motion detection task. The decision making task and the network are described in the book and in the original publication (see :ref:`location-references` [1]).
+In this exercise we study decision making in a network of competing populations of spiking neurons. The network has been proposed by Wong and Wang in 2006 [1] as a model of decision making in a visual motion detection task. The decision making task and the network are described in the `book  <http://neuronaldynamics.epfl.ch/online/Ch16.html>`_ and in the original publication (see :ref:`location-references` [1]).
 
 
 .. _location-phase_plane:
@@ -170,7 +170,7 @@ Hint: Use Brian's smooth_rate function:
 Question: Implementing a decision criterion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple (decision_time_Left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
+* Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple (decision_time_left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
 
  The following code block shows how your function is called.
 
@@ -192,31 +192,37 @@ Run a few simulations to test your function.
 
 Exercise: Percent-correct and Decision-time as a function of coherence level
 ----------------------------------------------------------------------------
-We now investigate how the coherence level influences the decision making process. In order to estimate quantities like ``Percent-correct`` or ``Decision-time``, we have to run multiple repetitions and then average. Use the function :func:`.competing_populations.decision_making.run_multiple_simulations` to get the values for multiple runs. Pass your function *get_decision_time* to :func:`.run_multiple_simulations` as shown here:
+We now investigate how the coherence level influences the decision making process. In order to estimate quantities like ``Percent-correct`` or ``Decision-time``, we have to average over multiple repetitions.
+
+Question: Running multiple simulations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the function :func:`.competing_populations.decision_making.run_multiple_simulations` to get the values for multiple runs. Pass your function *get_decision_time* to :func:`.run_multiple_simulations` as shown here:
 
 .. code-block:: py
 
-    coherence_levels = [-0.1, -0.5]
+    coherence_levels = [-0.1, -0.5]  # for negative values, B is the correct decision.
     nr_repetitions = 3
 
     time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=??, avg_window_width=??)
 
-The return value ``time_to_A`` is a matrix of size [nr_of_c_levels x nr_of_repetitions]. ``count_A`` is the number of times the network decides for A (= "Left" by convention). The other values are analogous. ``count_No`` is the number of runs where the network has not made a decision within the simulation time.
+* See the doc of :func:`.run_multiple_simulations` to understand the parameters and return values.
+* Write a function that takes ``coherence_levels, time_to_A, time_to_B, count_A, count_B, count_No`` and writes ``Percent correct`` (for each level in ``coherence_levels``) to the terminal.
+* Think about other values you could get from the data. Add them to your function.
 
-Check the documentation of :func:`.run_multiple_simulations` and set the parameters according to the findings in previous questions.
 
 Question: Percent-Correct, Time-to-decision
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using :func:`.run_multiple_simulations`, run at least 15 simulations for each of the two ``coherence_levels = [+0.15, +0.8]`` and visualize the results. For each of the questions, ignore the simulations with "no decision". Optionally, if you have sufficient time/computing-power, you could run more repetitions and more levels.
+Using :func:`.run_multiple_simulations`, run at least 20 simulations for each of the two ``coherence_levels = [+0.15, -0.8]`` and visualize the results. Warning: Depending on your computer, this simulation could run for more than an hour.
 
-try a larger network.
+* Visualize ``Percent correct`` versus ``coherence level``. Count simulations with "no decision" as wrong.
 
-* Visualize ``Percent correct`` versus ``coherence level``.
-
-* Visualize ``Time to decision`` versus ``coherence level``.
+* Visualize ``Time to decision`` versus ``coherence level``. Ignore simulations with "no decision".
 
 * Discuss your results.
+
+* Optionally, if you have sufficient time/computing-power, you could run more levels.
 
 
 .. code-block:: py
@@ -224,11 +230,11 @@ try a larger network.
     import brian2 as b2
     from neurodynex.competing_populations import decision_making
 
-    coherence_levels = [0.15, 0.8]
-    nr_repetitions = 15
+    coherence_levels = [0.15, -0.8]
+    nr_repetitions = 20
 
     # do not set other parameters (=defaults are used).
-    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time, coherence_levels, nr_repetitions)
+    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time, coherence_levels, nr_repetitions, max_sim_time=1200 * b2.ms)
 
     # you may want to wrap the visualization into a function
     # plot_simulation_stats(coherence_levels, time_to_A, time_to_B, count_A, count_B, count_No)
