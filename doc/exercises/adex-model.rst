@@ -23,11 +23,12 @@ Use function :func:`.AdEx.simulate_AdEx_neuron` to run the model for different i
     # AdEx.plot_adex_state(state_monitor)
 
 
-.. figure:: exc_images/AdEx_init_burst.png
+
+.. figure:: exc_images/AdaptiveExponential_Init_burst.png
    :align: center
+   :width: 80%
 
-   Step current injection into an AdEx neuron.
-
+   A step-current (top panel, red) is injected into an AdEx neuron. The membrane voltage of the neuron is shown in blue (bottom panel).
 
 
 Exercise: Adaptation and firing patterns
