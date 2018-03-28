@@ -1,4 +1,5 @@
-deploy: test pypi conda
+#deploy: test pypi conda
+deploy: test conda
 
 # Documentation building
 
@@ -6,12 +7,12 @@ sphinx:
 	sphinx-apidoc -o doc/modules neurodynex -f
 	make -C doc html
 
-# Pypi deployment
+# Pypi deployment  (removed, march 2018)
 
-pypi:
-	rm -rf dist/*
-	python setup.py bdist_wheel sdist
-	twine upload dist/* --config-file .pypirc
+# pypi:
+#	rm -rf dist/*
+#	python setup.py bdist_wheel sdist
+#	twine upload dist/* --config-file .pypirc
 
 # Anaconda deployment
 
