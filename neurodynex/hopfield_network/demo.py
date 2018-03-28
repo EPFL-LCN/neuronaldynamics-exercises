@@ -123,7 +123,7 @@ def run_demo():
 
     """
     # Demo2: more neurons, more patterns, more noise
-    run_hf_demo(pattern_size=6, nr_random_patterns=5, initially_flipped_pixels=11, nr_iterations=5)
+    # run_hf_demo(pattern_size=6, nr_random_patterns=5, initially_flipped_pixels=11, nr_iterations=5)
 
     # Demo3: more parameters
     # run_hf_demo(pattern_size=4, nr_random_patterns=5,
@@ -180,5 +180,5 @@ def run_user_function_demo():
 
 
 if __name__ == '__main__':
-    # run_demo()
-    run_user_function_demo()
+    run_demo()
+    # run_user_function_demo()

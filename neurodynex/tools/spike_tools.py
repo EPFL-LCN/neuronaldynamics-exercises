@@ -31,9 +31,9 @@ import math
 
 def get_spike_time(voltage_monitor, spike_threshold):
     """
-    Detects the spike times in the voltage. The spike time is the value in voltage_monitor.t for
-    which voltage_monitor.v[idx] is above threshold AND voltage_monitor.v[idx-1] is below threshold
-    (crossing from below).
+    Detects the spike times in the voltage. Here, the spike time is DEFINED as the value in
+    voltage_monitor.t for which voltage_monitor.v[idx] is above threshold AND
+    voltage_monitor.v[idx-1] is below threshold (crossing from below).
     Note: currently only the spike times of the first column in voltage_monitor are detected. Matrix-like
     monitors are not supported.
     Args:
@@ -57,6 +57,9 @@ def get_spike_time(voltage_monitor, spike_threshold):
 def get_spike_stats(voltage_monitor, spike_threshold):
     """
     Detects spike times and computes ISI, mean ISI and firing frequency.
+    Here, the spike time is DEFINED as the value in
+    voltage_monitor.t for which voltage_monitor.v[idx] is above threshold AND
+    voltage_monitor.v[idx-1] is below threshold (crossing from below).
     Note: meanISI and firing frequency are set to numpy.nan if less than two spikes are detected
     Note: currently only the spike times of the first column in voltage_monitor are detected. Matrix-like
     monitors are not supported.

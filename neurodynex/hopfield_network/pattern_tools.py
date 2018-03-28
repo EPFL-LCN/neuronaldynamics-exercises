@@ -232,7 +232,7 @@ def get_noisy_copy(template, noise_level):
     n = np.prod(template.shape)
     nr_mutations = int(round(n * noise_level))
     idx_reassignment = np.random.choice(n, nr_mutations, replace=False)
-    rand_values = np.random.binomial(1, 0.5, n)
+    rand_values = np.random.binomial(1, 0.5, nr_mutations)
     rand_values = rand_values * 2 - 1  # map {0,1} to {-1, +1}
     linear_template[idx_reassignment] = rand_values
     return linear_template.reshape(template.shape)
