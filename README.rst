@@ -1,4 +1,4 @@
-|Build Status| |Doc Status| |Pypi Repo| |Conda Repo|
+|Build Status| |Doc Status| |Conda Repo|
 
 Neuronal Dynamics: Python Exercises
 ===================================
