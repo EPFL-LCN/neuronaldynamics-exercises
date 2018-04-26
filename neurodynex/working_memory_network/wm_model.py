@@ -50,6 +50,12 @@ def simulate_wm(
         sigma_weight_profile=20., Jpos_excit2excit=1.6,
         stimulus_center_deg=180, stimulus_width_deg=40, stimulus_strength=0.07 * b2.namp,
         t_stimulus_start=0 * b2.ms, t_stimulus_duration=0 * b2.ms,
+        distractor_center_deg=90, distractor_width_deg=40, distractor_strength=0.0 * b2.namp,
+        t_distractor_start=0 * b2.ms, t_distractor_duration=0 * b2.ms,
+        G_inhib2inhib=.35 * 1.024 * b2.nS,
+        G_inhib2excit=.35 * 1.336 * b2.nS,
+        G_excit2excit=.35 * 0.381 * b2.nS,
+        G_excit2inhib=.35 * 1.2 * 0.292 * b2.nS,
         monitored_subset_size=1024, sim_time=800. * b2.ms):
     """
     Args:
@@ -71,7 +77,23 @@ def simulate_wm(
         stimulus_strength (Quantity): Input current to the neurons at stimulus_center_deg +\- (stimulus_width_deg/2)
         t_stimulus_start (Quantity): time when the input stimulus is turned on
         t_stimulus_duration (Quantity): duration of the stimulus.
-        monitored_subset_size (int): nr of neurons for which a Spike- and Voltage monitor is registered.
+        distractor_center_deg (float): Center of the distractor in [0, 360]
+        distractor_width_deg (float): width of the distractor. All neurons in
+            distractor_center_deg +\- (distractor_width_deg/2) receive the same input current
+            distractor_strength (Quantity): Input current to the neurons at
+            distractor_center_deg +\- (distractor_width_deg/2)
+        t_distractor_start (Quantity): time when the distractor is turned on
+        t_distractor_duration (Quantity): duration of the distractor.
+        G_inhib2inhib (Quantity): projections from inhibitory to inhibitory population (later
+            rescaled by weight_scaling_factor)
+        G_inhib2excit (Quantity): projections from inhibitory to excitatory population (later
+            rescaled by weight_scaling_factor)
+        G_excit2excit (Quantity): projections from excitatory to excitatory population (later
+            rescaled by weight_scaling_factor)
+        G_excit2inhib (Quantity): projections from excitatory to inhibitory population (later
+            rescaled by weight_scaling_factor)
+        monitored_subset_size (int): nr of neurons for which a Spike- and Voltage monitor
+            is registered.
         sim_time (Quantity): simulation time
 
     Returns:
@@ -124,20 +146,25 @@ def simulate_wm(
     G_extern2excit = 3.1 * b2.nS
 
     # projectsions from the inhibitory populations
-    G_inhib2inhib = weight_scaling_factor * .35 * 1.024 * b2.nS
-    G_inhib2excit = weight_scaling_factor * .35 * 1.336 * b2.nS
+    G_inhib2inhib *= weight_scaling_factor
+    G_inhib2excit *= weight_scaling_factor
 
     # projections from the excitatory population
-    G_excit2excit = weight_scaling_factor * .35 * 0.381 * b2.nS
-    G_excit2inhib = weight_scaling_factor * .35 * 1.2 * 0.292 * b2.nS  # todo: verify this scaling
+    G_excit2excit *= weight_scaling_factor
+    G_excit2inhib *= weight_scaling_factor  # todo: verify this scaling
 
     t_stimulus_end = t_stimulus_start + t_stimulus_duration
+    t_distractor_end = t_distractor_start + t_distractor_duration
     # compute the simulus index
     stim_center_idx = int(round(N_excitatory / 360. * stimulus_center_deg))
     stim_width_idx = int(round(N_excitatory / 360. * stimulus_width_deg / 2))
     stim_target_idx = [idx % N_excitatory
-                       for idx in
-                       range(stim_center_idx - stim_width_idx, stim_center_idx + stim_width_idx + 1)]
+                       for idx in range(stim_center_idx - stim_width_idx, stim_center_idx + stim_width_idx + 1)]
+    # compute the distractor index
+    distr_center_idx = int(round(N_excitatory / 360. * distractor_center_deg))
+    distr_width_idx = int(round(N_excitatory / 360. * distractor_width_deg / 2))
+    distr_target_idx = [idx % N_excitatory for idx in range(distr_center_idx - distr_width_idx,
+                                                            distr_center_idx + distr_width_idx + 1)]
 
     # precompute the weight profile for the recurrent population
     tmp = math.sqrt(2. * math.pi) * sigma_weight_profile * erf(180. / math.sqrt(2.) / sigma_weight_profile) / 360.
@@ -240,6 +267,9 @@ def simulate_wm(
         else:
             # print("stim off")
             excit_pop.I_stim = 0. * b2.namp
+        # add distractor
+        if t >= t_distractor_start and t < t_distractor_end:
+            excit_pop.I_stim[distr_target_idx] = distractor_strength
 
     def get_monitors(pop, nr_monitored, N):
         nr_monitored = min(nr_monitored, (N))
