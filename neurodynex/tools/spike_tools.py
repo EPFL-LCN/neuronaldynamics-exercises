@@ -297,7 +297,8 @@ def _get_spike_train_power_spectrum(spike_train, delta_t, subtract_mean=False):
     N_signal = data.size
     ps = np.abs(np.fft.fft(data))**2
     # normalize
-    ps = ps * delta_t / N_signal  # TODO: verify: subtract 1 (N_signal-1)?
+    T_signal = N_signal * delta_t
+    ps = ps / T_signal  # TODO: verify: subtract 1 (N_signal-1)?
     freqs = np.fft.fftfreq(N_signal, delta_t)
     ps = ps[:(N_signal/2)]
     freqs = freqs[:(N_signal/2)]
@@ -420,7 +421,7 @@ def get_population_activity_power_spectrum(
     k_ps = np.abs(np.fft.fft(data))**2
     ps = np.mean(k_ps, 0)
     # normalize
-    ps = ps * delta_t / N_signal  # TODO: verify: subtract 1 (N_signal-1)?
+    ps = ps / T_signal  # TODO: verify: subtract 1 (N_signal-1)?
     freqs = np.fft.fftfreq(N_signal, delta_t)
     ps = ps[:(N_signal/2)]
     freqs = freqs[:(N_signal/2)]
