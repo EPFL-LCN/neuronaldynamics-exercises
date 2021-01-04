@@ -7,7 +7,7 @@ This repository contains python exercises accompanying the book
 Exercises & Documentation
 -------------------------
 
-The full documentation and the exercises can be found at `readthedocs <https://lcn-neurodynex-exercises.readthedocs.io/en/latest>`_.
+The full documentation and the exercises can be found at `readthedocs <https://neuronaldynamics-exercises.readthedocs.io/en/latest/intro.html>`_.
 
 Quickstart
 ----------
@@ -44,7 +44,7 @@ Disclaimer
 
 Bug reports
 -----------
-Did you find a bug? Open an issue on `Github <https://github.com/martinbarry59/neurodynex3/issues>`_. Thank you!
+Did you find a bug? Open an issue on `Github <https://github.com/EPFL-LCN/neuronaldynamics-exercises>`_. Thank you!
 
 
 
