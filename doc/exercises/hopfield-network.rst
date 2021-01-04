@@ -19,12 +19,12 @@ We provide a couple of functions to easily create patterns, store them in the ne
 
 Getting started:
 ----------------
-Run the following code. Read the inline comments and check the documentation. The patterns and the flipped pixels are randomly chosen. Therefore the result changes every time you execute this code. Run it several times and change some parameters like nr_patterns and nr_of_flips.
+Run the following code. Read the inline comments and check the documentation. The patterns and the flipped pixels are randomly chosen. Therefore the result changes every time you execute this code. Run it several times and change some parameters like ``nr_patterns`` and ``nr_of_flips``.
 
 .. code-block:: python
 
     %matplotlib inline
-    from neurodynex.hopfield_network import network, pattern_tools, plot_tools
+    from neurodynex3.hopfield_network import network, pattern_tools, plot_tools
 
     pattern_size = 5
 
@@ -69,17 +69,17 @@ Run the following code. Read the inline comments and check the documentation. Th
 .. figure:: exc_images/HF_CheckerboardRecovered2.png
     :align: center
 
-    The network is initialized with a (very) noisy pattern S(t=0). Then, the dynamics recover pattern P0 in 5 iterations.
+    The network is initialized with a (very) noisy pattern :math:`S(t=0)`. Then, the dynamics recover pattern P0 in 5 iterations.
 
 
 .. note::
-   The network state is a vector of N neurons. For visualization we use 2d patterns which are two dimensional numpy.ndarrays of size = (length, width). To store such patterns, initialize the network with N = length x width neurons.
+   The network state is a vector of :math:`N` neurons. For visualization we use 2d patterns which are two dimensional ``numpy.ndarray`` objects of size = (length, width). To store such patterns, initialize the network with ``N = length * width`` neurons.
 
 
 Introduction: Hopfield-networks
 -------------------------------
 
-This exercise uses a model in which neurons are pixels and take the values of -1 (*off*) or +1 (*on*). The network can store a certain number of pixel patterns, which is to be investigated in this exercise. During a retrieval phase, the network is started with some initial configuration and the network dynamics evolves towards the stored pattern (attractor) which is closest to the initial configuration. 
+This exercise uses a model in which neurons are pixels and take the values of -1 (*off*) or +1 (*on*). The network can store a certain number of pixel patterns, which is to be investigated in this exercise. During a retrieval phase, the network is started with some initial configuration and the network dynamics evolves towards the stored pattern (attractor) which is closest to the initial configuration.
 
 The dynamics is that of equation:
 
@@ -90,18 +90,18 @@ The dynamics is that of equation:
 In the Hopfield model each neuron is connected to every other neuron
 (full connectivity). The connection matrix is
 
-.. math:: 
+.. math::
     w_{ij} = \frac{1}{N}\sum_{\mu} p_i^\mu p_j^\mu
 
-where N is the number of neurons, :math:`p_i^\mu` is the value of neuron
+where :math:`N` is the number of neurons, :math:`p_i^\mu` is the value of neuron
 :math:`i` in pattern number :math:`\mu` and the sum runs over all
 patterns from :math:`\mu=1` to :math:`\mu=P`. This is a simple
 correlation based learning rule (Hebbian learning). Since it is not a
 iterative rule it is sometimes called one-shot learning. The learning
 rule works best if the patterns that are to be stored are random
 patterns with equal probability for on (+1) and off (-1). In a large
-networks (N to infinity) the number of random patterns that can be
-stored is approximately 0.14 times N.
+networks (:math:`N \to \infty`) the number of random patterns that can be
+stored is approximately :math:`0.14 N`.
 
 
 Exercise: N=4x4 Hopfield-network
@@ -113,14 +113,14 @@ Question: Storing a single pattern
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Modify the Python code given above to implement this exercise:
 
-#. Create a network with N=16 neurons.
+#. Create a network with :math:`N=16` neurons.
 #. Create a single 4 by 4 checkerboard pattern.
 #. Store the checkerboard in the network.
-#. Set the initial state of the network to a noisy version of the checkerboard (nr_flipped_pixels = 5).
+#. Set the initial state of the network to a noisy version of the checkerboard (``nr_flipped_pixels = 5``).
 #. Let the network dynamics evolve for 4 iterations.
 #. Plot the sequence of network states along with the overlap of network state with the checkerboard.
 
-Now test whether the network can still retrieve the pattern if we increase the number of flipped pixels. What happens at nr_flipped_pixels = 8, what if nr_flipped_pixels > 8 ?
+Now test whether the network can still retrieve the pattern if we increase the number of flipped pixels. What happens at ``nr_flipped_pixels = 8``, what if ``nr_flipped_pixels > 8`` ?
 
 Question: the weights matrix
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,22 +132,22 @@ The patterns a Hopfield network learns are not stored explicitly. Instead, the n
 #. Visualize the weight matrix using the function :func:`.plot_tools.plot_nework_weights`. It takes the network as a parameter.
 #. Create a checkerboard, store it in the network.
 #. Plot the weights matrix. What weight values do occur?
-#. Create a new 4x4 network
-#. Create an L-shaped pattern (look at the pattern factory doc), store it in the network
+#. Create a new 4x4 network.
+#. Create an L-shaped pattern (look at :mod:`.pattern_tools.PatternFactory`), store it in the network.
 #. Plot the weights matrix. What weight values do occur?
-#. Create a new 4x4 network
-#. Create a checkerboard and an L-shaped pattern. Store **both** patterns in the network
+#. Create a new 4x4 network.
+#. Create a checkerboard and an L-shaped pattern. Store **both** patterns in the network.
 #. Plot the weights matrix. What weight values do occur? How does this matrix compare to the two previous matrices?
 
 
 .. note::
 
-    The mapping of the 2 dimensional patterns onto the one dimensional list of network neurons is internal to the implementation of the network. You cannot know which pixel (x,y) in the pattern corresponds to which network neuron i.
+    The mapping of the 2-dimensional patterns onto the one-dimensional list of network neurons is internal to the implementation of the network. You cannot know which pixel (x,y) in the pattern corresponds to which network neuron i.
 
 
 Question (optional): Weights Distribution
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-It's interesting to look at the weights distribution in the three previous cases. You can easily plot a histogram by adding the following two lines to your script. It assumes you have stored your network in the variable 'hopfield_net'.
+It's interesting to look at the weights distribution in the three previous cases. You can easily plot a histogram by adding the following two lines to your script. It assumes you have stored your network in the variable ``hopfield_net``.
 
 .. code-block:: py
 
@@ -165,11 +165,11 @@ A Hopfield network implements so called **associative** or **content-adressable*
 
 Question:
 ~~~~~~~~~
-Using the value :math:`C_{store}` given in the book, how many patterns can you store in a N=10x10 network? Use this number **K** in the next question:
+Using the value :math:`C_{store}` given in the book, how many patterns can you store in a N=10x10 network? Use this number :math:`K` in the next question:
 
 Question:
 ~~~~~~~~~
-Create an N=10x10 network and store a checkerboard pattern together with **(K-1) random patterns**. Then initialize the network with the **unchanged** checkerboard pattern. Let the network evolve for five iterations.
+Create an N=10x10 network and store a checkerboard pattern together with :math:`(K-1)` **random patterns**. Then initialize the network with the **unchanged** checkerboard pattern. Let the network evolve for five iterations.
 
 Rerun your script a few times. What do you observe?
 
@@ -193,7 +193,7 @@ Run the following code. Read the inline comments and look up the doc of function
 
     %matplotlib inline
     import matplotlib.pyplot as plt
-    from neurodynex.hopfield_network import network, pattern_tools, plot_tools
+    from neurodynex3.hopfield_network import network, pattern_tools, plot_tools
     import numpy
 
     # the letters we want to store in the hopfield network
@@ -238,7 +238,7 @@ Add the letter 'R' to the letter list and store it in the network. Is the patter
 
 Question:
 ~~~~~~~~~
-Make a guess of how many letters the network can store. Then create a (small) set of letters. Check if **all** letters of your list are fixed points under the network dynamics. Explain the discrepancy between the network capacity C (computed above) and your observation.
+Make a guess of how many letters the network can store. Then create a (small) set of letters. Check if **all** letters of your list are fixed points under the network dynamics. Explain the discrepancy between the network capacity :math:`C` (computed above) and your observation.
 
 
 Exercise: Bonus

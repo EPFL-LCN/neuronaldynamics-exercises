@@ -7,7 +7,6 @@ Exercises
     :maxdepth: 1
     :numbered:
 
-    setup
     leaky-integrate-and-fire
     exponential-integrate-and-fire
     adex-model

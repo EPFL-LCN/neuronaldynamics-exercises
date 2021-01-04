@@ -19,7 +19,7 @@ In this exercise we study the phase plane of a two dimensional dynamical system 
       import brian2 as b2
       import matplotlib.pyplot as plt
       import numpy as np
-      from neurodynex.phase_plane_analysis import fitzhugh_nagumo
+      from neurodynex3.phase_plane_analysis import fitzhugh_nagumo
 
       fitzhugh_nagumo.plot_flow()
 
@@ -58,7 +58,7 @@ Plot the nullclines in the :math:`u-w` plane, for voltages in the region :math:`
 	:math:`y(x) = -\frac{x^2}{2} + x + 1`:
 
 	.. code-block:: python
-		
+
 		x = np.arange(-2.5, 2.51, .1)  # create an array of x values
 		y = -x**2 / 2. + x + 1  # calculate the function values for the given x values
 		plt.plot(x, y, color='black')  # plot y as a function of x
@@ -121,7 +121,7 @@ given by
 
 Write a python function ``get_jacobian(u_0,w_0)`` that returns
 the Jacobian evaluated for a given fixed point :math:`(u_0,v_0)` as a
-python list. 
+python list.
 
 .. note::
 	An example for a function that returns a list
@@ -155,11 +155,12 @@ Calculate the eigenvalues of the Jacobian ``J``, which you computed in
 Exercise: Bifurcation analysis
 ------------------------------
 
-Wrap the code you wrote so far by a loop, to calculate the eigenvalues for increasing values of :math:`I`. Store the changing values of each eigenvalue in seperate lists, and finally plot their real values against :math:`I`. 
+Wrap the code you wrote so far by a loop, to calculate the eigenvalues for increasing values of :math:`I`. Store the changing values of each eigenvalue in seperate lists, and finally plot their real values against :math:`I`.
 
 .. note::
 
-	You can start from this example loop:
+    You can start from this example loop:
+
     .. code-block:: py
 
         import numpy as np

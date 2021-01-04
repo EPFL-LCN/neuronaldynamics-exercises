@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. Leaky-integrate-and-fire model &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. The Exponential Integrate-and-Fire model" href="exponential-integrate-and-fire.html" />
+    <link rel="prev" title="1. Setting up Python and Brian" href="setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Leaky-integrate-and-fire model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-minimal-current">2.1. Exercise: minimal current</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-minimal-current-calculation">2.1.1. Question: minimal current (calculation)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-minimal-current-simulation">2.1.2. Question: minimal current (simulation)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-f-i-curve">2.2. Exercise: f-I Curve</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-f-i-curve-and-refractoryness">2.2.1. Question: f-I Curve and refractoryness</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-experimentally-estimate-the-parameters-of-a-lif-neuron">2.3. Exercise: “Experimentally” estimate the parameters of a LIF neuron</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-read-the-lif-parameters-out-of-the-vm-plot">2.3.1. Question: “Read” the LIF parameters out of the vm plot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-sinusoidal-input-current-and-subthreshold-response">2.4. Exercise: Sinusoidal input current and subthreshold response</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">2.4.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">2.4.2. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">2.4.3. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">2.4.4. Question</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>2. Leaky-integrate-and-fire model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/leaky-integrate-and-fire.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="leaky-integrate-and-fire-model">
+<h1>2. Leaky-integrate-and-fire model<a class="headerlink" href="#leaky-integrate-and-fire-model" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>See <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch1.S3.html">Chapter 1 Section 3</a> on general information about
+leaky-integrate-and-fire models.</p>
+<p><strong>Python classes</strong></p>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">leaky_integrate_and_fire.LIF</span></code> implements a parameterizable LIF model. Call <code class="xref py py-func docutils literal notranslate"><span class="pre">LIF.getting_started()</span></code> and have a look at it’s source code to learn how to efficiently use the <code class="xref py py-mod docutils literal notranslate"><span class="pre">leaky_integrate_and_fire.LIF</span></code> module.</p>
+<p>A typical Jupyter notebook looks like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>    <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.leaky_integrate_and_fire</span> <span class="kn">import</span> <span class="n">LIF</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">input_factory</span><span class="p">,</span> <span class="n">plot_tools</span>
+
+
+<span class="n">LIF</span><span class="o">.</span><span class="n">getting_started</span><span class="p">()</span>
+<span class="n">LIF</span><span class="o">.</span><span class="n">print_default_parameters</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id4">
+<img alt="../_images/LIF_getting_started.png" src="../_images/LIF_getting_started.png" />
+<p class="caption"><span class="caption-text">Injection of a sinusoidal current into a leaky-integrate-and-fire neuron</span></p>
+</div>
+<p>Note that you can change all parameter of the LIF neuron by using the named parameters of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_LIF_neuron()</span></code>. If you do not specify any parameter, the following default values are used:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">V_REST</span> <span class="o">=</span> <span class="o">-</span><span class="mi">70</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">V_RESET</span> <span class="o">=</span> <span class="o">-</span><span class="mi">65</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">FIRING_THRESHOLD</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">MEMBRANE_RESISTANCE</span> <span class="o">=</span> <span class="mf">10.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Mohm</span>
+<span class="n">MEMBRANE_TIME_SCALE</span> <span class="o">=</span> <span class="mf">8.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">ABSOLUTE_REFRACTORY_PERIOD</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-minimal-current">
+<h2>2.1. Exercise: minimal current<a class="headerlink" href="#exercise-minimal-current" title="Permalink to this headline">¶</a></h2>
+<p>In the absence of an input current, a LIF neuron has a constant membrane voltage vm=v_rest. If an input current drives vm above the firing threshold, a spike is generated. Then, vm is reset to v_reset and the neuron ignores any input during the refractroy period.</p>
+<div class="section" id="question-minimal-current-calculation">
+<h3>2.1.1. Question: minimal current (calculation)<a class="headerlink" href="#question-minimal-current-calculation" title="Permalink to this headline">¶</a></h3>
+<p>For the default neuron parameters (see above) compute the minimal amplitude <strong>i_min</strong> of a step current to elicitate a spike. You can access these default values in your code and do the calculation with correct units:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">neurodynex3.leaky_integrate_and_fire</span> <span class="kn">import</span> <span class="n">LIF</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;resting potential: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">LIF</span><span class="o">.</span><span class="n">V_REST</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="question-minimal-current-simulation">
+<h3>2.1.2. Question: minimal current (simulation)<a class="headerlink" href="#question-minimal-current-simulation" title="Permalink to this headline">¶</a></h3>
+<p>Use the value <strong>i_min</strong> you’ve computed and verify your result: inject a step current of amplitude i_min for 100ms into the LIF neuron and plot the membrane voltage. Vm should approach the firing threshold but <em>not</em> fire. We have implemented a couple of helper functions to solve this task. Use this code block, but make sure you understand it and you’ve read the docs of the functions <code class="xref py py-func docutils literal notranslate"><span class="pre">LIF.simulate_LIF_neuron()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">input_factory.get_step_current()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_tools.plot_voltage_and_current_traces()</span></code>.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.leaky_integrate_and_fire</span> <span class="kn">import</span> <span class="n">LIF</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">input_factory</span>
+
+<span class="c1"># create a step current with amplitude= i_min</span>
+<span class="n">step_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span>
+    <span class="n">t_start</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">unit_time</span><span class="o">=</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span>
+    <span class="n">amplitude</span><span class="o">=</span> <span class="n">i_min</span><span class="p">)</span>  <span class="c1"># set i_min to your value</span>
+
+<span class="c1"># run the LIF model.</span>
+<span class="c1"># Note: As we do not specify any model parameters, the simulation runs with the default values</span>
+<span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span><span class="n">spike_monitor</span><span class="p">)</span> <span class="o">=</span> <span class="n">LIF</span><span class="o">.</span><span class="n">simulate_LIF_neuron</span><span class="p">(</span><span class="n">input_current</span><span class="o">=</span><span class="n">step_current</span><span class="p">,</span> <span class="n">simulation_time</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+
+<span class="c1"># plot I and vm</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_voltage_and_current_traces</span><span class="p">(</span>
+<span class="n">state_monitor</span><span class="p">,</span> <span class="n">step_current</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;min input&quot;</span><span class="p">,</span> <span class="n">firing_threshold</span><span class="o">=</span><span class="n">LIF</span><span class="o">.</span><span class="n">FIRING_THRESHOLD</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;nr of spikes: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spike_monitor</span><span class="o">.</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>  <span class="c1"># should be 0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-f-i-curve">
+<h2>2.2. Exercise: f-I Curve<a class="headerlink" href="#exercise-f-i-curve" title="Permalink to this headline">¶</a></h2>
+<p>For a constant input current I, a LIF neuron fires regularly with firing frequency f. If the current is to small (I &lt; I_min) f is 0Hz; for larger I the rate increases. A neuron’s firing-rate versus input-amplitude relationship is visualized in an “f-I curve”.</p>
+<div class="section" id="question-f-i-curve-and-refractoryness">
+<h3>2.2.1. Question: f-I Curve and refractoryness<a class="headerlink" href="#question-f-i-curve-and-refractoryness" title="Permalink to this headline">¶</a></h3>
+<p>We now study the f-I curve for a neuron with a refractory period of 3ms (see <code class="xref py py-func docutils literal notranslate"><span class="pre">LIF.simulate_LIF_neuron()</span></code> to learn how to set a refractory period).</p>
+<ol class="arabic simple">
+<li>Sketch the f-I curve you expect to see</li>
+<li>What is the maximum rate at which this neuron can fire?</li>
+<li>Inject currents of different amplitudes (from 0nA to 100nA) into a LIF neuron. For each current, run the simulation for 500ms and determine the firing frequency in Hz. Then plot the f-I curve. Pay attention to the low input current.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="exercise-experimentally-estimate-the-parameters-of-a-lif-neuron">
+<h2>2.3. Exercise: “Experimentally” estimate the parameters of a LIF neuron<a class="headerlink" href="#exercise-experimentally-estimate-the-parameters-of-a-lif-neuron" title="Permalink to this headline">¶</a></h2>
+<p>A LIF neuron is determined by the following parameters: Resting potential, Reset voltage, Firing threshold, Membrane resistance, Membrane time-scale, Absolute refractory period. By injecting a known test current into a LIF neuron (with unknown parameters), you can determine the neuron properties from the voltage response.</p>
+<div class="section" id="question-read-the-lif-parameters-out-of-the-vm-plot">
+<h3>2.3.1. Question: “Read” the LIF parameters out of the vm plot<a class="headerlink" href="#question-read-the-lif-parameters-out-of-the-vm-plot" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Get a random parameter set</li>
+<li>Create an input current of your choice.</li>
+<li>Simulate the LIF neuron using the random parameters and your test-current. Note that the simulation runs for a fixed duration of 50ms.</li>
+<li>Plot the membrane voltage and estimate the parameters. You do not have to write code to analyse the voltage data in the StateMonitor. Simply estimate the values from the plot. For the Membrane resistance and the Membrane time-scale you might have to change your current.</li>
+<li>compare your estimates with the true values.</li>
+</ol>
+<p>Again, you do not have to write much code. Use the helper functions:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># get a random parameter. provide a random seed to have a reproducible experiment</span>
+<span class="n">random_parameters</span> <span class="o">=</span> <span class="n">LIF</span><span class="o">.</span><span class="n">get_random_param_set</span><span class="p">(</span><span class="n">random_seed</span><span class="o">=</span><span class="mi">432</span><span class="p">)</span>
+
+<span class="c1"># define your test current</span>
+<span class="n">test_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span>
+    <span class="n">t_start</span><span class="o">=...</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=...</span><span class="p">,</span> <span class="n">unit_time</span><span class="o">=</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span> <span class="o">...</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">)</span>
+
+<span class="c1"># probe the neuron. pass the test current AND the random params to the function</span>
+<span class="n">state_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span> <span class="o">=</span> <span class="n">LIF</span><span class="o">.</span><span class="n">simulate_random_neuron</span><span class="p">(</span><span class="n">test_current</span><span class="p">,</span> <span class="n">random_parameters</span><span class="p">)</span>
+
+<span class="c1"># plot</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_voltage_and_current_traces</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">test_current</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;experiment&quot;</span><span class="p">)</span>
+
+<span class="c1"># print the parameters to the console and compare with your estimates</span>
+<span class="c1"># LIF.print_obfuscated_parameters(random_parameters)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-sinusoidal-input-current-and-subthreshold-response">
+<h2>2.4. Exercise: Sinusoidal input current and subthreshold response<a class="headerlink" href="#exercise-sinusoidal-input-current-and-subthreshold-response" title="Permalink to this headline">¶</a></h2>
+<p>In the subthreshold regime (no spike), the LIF neuron is a linear system and the membrane voltage is a filtered version of the input current. In this exercise we study the properties of this linear system when it gets a sinusoidal stimulus.</p>
+<div class="section" id="question">
+<h3>2.4.1. Question<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<p>Create a sinusoidal input current (see example below) and inject it into the LIF neuron. Determine the phase and amplitude of the membrane voltage.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># note the higher resolution when discretizing the sine wave: we specify unit_time=0.1 * b2.ms</span>
+<span class="n">sinusoidal_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_sinusoidal_current</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">unit_time</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span>
+                                            <span class="n">amplitude</span><span class="o">=</span> <span class="mf">2.5</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">250</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">Hz</span><span class="p">,</span>
+                                            <span class="n">direct_current</span><span class="o">=</span><span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">)</span>
+
+<span class="c1"># run the LIF model. By setting the firing threshold to to a high value, we make sure to stay in the linear (non spiking) regime.</span>
+<span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span><span class="p">)</span> <span class="o">=</span> <span class="n">LIF</span><span class="o">.</span><span class="n">simulate_LIF_neuron</span><span class="p">(</span><span class="n">input_current</span><span class="o">=</span><span class="n">sinusoidal_current</span><span class="p">,</span> <span class="n">simulation_time</span> <span class="o">=</span> <span class="mi">120</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">firing_threshold</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">mV</span><span class="p">)</span>
+
+<span class="c1"># plot the membrane voltage</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_voltage_and_current_traces</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">sinusoidal_current</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sinusoidal input current&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;nr of spikes: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spike_monitor</span><span class="o">.</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>2.4.2. Question<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>For input frequencies between <span class="math notranslate nohighlight">\(10 Hz\)</span> and <span class="math notranslate nohighlight">\(1 kHz\)</span>, plot the   the resulting <em>amplitude of subthreshold oscillations</em> of the membrane potential vs. input frequency.</p>
+</div>
+<div class="section" id="id2">
+<h3>2.4.3. Question<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>For input frequencies between <span class="math notranslate nohighlight">\(10 Hz\)</span> and <span class="math notranslate nohighlight">\(1 kHz\)</span>, plot the resulting <em>phase shift of subthreshold oscillations</em> of the membrane potential vs. input frequency.</p>
+</div>
+<div class="section" id="id3">
+<h3>2.4.4. Question<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>To what type of filter (High-Pass, Low-Pass) does this correspond?</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not straight forward to automatically determine the phase shift in a script. For this exercise, simply get it “visually” from your plot. If you want to automatize the procedure in your Python script you could try the function scipy.signal.correlate().</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="exponential-integrate-and-fire.html" class="btn btn-neutral float-right" title="3. The Exponential Integrate-and-Fire model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setup.html" class="btn btn-neutral float-left" title="1. Setting up Python and Brian" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -18,13 +18,12 @@ A typical Jupyter notebook looks like this:
 
 .. code-block:: py
 
-	%matplotlib inline
+    %matplotlib inline
     import brian2 as b2
     import matplotlib.pyplot as plt
     import numpy as np
-    from neurodynex.leaky_integrate_and_fire import LIF
-    from neurodynex.tools import input_factory, plot_tools
-
+    from neurodynex3.leaky_integrate_and_fire import LIF
+    from neurodynex3.tools import input_factory, plot_tools
 
     LIF.getting_started()
     LIF.print_default_parameters()
@@ -50,32 +49,32 @@ Note that you can change all parameter of the LIF neuron by using the named para
 
 Exercise: minimal current
 -------------------------
-In the absence of an input current, a LIF neuron has a constant membrane voltage vm=v_rest. If an input current drives vm above the firing threshold, a spike is generated. Then, vm is reset to v_reset and the neuron ignores any input during the refractroy period.
+In the absence of an input current, a LIF neuron has a constant membrane voltage ``V_REST``. If an input current drives ``vm`` above the firing threshold, a spike is generated. Then, ``vm`` is reset to ``V_RESET`` and the neuron ignores any input during the refractroy period.
 
 Question: minimal current (calculation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-For the default neuron parameters (see above) compute the minimal amplitude **i_min** of a step current to elicitate a spike. You can access these default values in your code and do the calculation with correct units:
+For the default neuron parameters (see above), compute the minimal amplitude :math:`I_{min}` of a step current to elicitate a spike. You can access the default values in your code and do the calculation with correct units:
 
 .. code-block:: py
 
-    from neurodynex.leaky_integrate_and_fire import LIF
+    from neurodynex3.leaky_integrate_and_fire import LIF
     print("resting potential: {}".format(LIF.V_REST))
 
 
 Question: minimal current (simulation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Use the value **i_min** you've computed and verify your result: inject a step current of amplitude i_min for 100ms into the LIF neuron and plot the membrane voltage. Vm should approach the firing threshold but *not* fire. We have implemented a couple of helper functions to solve this task. Use this code block, but make sure you understand it and you've read the docs of the functions :func:`.LIF.simulate_LIF_neuron`, :func:`.input_factory.get_step_current` and :func:`.plot_tools.plot_voltage_and_current_traces`.
+Use the value :math:`I_{min}` you've computed and verify your result: inject a step current of amplitude :math:`I_{min}` for 100ms into the LIF neuron and plot the membrane voltage. ``vm`` should approach the firing threshold but **not** fire. We have implemented a couple of helper functions to solve this task. Use this code block, but make sure you understand it and you've read the docs of the functions :func:`.LIF.simulate_LIF_neuron`, :func:`.input_factory.get_step_current` and :func:`.plot_tools.plot_voltage_and_current_traces`.
 
 .. code-block:: py
 
     import brian2 as b2
-    from neurodynex.leaky_integrate_and_fire import LIF
-    from neurodynex.tools import input_factory
+    from neurodynex3.leaky_integrate_and_fire import LIF
+    from neurodynex3.tools import input_factory
 
-    # create a step current with amplitude= i_min
+    # create a step current with amplitude = I_min
     step_current = input_factory.get_step_current(
         t_start=5, t_end=100, unit_time=b2.ms,
-        amplitude= i_min)  # set i_min to your value
+        amplitude=I_min)  # set I_min to your value
 
     # run the LIF model.
     # Note: As we do not specify any model parameters, the simulation runs with the default values
@@ -89,30 +88,30 @@ Use the value **i_min** you've computed and verify your result: inject a step cu
 
 Exercise: f-I Curve
 -------------------
-For a constant input current I, a LIF neuron fires regularly with firing frequency f. If the current is to small (I < I_min) f is 0Hz; for larger I the rate increases. A neuron's firing-rate versus input-amplitude relationship is visualized in an "f-I curve".
+For a constant input current :math:`I`, a LIF neuron fires regularly with firing frequency :math:`f`. If the current is to small (:math:`I < I_{min}`) :math:`f` is 0Hz; for larger :math:`I` the rate increases. A neuron's firing-rate versus input-amplitude relationship is visualized in an "f-I curve".
 
 
 Question: f-I Curve and refractoryness
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We now study the f-I curve for a neuron with a refractory period of 3ms (see :func:`.LIF.simulate_LIF_neuron` to learn how to set a refractory period).
 
-#. Sketch the f-I curve you expect to see
+#. Sketch the f-I curve you expect to see.
 #. What is the maximum rate at which this neuron can fire?
 #. Inject currents of different amplitudes (from 0nA to 100nA) into a LIF neuron. For each current, run the simulation for 500ms and determine the firing frequency in Hz. Then plot the f-I curve. Pay attention to the low input current.
 
 
 Exercise: "Experimentally" estimate the parameters of a LIF neuron
 ------------------------------------------------------------------
-A LIF neuron is determined by the following parameters: Resting potential, Reset voltage, Firing threshold, Membrane resistance, Membrane time-scale, Absolute refractory period. By injecting a known test current into a LIF neuron (with unknown parameters), you can determine the neuron properties from the voltage response.
+A LIF neuron is determined by the following parameters: Resting potential, reset voltage, firing threshold, membrane resistance, membrane time-scale, absolute refractory period. By injecting a known test current into a LIF neuron (with unknown parameters), you can determine the neuron properties from the voltage response.
 
 
-Question: "Read" the LIF parameters out of the vm plot
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#. Get a random parameter set
+Question: "Read" the LIF parameters out of the ``vm`` plot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#. Get a random parameter set.
 #. Create an input current of your choice.
 #. Simulate the LIF neuron using the random parameters and your test-current. Note that the simulation runs for a fixed duration of 50ms.
-#. Plot the membrane voltage and estimate the parameters. You do not have to write code to analyse the voltage data in the StateMonitor. Simply estimate the values from the plot. For the Membrane resistance and the Membrane time-scale you might have to change your current.
-#. compare your estimates with the true values.
+#. Plot the membrane voltage and estimate the parameters. You do not have to write code to analyse the voltage data in the StateMonitor. Simply estimate the values from the plot. For the membrane resistance and the membrane time-scale you might have to change your current.
+#. Compare your estimates with the true values.
 
 Again, you do not have to write much code. Use the helper functions:
 
@@ -161,18 +160,18 @@ Create a sinusoidal input current (see example below) and inject it into the LIF
 Question
 ~~~~~~~~
 
-For input frequencies between :math:`10 Hz` and :math:`1 kHz`, plot the   the resulting *amplitude of subthreshold oscillations* of the membrane potential vs. input frequency.
+For input frequencies between 10Hz and 1 kHz, plot the resulting *amplitude of subthreshold oscillations* of the membrane potential vs. input frequency.
 
 Question
 ~~~~~~~~
 
-For input frequencies between :math:`10 Hz` and :math:`1 kHz`, plot the resulting *phase shift of subthreshold oscillations* of the membrane potential vs. input frequency.
+For input frequencies between 10Hz and 1 kHz, plot the resulting *phase shift of subthreshold oscillations* of the membrane potential vs. input frequency.
 
 Question
 ~~~~~~~~
 
-To what type of filter (High-Pass, Low-Pass) does this correspond?
+To what type of filter (High-Pass, Low-Pass) does this correspond to?
 
 .. note::
 
-    It is not straight forward to automatically determine the phase shift in a script. For this exercise, simply get it "visually" from your plot. If you want to automatize the procedure in your Python script you could try the function scipy.signal.correlate().
+    It is not straight forward to automatically determine the phase shift in a script. For this exercise, simply get it "visually" from your plot. If you want to automatize the procedure in your Python script you could try the function ``scipy.signal.correlate()``.

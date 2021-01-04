@@ -1,31 +1,22 @@
-|Build Status| |Doc Status| |Conda Repo|
-
 Neuronal Dynamics: Python Exercises
 ===================================
 
 This repository contains python exercises accompanying the book
-`Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`__ by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski. References to relevant chapters will be added in the `Teaching Materials <http://neuronaldynamics.epfl.ch/lectures.html>`__ section of the book homepage.
+`Neuronal Dynamics <http://neuronaldynamics.epfl.ch/>`_ by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski. References to relevant chapters will be added in the `Teaching Materials <http://neuronaldynamics.epfl.ch/lectures.html>`_ section of the book homepage.
 
 Exercises & Documentation
 -------------------------
 
-The full documentation and the exercises `can be found at readthedocs <http://neuronaldynamics-exercises.readthedocs.org/>`__.
+The full documentation and the exercises can be found at `readthedocs <https://lcn-neurodynex-exercises.readthedocs.io/en/latest>`_.
 
 Quickstart
 ----------
-
-To install the exercises with anaconda/miniconda execute:
-
-.. code-block:: bash
-
-   conda install -c brian-team -c epfl-lcn neurodynex
-
 
 To install the exercises using ``pip`` simply execute:
 
 .. code-block:: bash
 
-   pip install --upgrade neurodynex
+   pip install --upgrade neurodynex3
 
 License
 -------
@@ -37,6 +28,7 @@ Should you reuse and publish the code for your own purposes, please point to the
 Contributors (alphabetically)
 -----------------------------
 * Parima Ahmadipouranari (LCN, EPFL)
+* Georgios Iatropoulos (BBP/LCN, EPFL)
 * Bernd Illing (LCN, EPFL)
 * Marco Lehmann (LCN, EPFL)
 * Alexander Seeholzer (LCN, EPFL)
@@ -52,7 +44,7 @@ Disclaimer
 
 Bug reports
 -----------
-Did you find a bug? Open an issue on `github <https://github.com/EPFL-LCN/neuronaldynamics-exercises/issues>`_ . Thank you!
+Did you find a bug? Open an issue on `Github <https://github.com/martinbarry59/neurodynex3/issues>`_. Thank you!
 
 
 

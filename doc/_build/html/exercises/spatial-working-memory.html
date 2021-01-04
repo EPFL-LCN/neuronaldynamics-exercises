@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>12. Spatial Working Memory (Compte et. al.) &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. Perceptual Decision Making (Wong &amp; Wang)" href="perceptual-decision-making.html" />
+    <link rel="prev" title="11. Network of LIF neurons (Brunel)" href="brunel-network.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12. Spatial Working Memory (Compte et. al.)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-spontanous-bump-formation">12.1. Exercise: Spontanous bump formation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-external-poisson-population">12.1.1. Question: External poisson population</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-unstructured-input">12.1.2. Question: Unstructured input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-weight-profile">12.1.3. Question: Weight profile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-network-response-to-a-structured-input-stimulus">12.2. Exercise: Network response to a structured input stimulus</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-integration-of-input">12.2.1. Question: Integration of input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-role-of-the-inhibitory-population">12.2.2. Question: Role of the inhibitory population</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-decoding-the-population-activity-into-a-population-vector">12.3. Exercise: Decoding the population activity into a population vector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mapping-the-neuron-index-onto-its-preferred-direction">12.3.1. Mapping the neuron index onto its preferred direction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extracting-spikes-from-the-spike-monitor">12.3.2. Extracting spikes from the spike monitor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#computing-the-population-vector">12.3.3. Computing the population vector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exercise-visualize-the-diffusion-of-the-population-vector">12.3.4. Exercise: Visualize the diffusion of the population vector</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-exercise-slow-and-fast-channels">12.4. Reading exercise: slow and fast channels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">12.4.1. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#references">12.5. <strong>References</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>12. Spatial Working Memory (Compte et. al.)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/spatial-working-memory.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="spatial-working-memory-compte-et-al">
+<h1>12. Spatial Working Memory (Compte et. al.)<a class="headerlink" href="#spatial-working-memory-compte-et-al" title="Permalink to this headline">¶</a></h1>
+<p>In this exercise we study a model of spatial working memory. The model has been introduced by Compte et. al. [1]. The parameters used here differ from the original paper. They are changed such that we can still study some effects while simulating a small network.</p>
+<div class="figure align-center" id="id6">
+<img alt="../_images/WorkingMemory_Demo.png" src="../_images/WorkingMemory_Demo.png" />
+<p class="caption"><span class="caption-text"><em>Top:</em> A weak stimulus, centered at 120deg, is applied to a subset of the excitatory population from t=200ms to t=400ms (blue box in top panel). This creates an activity bump in the excitatory subpopulation. The activity sustains after the end of the stimulation. The active neurons have a preferred direction close to the stimulus location. <em>Middle:</em> The population activity increases over time when the stimulus is applied. <em>Bottom:</em> Voltage traces for three selected neurons. The spikes of the red neuron are visible in the top and bottom panel.</span></p>
+</div>
+<p>Figure <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.S1.html">18.4</a> in chapter 18.1 shows the kind of ring model we are studying here.</p>
+<p><strong>Book chapters</strong></p>
+<p>Read the introduction of chapter <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.html">18, Cortical field models for perceptions</a> and the chapters <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.S1.html">18.1</a>, <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.S2.html">18.2</a> and <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.S3.html">18.3</a> . Figure <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.S1.html">18.4</a> in chapter 18.1 shows the kind of ring model we are studying here.</p>
+<p>If you have access to a scientific library, you may also want to read the original publication [1].</p>
+<p><strong>Python classes</strong></p>
+<p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">working_memory_network.wm_model</span></code> implements a working memory circuit adapted from [1, 2]. To get started, call the function  <code class="xref py py-func docutils literal notranslate"><span class="pre">working_memory_network.wm_model.getting_started()</span></code> or copy the following code into a Jupyter notebook.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.working_memory_network</span> <span class="kn">import</span> <span class="n">wm_model</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+
+<span class="n">wm_model</span><span class="o">.</span><span class="n">getting_started</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-spontanous-bump-formation">
+<h2>12.1. Exercise: Spontanous bump formation<a class="headerlink" href="#exercise-spontanous-bump-formation" title="Permalink to this headline">¶</a></h2>
+<p>We study the structure and activity of the following network.</p>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/WorkingMemory_NetworkStructure.png"><img alt="../_images/WorkingMemory_NetworkStructure.png" src="../_images/WorkingMemory_NetworkStructure.png" style="width: 65%;" /></a>
+<p class="caption"><span class="caption-text">Network structure. Look at Figure <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch18.S1.html">18.4 in chapter 18.1</a> to see how the excitatory population is spatially arranged on a ring and has a specific connectivity profile. In our implementation, every excitatory neuron receives unstructured input from all inhibitory neurons and structured input from all excitatory neurons. The inhibitory neurons receive unstructured input from all excitatory and all inhibitory neurons.</span></p>
+</div>
+<div class="section" id="question-external-poisson-population">
+<h3>12.1.1. Question: External poisson population<a class="headerlink" href="#question-external-poisson-population" title="Permalink to this headline">¶</a></h3>
+<p>Parameters that are not explicitly specified are set to default values. Read the documentation of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">working_memory_network.wm_model.simulate_wm()</span></code> to answer the following questions:</p>
+<ul class="simple">
+<li>By default, how many neurons are in the external poisson population?</li>
+<li>Using the default parameters, what is the average number of spikes/second an excitatory neuron receives from the external population?</li>
+</ul>
+<p>From the documentation, follow the ‘source’ link to go to the implementation of <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_wm()</span></code>. Answer the following questions about the external poisson population:</p>
+<ul class="simple">
+<li>We use the <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/input.html">Brian2 PoissonInput</a> to implement the external population. Which post-synaptic variable is targeted by a presynaptic (poisson) spike?</li>
+<li>The dynamics of that variable are defined in the equations <code class="docutils literal notranslate"><span class="pre">excit_lif_dynamics</span></code> (still in the source code of simulate_wm). What is the time-scale of that variable (in milliseconds)?</li>
+</ul>
+</div>
+<div class="section" id="question-unstructured-input">
+<h3>12.1.2. Question: Unstructured input<a class="headerlink" href="#question-unstructured-input" title="Permalink to this headline">¶</a></h3>
+<p>Run the following code to simulate a network that receives unstructured poisson input.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.working_memory_network</span> <span class="kn">import</span> <span class="n">wm_model</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span>
+
+<span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">idx_monitored_neurons_excit</span><span class="p">,</span> <span class="n">rate_monitor_inhib</span><span class="p">,</span> <span class="n">spike_monitor_inhib</span><span class="p">,</span> <span class="n">voltage_monitor_inhib</span><span class="p">,</span> <span class="n">idx_monitored_neurons_inhib</span><span class="p">,</span> <span class="n">w_profile</span> <span class="o">=</span> <span class="n">wm_model</span><span class="o">.</span><span class="n">simulate_wm</span><span class="p">(</span><span class="n">sim_time</span><span class="o">=</span><span class="mf">800.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">poisson_firing_rate</span><span class="o">=</span><span class="mf">1.3</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Hz</span><span class="p">,</span> <span class="n">sigma_weight_profile</span><span class="o">=</span><span class="mf">20.</span><span class="p">,</span> <span class="n">Jpos_excit2excit</span><span class="o">=</span><span class="mf">1.6</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_network_activity</span><span class="p">(</span><span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Without coding, from the plot: What is the population activity (mean firing rate) of the excitatory population at different points in time?</li>
+<li>Change the firing rate of the external population to 2.2Hz. What do you observe?</li>
+<li>Run the simulation a few times with r_ext = 2.2 Hz. Describe your observations.</li>
+</ul>
+</div>
+<div class="section" id="question-weight-profile">
+<h3>12.1.3. Question: Weight profile<a class="headerlink" href="#question-weight-profile" title="Permalink to this headline">¶</a></h3>
+<p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_wm()</span></code> takes two parameters to define the weight profile: <code class="docutils literal notranslate"><span class="pre">sigma_weight_profile</span></code> and <code class="docutils literal notranslate"><span class="pre">Jpos_excit2excit</span></code>. After the simulation you can access the return value weight_profile_45. This array contains the synaptic weights between the one postsynaptic neuron whose preferred direction is 45deg and all other (presynaptic) neurons. Our choice of 45deg is arbitrary, the profile for other neurons are shifted versions of this one.</p>
+<ul class="simple">
+<li>Run the following code to simulate the network.</li>
+<li>Increase <code class="docutils literal notranslate"><span class="pre">Jpos_excit2excit</span></code>. How does the weight profile change (look at short and long ranges)?</li>
+<li>Simulate with <code class="docutils literal notranslate"><span class="pre">Jpos_excit2excit</span></code> = 2.3. What do you observe?</li>
+<li>How does the weight profile change with the parameter <code class="docutils literal notranslate"><span class="pre">sigma_weight_profile</span></code>? How does the bump change with this parameter?</li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.working_memory_network</span> <span class="kn">import</span> <span class="n">wm_model</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">idx_monitored_neurons_excit</span><span class="p">,</span> <span class="n">rate_monitor_inhib</span><span class="p">,</span> <span class="n">spike_monitor_inhib</span><span class="p">,</span> <span class="n">voltage_monitor_inhib</span><span class="p">,</span> <span class="n">idx_monitored_neurons_inhib</span><span class="p">,</span> <span class="n">weight_profile_45</span> <span class="o">=</span> <span class="n">wm_model</span><span class="o">.</span><span class="n">simulate_wm</span><span class="p">(</span><span class="n">sim_time</span><span class="o">=</span><span class="mf">800.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">poisson_firing_rate</span><span class="o">=</span><span class="mf">1.3</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Hz</span><span class="p">,</span> <span class="n">sigma_weight_profile</span><span class="o">=</span><span class="mf">20.</span><span class="p">,</span> <span class="n">Jpos_excit2excit</span><span class="o">=</span><span class="mf">1.6</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_network_activity</span><span class="p">(</span><span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">weight_profile_45</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-network-response-to-a-structured-input-stimulus">
+<h2>12.2. Exercise: Network response to a structured input stimulus<a class="headerlink" href="#exercise-network-response-to-a-structured-input-stimulus" title="Permalink to this headline">¶</a></h2>
+<p>We now apply a stimulus to a subset of the excitatory population. The network has the property of integrating input over time and keep a memory of the input stimulus. Using the following code, you can run a simulation with a weak input stimulus.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.working_memory_network</span> <span class="kn">import</span> <span class="n">wm_model</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+
+<span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">idx_monitored_neurons_excit</span><span class="p">,</span> <span class="n">rate_monitor_inhib</span><span class="p">,</span> <span class="n">spike_monitor_inhib</span><span class="p">,</span> <span class="n">voltage_monitor_inhib</span><span class="p">,</span> <span class="n">idx_monitored_neurons_inhib</span><span class="p">,</span> <span class="n">w_profile</span> <span class="o">=</span> <span class="n">wm_model</span><span class="o">.</span><span class="n">simulate_wm</span><span class="p">(</span><span class="n">stimulus_center_deg</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">stimulus_width_deg</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">stimulus_strength</span><span class="o">=.</span><span class="mo">06</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">,</span> <span class="n">t_stimulus_start</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">t_stimulus_duration</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">sim_time</span><span class="o">=</span><span class="mf">500.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax_raster</span><span class="p">,</span> <span class="n">ax_rate</span><span class="p">,</span> <span class="n">ax_voltage</span> <span class="o">=</span> <span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_network_activity</span><span class="p">(</span><span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="question-integration-of-input">
+<h3>12.2.1. Question: Integration of input<a class="headerlink" href="#question-integration-of-input" title="Permalink to this headline">¶</a></h3>
+<p>Run the stimulation given above. Then answer the following questions qualitatively (by eye, from the raster plot)</p>
+<ul class="simple">
+<li>At which time can you identify a change in the population activity? How does that compare to the time when the stimulus is applied?</li>
+<li>What is the population activity at the end of the simulation?</li>
+<li>For the time point t=400ms, sketch the firing rate across the population (neuron index on the x-axis, per-neuron firing rate on the y-axis).</li>
+<li>Increase the stimulus strength to 0.5namp. What happens when the stimulus stops?</li>
+<li>Increase the stimulus width to 60deg (stimulus_strength=0.1 * b2.namp, stimulus center = 120deg). How does the bump shape change?</li>
+</ul>
+</div>
+<div class="section" id="question-role-of-the-inhibitory-population">
+<h3>12.2.2. Question: Role of the inhibitory population<a class="headerlink" href="#question-role-of-the-inhibitory-population" title="Permalink to this headline">¶</a></h3>
+<p>We can remove the inhibitory population by setting its size to the minimal size N_inhibitory = 1. If we also deactivate the external input we can study the effect of the recurrent weights within the excitatory population:</p>
+<p>Parameters: N_inhibitory = 1, stimulus_strength=0.65 * b2.namp, t_stimulus_start=5 * b2.ms, t_stimulus_duration=25 * b2.ms, sim_time=80. * b2.ms</p>
+<ul class="simple">
+<li>Before running the simulation: What do you expect to see?</li>
+<li>Run the simulation with the given parameters. Describe your observations.</li>
+</ul>
+<p>Now run again a “normal” simulation:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">rate_monitor_excit</span><span class="p">,</span> <span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">voltage_monitor_excit</span><span class="p">,</span> <span class="n">idx_monitored_neurons_excit</span><span class="p">,</span> <span class="n">rate_monitor_inhib</span><span class="p">,</span> <span class="n">spike_monitor_inhib</span><span class="p">,</span> <span class="n">voltage_monitor_inhib</span><span class="p">,</span> <span class="n">idx_monitored_neurons_inhib</span><span class="p">,</span> <span class="n">w_profile</span> <span class="o">=</span> <span class="n">wm_model</span><span class="o">.</span><span class="n">simulate_wm</span><span class="p">(</span><span class="n">stimulus_center_deg</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">stimulus_width_deg</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">stimulus_strength</span><span class="o">=.</span><span class="mo">06</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">,</span> <span class="n">t_stimulus_start</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">t_stimulus_duration</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">sim_time</span><span class="o">=</span><span class="mf">500.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>As for the excitatory population, plot the raster, population activity and voltage traces for the inhibitory population.</li>
+<li>What is the role of the inhibitory population?</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercise-decoding-the-population-activity-into-a-population-vector">
+<h2>12.3. Exercise: Decoding the population activity into a population vector<a class="headerlink" href="#exercise-decoding-the-population-activity-into-a-population-vector" title="Permalink to this headline">¶</a></h2>
+<p>In the raster plot above we see that the population of spiking neurons keeps a memory of the stimulus. In this exercise we decode the population vector (i.e. the  angle <code class="docutils literal notranslate"><span class="pre">theta</span></code> stored in the working memory) from the spiking activity. The population vector is defined as the <strong>weighted (by spike counts) mean of the preferred directions of the neurons</strong>. We access the data in the  Brian2 SpikeMonitor returned by the simulation to calculate the population vector. Read the <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/recording.html">Brian2 documentation</a> to see how one can access spike trains. Then implement the readout following the steps given here:</p>
+<div class="section" id="mapping-the-neuron-index-onto-its-preferred-direction">
+<h3>12.3.1. Mapping the neuron index onto its preferred direction<a class="headerlink" href="#mapping-the-neuron-index-onto-its-preferred-direction" title="Permalink to this headline">¶</a></h3>
+<p>Write a function <strong>get_orientation(idx_list, N)</strong> which maps a vector of neuron indices <code class="docutils literal notranslate"><span class="pre">idx_list</span></code> onto a vector of preferred directions. <code class="docutils literal notranslate"><span class="pre">idx_list</span></code> is the subset of <code class="docutils literal notranslate"><span class="pre">k</span></code> monitored neurons. The second parameter <code class="docutils literal notranslate"><span class="pre">N</span></code> is the total number of neurons in the excitatory population. Verify your implementation by calling the function with the following example input:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">get_orientation</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">11</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="p">[</span><span class="mf">16.36</span><span class="p">,</span> <span class="mf">49.09</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">,</span> <span class="mf">343.64</span><span class="p">]</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="n">get_orientation</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">499</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">999</span><span class="p">],</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="p">[</span><span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.54</span><span class="p">,</span> <span class="mf">179.82</span><span class="p">,</span> <span class="mf">180.18</span><span class="p">,</span> <span class="mf">359.82</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="extracting-spikes-from-the-spike-monitor">
+<h3>12.3.2. Extracting spikes from the spike monitor<a class="headerlink" href="#extracting-spikes-from-the-spike-monitor" title="Permalink to this headline">¶</a></h3>
+<p>The population vector <code class="docutils literal notranslate"><span class="pre">theta</span></code> changes over time due to drift and diffusion which is why we are interested in <code class="docutils literal notranslate"><span class="pre">theta(t)</span></code>. As we are dealing with spikes (discrete point events), and a small number of neurons, we have to average the population activity over some time window around t, [t_min=t - t_window_width/2, t_max =t + t_window_width/2], to get an estimate of <code class="docutils literal notranslate"><span class="pre">theta(t)</span></code>.</p>
+<p>Write a function <code class="docutils literal notranslate"><span class="pre">get_spike_count(spike_monitor,</span> <span class="pre">spike_index_list,</span> <span class="pre">t_min,</span> <span class="pre">t_max)</span></code> which returns an array of spike counts (one value for each neuron in <code class="docutils literal notranslate"><span class="pre">spike_index_list</span></code>). Be careful about the indexing: <code class="docutils literal notranslate"><span class="pre">spike_index_list</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">k</span></code> neuron indices in [0, N-1] while the returned array <code class="docutils literal notranslate"><span class="pre">spike_count_list</span></code> is of length <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">spike_monitor</span></code> is the spike_monitor_excit returned by the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_wm()</span></code>. The following pseudo-code and fragments are useful to implement <code class="docutils literal notranslate"><span class="pre">get_spike_count</span></code>:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_spike_count</span><span class="p">(</span><span class="n">spike_monitor</span><span class="p">,</span> <span class="n">spike_index_list</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">):</span>
+    <span class="n">nr_neurons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">spike_index_list</span><span class="p">)</span>
+    <span class="n">spike_count_list</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nr_neurons</span><span class="p">)</span>
+    <span class="n">spike_trains</span> <span class="o">=</span> <span class="n">spike_monitor</span><span class="o">.</span><span class="n">spike_trains</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="c1"># loop over the list of neurons and get the spikes within the time window:</span>
+        <span class="p">(</span><span class="n">spike_trains</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">t_min</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">spike_trains</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="p">(</span><span class="n">t_max</span><span class="p">))</span>  <span class="c1"># try sum(list of booleans)</span>
+    <span class="o">...</span>
+<span class="k">return</span> <span class="n">spike_count_list</span>
+</pre></div>
+</div>
+<p>Do a plausibility check of your implementation: In one of the previous questions you have sketched the firing rates across the population at t=400ms. Use <code class="docutils literal notranslate"><span class="pre">get_spike_count</span></code> to plot the profile. Compare to your sketch. You can use the following code block. It’s assumed you have run a simulation and the two variables <code class="docutils literal notranslate"><span class="pre">spike_monitor_excit</span></code> and <code class="docutils literal notranslate"><span class="pre">idx_monitored_neurons_excit</span></code> are defined. Then play with the <code class="docutils literal notranslate"><span class="pre">t_window</span></code> parameter to get an intuition for  ‘good’ values.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="mi">400</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span>  <span class="c1"># time point of interest</span>
+<span class="n">t_window</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span> <span class="c1"># width of the window over which the average is taken</span>
+
+<span class="n">t_min</span> <span class="o">=</span> <span class="n">t</span><span class="o">-</span><span class="n">t_window</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">t_max</span> <span class="o">=</span> <span class="n">t</span><span class="o">+</span><span class="n">t_window</span><span class="o">/</span><span class="mi">2</span>
+<span class="n">spike_counts</span> <span class="o">=</span> <span class="n">get_spike_count</span><span class="p">(</span><span class="n">spike_monitor_excit</span><span class="p">,</span> <span class="n">idx_monitored_neurons_excit</span><span class="p">,</span> <span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">)</span>
+<span class="n">spike_rates</span> <span class="o">=</span> <span class="n">spike_counts</span><span class="o">/</span><span class="p">(</span><span class="n">t_max</span><span class="o">-</span><span class="n">t_min</span><span class="p">)</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">second</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spike_rates</span><span class="p">,</span> <span class="s2">&quot;.b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Bump profile in the time interval[{},{}]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Neuron index&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Spike rate [Hz]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="computing-the-population-vector">
+<h3>12.3.3. Computing the population vector<a class="headerlink" href="#computing-the-population-vector" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Combine the two previous functions to calculate theta(t). For our purpose, it is sufficient to calculate a weighted mean of preferred directions. It is not necessary to correctly decode an angle close to 0deg = 360deg (You can stimulate the network at 350deg to see the problem).</li>
+<li>Run a simulation and decode the population vector at the time when the <strong>stimulation</strong> ends. You should get a value close to the stimulus location.</li>
+<li>Pack the calculation of theta(t) into a function <code class="docutils literal notranslate"><span class="pre">get_theta_time_series</span></code> which takes an additional parameter <code class="docutils literal notranslate"><span class="pre">t_snapshots</span></code> (an array of time points at which you want to decode the population vector). <code class="docutils literal notranslate"><span class="pre">get_theta_time_series</span></code> loops over all t_snapshots and calls <code class="docutils literal notranslate"><span class="pre">get_spike_count</span></code>. Use your function to  readout and visualize the evolution of theta. You can take some inspiration from the following code fragment:</li>
+</ul>
+</div></blockquote>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example how to create an array of timestamps spaced by snapshot_interval in the interval of interest.</span>
+<span class="n">t_snapshots</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">t_stimulus_start</span><span class="o">+</span><span class="n">t_stimulus_duration</span><span class="p">)</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)),</span>  <span class="c1"># lower bound</span>
+    <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">t_sim</span><span class="o">-</span><span class="n">t_window_width</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)),</span>  <span class="c1"># Subtract half window. Avoids an out-of-bound error later.</span>
+    <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">snapshot_interval</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">))</span>  <span class="c1"># spacing between time stamps</span>
+    <span class="p">)</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+
+<span class="c1"># how your function get_theta_time_series could be called:</span>
+<span class="n">theta_ts</span> <span class="o">=</span> <span class="n">get_theta_time_series</span><span class="p">(</span><span class="n">spike_monitor</span><span class="p">,</span> <span class="n">idx_monitored_neurons</span><span class="p">,</span> <span class="n">t_snapshots</span><span class="p">,</span> <span class="n">t_window_width</span><span class="p">)</span>
+
+<span class="c1"># plot theta vs time using pyplot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_snapshots</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">theta_ts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-visualize-the-diffusion-of-the-population-vector">
+<h3>12.3.4. Exercise: Visualize the diffusion of the population vector<a class="headerlink" href="#exercise-visualize-the-diffusion-of-the-population-vector" title="Permalink to this headline">¶</a></h3>
+<p>As mentioned above, the population vector changes over time due to drift and diffusion. In our implementation, because of homogeneous network properties (equal parameters, equal weights, shared presynaptic neurons) the drift is zero.</p>
+<p>Use your functions developed in the previous questions to study the diffusion of the population vector:</p>
+<ul class="simple">
+<li>Simulate a network of size <code class="docutils literal notranslate"><span class="pre">N_excitatory</span></code> = 2048. Apply a stimulus from t=100ms to t=300ms. Plot theta(t). <em>Note that when you increase the size of the excitatory population you also have to increase the inhibitory population and the weights (‘’N_inhibitory’’ and ‘’weight_scaling_factor’‘). When doubling the number of presynaptic neurons, you have to scale the weights by 0.5 to keep the total synaptic input the same.</em></li>
+<li>Repeat the simulation at least 3 times. Plot each time series theta(t) into the same figure.</li>
+<li>Change the size of the network to <code class="docutils literal notranslate"><span class="pre">N_excitatory</span></code> = 512 and redo the previous steps.</li>
+<li>Discuss your observations.</li>
+</ul>
+<div class="figure align-center" id="id8">
+<img alt="../_images/WorkingMemory_PopulationVector2048.png" src="../_images/WorkingMemory_PopulationVector2048.png" />
+<p class="caption"><span class="caption-text">Diffusion of the population vector for three different simulations.</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="reading-exercise-slow-and-fast-channels">
+<h2>12.4. Reading exercise: slow and fast channels<a class="headerlink" href="#reading-exercise-slow-and-fast-channels" title="Permalink to this headline">¶</a></h2>
+<p>The working memory circuit we study in this exercise combines three different receptors: NMDA and AMPA at excitatory synapses, and GABA at inhibitory synapses. A crucial element for this circuit is the slow dynamics of the NMDA receptor. Read the chapters <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch3.S1.html">3.1 Synapses</a> and look at Figure 3.2 to understand the dynamics of the receptors.</p>
+<div class="section" id="question">
+<h3>12.4.1. Question:<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<p>The dynamics of the NMDA receptor are implemented in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_wm()</span></code>. Look for the equations <code class="docutils literal notranslate"><span class="pre">excit_lif_dynamics</span></code> in the source code.</p>
+<ul class="simple">
+<li>In the model used here, what is the timescale (in milliseconds) of the fast rise? What is the timescale of the slow decay?</li>
+</ul>
+</div>
+</div>
+<div class="section" id="references">
+<h2>12.5. <strong>References</strong><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Compte, A., Brunel, N., Goldman-Rakic, P. S., &amp; Wang, X. J. (2000). Synaptic mechanisms and network dynamics underlying spatial working memory in a cortical network model. Cerebral Cortex, 10(9), 910-923.</p>
+<p>[2] Parts of this exercise and parts of the implementation are inspired by material from <em>Stanford University, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen &amp; Tatiana Engel, 2013</em>, online available.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="perceptual-decision-making.html" class="btn btn-neutral float-right" title="13. Perceptual Decision Making (Wong &amp; Wang)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="brunel-network.html" class="btn btn-neutral float-left" title="11. Network of LIF neurons (Brunel)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

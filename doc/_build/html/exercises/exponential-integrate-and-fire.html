@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. The Exponential Integrate-and-Fire model &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. AdEx: the Adaptive Exponential Integrate-and-Fire model" href="adex-model.html" />
+    <link rel="prev" title="2. Leaky-integrate-and-fire model" href="leaky-integrate-and-fire.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. The Exponential Integrate-and-Fire model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-rehobase-threshold">3.1. Exercise: rehobase threshold</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">3.1.1. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-strength-duration-curve">3.2. Exercise: strength-duration curve</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.2.1. Question:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>3. The Exponential Integrate-and-Fire model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/exponential-integrate-and-fire.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-exponential-integrate-and-fire-model">
+<h1>3. The Exponential Integrate-and-Fire model<a class="headerlink" href="#the-exponential-integrate-and-fire-model" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>The Exponential Integrate-and-Fire model is introduced in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch5.S2.html">Chapter 5 Section 2</a></p>
+<p><strong>Python classes</strong></p>
+<p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">exponential_integrate_fire.exp_IF</span></code> implements the dynamics given in the book (equation 5.6).</p>
+<div class="figure align-center" id="id2">
+<img alt="../_images/exp_IF_min_current.png" src="../_images/exp_IF_min_current.png" />
+<p class="caption"><span class="caption-text">A short pulse current of 2ms duration is injected into an Exponential-Integrate-and-Fire neuron. The current amplitude is just sufficient to elicit a spike.</span></p>
+</div>
+<p>To get started, copy the following code into a Jupyter notebook. It follows a common pattern used in these exercises: use the input_factory to get a specific current, inject it into the neuron model we provide, and finally use the plot_tools to visualize the state variables:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">neurodynex3.exponential_integrate_fire.exp_IF</span> <span class="kn">as</span> <span class="nn">exp_IF</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span><span class="p">,</span> <span class="n">input_factory</span>
+
+
+<span class="n">input_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span>
+    <span class="n">t_start</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">unit_time</span><span class="o">=</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">)</span>
+
+<span class="n">state_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span> <span class="o">=</span> <span class="n">exp_IF</span><span class="o">.</span><span class="n">simulate_exponential_IF_neuron</span><span class="p">(</span>
+    <span class="n">I_stim</span><span class="o">=</span><span class="n">input_current</span><span class="p">,</span> <span class="n">simulation_time</span><span class="o">=</span><span class="mi">200</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_voltage_and_current_traces</span><span class="p">(</span>
+    <span class="n">state_monitor</span><span class="p">,</span> <span class="n">input_current</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;step current&quot;</span><span class="p">,</span>
+    <span class="n">firing_threshold</span><span class="o">=</span><span class="n">exp_IF</span><span class="o">.</span><span class="n">FIRING_THRESHOLD_v_spike</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;nr of spikes: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spike_monitor</span><span class="o">.</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>Note that you can change all parameters of the neuron by using the named parameters of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_exponential_IF_neuron()</span></code>. If you do not specify any parameter, the default values are used (see next code block). You can access these variables in your code by prefixing them with the module name (for example exp_IF.FIRING_THRESHOLD_v_spike).</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">MEMBRANE_TIME_SCALE_tau</span> <span class="o">=</span> <span class="mf">12.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">MEMBRANE_RESISTANCE_R</span> <span class="o">=</span> <span class="mf">20.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Mohm</span>
+<span class="n">V_REST</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">V_RESET</span> <span class="o">=</span> <span class="o">-</span><span class="mf">60.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">RHEOBASE_THRESHOLD_v_rh</span> <span class="o">=</span> <span class="o">-</span><span class="mf">55.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">SHARPNESS_delta_T</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">FIRING_THRESHOLD_v_spike</span> <span class="o">=</span> <span class="o">-</span><span class="mf">30.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-rehobase-threshold">
+<h2>3.1. Exercise: rehobase threshold<a class="headerlink" href="#exercise-rehobase-threshold" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this exercise is to study the minimal current that can elicit a spike and to understand the different notions of a firing threshold. The Exponential-Integrate-and-Fire neuron model has two threshold related parameters. They correspond to the named parameters ‘v_spike’ and ‘v_rheobase’ in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_exponential_IF_neuron()</span></code>.</p>
+<div class="section" id="question">
+<h3>3.1.1. Question:<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Modify the code example given above: Call <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_exponential_IF_neuron()</span></code> and set the function parameter v_spike=+10mV (which overrides the default value -30mV). What do you expect to happen? How many spikes will be generated?</li>
+<li>Compute the minimal amplitude I_rh of a constant input current such that the neuron will elicit a spike. If you are not sure what and how to compute I_rh, have a look at <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch5.S1.html">Figure 5.1</a>  and <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch5.S2.html">the textbox “Rheobase threshold and interpretation of parameters”</a> in the book.</li>
+<li>Validate your result: Modify the code given above and inject a current of amplitude I_rh and 300 ms duration into the expIF neuron.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercise-strength-duration-curve">
+<h2>3.2. Exercise: strength-duration curve<a class="headerlink" href="#exercise-strength-duration-curve" title="Permalink to this headline">¶</a></h2>
+<p>The minimal amplitude to elicit a spike depends on the duration of the current. For an infinitely long current, we’ve just calculated the rheobase current. For short pulses and step currents, we can “experimentally” determine the minimal currents. If we plot the amplitude versus duration, we get the strength-duration curve</p>
+<div class="section" id="id1">
+<h3>3.2.1. Question:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Have a look at the following code: for the values i = 0, 2 and 6 we did not provide the minimal amplitude, but the entries in min_amp[i] are set to 0. Complete the min_amp list.</p>
+<ul class="simple">
+<li>Set the index i to 0</li>
+<li>Enter an informed guess into the min_amp table</li>
+<li>Run the script</li>
+<li>Depending on the plot, increase or decrease the amplitude, repeat until you just get one spike.</li>
+<li>Do the same for i = 2 and i = 6</li>
+</ul>
+<p>At the end of the script, the strength-duration curve is plotted. Discuss it. You may want to add a log-log plot to better see the asymptotic behaviour.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">neurodynex3.exponential_integrate_fire.exp_IF</span> <span class="kn">as</span> <span class="nn">exp_IF</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span><span class="p">,</span> <span class="n">input_factory</span>
+
+<span class="n">i</span><span class="o">=</span><span class="mi">1</span>  <span class="c1">#change i and find the value that goes into min_amp</span>
+<span class="n">durations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span>   <span class="mi">2</span><span class="p">,</span>    <span class="mi">5</span><span class="p">,</span>  <span class="mi">10</span><span class="p">,</span>   <span class="mi">20</span><span class="p">,</span>   <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">min_amp</span> <span class="o">=</span>   <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">4.42</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.10</span><span class="p">,</span> <span class="o">.</span><span class="mi">70</span><span class="p">,</span> <span class="o">.</span><span class="mi">48</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
+
+<span class="n">t</span><span class="o">=</span><span class="n">durations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="n">I_amp</span> <span class="o">=</span> <span class="n">min_amp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">namp</span>
+<span class="n">title_txt</span> <span class="o">=</span> <span class="s2">&quot;I_amp={}, t={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">I_amp</span><span class="p">,</span> <span class="n">t</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+
+<span class="n">input_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span><span class="n">t_start</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="mi">10</span><span class="o">+</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">unit_time</span><span class="o">=</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="n">I_amp</span><span class="p">)</span>
+
+<span class="n">state_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span> <span class="o">=</span> <span class="n">exp_IF</span><span class="o">.</span><span class="n">simulate_exponential_IF_neuron</span><span class="p">(</span><span class="n">I_stim</span><span class="o">=</span><span class="n">input_current</span><span class="p">,</span> <span class="n">simulation_time</span><span class="o">=</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">20</span><span class="p">)</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_voltage_and_current_traces</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">input_current</span><span class="p">,</span>
+                                           <span class="n">title</span><span class="o">=</span><span class="n">title_txt</span><span class="p">,</span> <span class="n">firing_threshold</span><span class="o">=</span><span class="n">exp_IF</span><span class="o">.</span><span class="n">FIRING_THRESHOLD_v_spike</span><span class="p">,</span>
+                                          <span class="n">legend_location</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;nr of spikes: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spike_monitor</span><span class="o">.</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">durations</span><span class="p">,</span> <span class="n">min_amp</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Strength-Duration curve&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;t [ms]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;min amplitude [nAmp]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="adex-model.html" class="btn btn-neutral float-right" title="4. AdEx: the Adaptive Exponential Integrate-and-Fire model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="leaky-integrate-and-fire.html" class="btn btn-neutral float-left" title="2. Leaky-integrate-and-fire model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

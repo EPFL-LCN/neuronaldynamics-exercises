@@ -15,11 +15,11 @@ The :mod:`.cable_equation.passive_cable` module implements a passive cable using
 
     import brian2 as b2
     import matplotlib.pyplot as plt
-    from neurodynex.cable_equation import passive_cable
-    from neurodynex.tools import input_factory
+    from neurodynex3.cable_equation import passive_cable
+    from neurodynex3.tools import input_factory
     passive_cable.getting_started()
 
-The function :func:`.passive_cable.getting_started` injects a very short pulse current at (t=500ms, x=100um) into a finite length cable and then lets Brian evolve the dynamics for 2ms. This simulation produces a time x location matrix whose entries are the membrane voltage at each (time,space)-index. The result is visualized using pyplot.imshow.
+The function :func:`.passive_cable.getting_started` injects a very short pulse current at (t=500ms, x=100um) into a finite length cable and then lets Brian evolve the dynamics for 2ms. This simulation produces a time x location matrix whose entries are the membrane voltage at each (time,space)-index. The result is visualized using ``pyplot.imshow``.
 
 
 .. figure:: exc_images/cable_equation_pulse.png
@@ -28,7 +28,7 @@ The function :func:`.passive_cable.getting_started` injects a very short pulse c
 
 .. note::
 
-    The axes in the figure above are not scaled to the physical units but show the raw matrix indices. These indices depend on the spatial resolution (number of compartments) and the temporal resolution (brian2.defaultclock.dt). For the exercises make sure you correctly scale the units using Brian's `unit system <http://brian2.readthedocs.io/en/latest/user/units.html>`_ . As an example, to plot voltage vs. time you call
+    The axes in the figure above are not scaled to the physical units but show the raw matrix indices. These indices depend on the spatial resolution (number of compartments) and the temporal resolution (``brian2.defaultclock.dt``). For the exercises make sure you correctly scale the units using Brian's `unit system <http://brian2.readthedocs.io/en/latest/user/units.html>`_ . As an example, to plot voltage vs. time you call
 
     .. code::
 
@@ -52,14 +52,14 @@ You can easily access those values in your code:
 
 .. code-block:: py
 
-    from neurodynex.cable_equation import passive_cable
+    from neurodynex3.cable_equation import passive_cable
     print(passive_cable.R_TRANSVERSAL)
 
 
 
 Exercise: spatial and temporal evolution of a pulse input
 ---------------------------------------------------------
-Create a cable of length 800um and inject a 0.1ms long step current of amplitude 0.8nanoAmp at (t=1ms, x=200um). Run Brian for 3 milliseconds.
+Create a cable of length 800um and inject a 0.1ms long step current of amplitude 0.8nA at (t=1ms, x=200um). Run Brian for 3ms.
 
 You can use the function :func:`.cable_equation.passive_cable.simulate_passive_cable` to implement this task. For the parameters not specified here (e.g. dentrite diameter) you can rely on the default values. Have a look at the documentation of :func:`.simulate_passive_cable` and the source code of :func:`.passive_cable.getting_started` to learn how to efficiently solve this exercise.
 From the specification of :func:`.simulate_passive_cable` you should also note, that it returns two objects which are helpful to access the values of interest using spatial indexing:
@@ -83,13 +83,13 @@ Question:
 
 Exercise: Spatio-temporal input pattern
 ---------------------------------------
-While the passive cable use here is a very simplified model of a real dendrite, we can still get an idea of how input spikes would look to the soma. Imagine a dendrite of some length and the soma at x=0um. What is the depolarization at x=0 if the dendrite receives multiple spikes at different time/space locations? This is what we study in this exercise:
+While the passive cable used here is a very simplified model of a real dendrite, we can still get an idea of how input spikes would look to the soma. Imagine a dendrite of some length and the soma at x=0um. What is the depolarization at x=0 if the dendrite receives multiple spikes at different time/space locations? This is what we study in this exercise:
 
 Create a cable of length 800uM and inject three short pulses A, B, and C at different time/space locations:
  | A: (t=1.0ms, x=100um)
  | B: (t=1.5ms, x=200um)
  | C: (t=2.0ms, x=300um)
- | Pulse input: 100us duration, 0.8nanoAmp amplitude
+ | Pulse input: 100us duration, 0.8nA amplitude
 
 Make use of the function :func:`.input_factory.get_spikes_current` to easily create such an input pattern:
 
@@ -100,7 +100,7 @@ Make use of the function :func:`.input_factory.get_spikes_current` to easily cre
     current = input_factory.get_spikes_current(t_spikes, 100*b2.us, 0.8*b2.namp, append_zero=True)
     voltage_monitor_ABC, cable_model = passive_cable.simulate_passive_cable(..., current_injection_location=l_spikes, input_current=current, ...)
 
-Run Brian for 5 milliseconds. Your simulation for this input pattern should look similar to this figure:
+Run Brian for 5ms. Your simulation for this input pattern should look similar to this figure:
 
 
 .. figure:: exc_images/passive_cable_ABC.png
@@ -110,14 +110,14 @@ Run Brian for 5 milliseconds. Your simulation for this input pattern should look
 
 Question
 ~~~~~~~~
-#. plot the temporal evolution (t in [0ms, 5ms]) of the membrane voltage at the soma (x=0). What is the maximal depolarization?
-#. reverse the order of the three input spikes:
+#. Plot the temporal evolution (t in [0ms, 5ms]) of the membrane voltage at the soma (x=0). What is the maximal depolarization?
+#. Reverse the order of the three input spikes:
 
  | C: (t=1.0ms, x=300um)
  | B: (t=1.5ms, x=200um)
  | A: (t=2.0ms, x=100um)
 
-Again, let Brian simulate 5 milliseconds. In the same figure as before, plot the temporal evolution (t in [0ms, 5ms]) of the membrane voltage at the soma (x=0). What is the maximal depolarization? Discuss the result.
+Again, let Brian simulate 5ms. In the same figure as before, plot the temporal evolution (t in [0ms, 5ms]) of the membrane voltage at the soma (x=0). What is the maximal depolarization? Discuss the result.
 
 
 Exercise: Effect of cable parameters
@@ -130,8 +130,9 @@ Question
 ~~~~~~~~
 Inject a very brief pulse current at (t=.05ms, x=400um). Run Brian twice for 0.2 ms with two different parameter sets (see example below). Plot the temporal evolution of the membrane voltage at x=500um for the two parameter sets. Discuss your observations.
 
+.. note::
 
- Note: to better see some of the effects, plot only a short time window and increase the temporal resolution of the numerical approximation (b2.defaultclock.dt = 0.005 * b2.ms)
+    To better see some of the effects, plot only a short time window and increase the temporal resolution of the numerical approximation (``b2.defaultclock.dt = 0.005 * b2.ms``).
 
 .. code-block:: py
 
@@ -146,7 +147,7 @@ Inject a very brief pulse current at (t=.05ms, x=400um). Run Brian twice for 0.2
 
 Exercise: stationary solution and comparison with theoretical result
 --------------------------------------------------------------------
-Create a cable of length 500um and inject a **constant current** of amplitude 0.1nanoAmp at x=0um. You can use the input_factory to create that current. Note the parameter append_zero=False. As we are not interested in the exact values of the transients, we can speed up the simulation increase the width of a timestep dt: b2.defaultclock.dt = 0.1 * b2.ms
+Create a cable of length 500um and inject a **constant current** of amplitude 0.1nA at x=0um. You can use the ``input_factory`` to create that current. Note the parameter ``append_zero=False``. As we are not interested in the exact values of the transients, we can speed up the simulation increase the width of a timestep dt: ``b2.defaultclock.dt = 0.1 * b2.ms``.
 
 .. code-block:: py
 
@@ -161,12 +162,12 @@ Create a cable of length 500um and inject a **constant current** of amplitude 0.
 
 Question
 ~~~~~~~~
-Before running a simulation, sketch two curves, one for x=0um and one for x=500um, of the membrane potential Vm versus time. What steady state Vm do you expect?
+Before running a simulation, sketch two curves, one for x=0um and one for x=500um, of the membrane potential :math:`V_m` versus time. What steady state :math:`V_m` do you expect?
 
 Now run the Brian simulator for 100 milliseconds.
 
-#. Plot Vm vs. time (t in [0ms, 100ms]) at x=0um and x=500um and compare the curves to your sketch.
-#. Plot Vm vs location (x in [0um, 500um]) at t=100ms.
+#. Plot :math:`V_m` vs. time (t in [0ms, 100ms]) at x=0um and x=500um and compare the curves to your sketch.
+#. Plot :math:`V_m` vs location (x in [0um, 500um]) at t=100ms.
 
 
 Question
@@ -179,11 +180,10 @@ Question (Bonus)
 ~~~~~~~~~~~~~~~~
 You observed that the membrane voltage reaches a location dependent steady-state value. Here we compare those simulation results to the analytical solution.
 
-
-#. Derive the analytical steady-state solution. (finite cable length L, constant current I0 at x=0, sealed end: no longitudinal current at x=L).
+#. Derive the analytical steady-state solution (finite cable length :math:`L`, constant current :math:`I_0` at :math:`x=0`, sealed end: no longitudinal current at :math:`x=L`).
 
 #. Plot the analytical solution and the simulation result in one figure.
 
-#. Run the simulation with different resolution parameters (change defaultclock.dt and/or the number of compartments). Compare the simulation with the analytical solution.
+#. Run the simulation with different resolution parameters (change ``b2.defaultclock.dt`` and/or the number of compartments). Compare the simulation with the analytical solution.
 
-#. If you need help to get started, or if you're not sure about the analytical solution, you can find a solution in the `Brian2 docs <http://brian2.readthedocs.io/en/latest/examples/compartmental.cylinder.html>`_ :
+#. If you need help to get started, or if you're not sure about the analytical solution, you can find a solution in the `Brian2 docs <http://brian2.readthedocs.io/en/latest/examples/compartmental.cylinder.html>`_.

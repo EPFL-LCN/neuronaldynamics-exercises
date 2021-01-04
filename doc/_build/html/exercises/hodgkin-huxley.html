@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. Numerical integration of the HH model of the squid axon &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. FitzHugh-Nagumo: Phase plane and bifurcation analysis" href="phase-plane-analysis.html" />
+    <link rel="prev" title="5. Dendrites and the (passive) cable equation" href="passive-cable.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Numerical integration of the HH model of the squid axon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-step-current-response">6.1. Exercise: step current response</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">6.1.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.1.2. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-slow-and-fast-ramp-current">6.2. Exercise: slow and fast ramp current</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">6.2.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">6.2.2. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">6.2.3. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-rebound-spike">6.3. Exercise: Rebound Spike</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">6.3.1. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-brian-implementation-of-a-hh-neuron">6.4. Exercise: Brian implementation of a HH neuron</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">6.4.1. Question</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>6. Numerical integration of the HH model of the squid axon</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/hodgkin-huxley.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="numerical-integration-of-the-hh-model-of-the-squid-axon">
+<h1>6. Numerical integration of the HH model of the squid axon<a class="headerlink" href="#numerical-integration-of-the-hh-model-of-the-squid-axon" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>See <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch2.S2.html">Chapter 2 Section 2</a> on general information about
+the Hodgkin-Huxley equations and models.</p>
+<p><strong>Python classes</strong></p>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">hodgkin_huxley.HH</span></code> module contains all code required for this exercise. It implements a Hodgkin-Huxley neuron model.
+At the beginning of your exercise solutions, import the modules and run the demo function.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.hodgkin_huxley</span> <span class="kn">import</span> <span class="n">HH</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">input_factory</span>
+
+<span class="n">HH</span><span class="o">.</span><span class="n">getting_started</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/HH_getting_started.png"><img alt="../_images/HH_getting_started.png" src="../_images/HH_getting_started.png" style="width: 480.0px; height: 360.0px;" /></a>
+<p class="caption"><span class="caption-text">Step current injection into a Hodgkin-Huxley neuron</span></p>
+</div>
+<div class="section" id="exercise-step-current-response">
+<h2>6.1. Exercise: step current response<a class="headerlink" href="#exercise-step-current-response" title="Permalink to this headline">¶</a></h2>
+<p>We study the response of a Hodgkin-Huxley neuron to different input currents. Have a look at the documentation of the functions <code class="xref py py-func docutils literal notranslate"><span class="pre">HH.simulate_HH_neuron()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">HH.plot_data()</span></code> and the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">neurodynex3.tools.input_factory</span></code>.</p>
+<div class="section" id="question">
+<h3>6.1.1. Question<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<p>What is the lowest step current amplitude I_min for generating <strong>at least one spike</strong>? Determine the value by trying different input amplitudes in the code fragment:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">I_min</span> <span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">uA</span><span class="p">)</span>
+<span class="n">state_monitor</span> <span class="o">=</span> <span class="n">HH</span><span class="o">.</span><span class="n">simulate_HH_neuron</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="mi">120</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">HH</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;HH Neuron, minimal current&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>6.1.2. Question<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>What is the lowest step current amplitude to generate <strong>repetitive firing</strong>?</li>
+<li>Discuss the difference between the two regimes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercise-slow-and-fast-ramp-current">
+<h2>6.2. Exercise: slow and fast ramp current<a class="headerlink" href="#exercise-slow-and-fast-ramp-current" title="Permalink to this headline">¶</a></h2>
+<p>The minimal current to elicit a spike does not just depend on the amplitude I or on the total charge Q of the current, but on the “shape” of the current. Let’s see why:</p>
+<div class="section" id="id2">
+<h3>6.2.1. Question<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Inject a slow ramp current into a HH neuron. The current has amplitude <code class="docutils literal notranslate"><span class="pre">0A</span></code> at t in [0, 5] ms and linearly increases to an amplitude of <code class="docutils literal notranslate"><span class="pre">12.0uAmp</span></code> at <code class="docutils literal notranslate"><span class="pre">t=ramp_t_end</span></code>. At <code class="docutils literal notranslate"><span class="pre">t&gt;ramp_t_end</span></code>, the current is set to <code class="docutils literal notranslate"><span class="pre">0A</span></code>. Using the following code, reduce <code class="docutils literal notranslate"><span class="pre">slow_ramp_t_end</span></code> to the maximal duration of the ramp current, such that the neuron does <strong>not</strong> spike. Make sure you simulate system for at least 20ms after the current stops.</p>
+<ul class="simple">
+<li>What is the membrane voltage at the time when the current injection stops (t=slow_ramp_t_end)?</li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="o">.</span><span class="n">defaultclock</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="mf">0.02</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">slow_ramp_t_end</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># no spike. make it shorter</span>
+<span class="n">slow_ramp_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_ramp_current</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">slow_ramp_t_end</span><span class="p">,</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="mf">0.</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">uA</span><span class="p">,</span> <span class="mf">12.0</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">uA</span><span class="p">)</span>
+<span class="n">state_monitor</span> <span class="o">=</span> <span class="n">HH</span><span class="o">.</span><span class="n">simulate_HH_neuron</span><span class="p">(</span><span class="n">slow_ramp_current</span><span class="p">,</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">idx_t_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">slow_ramp_t_end</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">defaultclock</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
+<span class="n">voltage_slow</span> <span class="o">=</span> <span class="n">state_monitor</span><span class="o">.</span><span class="n">vm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">idx_t_end</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;voltage_slow={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voltage_slow</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>6.2.2. Question<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Do the same as before but for a fast ramp current: The maximal amplitude at <code class="docutils literal notranslate"><span class="pre">t=ramp_t_end</span></code> is <code class="docutils literal notranslate"><span class="pre">4.5uAmp</span></code>. Start with <code class="docutils literal notranslate"><span class="pre">fast_ramp_t_end</span> <span class="pre">=</span> <span class="pre">8ms</span></code> and then increase it until you observe a spike.
+Note: Technically the input current is implemented using a TimedArray. For a short, steep ramp, the one milliseconds discretization for the current is not high enough. You can create a finer resolution by setting the parameter <code class="docutils literal notranslate"><span class="pre">unit_time</span></code> in the function <code class="xref py py-func docutils literal notranslate"><span class="pre">input_factory.get_ramp_current()</span></code> (see next code block)</p>
+<ul class="simple">
+<li>What is the membrane voltage at the time when the current injection stops (t=fast_ramp_t_end)?</li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="o">.</span><span class="n">defaultclock</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="mf">0.02</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">fast_ramp_t_end</span> <span class="o">=</span> <span class="mi">80</span>  <span class="c1"># no spike. make it longer</span>
+<span class="n">fast_ramp_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_ramp_current</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">fast_ramp_t_end</span><span class="p">,</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="mf">0.</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">uA</span><span class="p">,</span> <span class="mf">4.5</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">uA</span><span class="p">)</span>
+<span class="n">state_monitor</span> <span class="o">=</span> <span class="n">HH</span><span class="o">.</span><span class="n">simulate_HH_neuron</span><span class="p">(</span><span class="n">fast_ramp_current</span><span class="p">,</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">idx_t_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">fast_ramp_t_end</span><span class="o">*</span><span class="mf">0.1</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">defaultclock</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span>
+<span class="n">voltage_fast</span> <span class="o">=</span> <span class="n">state_monitor</span><span class="o">.</span><span class="n">vm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">idx_t_end</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;voltage_fast={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voltage_fast</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>6.2.3. Question<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Use the function <code class="xref py py-func docutils literal notranslate"><span class="pre">HH.plot_data()</span></code> to visualize the dynamics of the system for the fast and the slow case above. Discuss the differences between the two situations. Why are the two “threshold” voltages different? Link your observation to the gating variables m,n, and h. Hint: have a look at <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch2.S2.html">Chapter 2 Figure 2.3</a></p>
+</div>
+</div>
+<div class="section" id="exercise-rebound-spike">
+<h2>6.3. Exercise: Rebound Spike<a class="headerlink" href="#exercise-rebound-spike" title="Permalink to this headline">¶</a></h2>
+<p>A HH neuron can spike not only if it receives a sufficiently strong depolarizing input current but also after a hyperpolarizing current. Such a spike is called a <em>rebound spike</em>.</p>
+<div class="section" id="id5">
+<h3>6.3.1. Question<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Inject a hyperpolarizing step current <code class="docutils literal notranslate"><span class="pre">I_amp</span> <span class="pre">=</span> <span class="pre">-1</span> <span class="pre">uA</span></code> for 20ms into the HH neuron. Simulate the neuron for 50 ms and plot the voltage trace and the gating variables. Repeat the simulation with <code class="docutils literal notranslate"><span class="pre">I_amp</span> <span class="pre">=</span> <span class="pre">-5</span> <span class="pre">uA</span></code>  What is happening here? To which gating variable do you attribute this rebound spike?</p>
+</div>
+</div>
+<div class="section" id="exercise-brian-implementation-of-a-hh-neuron">
+<h2>6.4. Exercise: Brian implementation of a HH neuron<a class="headerlink" href="#exercise-brian-implementation-of-a-hh-neuron" title="Permalink to this headline">¶</a></h2>
+<p>In this exercise you will learn to work with the Brian2 model equations. To do so, get the source code of the function  <code class="xref py py-func docutils literal notranslate"><span class="pre">HH.simulate_HH_neuron()</span></code> (follow the link to the documentation and then click on the [source] link). Copy the function code and paste it into your Jupyter Notebook. Change the function name from simulate_HH_neuron to a name of your choice. Have a look at the source code and find the conductance parameters gK and gNa.</p>
+<div class="section" id="id6">
+<h3>6.4.1. Question<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>In the source code of your function, change the density of sodium channels. Increase it by a factor of 1.4. Stimulate this modified neuron with a step current.</p>
+<ul class="simple">
+<li>What is the minimal current leading to repetitive spiking? Explain.</li>
+<li>Run a simulation with no input current to determine the resting potential of the neuron. Link your observation to the  Goldman–Hodgkin–Katz voltage equation.</li>
+<li>If you increase the sodium conductance further, you can observe repetitive firing even in the absence of input, why?</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="phase-plane-analysis.html" class="btn btn-neutral float-right" title="7. FitzHugh-Nagumo: Phase plane and bifurcation analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="passive-cable.html" class="btn btn-neutral float-left" title="5. Dendrites and the (passive) cable equation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>11. Network of LIF neurons (Brunel) &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12. Spatial Working Memory (Compte et. al.)" href="spatial-working-memory.html" />
+    <link rel="prev" title="10. Oja’s hebbian learning rule" href="ojas-rule.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11. Network of LIF neurons (Brunel)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-model-parameters-and-threshold-rate">11.1. Exercise: model parameters and threshold rate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">11.1.1. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-population-activity">11.2. Exercise: Population activity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-network-states">11.2.1. Question: Network states</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-interspike-interval-isi-and-coefficient-of-variation-cv">11.2.2. Question: Interspike interval (ISI)  and Coefficient of Variation (CV)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-emergence-of-synchronization">11.3. Exercise: Emergence of Synchronization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">11.3.1. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#bonus-power-spectrum-of-the-population-activity">11.4. Bonus: Power Spectrum of the Population Activity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-sampling-the-population-activity">11.4.1. Question: Sampling the Population Activity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-sampling-a-single-neuron-spike-train">11.4.2. Question: Sampling a Single Neuron Spike Train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-single-neuron-activity-vs-population-activity">11.4.3. Question: Single Neuron activity vs. Population Activity</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>11. Network of LIF neurons (Brunel)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/brunel-network.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="network-of-lif-neurons-brunel">
+<h1>11. Network of LIF neurons (Brunel)<a class="headerlink" href="#network-of-lif-neurons-brunel" title="Permalink to this headline">¶</a></h1>
+<p>In this exercise we study a well known network of sparsely connected Leaky-Integrate-And-Fire neurons (Brunel, 2000).</p>
+<p><strong>Book chapters</strong></p>
+<p>The Brunel model is introduced in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch13.S4.html">Chapter 13 Section 4.2</a> . The network structure is shown in figure 13.6b. Read the section “Synchrony, oscillations, and irregularity” and have a look at Figure 13.7. For this exercise, you can skip the explanations related to the Fokker-Planck equation.</p>
+<p><strong>Python classes</strong></p>
+<p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">brunel_model.LIF_spiking_network</span></code> implements a parametrized network. The figure below shows the simulation result using the default configuration.</p>
+<div class="figure align-center" id="id2">
+<img alt="../_images/Brunel_Spiking_LIF.png" src="../_images/Brunel_Spiking_LIF.png" />
+<p class="caption"><span class="caption-text">Simulation result. Top: raster plot of 150 randomly selected neurons. Three spike trains are visually highlighted. Middle: time evolution of the population activity A(t). Bottom: Membrane voltage of three neurons. The red color in the top and bottom panels identifies the same neuron.</span></p>
+</div>
+<p>To get started, call the function  <code class="xref py py-func docutils literal notranslate"><span class="pre">brunel_model.LIF_spiking_network.getting_started()</span></code> or copy the following code into a Jupyter notebook.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.brunel_model</span> <span class="kn">import</span> <span class="n">LIF_spiking_network</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+
+<span class="n">rate_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span><span class="p">,</span> <span class="n">voltage_monitor</span><span class="p">,</span> <span class="n">monitored_spike_idx</span> <span class="o">=</span> <span class="n">LIF_spiking_network</span><span class="o">.</span><span class="n">simulate_brunel_network</span><span class="p">(</span><span class="n">sim_time</span><span class="o">=</span><span class="mf">250.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_network_activity</span><span class="p">(</span><span class="n">rate_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span><span class="p">,</span> <span class="n">voltage_monitor</span><span class="p">,</span> <span class="n">spike_train_idx_list</span><span class="o">=</span><span class="n">monitored_spike_idx</span><span class="p">,</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">0.</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that you can change all parameters of the neuron by using the named parameters of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_brunel_network()</span></code>. If you do not specify any parameter, the default values are used (see next code block). You can access these variables in your code by prefixing them with the module name (for example LIF_spiking_network.POISSON_INPUT_RATE).</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default parameters of a single LIF neuron:</span>
+<span class="n">V_REST</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">V_RESET</span> <span class="o">=</span> <span class="o">+</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">FIRING_THRESHOLD</span> <span class="o">=</span> <span class="o">+</span><span class="mf">20.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">MEMBRANE_TIME_SCALE</span> <span class="o">=</span> <span class="mf">20.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">ABSOLUTE_REFRACTORY_PERIOD</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+
+<span class="c1"># Default parameters of the network</span>
+<span class="n">SYNAPTIC_WEIGHT_W0</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>  <span class="c1"># note: w_ee=w_ie = w0 and = w_ei=w_ii = -g*w0</span>
+<span class="n">RELATIVE_INHIBITORY_STRENGTH_G</span> <span class="o">=</span> <span class="mf">4.</span>  <span class="c1"># balanced</span>
+<span class="n">CONNECTION_PROBABILITY_EPSILON</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">SYNAPTIC_DELAY</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">POISSON_INPUT_RATE</span> <span class="o">=</span> <span class="mf">12.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Hz</span>
+<span class="n">N_POISSON_INPUT</span> <span class="o">=</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-model-parameters-and-threshold-rate">
+<h2>11.1. Exercise: model parameters and threshold rate<a class="headerlink" href="#exercise-model-parameters-and-threshold-rate" title="Permalink to this headline">¶</a></h2>
+<p>In the first exercise, we get familiar with the model and parameters. Make sure you have read the <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch13.S4.html">book chapter</a> . Then have a look at the documentation of <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_brunel_network()</span></code>. Note that in our implementation, the number of excitatory presynaptic poisson neurons (input from the external population) is a parameter <cite>N_extern</cite> and thus independent of <cite>CE</cite>.</p>
+<div class="section" id="question">
+<h3>11.1.1. Question:<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Run the simulation with the default parameters (see code block above). In that default configuration, what values  take the variables <span class="math notranslate nohighlight">\(N_E\)</span>, <span class="math notranslate nohighlight">\(N_I\)</span>, <span class="math notranslate nohighlight">\(C_E\)</span>, <span class="math notranslate nohighlight">\(C_I\)</span>, <span class="math notranslate nohighlight">\(w_{EE}\)</span>, <span class="math notranslate nohighlight">\(w_{EI}\)</span>, <span class="math notranslate nohighlight">\(w_{IE}\)</span>, and <span class="math notranslate nohighlight">\(w_{II}\)</span>? The variables are described in the book and in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch13.S4.html">Fig. 13.6</a></li>
+<li>What are the units of the weights w?</li>
+<li>The frequency <span class="math notranslate nohighlight">\(\nu_{threshold}\)</span> is is the poisson rate of the external population sufficient to drive the neurons in the network to the firing threshold. Using Eq. <a class="reference internal" href="#equation-eq-nu-threshold">(1)</a>, compute <span class="math notranslate nohighlight">\(\nu_{threshold}\)</span>. You can do this in Python, e.g. use LIF_spiking_network.FIRING_THRESHOLD for <span class="math notranslate nohighlight">\(u_{thr}\)</span>, etc.</li>
+<li>Refering to Figure 13.7, left panel, what is the meaning of the value 1 on the y-axis (Input). What is the horizontal dashed line designating? How is it related to <span class="math notranslate nohighlight">\(u_{thr}\)</span>?</li>
+<li>Run a simulation  for 500ms. Set <cite>poisson_input_rate</cite> to <span class="math notranslate nohighlight">\(\nu_{threshold}\)</span>. Plot the network activity in the time interval [0ms, 500ms]. Is the network quiet (Q)?</li>
+<li>During the simulation time, what is the average firing rate of a single neuron? You can access the total number of spikes from the Brian2.SpikeMonitor: spike_monitor.num_spikes and the number of neurons in the network from spike_monitor.source.N .</li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-eq-nu-threshold">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-nu-threshold" title="Permalink to this equation">¶</a></span>\[ \nu_{threshold} = \frac{u_{thr}}{N_{extern} w_{0} \tau_m}\]</div>
+</div>
+</div>
+<div class="section" id="exercise-population-activity">
+<h2>11.2. Exercise: Population activity<a class="headerlink" href="#exercise-population-activity" title="Permalink to this headline">¶</a></h2>
+<p>The network of spiking LIF-neurons shows characteristic population activities. In this exercise we investigate the patterns asynchronous irregular (AI), synchronous regular (SR), fast synchronous irregular (SI fast) and slow synchronous irregular (SI slow).</p>
+<div class="section" id="question-network-states">
+<h3>11.2.1. Question: Network states<a class="headerlink" href="#question-network-states" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_brunel_network()</span></code> gives you three options to vary the input strength (y-axis in figure 13.7, a). What options do you have?</li>
+<li>Which parameter of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_brunel_network()</span></code> lets you change the relative strength of inhibition (the x-axis in figure 13.7, a)?</li>
+<li>Define a network of 6000 excitatory and 1500 inhibitory neurons. Find the appropriate parameters and simulate the network in the regimes AI, SR, SI-fast and SI-slow. For each of the four configurations, plot the network activity and compute the average firing rate. Run each simulation for at least 1000ms and plot two figures for each simulation: one showing the complete simulation time and one showing only the last ~50ms.</li>
+<li>What is the  population activity A(t) in each of the four conditions (in Hz, averaged over the last 200ms of your simulation)?</li>
+</ul>
+</div>
+<div class="section" id="question-interspike-interval-isi-and-coefficient-of-variation-cv">
+<h3>11.2.2. Question: Interspike interval (ISI)  and Coefficient of Variation (CV)<a class="headerlink" href="#question-interspike-interval-isi-and-coefficient-of-variation-cv" title="Permalink to this headline">¶</a></h3>
+<p>Before answering the questions, make sure you understand the notions ISI and CV. If necessary, read <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch7.S3.html">Chapter 7.3.1</a> .</p>
+<ul>
+<li><p class="first">What is the CV of a Poisson neuron?</p>
+</li>
+<li><p class="first">From the four figures plotted in the previous question, qualitatively interpret the spike trains and the population activity in each of the four regimes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>What is the mean firing rate of a single neuron (only a rough estimate).</li>
+<li>Sketch the ISI histogram. (is it peaked or broad? where’s the maximum?)</li>
+<li>Estimate the CV. (is it &lt;1, &lt;&lt;1, =1, &gt;1 ?)</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Validate your estimates using the functions <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_spike_train_stats()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_tools.plot_ISI_distribution()</span></code>. Use the code block provided here.</p>
+</li>
+<li><p class="first">Make sure you understand the code block. Why is the function <cite>.spike_tools.get_spike_train_stats</cite> called with the parameter <cite>window_t_min=100.*b2.ms</cite>?</p>
+</li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+from neurodynex3.brunel_model import LIF_spiking_network
+from neurodynex3.tools import plot_tools, spike_tools
+import brian2 as b2
+
+poisson_rate = ??? *b2.Hz
+g = ???
+CE = ???
+simtime = ??? *b2.ms
+
+rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = LIF_spiking_network.simulate_brunel_network(N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=simtime)
+plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = 0*b2.ms)
+plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor, spike_train_idx_list=monitored_spike_idx, t_min = simtime - ??? *b2.ms)
+spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min= 100 *b2.ms)
+plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins=100, xlim_max_ISI= ??? *b2.ms)
+</pre></div>
+</div>
+<ul class="simple">
+<li>In the Synchronous Repetitive (SR) state, what is the dominant frequency of the population activity A(t)? Compare this frequency to the firing frequency of a single neuron. You can do this “visually” using the plots created by <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_tools.plot_network_activity()</span></code> or by solving the bonus exercise below.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercise-emergence-of-synchronization">
+<h2>11.3. Exercise: Emergence of Synchronization<a class="headerlink" href="#exercise-emergence-of-synchronization" title="Permalink to this headline">¶</a></h2>
+<p>The different regimes emerge from from the recurrence and the relative strength of inhibition <cite>g</cite>. In the absence of recurrent feedback from the network, the network would approach a constant mean activity A(t).</p>
+<div class="section" id="id1">
+<h3>11.3.1. Question:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Simulate a network of 6000 excitatory and 1500 inhibitory neurons. Set the following parameters: poisson_rate = 14*b2.Hz, g=2.5. In which state is this network?</li>
+<li>What would be the population activity caused by the external input only? We can simulate this. Run a simulation of the same network, but disable the recurrent feedback: simulate_brunel_network(…,w0=0.*b2.mV, w_external = LIF_spiking_network.SYNAPTIC_WEIGHT_W0).</li>
+<li>Explain why the non-recurrent network shows a strong synchronization in the beginning and why this synchronization fades out.</li>
+<li>The non recurrent network is strongly synchronized in the beginning. Is the connected network simply “locked” to this initial synchronization? You can falsify this hypothesis by initializing each neuron in the network with a random vm. Run the simulation with <cite>random_vm_init=True</cite> to see how the synchronization emerges over time.</li>
+</ul>
+<div class="figure align-center" id="id3">
+<img alt="../_images/Brunel_Synchronization.png" src="../_images/Brunel_Synchronization.png" />
+<p class="caption"><span class="caption-text">Simulation of a network with random v_m initialization. The synchronization of the neurons is not a residue of shared initial conditions, but emerges over time.</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="bonus-power-spectrum-of-the-population-activity">
+<h2>11.4. Bonus: Power Spectrum of the Population Activity<a class="headerlink" href="#bonus-power-spectrum-of-the-population-activity" title="Permalink to this headline">¶</a></h2>
+<p>We can get more insights into the statistics of the network activity by analysing the power spectrum of the spike trains and the population activity. The four regimes (SR, AI, SI fast, SI slow) are characterized by <em>two</em> properties: the regularity/irregularity of individual neuron’s spike trains <em>and</em> the stationary/oscillatory pattern of the population activity A(t). We transform the spike trains and A(t) into the frequency domain to identify regularities.</p>
+<div class="section" id="question-sampling-the-population-activity">
+<h3>11.4.1. Question: Sampling the Population Activity<a class="headerlink" href="#question-sampling-the-population-activity" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>When analysing the population activity A(t), what is the lowest/highest frequency we are interested?</li>
+</ul>
+<p>The highest frequency <span class="math notranslate nohighlight">\(f_{max}\)</span> one can resolve from the time series A(t) is determined by <span class="math notranslate nohighlight">\(\Delta t\)</span>. Even if we are not interested in very high frequencies, we should not increase <span class="math notranslate nohighlight">\(\Delta t\)</span> (too much) because it may affect the accuracy of the simulation.</p>
+<p>The lowest frequency <span class="math notranslate nohighlight">\(\Delta f\)</span> is determined by the signal length <span class="math notranslate nohighlight">\(T_{Simulation}\)</span>. We could therefore decrease the simulation duration if we accept decreasing the resolution in the frequency domain. But there is another option: We still use a “too long” simulation time <span class="math notranslate nohighlight">\(T_{Simulation}\)</span> but then split the RateMonitor.rate signal into <span class="math notranslate nohighlight">\(k\)</span> chunks of duration <span class="math notranslate nohighlight">\(T_{Signal}\)</span>. We can then average the power across the <span class="math notranslate nohighlight">\(k\)</span> repetitions. This is what the function <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_population_activity_power_spectrum()</span></code> does -  we just have to get the parameters first:</p>
+<ul class="simple">
+<li>Given the values <span class="math notranslate nohighlight">\(\Delta f = 5 Hz, \Delta t = 0.1ms, T_{init}=100ms, k=5\)</span>, compute <span class="math notranslate nohighlight">\(T_{Signal}\)</span> and <span class="math notranslate nohighlight">\(T_{Simulation}\)</span>.</li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-eq-fourier-transform-params">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-fourier-transform-params" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{array}{ccll}
+ f_{max} = \frac{f_{Sampling}}{2} = \frac{1}{2 \cdot \Delta t} \\[.2cm]
+N \cdot \Delta t = T_{Signal} \\[.2cm]
+2 \cdot f_{max} = N \cdot \Delta f \\[.2cm]
+T_{Simulation} = k \cdot T_{Signal} + T_{init};  k \in N \\
+\end{array}\end{split}\]</div>
+<p><span class="math notranslate nohighlight">\(f_{Sampling}\)</span>: sampling frequency of the signal;
+<span class="math notranslate nohighlight">\(f_{max}\)</span>: highest frequency component;
+<span class="math notranslate nohighlight">\(\Delta f\)</span>: frequency resolution in fourier domain = lowest frequency component;
+<span class="math notranslate nohighlight">\(T_{Signal}\)</span> length of the signal;
+<span class="math notranslate nohighlight">\(\Delta t\)</span>: temporal resolution of the signal;
+<span class="math notranslate nohighlight">\(N\)</span>: Number of samples (same in time- and frequency- domain)
+<span class="math notranslate nohighlight">\(T_{Simulation}\)</span>: simulation time;
+<span class="math notranslate nohighlight">\(k\)</span>: k repetitions of the signal;
+<span class="math notranslate nohighlight">\(T_{init}\)</span>: initial part of the simulation (not used for data analysis);</p>
+</div>
+<div class="section" id="question-sampling-a-single-neuron-spike-train">
+<h3>11.4.2. Question: Sampling a Single Neuron Spike Train<a class="headerlink" href="#question-sampling-a-single-neuron-spike-train" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The sampling of the individual neuron’s spike train is different because in that case, the signal is given as a list of timestamps (SpikeMonitor.spike_trains) and needs to be transformed into a binary vector. This is done inside the function <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_averaged_single_neuron_power_spectrum()</span></code>. Read the doc to learn how to control the sampling rate.</li>
+<li>The firing rate of a single neuron can be very low and very different from one neuron to another. For that reason, we do not split the spike train into k realizations but we analyse the full spike train (<span class="math notranslate nohighlight">\(T_{Simulation}-T_{init}\)</span>). From the simulation, we get many (CE+CI) spike trains and we can  average across a subset of neurons. Check the doc of <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_averaged_single_neuron_power_spectrum()</span></code> to learn how to control the number of neurons of this subset.</li>
+</ul>
+</div>
+<div class="section" id="question-single-neuron-activity-vs-population-activity">
+<h3>11.4.3. Question: Single Neuron activity vs. Population Activity<a class="headerlink" href="#question-single-neuron-activity-vs-population-activity" title="Permalink to this headline">¶</a></h3>
+<p>We can now compute and plot the power spectrum.</p>
+<ul class="simple">
+<li>For each network states SR, AI, SI fast, SI slow, find the parameters, then compute and plot the power spectrum using the script given here. Make sure you understand the script and read the documentation of the functions <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_averaged_single_neuron_power_spectrum()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_tools.plot_spike_train_power_spectrum()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_population_activity_power_spectrum()</span></code>, and <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_tools.plot_population_activity_power_spectrum()</span></code>.</li>
+<li>Discuss power spectra of the states SR, AI, SI fast and SI slow. Compare the individual neuron’s spike train powers to the averaged power spectrum and to the power spectrum of A(t).</li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+from neurodynex3.brunel_model import LIF_spiking_network
+from neurodynex3.tools import plot_tools, spike_tools
+import brian2 as b2
+
+# Specify the parameters of the desired network state (e.g. SI fast)
+poisson_rate = ??? *b2.Hz
+g = ???
+CE = ???
+
+# Specify the signal and simulation properties:
+delta_t = ??? * b2.ms
+delta_f = ??? * b2.Hz
+T_init = ??? * b2.ms
+k = ???
+
+# compute the remaining values:
+f_max = ???
+N_samples = ???
+T_signal = ???
+T_sim = k * T_signal + T_init
+
+# replace the ??? by appropriate values:
+
+print(&quot;Start simulation. T_sim={}, T_signal={}, N_samples={}&quot;.format(T_sim, T_signal, N_samples))
+b2.defaultclock.dt = delta_t
+# for technical reason (solves rounding issues), we add a few extra samples:
+stime = T_sim + (10 + k) * b2.defaultclock.dt
+rate_monitor, spike_monitor, voltage_monitor, monitored_spike_idx = \
+    LIF_spiking_network.simulate_brunel_network(
+        N_Excit=CE, poisson_input_rate=poisson_rate, g=g, sim_time=stime)
+
+plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                 spike_train_idx_list=monitored_spike_idx, t_min=0*b2.ms)
+plot_tools.plot_network_activity(rate_monitor, spike_monitor, voltage_monitor,
+                                 spike_train_idx_list=monitored_spike_idx, t_min=T_sim - ??? *b2.ms)
+spike_stats = spike_tools.get_spike_train_stats(spike_monitor, window_t_min= T_init)
+plot_tools.plot_ISI_distribution(spike_stats, hist_nr_bins= ???, xlim_max_ISI= ??? *b2.ms)
+
+#  Power Spectrum
+pop_freqs, pop_ps, average_population_rate = \
+    spike_tools.get_population_activity_power_spectrum(
+        rate_monitor, delta_f, k, T_init)
+plot_tools.plot_population_activity_power_spectrum(pop_freqs, pop_ps, ??? *b2.Hz, average_population_rate)
+freq, mean_ps, all_ps, mean_firing_rate, all_mean_firing_freqs = \
+    spike_tools.get_averaged_single_neuron_power_spectrum(
+        spike_monitor, sampling_frequency=1./delta_t, window_t_min= T_init,
+        window_t_max=T_sim, nr_neurons_average= ??? )
+plot_tools.plot_spike_train_power_spectrum(freq, mean_ps, all_ps, max_freq= ??? * b2.Hz,
+                                           mean_firing_freqs_per_neuron=all_mean_firing_freqs,
+                                           nr_highlighted_neurons=2)
+print(&quot;done&quot;)
+</pre></div>
+</div>
+<p>The figures below show the type of analysis you can do with this script. The first figure shows the last 80ms of a network simulation. The second figure the power spectrum of the population activity A(t) and the third figure shows the power spectrum of single neurons (individual neurons and averaged across neurons). Note the qualitative difference between the spectral density of the population and that of the individual neurons.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/Brunel_SIfast_activity.png"><img alt="../_images/Brunel_SIfast_activity.png" src="../_images/Brunel_SIfast_activity.png" style="width: 80%;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/Brunel_SIfast_PSpop.png"><img alt="../_images/Brunel_SIfast_PSpop.png" src="../_images/Brunel_SIfast_PSpop.png" style="width: 80%;" /></a>
+</div>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/Brunel_SIfast_PSsingle.png"><img alt="../_images/Brunel_SIfast_PSsingle.png" src="../_images/Brunel_SIfast_PSsingle.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-text">Single neurons (red, grey) fire irregularly <strong>(I)</strong> while the population activity oscillates <strong>(S)</strong>.</span></p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="spatial-working-memory.html" class="btn btn-neutral float-right" title="12. Spatial Working Memory (Compte et. al.)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ojas-rule.html" class="btn btn-neutral float-left" title="10. Oja’s hebbian learning rule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

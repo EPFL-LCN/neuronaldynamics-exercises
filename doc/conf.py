@@ -24,8 +24,9 @@ from setuptools_scm import get_version
 # sys.path.insert(0, os.path.abspath('.'))
 
 sys.path.insert(0, os.path.abspath('../.'))
-
-MOCK_MODULES = []
+# sys.path.insert(0, os.path.abspath('../..'))
+MOCK_MODULES = ['matplotlib']
+# MOCK_MODULES = []
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 
@@ -61,7 +62,7 @@ source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
 # General information about the project.
-project = u'Neuronaldynamics Exercises'
+project = u'Neuronal Dynamics Exercises'
 copyright = u'2016, EPFL-LCN'
 author = u'EPFL-LCN'
 

@@ -1,3 +1,5 @@
 mock
 setuptools_scm
 brian2>=2.0
+matplotlib
+scipy

@@ -1,7 +1,7 @@
 Perceptual Decision Making (Wong & Wang)
 ========================================
 
-In this exercise we study decision making in a network of competing populations of spiking neurons. The network has been proposed by Wong and Wang in 2006 [1] as a model of decision making in a visual motion detection task. The decision making task and the network are described in the `book  <http://neuronaldynamics.epfl.ch/online/Ch16.html>`_ and in the original publication (see :ref:`location-references` [1]).
+In this exercise we study decision making in a network of competing populations of spiking neurons. The network has been proposed by Wong and Wang in 2006 [1] as a model of decision making in a visual motion detection task. The decision making task and the network are described in the `book  <http://neuronaldynamics.epfl.ch/online/Ch16.html>`_ and in the original publication (see :ref:`location-references`).
 
 
 .. _location-phase_plane:
@@ -11,7 +11,7 @@ In this exercise we study decision making in a network of competing populations 
     :width: 100%
 
     Decision Space.
-    Each point represents the firing rates of the two subpopulations "Left" and "Right" at a given point in time (averaged over a short time window). The color encodes time. In this example, the decision "Right" is made after about 900 milliseconds.
+    Each point represents the firing rates of the two subpopulations "Left" and "Right" at a given point in time (averaged over a short time window). The color encodes time. In this example, the decision "Right" is made after about 900 ms.
 
 
 To get a better understanding of the network dynamics, we recommend to solve the exercise :doc:`spatial-working-memory`.
@@ -33,7 +33,7 @@ The module :mod:`.competing_populations.decision_making` implements the network 
 .. code-block:: py
 
     %matplotlib inline
-    from neurodynex.competing_populations import decision_making
+    from neurodynex3.competing_populations import decision_making
 
     decision_making.getting_started()
 
@@ -52,7 +52,7 @@ Before we can analyse the decision making process and the simulation results, we
     :align: center
     :width: 65%
 
-    Structure within the excitatory population. The "Left" and "Right" subpopulations have strong recurrent weights :math:`(w^+ > w^0)` and weak projections to the other :math:`(w^- < w^0)`. All neurons receive a poisson input from an external source. Additionally, the neurons in the "Left" subpopulation receive poisson input with some rate :math:`\nu_{Left}`; the "Right" subpopulation receives a poisson input with a different rate :math:`\nu_{right}`.
+    Structure within the excitatory population. The "Left" and "Right" subpopulations have strong recurrent weights :math:`(w^+ > w^0)` and weak projections to the other :math:`(w^- < w^0)`. All neurons receive a poisson input from an external source. Additionally, the neurons in the "Left" subpopulation receive poisson input with some rate :math:`\nu_{left}`; the "Right" subpopulation receives a poisson input with a different rate :math:`\nu_{right}`.
 
 
 Question: Understanding Brian2 Monitors
@@ -83,8 +83,8 @@ The monitors are returned in a `Python dictionary <https://docs.python.org/3/tut
  .. code-block:: py
 
     import brian2 as b2
-    from neurodynex.tools import plot_tools
-    from neurodynex.competing_populations import decision_making
+    from neurodynex3.tools import plot_tools
+    from neurodynex3.competing_populations import decision_making
     import matplotlib.pyplot as plt
 
     results = decision_making.sim_decision_making_network(t_stimulus_start= 50. * b2.ms,
@@ -108,7 +108,7 @@ Remark: The parameter ``avg_window_width`` is passed to the function `Population
 
 Exercise: Stimulating the decision making circuit
 -------------------------------------------------
-The input stimulus is implemented by two inhomogenous Poisson processes: The subpopulation "Left" and "Right" receive input from two different PoissonGroups (see Figure "Network Structure"). The input has a ``coherence level c`` and is noisy. We have implemented this in the following way: every 30ms, the firing rates :math:`\nu_{left}` and :math:`\nu_{right}` of each of the two PoissonGroups are drawn from a normal distribution:
+The input stimulus is implemented by two inhomogenous Poisson processes: The subpopulation "Left" and "Right" receive input from two different PoissonGroups (see Figure "Network Structure"). The input has a coherence level :math:`c` and is noisy. We have implemented this in the following way: every 30ms, the firing rates :math:`\nu_{left}` and :math:`\nu_{right}` of each of the two PoissonGroups are drawn from a normal distribution:
 
 
 .. math::
@@ -119,7 +119,7 @@ The input stimulus is implemented by two inhomogenous Poisson processes: The sub
    \mu_{right} &=& \mu_0 * (0.5 - 0.5c)\\
    c &\in& [-1, +1]
 
-The coherence level ``c``, the maximum mean :math:`\mu_0` and the standard deviation :math:`\sigma` are parameters of :func:`.sim_decision_making_network`.
+The coherence level :math:`c`, the maximum mean :math:`\mu_0` and the standard deviation :math:`\sigma` are parameters of :func:`.sim_decision_making_network`.
 
 Question: Coherence Level
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -130,9 +130,9 @@ Question: Coherence Level
 
 Now look at the documentation of the function :func:`.sim_decision_making_network` and find the default values of :math:`\mu_0` and :math:`\sigma`. Using those values, answer the following questions:
 
-* What are the mean firing rates (in Hz) :math:`\mu_{left}` and :math:`\mu_{right}` for the coherence level c= -0.2?
+* What are the mean firing rates :math:`\mu_{left}` and :math:`\mu_{right}` (in Hz) for the coherence level :math:`c=-0.2`?
 
-* For c= -0.2, how does the difference :math:`\mu_{left}-\mu_{right}` compare to the variance of :math:`\nu_{left}-\nu_{right}`.
+* For :math:`c=-0.2`, how does the difference :math:`\mu_{left}-\mu_{right}` compare to the variance of :math:`\nu_{left}-\nu_{right}`.
 
 
 Question: Input stimuli with different coherence levels
@@ -159,7 +159,7 @@ Question: Plotting the Decision Space
 * We can use a rate threshold as a decision criterion: We say the network has made a decision if one of the (smoothed) rates crosses a threshold. What are appropriate values for ``avg_window_width`` and ``rate threshold`` to detect a decision from the two rates?
 
 
-Hint: Use Brian's smooth_rate function:
+Hint: Use Brian's ``smooth_rate`` function:
 
 .. code-block:: py
 
@@ -170,7 +170,7 @@ Hint: Use Brian's smooth_rate function:
 Question: Implementing a decision criterion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple (decision_time_left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
+* Using your insights from the previous questions, implement a function **get_decision_time** that takes two `RateMonitors <http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates>`_ , a ``avg_window_width`` and a ``rate_threshold``. The function should return a tuple ``(decision_time_left, decision_time_right)``. The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision "Left", (0ms, 987.6ms) for decision "Right" and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for ``avg_window_width`` and ``rate_threshold``.
 
  The following code block shows how your function is called.
 
@@ -204,7 +204,7 @@ Use the function :func:`.competing_populations.decision_making.run_multiple_simu
     coherence_levels = [-0.1, -0.5]  # for negative values, B is the correct decision.
     nr_repetitions = 3
 
-    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=??, avg_window_width=??)
+    time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=XXXX, rate_threshold=XXXX, avg_window_width=XXXX)
 
 * See the doc of :func:`.run_multiple_simulations` to understand the parameters and return values.
 * Write a function that takes ``coherence_levels, time_to_A, time_to_B, count_A, count_B, count_No`` and writes ``Percent correct`` (for each level in ``coherence_levels``) to the terminal.
@@ -228,7 +228,7 @@ Using :func:`.run_multiple_simulations`, run at least 20 simulations for each of
 .. code-block:: py
 
     import brian2 as b2
-    from neurodynex.competing_populations import decision_making
+    from neurodynex3.competing_populations import decision_making
 
     coherence_levels = [0.15, -0.8]
     nr_repetitions = 20
@@ -244,6 +244,6 @@ Using :func:`.run_multiple_simulations`, run at least 20 simulations for each of
 **References**
 --------------
 
-[1] Wong, K.-F. & Wang, X.-J. A Recurrent Network Mechanism of Time Integration in Perceptual Decisions. J. Neurosci. 26, 1314–1328 (2006).
+[1] Wong, K.-F. & Wang, X.-J. `A Recurrent Network Mechanism of Time Integration in Perceptual Decisions <https://doi.org/10.1523/JNEUROSCI.3733-05.2006>`_. J. Neurosci. 26, 1314–1328 (2006).
 
 [2] Parts of this exercise and parts of the implementation are inspired by material from *Stanford University, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen & Tatiana Engel, 2013*, online available.

@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. Dendrites and the (passive) cable equation &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Numerical integration of the HH model of the squid axon" href="hodgkin-huxley.html" />
+    <link rel="prev" title="4. AdEx: the Adaptive Exponential Integrate-and-Fire model" href="adex-model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. Dendrites and the (passive) cable equation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-spatial-and-temporal-evolution-of-a-pulse-input">5.1. Exercise: spatial and temporal evolution of a pulse input</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">5.1.1. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-spatio-temporal-input-pattern">5.2. Exercise: Spatio-temporal input pattern</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.2.1. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-effect-of-cable-parameters">5.3. Exercise: Effect of cable parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.3.1. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-stationary-solution-and-comparison-with-theoretical-result">5.4. Exercise: stationary solution and comparison with theoretical result</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.4.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">5.4.2. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-bonus">5.4.3. Question (Bonus)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>5. Dendrites and the (passive) cable equation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/passive-cable.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dendrites-and-the-passive-cable-equation">
+<h1>5. Dendrites and the (passive) cable equation<a class="headerlink" href="#dendrites-and-the-passive-cable-equation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>In <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch3.S2.html">Chapter 3 Section 2</a> the cable equation is derived and compartmental models are introduced.</p>
+<p><strong>Python classes</strong></p>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cable_equation.passive_cable</span></code> module implements a passive cable using a <a class="reference external" href="http://brian2.readthedocs.io/en/latest/user/multicompartmental.html">Brian2 multicompartment</a> model. To get started, import the module and call the demo function:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.cable_equation</span> <span class="kn">import</span> <span class="n">passive_cable</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">input_factory</span>
+<span class="n">passive_cable</span><span class="o">.</span><span class="n">getting_started</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">passive_cable.getting_started()</span></code> injects a very short pulse current at (t=500ms, x=100um) into a finite length cable and then lets Brian evolve the dynamics for 2ms. This simulation produces a time x location matrix whose entries are the membrane voltage at each (time,space)-index. The result is visualized using pyplot.imshow.</p>
+<div class="figure align-center">
+<img alt="../_images/cable_equation_pulse.png" src="../_images/cable_equation_pulse.png" />
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The axes in the figure above are not scaled to the physical units but show the raw matrix indices. These indices depend on the spatial resolution (number of compartments) and the temporal resolution (brian2.defaultclock.dt). For the exercises make sure you correctly scale the units using Brian’s <a class="reference external" href="http://brian2.readthedocs.io/en/latest/user/units.html">unit system</a> . As an example, to plot voltage vs. time you call</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">voltage_monitor</span><span class="o">.</span><span class="n">t</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">voltage_monitor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">v</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">This way, your plot shows voltage in mV and time in ms, which is useful for visualizations. Note that this scaling (to physical units) is different from the scaling in the theoretical derivation (e.g. <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch3.S2.html">chapter 3.2.1</a>  where the quantities are rescaled to a unit-free characteristic length scale</p>
+</div>
+<p>Using the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cable_equation.passive_cable</span></code>, we study some properties of the passive cable. Note: if you do not specify the cable parameters, the function <code class="xref py py-func docutils literal notranslate"><span class="pre">cable_equation.passive_cable.simulate_passive_cable()</span></code> uses the following default values:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">CABLE_LENGTH</span> <span class="o">=</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">um</span>  <span class="c1"># length of dendrite</span>
+<span class="n">CABLE_DIAMETER</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">um</span>  <span class="c1"># diameter of dendrite</span>
+<span class="n">R_LONGITUDINAL</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">kohm</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mm</span>  <span class="c1"># Intracellular medium resistance</span>
+<span class="n">R_TRANSVERSAL</span> <span class="o">=</span> <span class="mf">1.25</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Mohm</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mm</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># cell membrane resistance (-&gt;leak current)</span>
+<span class="n">E_LEAK</span> <span class="o">=</span> <span class="o">-</span><span class="mf">70.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>  <span class="c1"># reversal potential of the leak current (-&gt; resting potential)</span>
+<span class="n">CAPACITANCE</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">uF</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># membrane capacitance</span>
+</pre></div>
+</div>
+<p>You can easily access those values in your code:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">neurodynex3.cable_equation</span> <span class="kn">import</span> <span class="n">passive_cable</span>
+<span class="k">print</span><span class="p">(</span><span class="n">passive_cable</span><span class="o">.</span><span class="n">R_TRANSVERSAL</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-spatial-and-temporal-evolution-of-a-pulse-input">
+<h2>5.1. Exercise: spatial and temporal evolution of a pulse input<a class="headerlink" href="#exercise-spatial-and-temporal-evolution-of-a-pulse-input" title="Permalink to this headline">¶</a></h2>
+<p>Create a cable of length 800um and inject a 0.1ms long step current of amplitude 0.8nanoAmp at (t=1ms, x=200um). Run Brian for 3 milliseconds.</p>
+<p>You can use the function <code class="xref py py-func docutils literal notranslate"><span class="pre">cable_equation.passive_cable.simulate_passive_cable()</span></code> to implement this task. For the parameters not specified here (e.g. dentrite diameter) you can rely on the default values. Have a look at the documentation of <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_passive_cable()</span></code> and the source code of <code class="xref py py-func docutils literal notranslate"><span class="pre">passive_cable.getting_started()</span></code> to learn how to efficiently solve this exercise.
+From the specification of <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_passive_cable()</span></code> you should also note, that it returns two objects which are helpful to access the values of interest using spatial indexing:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">voltage_monitor</span><span class="p">,</span> <span class="n">cable_model</span> <span class="o">=</span> <span class="n">passive_cable</span><span class="o">.</span><span class="n">simulate_passive_cable</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">probe_location</span> <span class="o">=</span> <span class="mf">0.123</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mm</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">voltage_monitor</span><span class="p">[</span><span class="n">cable_model</span><span class="o">.</span><span class="n">morphology</span><span class="p">[</span><span class="n">probe_location</span><span class="p">]]</span><span class="o">.</span><span class="n">v</span>
+</pre></div>
+</div>
+<div class="section" id="question">
+<h3>5.1.1. Question:<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>What is the maximum depolarization you observe? Where and when does it occur?</li>
+<li>Plot the temporal evolution (t in [0ms, 3ms]) of the membrane voltage at the locations 0um, 100um, … , 600 um in one figure.</li>
+<li>Plot the spatial evolution (x in [0um, 800um]) of the membrane voltage at the time points 1.0ms, 1.1ms, … , 1.6ms in one plot</li>
+<li>Discuss the figures.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="exercise-spatio-temporal-input-pattern">
+<h2>5.2. Exercise: Spatio-temporal input pattern<a class="headerlink" href="#exercise-spatio-temporal-input-pattern" title="Permalink to this headline">¶</a></h2>
+<p>While the passive cable use here is a very simplified model of a real dendrite, we can still get an idea of how input spikes would look to the soma. Imagine a dendrite of some length and the soma at x=0um. What is the depolarization at x=0 if the dendrite receives multiple spikes at different time/space locations? This is what we study in this exercise:</p>
+<dl class="docutils">
+<dt>Create a cable of length 800uM and inject three short pulses A, B, and C at different time/space locations:</dt>
+<dd><div class="first last line-block">
+<div class="line">A: (t=1.0ms, x=100um)</div>
+<div class="line">B: (t=1.5ms, x=200um)</div>
+<div class="line">C: (t=2.0ms, x=300um)</div>
+<div class="line">Pulse input: 100us duration, 0.8nanoAmp amplitude</div>
+</div>
+</dd>
+</dl>
+<p>Make use of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">input_factory.get_spikes_current()</span></code> to easily create such an input pattern:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">t_spikes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+<span class="n">l_spikes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">100.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">um</span><span class="p">,</span> <span class="mf">200.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">um</span><span class="p">,</span> <span class="mf">300.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">um</span><span class="p">]</span>
+<span class="n">current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_spikes_current</span><span class="p">(</span><span class="n">t_spikes</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">us</span><span class="p">,</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">,</span> <span class="n">append_zero</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">voltage_monitor_ABC</span><span class="p">,</span> <span class="n">cable_model</span> <span class="o">=</span> <span class="n">passive_cable</span><span class="o">.</span><span class="n">simulate_passive_cable</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">current_injection_location</span><span class="o">=</span><span class="n">l_spikes</span><span class="p">,</span> <span class="n">input_current</span><span class="o">=</span><span class="n">current</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run Brian for 5 milliseconds. Your simulation for this input pattern should look similar to this figure:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/passive_cable_ABC.png"><img alt="../_images/passive_cable_ABC.png" src="../_images/passive_cable_ABC.png" style="width: 60%;" /></a>
+</div>
+<div class="section" id="id1">
+<h3>5.2.1. Question<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>plot the temporal evolution (t in [0ms, 5ms]) of the membrane voltage at the soma (x=0). What is the maximal depolarization?</li>
+<li>reverse the order of the three input spikes:</li>
+</ol>
+<blockquote>
+<div><div class="line-block">
+<div class="line">C: (t=1.0ms, x=300um)</div>
+<div class="line">B: (t=1.5ms, x=200um)</div>
+<div class="line">A: (t=2.0ms, x=100um)</div>
+</div>
+</div></blockquote>
+<p>Again, let Brian simulate 5 milliseconds. In the same figure as before, plot the temporal evolution (t in [0ms, 5ms]) of the membrane voltage at the soma (x=0). What is the maximal depolarization? Discuss the result.</p>
+</div>
+</div>
+<div class="section" id="exercise-effect-of-cable-parameters">
+<h2>5.3. Exercise: Effect of cable parameters<a class="headerlink" href="#exercise-effect-of-cable-parameters" title="Permalink to this headline">¶</a></h2>
+<p>So far, you have called the function <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_passive_cable()</span></code> without specifying the cable parameters. That means, the model was run with the default values. Look at the documentation of <code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_passive_cable()</span></code> to see which parameters you can change.</p>
+<p>Keep in mind that our cable model is very simple compared to what happens in  dendrites or axons. But we can still observe the impact of a parameter change on the current flow. As an example, think of a myelinated fiber: it has a much <strong>lower</strong> membrane capacitance and <strong>higher</strong> membrane resistance. Let’s compare these two parameter-sets:</p>
+<div class="section" id="id2">
+<h3>5.3.1. Question<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Inject a very brief pulse current at (t=.05ms, x=400um). Run Brian twice for 0.2 ms with two different parameter sets (see example below). Plot the temporal evolution of the membrane voltage at x=500um for the two parameter sets. Discuss your observations.</p>
+<blockquote>
+<div>Note: to better see some of the effects, plot only a short time window and increase the temporal resolution of the numerical approximation (b2.defaultclock.dt = 0.005 * b2.ms)</div></blockquote>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># set 1: (same as defaults)</span>
+<span class="n">membrane_resistance_1</span> <span class="o">=</span> <span class="mf">1.25</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Mohm</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mm</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">membrane_capacitance_1</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">uF</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="c1"># set 2: (you can think of a myelinated &quot;cable&quot;)</span>
+<span class="n">membrane_resistance_2</span> <span class="o">=</span> <span class="mf">5.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">Mohm</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mm</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">membrane_capacitance_2</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">uF</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-stationary-solution-and-comparison-with-theoretical-result">
+<h2>5.4. Exercise: stationary solution and comparison with theoretical result<a class="headerlink" href="#exercise-stationary-solution-and-comparison-with-theoretical-result" title="Permalink to this headline">¶</a></h2>
+<p>Create a cable of length 500um and inject a <strong>constant current</strong> of amplitude 0.1nanoAmp at x=0um. You can use the input_factory to create that current. Note the parameter append_zero=False. As we are not interested in the exact values of the transients, we can speed up the simulation increase the width of a timestep dt: b2.defaultclock.dt = 0.1 * b2.ms</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="o">.</span><span class="n">defaultclock</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">unit_time</span><span class="o">=</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">namp</span><span class="p">,</span> <span class="n">append_zero</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">voltage_monitor</span><span class="p">,</span> <span class="n">cable_model</span> <span class="o">=</span> <span class="n">passive_cable</span><span class="o">.</span><span class="n">simulate_passive_cable</span><span class="p">(</span>
+<span class="n">length</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">current_injection_location</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">um</span><span class="p">],</span>
+<span class="n">input_current</span><span class="o">=</span><span class="n">current</span><span class="p">,</span> <span class="n">simulation_time</span><span class="o">=</span><span class="n">sim_time</span><span class="p">,</span> <span class="n">nr_compartments</span><span class="o">=</span><span class="n">N_comp</span><span class="p">)</span>
+<span class="n">v_X0</span> <span class="o">=</span> <span class="n">voltage_monitor</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>  <span class="c1"># access the first compartment</span>
+<span class="n">v_Xend</span> <span class="o">=</span> <span class="n">voltage_monitor</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>  <span class="c1"># access the last compartment</span>
+<span class="n">v_Tend</span> <span class="o">=</span> <span class="n">voltage_monitor</span><span class="o">.</span><span class="n">v</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># access the last time step</span>
+</pre></div>
+</div>
+<div class="section" id="id3">
+<h3>5.4.1. Question<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Before running a simulation, sketch two curves, one for x=0um and one for x=500um, of the membrane potential Vm versus time. What steady state Vm do you expect?</p>
+<p>Now run the Brian simulator for 100 milliseconds.</p>
+<ol class="arabic simple">
+<li>Plot Vm vs. time (t in [0ms, 100ms]) at x=0um and x=500um and compare the curves to your sketch.</li>
+<li>Plot Vm vs location (x in [0um, 500um]) at t=100ms.</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>5.4.2. Question<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Compute the characteristic length <span class="math notranslate nohighlight">\(\lambda\)</span> (= length scale = lenght constant) of the cable. Compare your value with the previous figure.</li>
+</ol>
+<blockquote>
+<div><span class="math notranslate nohighlight">\(\lambda=\sqrt{\frac{r_{Membrane}}{r_{Longitudinal}}}\)</span></div></blockquote>
+</div>
+<div class="section" id="question-bonus">
+<h3>5.4.3. Question (Bonus)<a class="headerlink" href="#question-bonus" title="Permalink to this headline">¶</a></h3>
+<p>You observed that the membrane voltage reaches a location dependent steady-state value. Here we compare those simulation results to the analytical solution.</p>
+<ol class="arabic simple">
+<li>Derive the analytical steady-state solution. (finite cable length L, constant current I0 at x=0, sealed end: no longitudinal current at x=L).</li>
+<li>Plot the analytical solution and the simulation result in one figure.</li>
+<li>Run the simulation with different resolution parameters (change defaultclock.dt and/or the number of compartments). Compare the simulation with the analytical solution.</li>
+<li>If you need help to get started, or if you’re not sure about the analytical solution, you can find a solution in the <a class="reference external" href="http://brian2.readthedocs.io/en/latest/examples/compartmental.cylinder.html">Brian2 docs</a> :</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hodgkin-huxley.html" class="btn btn-neutral float-right" title="6. Numerical integration of the HH model of the squid axon" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="adex-model.html" class="btn btn-neutral float-left" title="4. AdEx: the Adaptive Exponential Integrate-and-Fire model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

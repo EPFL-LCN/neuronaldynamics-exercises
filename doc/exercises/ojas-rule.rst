@@ -22,7 +22,7 @@ At the beginning of your exercise solution file, import the contained functions 
 
 .. code-block:: py
 
-	import neurodynex.ojas_rule.oja as oja
+	import neurodynex3.ojas_rule.oja as oja
 
 You can then simply run the exercise functions by executing, e.g.
 
@@ -37,7 +37,7 @@ A complete script using these functions could look like this:
 .. code-block:: py
 
 	%matplotlib inline  # used for Jupyter Notebook
-	import neurodynex.ojas_rule.oja as oja
+	import neurodynex3.ojas_rule.oja as oja
 	import matplotlib.pyplot as plt
 
 	cloud = oja.make_cloud(n=200, ratio=.3, angle=60)

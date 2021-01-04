@@ -11,7 +11,7 @@ models.
 
 **Python classes**
 
-The :mod:`neurodynex.neuron_type.neurons` module contains all classes required for this exercise. To get started, call :func:`getting_started <.neuron_type.neurons.getting_started>` or copy the following code into your Jupyter notebook:
+The :mod:`neurodynex3.neuron_type.neurons` module contains all classes required for this exercise. To get started, call :func:`getting_started <.neuron_type.neurons.getting_started>` or copy the following code into your Jupyter notebook:
 
 .. code-block:: python
 
@@ -19,8 +19,8 @@ The :mod:`neurodynex.neuron_type.neurons` module contains all classes required f
     import brian2 as b2
     import matplotlib.pyplot as plt
     import numpy as np
-    from neurodynex.tools import input_factory, plot_tools, spike_tools
-    from neurodynex.neuron_type import neurons
+    from neurodynex3.tools import input_factory, plot_tools, spike_tools
+    from neurodynex3.neuron_type import neurons
 
     # create an input current
     input_current = input_factory.get_step_current(50, 150, 1.*b2.ms, 0.5*b2.pA)
@@ -106,9 +106,9 @@ Now **write a new function** (in your own `.py` file or in your Jupyter Notebook
 .. note::
 
     You can check your results by calling:
-        
+
     .. code-block:: python
-        
+
         spike_tools.pretty_print_spike_train_stats(...)
 
 
@@ -125,9 +125,9 @@ Add the following function skeleton to your code and complete it to plot the f-I
     import numpy as np
 
     def plot_fI_curve(NeuronClass):
-        
+
         plt.figure()  # new figure
-        
+
         neuron = NeuronClass()  # instantiate the neuron class
 
         I = np.arange(0.0,1.1,0.1)  # a range of current inputs
@@ -135,11 +135,11 @@ Add the following function skeleton to your code and complete it to plot the f-I
 
         # loop over current values
         for I_amp in I:
-            
+
             firing_rate = # insert here a call to your function get_firing_rate( ... )
 
             f.append(firing_rate)
-    
+
         plt.plot(I, f)
         plt.xlabel('Amplitude of Injecting step current (pA)')
         plt.ylabel('Firing rate (Hz)')

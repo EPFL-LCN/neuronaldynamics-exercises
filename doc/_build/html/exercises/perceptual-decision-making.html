@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>13. Perceptual Decision Making (Wong &amp; Wang) &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python exercise modules" href="../contents.html" />
+    <link rel="prev" title="12. Spatial Working Memory (Compte et. al.)" href="spatial-working-memory.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">13. Perceptual Decision Making (Wong &amp; Wang)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-the-network-implementation">13.1. Exercise: The network implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-understanding-brian2-monitors">13.1.1. Question: Understanding Brian2 Monitors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-accessing-a-dictionary-to-plot-the-population-rates">13.1.2. Question: Accessing a dictionary to plot the population rates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-stimulating-the-decision-making-circuit">13.2. Exercise: Stimulating the decision making circuit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-coherence-level">13.2.1. Question: Coherence Level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-input-stimuli-with-different-coherence-levels">13.2.2. Question: Input stimuli with different coherence levels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-decision-space">13.3. Exercise: Decision Space</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-plotting-the-decision-space">13.3.1. Question: Plotting the Decision Space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-implementing-a-decision-criterion">13.3.2. Question: Implementing a decision criterion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-percent-correct-and-decision-time-as-a-function-of-coherence-level">13.4. Exercise: Percent-correct and Decision-time as a function of coherence level</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-running-multiple-simulations">13.4.1. Question: Running multiple simulations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-percent-correct-time-to-decision">13.4.2. Question: Percent-Correct, Time-to-decision</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#references">13.5. <strong>References</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>13. Perceptual Decision Making (Wong &amp; Wang)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/perceptual-decision-making.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="perceptual-decision-making-wong-wang">
+<h1>13. Perceptual Decision Making (Wong &amp; Wang)<a class="headerlink" href="#perceptual-decision-making-wong-wang" title="Permalink to this headline">¶</a></h1>
+<p>In this exercise we study decision making in a network of competing populations of spiking neurons. The network has been proposed by Wong and Wang in 2006 [1] as a model of decision making in a visual motion detection task. The decision making task and the network are described in the <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch16.html">book</a> and in the original publication (see <a class="reference internal" href="#location-references"><span class="std std-ref">References</span></a> [1]).</p>
+<div class="figure align-center" id="id3">
+<span id="location-phase-plane"></span><a class="reference internal image-reference" href="../_images/DecisionMaking_PhasePlane_3.png"><img alt="../_images/DecisionMaking_PhasePlane_3.png" src="../_images/DecisionMaking_PhasePlane_3.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-text">Decision Space.
+Each point represents the firing rates of the two subpopulations “Left” and “Right” at a given point in time (averaged over a short time window). The color encodes time. In this example, the decision “Right” is made after about 900 milliseconds.</span></p>
+</div>
+<p>To get a better understanding of the network dynamics, we recommend to solve the exercise <a class="reference internal" href="spatial-working-memory.html"><span class="doc">Spatial Working Memory (Compte et. al.)</span></a>.</p>
+<p>The parameters of our implementation differ from the original paper. In particular, the default network simulates only 480 spiking neurons which leads to relatively short simulation time even on less powerful computers.</p>
+<p><strong>Book chapters</strong></p>
+<p>Read the introduction of chapter <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch16.html">16, Competing populations and decision making</a>. To understand the mechanism of decision making in a network, read <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch16.S2.html">16.2, Competition through common inhibition</a>.</p>
+<p>If you have access to a scientific library, you may also want to read the original publication, <a class="reference internal" href="#location-references"><span class="std std-ref">References</span></a> [1].</p>
+<p><strong>Python classes</strong></p>
+<p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">competing_populations.decision_making</span></code> implements the network adapted from <a class="reference internal" href="#location-references"><span class="std std-ref">References</span></a> [1, 2]. To get started, call the function  <code class="xref py py-func docutils literal notranslate"><span class="pre">competing_populations.decision_making.getting_started()</span></code> or copy the following code into a Jupyter notebook.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.competing_populations</span> <span class="kn">import</span> <span class="n">decision_making</span>
+
+<span class="n">decision_making</span><span class="o">.</span><span class="n">getting_started</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-the-network-implementation">
+<h2>13.1. Exercise: The network implementation<a class="headerlink" href="#exercise-the-network-implementation" title="Permalink to this headline">¶</a></h2>
+<p>Before we can analyse the decision making process and the simulation results, we first need to understand the structure of the network and how we can access the state variables of the respective subpopulations.</p>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/DecisionMaking_NetworkStructureAll.png"><img alt="../_images/DecisionMaking_NetworkStructureAll.png" src="../_images/DecisionMaking_NetworkStructureAll.png" style="width: 65%;" /></a>
+<p class="caption"><span class="caption-text">Network structure. The excitatory population is divided into three subpopulations, shown in the next figure.</span></p>
+</div>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/DecisionMaking_NetworkStructureDetail.png"><img alt="../_images/DecisionMaking_NetworkStructureDetail.png" src="../_images/DecisionMaking_NetworkStructureDetail.png" style="width: 65%;" /></a>
+<p class="caption"><span class="caption-text">Structure within the excitatory population. The “Left” and “Right” subpopulations have strong recurrent weights <span class="math notranslate nohighlight">\((w^+ &gt; w^0)\)</span> and weak projections to the other <span class="math notranslate nohighlight">\((w^- &lt; w^0)\)</span>. All neurons receive a poisson input from an external source. Additionally, the neurons in the “Left” subpopulation receive poisson input with some rate <span class="math notranslate nohighlight">\(\nu_{Left}\)</span>; the “Right” subpopulation receives a poisson input with a different rate <span class="math notranslate nohighlight">\(\nu_{right}\)</span>.</span></p>
+</div>
+<div class="section" id="question-understanding-brian2-monitors">
+<h3>13.1.1. Question: Understanding Brian2 Monitors<a class="headerlink" href="#question-understanding-brian2-monitors" title="Permalink to this headline">¶</a></h3>
+<p>The network shown in the figure above is implemented in Brian2 in the function  <code class="xref py py-func docutils literal notranslate"><span class="pre">competing_populations.decision_making.sim_decision_making_network()</span></code>. Each subpopulation is a <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/models.html">Brian2 NeuronGroup</a>. Look at the source code of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">sim_decision_making_network()</span></code> to answer the following questions:</p>
+<ul class="simple">
+<li>For each of the four subpopulations, find the variable name of the corresponding <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/models.html">NeuronGroup</a>.</li>
+<li>Each NeuronGroup is monitored with a <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/recording.html">PopulationRateMonitor</a>, a <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/recording.html">SpikeMonitor</a>, and a <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/recording.html">StateMonitor</a>. Find the variable names for those monitors. Have a look at the <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/recording.html">Brian2 documentation</a> if you are not familiar with the concept of monitors.</li>
+<li>Which state variable of the neurons is recorded by the <a class="reference external" href="http://brian2.readthedocs.io/en/stable/user/recording.html">StateMonitor</a>?</li>
+</ul>
+</div>
+<div class="section" id="question-accessing-a-dictionary-to-plot-the-population-rates">
+<h3>13.1.2. Question: Accessing a dictionary to plot the population rates<a class="headerlink" href="#question-accessing-a-dictionary-to-plot-the-population-rates" title="Permalink to this headline">¶</a></h3>
+<p>The monitors are returned in a <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries">Python dictionary</a> providing access to objects by name. Read the <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries">Python documentation</a> and look at the code block below or the function <code class="xref py py-func docutils literal notranslate"><span class="pre">competing_populations.decision_making.getting_started()</span></code> to learn how dictionaries are used.</p>
+<ul class="simple">
+<li>Extend the following code block to include plots for all four subpopulations.</li>
+<li>Run the simulation for 800ms. What are the “typical” population rates of the four populations towards the end of the simulation? (In case the network did not decide, run the simulation again).</li>
+<li>Without running the simulation again, but by using the same <code class="docutils literal notranslate"><span class="pre">results</span></code> <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html?highlight=dictionary#dictionaries">dictionary</a>, plot the rates using different values for <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code>.</li>
+<li>Interpret the effect of a very short and a very long averaging window.</li>
+<li>Find a value <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code> for which the population activity plot gives meaningful rates.</li>
+</ul>
+<blockquote>
+<div><div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.competing_populations</span> <span class="kn">import</span> <span class="n">decision_making</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">decision_making</span><span class="o">.</span><span class="n">sim_decision_making_network</span><span class="p">(</span><span class="n">t_stimulus_start</span><span class="o">=</span> <span class="mf">50.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span>
+                                                      <span class="n">coherence_level</span><span class="o">=-</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">max_sim_time</span><span class="o">=</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_network_activity</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_monitor_A&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;spike_monitor_A&quot;</span><span class="p">],</span>
+                                 <span class="n">results</span><span class="p">[</span><span class="s2">&quot;voltage_monitor_A&quot;</span><span class="p">],</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">avg_window_width</span><span class="o">=</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span>
+                                 <span class="n">sup_title</span><span class="o">=</span><span class="s2">&quot;Left&quot;</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_network_activity</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_monitor_B&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;spike_monitor_B&quot;</span><span class="p">],</span>
+                                 <span class="n">results</span><span class="p">[</span><span class="s2">&quot;voltage_monitor_B&quot;</span><span class="p">],</span> <span class="n">t_min</span><span class="o">=</span><span class="mf">0.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">avg_window_width</span><span class="o">=</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span>
+                                 <span class="n">sup_title</span><span class="o">=</span><span class="s2">&quot;Right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Remark: The parameter <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code> is passed to the function <a class="reference external" href="http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates">PopulationRateMonitor.smooth_rate()</a> . This function is useful to solve one of the next exercises.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">avg_window_width</span> <span class="o">=</span> <span class="mi">123</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">sr</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_monitor_A&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">smooth_rate</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="s2">&quot;flat&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">avg_window_width</span><span class="p">)</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">Hz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-stimulating-the-decision-making-circuit">
+<h2>13.2. Exercise: Stimulating the decision making circuit<a class="headerlink" href="#exercise-stimulating-the-decision-making-circuit" title="Permalink to this headline">¶</a></h2>
+<p>The input stimulus is implemented by two inhomogenous Poisson processes: The subpopulation “Left” and “Right” receive input from two different PoissonGroups (see Figure “Network Structure”). The input has a <code class="docutils literal notranslate"><span class="pre">coherence</span> <span class="pre">level</span> <span class="pre">c</span></code> and is noisy. We have implemented this in the following way: every 30ms, the firing rates <span class="math notranslate nohighlight">\(\nu_{left}\)</span> and <span class="math notranslate nohighlight">\(\nu_{right}\)</span> of each of the two PoissonGroups are drawn from a normal distribution:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nu_{left} &amp;\sim&amp; \mathcal{N}(\mu_{left},\,\sigma^{2})\\
+\nu_{right} &amp;\sim&amp; \mathcal{N}(\mu_{right},\,\sigma^{2})\\
+\mu_{left} &amp;=&amp; \mu_0 * (0.5 + 0.5c)\\
+\mu_{right} &amp;=&amp; \mu_0 * (0.5 - 0.5c)\\
+c &amp;\in&amp; [-1, +1]\end{split}\]</div>
+<p>The coherence level <code class="docutils literal notranslate"><span class="pre">c</span></code>, the maximum mean <span class="math notranslate nohighlight">\(\mu_0\)</span> and the standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> are parameters of <code class="xref py py-func docutils literal notranslate"><span class="pre">sim_decision_making_network()</span></code>.</p>
+<div class="section" id="question-coherence-level">
+<h3>13.2.1. Question: Coherence Level<a class="headerlink" href="#question-coherence-level" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>From the equation above, express the difference <span class="math notranslate nohighlight">\(\mu_{left}-\mu_{right}\)</span> in terms of <span class="math notranslate nohighlight">\(\mu_0\)</span> and <span class="math notranslate nohighlight">\(c\)</span>.</li>
+<li>Find the distribution of the difference <span class="math notranslate nohighlight">\(\nu_{left}-\nu_{right}\)</span>. Hint: the difference of two Gaussian distributions is another Gaussian distribution.</li>
+</ul>
+<p>Now look at the documentation of the function <code class="xref py py-func docutils literal notranslate"><span class="pre">sim_decision_making_network()</span></code> and find the default values of <span class="math notranslate nohighlight">\(\mu_0\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>. Using those values, answer the following questions:</p>
+<ul class="simple">
+<li>What are the mean firing rates (in Hz) <span class="math notranslate nohighlight">\(\mu_{left}\)</span> and <span class="math notranslate nohighlight">\(\mu_{right}\)</span> for the coherence level c= -0.2?</li>
+<li>For c= -0.2, how does the difference <span class="math notranslate nohighlight">\(\mu_{left}-\mu_{right}\)</span> compare to the variance of <span class="math notranslate nohighlight">\(\nu_{left}-\nu_{right}\)</span>.</li>
+</ul>
+</div>
+<div class="section" id="question-input-stimuli-with-different-coherence-levels">
+<h3>13.2.2. Question: Input stimuli with different coherence levels<a class="headerlink" href="#question-input-stimuli-with-different-coherence-levels" title="Permalink to this headline">¶</a></h3>
+<p>Run a few simulations with <code class="docutils literal notranslate"><span class="pre">c=-0.1</span></code> and <code class="docutils literal notranslate"><span class="pre">c=+0.6</span></code>. Plot the network activity.</p>
+<ul class="simple">
+<li>Does the network always make the correct decision?</li>
+<li>Look at the population rates and estimate how long it takes the network to make a decision.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="exercise-decision-space">
+<h2>13.3. Exercise: Decision Space<a class="headerlink" href="#exercise-decision-space" title="Permalink to this headline">¶</a></h2>
+<p>We can visualize the dynamics of the decision making process by plotting the activities of the two subpopulations “Left” / “Right” in a phase plane (see figure at the top of this page). Such a phase plane of competing states is also known as the <em>Decision Space</em>. A discussion of the decision making process in the decision space is out of the scope of this exercise but we refer to <a class="reference internal" href="#location-references"><span class="std std-ref">References</span></a> [1].</p>
+<div class="section" id="question-plotting-the-decision-space">
+<h3>13.3.1. Question: Plotting the Decision Space<a class="headerlink" href="#question-plotting-the-decision-space" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Write a function that takes two <a class="reference external" href="http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates">RateMonitors</a> and plots the <em>Decision Space</em>.</li>
+<li>Add a parameter <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code> to your function (same semantics as in the exercise above). Run a few simulations and plot the phase plane for different values of <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code>.</li>
+<li>We can use a rate threshold as a decision criterion: We say the network has made a decision if one of the (smoothed) rates crosses a threshold. What are appropriate values for <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code> and <code class="docutils literal notranslate"><span class="pre">rate</span> <span class="pre">threshold</span></code> to detect a decision from the two rates?</li>
+</ul>
+<p>Hint: Use Brian’s smooth_rate function:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">avg_window_width</span> <span class="o">=</span> <span class="mi">123</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">sr</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_monitor_A&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">smooth_rate</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="s2">&quot;flat&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">avg_window_width</span><span class="p">)</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">Hz</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="question-implementing-a-decision-criterion">
+<h3>13.3.2. Question: Implementing a decision criterion<a class="headerlink" href="#question-implementing-a-decision-criterion" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Using your insights from the previous questions, implement a function <strong>get_decision_time</strong> that takes two <a class="reference external" href="http://brian2.readthedocs.io/en/2.0.1/user/recording.html#recording-population-rates">RateMonitors</a> , a <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code> and a <code class="docutils literal notranslate"><span class="pre">rate_threshold</span></code>. The function should return a tuple (decision_time_left, decision_time_right). The decision time is the time index when some decision boundary is crossed. Possible return values are (1234.5ms, 0ms) for decision “Left”, (0ms, 987.6ms) for decision “Right” and (0ms, 0ms) for the case when no decision is made within the simulation time. A return value like (123ms, 456ms) is an error and occurs if your function is called with inappropriate values for <code class="docutils literal notranslate"><span class="pre">avg_window_width</span></code> and <code class="docutils literal notranslate"><span class="pre">rate_threshold</span></code>.</li>
+</ul>
+<blockquote>
+<div>The following code block shows how your function is called.</div></blockquote>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">get_decision_time</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_monitor_A&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;rate_monitor_B&quot;</span><span class="p">],</span> <span class="n">avg_window_width</span><span class="o">=</span><span class="mi">123</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="n">rate_threshold</span><span class="o">=</span><span class="mf">45.6</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">Hz</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mf">0.543</span> <span class="o">*</span> <span class="n">second</span><span class="p">,</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">second</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following code fragments could be useful:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">smoothed_rates_A</span> <span class="o">=</span> <span class="n">rate_monitor_A</span><span class="o">.</span><span class="n">smooth_rate</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="s2">&quot;flat&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">avg_window_width</span><span class="p">)</span> <span class="o">/</span> <span class="n">b2</span><span class="o">.</span><span class="n">Hz</span>
+<span class="n">idx_A</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">smoothed_rates_A</span> <span class="o">&gt;</span> <span class="n">rate_threshold</span><span class="o">/</span><span class="n">b2</span><span class="o">.</span><span class="n">Hz</span><span class="p">)</span>
+<span class="n">t_A</span> <span class="o">=</span> <span class="n">idx_A</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">defaultclock</span><span class="o">.</span><span class="n">dt</span>
+</pre></div>
+</div>
+<p>Run a few simulations to test your function.</p>
+</div>
+</div>
+<div class="section" id="exercise-percent-correct-and-decision-time-as-a-function-of-coherence-level">
+<h2>13.4. Exercise: Percent-correct and Decision-time as a function of coherence level<a class="headerlink" href="#exercise-percent-correct-and-decision-time-as-a-function-of-coherence-level" title="Permalink to this headline">¶</a></h2>
+<p>We now investigate how the coherence level influences the decision making process. In order to estimate quantities like <code class="docutils literal notranslate"><span class="pre">Percent-correct</span></code> or <code class="docutils literal notranslate"><span class="pre">Decision-time</span></code>, we have to average over multiple repetitions.</p>
+<div class="section" id="question-running-multiple-simulations">
+<h3>13.4.1. Question: Running multiple simulations<a class="headerlink" href="#question-running-multiple-simulations" title="Permalink to this headline">¶</a></h3>
+<p>Use the function <code class="xref py py-func docutils literal notranslate"><span class="pre">competing_populations.decision_making.run_multiple_simulations()</span></code> to get the values for multiple runs. Pass your function <em>get_decision_time</em> to <code class="xref py py-func docutils literal notranslate"><span class="pre">run_multiple_simulations()</span></code> as shown here:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span>coherence_levels = [-0.1, -0.5]  # for negative values, B is the correct decision.
+nr_repetitions = 3
+
+time_to_A, time_to_B, count_A, count_B, count_No = decision_making.run_multiple_simulations(get_decision_time,coherence_levels, nr_repetitions, max_sim_time=??, rate_threshold=??, avg_window_width=??)
+</pre></div>
+</div>
+<ul class="simple">
+<li>See the doc of <code class="xref py py-func docutils literal notranslate"><span class="pre">run_multiple_simulations()</span></code> to understand the parameters and return values.</li>
+<li>Write a function that takes <code class="docutils literal notranslate"><span class="pre">coherence_levels,</span> <span class="pre">time_to_A,</span> <span class="pre">time_to_B,</span> <span class="pre">count_A,</span> <span class="pre">count_B,</span> <span class="pre">count_No</span></code> and writes <code class="docutils literal notranslate"><span class="pre">Percent</span> <span class="pre">correct</span></code> (for each level in <code class="docutils literal notranslate"><span class="pre">coherence_levels</span></code>) to the terminal.</li>
+<li>Think about other values you could get from the data. Add them to your function.</li>
+</ul>
+</div>
+<div class="section" id="question-percent-correct-time-to-decision">
+<h3>13.4.2. Question: Percent-Correct, Time-to-decision<a class="headerlink" href="#question-percent-correct-time-to-decision" title="Permalink to this headline">¶</a></h3>
+<p>Using <code class="xref py py-func docutils literal notranslate"><span class="pre">run_multiple_simulations()</span></code>, run at least 20 simulations for each of the two <code class="docutils literal notranslate"><span class="pre">coherence_levels</span> <span class="pre">=</span> <span class="pre">[+0.15,</span> <span class="pre">-0.8]</span></code> and visualize the results. Warning: Depending on your computer, this simulation could run for more than an hour.</p>
+<ul class="simple">
+<li>Visualize <code class="docutils literal notranslate"><span class="pre">Percent</span> <span class="pre">correct</span></code> versus <code class="docutils literal notranslate"><span class="pre">coherence</span> <span class="pre">level</span></code>. Count simulations with “no decision” as wrong.</li>
+<li>Visualize <code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">to</span> <span class="pre">decision</span></code> versus <code class="docutils literal notranslate"><span class="pre">coherence</span> <span class="pre">level</span></code>. Ignore simulations with “no decision”.</li>
+<li>Discuss your results.</li>
+<li>Optionally, if you have sufficient time/computing-power, you could run more levels.</li>
+</ul>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.competing_populations</span> <span class="kn">import</span> <span class="n">decision_making</span>
+
+<span class="n">coherence_levels</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">]</span>
+<span class="n">nr_repetitions</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># do not set other parameters (=defaults are used).</span>
+<span class="n">time_to_A</span><span class="p">,</span> <span class="n">time_to_B</span><span class="p">,</span> <span class="n">count_A</span><span class="p">,</span> <span class="n">count_B</span><span class="p">,</span> <span class="n">count_No</span> <span class="o">=</span> <span class="n">decision_making</span><span class="o">.</span><span class="n">run_multiple_simulations</span><span class="p">(</span><span class="n">get_decision_time</span><span class="p">,</span> <span class="n">coherence_levels</span><span class="p">,</span> <span class="n">nr_repetitions</span><span class="p">,</span> <span class="n">max_sim_time</span><span class="o">=</span><span class="mi">1200</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+
+<span class="c1"># you may want to wrap the visualization into a function</span>
+<span class="c1"># plot_simulation_stats(coherence_levels, time_to_A, time_to_B, count_A, count_B, count_No)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<span id="location-references"></span><h2>13.5. <strong>References</strong><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Wong, K.-F. &amp; Wang, X.-J. A Recurrent Network Mechanism of Time Integration in Perceptual Decisions. J. Neurosci. 26, 1314–1328 (2006).</p>
+<p>[2] Parts of this exercise and parts of the implementation are inspired by material from <em>Stanford University, BIOE 332: Large-Scale Neural Modeling, Kwabena Boahen &amp; Tatiana Engel, 2013</em>, online available.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../contents.html" class="btn btn-neutral float-right" title="Python exercise modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="spatial-working-memory.html" class="btn btn-neutral float-left" title="12. Spatial Working Memory (Compte et. al.)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

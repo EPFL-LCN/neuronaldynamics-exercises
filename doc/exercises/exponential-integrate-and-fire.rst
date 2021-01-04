@@ -14,20 +14,19 @@ The module :mod:`.exponential_integrate_fire.exp_IF` implements the dynamics giv
 .. figure:: exc_images/exp_IF_min_current.png
    :align: center
 
-   A short pulse current of 2ms duration is injected into an Exponential-Integrate-and-Fire neuron. The current amplitude is just sufficient to elicit a spike.
+   A short pulse current of 2ms duration is injected into an exponential-integrate-and-fire neuron. The current amplitude is just sufficient to elicit a spike.
 
 
-To get started, copy the following code into a Jupyter notebook. It follows a common pattern used in these exercises: use the input_factory to get a specific current, inject it into the neuron model we provide, and finally use the plot_tools to visualize the state variables:
+To get started, copy the following code into a Jupyter notebook. It follows a common pattern used in these exercises: use the ``input_factory`` to get a specific current, inject it into the neuron model we provide, and finally use the ``plot_tools`` to visualize the state variables:
 
 
 .. code-block:: py
 
-    % matplotlib inline
+    %matplotlib inline
     import brian2 as b2
     import matplotlib.pyplot as plt
-    import neurodynex.exponential_integrate_fire.exp_IF as exp_IF
-    from neurodynex.tools import plot_tools, input_factory
-
+    import neurodynex3.exponential_integrate_fire.exp_IF as exp_IF
+    from neurodynex3.tools import plot_tools, input_factory
 
     input_current = input_factory.get_step_current(
         t_start=20, t_end=120, unit_time=b2.ms, amplitude=0.8 * b2.namp)
@@ -41,7 +40,7 @@ To get started, copy the following code into a Jupyter notebook. It follows a co
     print("nr of spikes: {}".format(spike_monitor.count[0]))
 
 
-Note that you can change all parameters of the neuron by using the named parameters of the function :func:`.simulate_exponential_IF_neuron`. If you do not specify any parameter, the default values are used (see next code block). You can access these variables in your code by prefixing them with the module name (for example exp_IF.FIRING_THRESHOLD_v_spike).
+Note that you can change all parameters of the neuron by using the named parameters of the function :func:`.simulate_exponential_IF_neuron`. If you do not specify any parameter, the default values are used (see next code block). You can access these variables in your code by prefixing them with the module name (for example ``exp_IF.FIRING_THRESHOLD_v_spike``).
 
 .. code-block:: py
 
@@ -56,43 +55,43 @@ Note that you can change all parameters of the neuron by using the named paramet
 Exercise: rehobase threshold
 ----------------------------
 
-The goal of this exercise is to study the minimal current that can elicit a spike and to understand the different notions of a firing threshold. The Exponential-Integrate-and-Fire neuron model has two threshold related parameters. They correspond to the named parameters 'v_spike' and 'v_rheobase' in the function :func:`.simulate_exponential_IF_neuron`.
+The goal of this exercise is to study the minimal current that can elicit a spike and to understand the different notions of a firing threshold. The Exponential-Integrate-and-Fire neuron model has two threshold related parameters. They correspond to the named parameters ``v_spike`` and ``v_rheobase`` in the function :func:`.simulate_exponential_IF_neuron`.
 
 Question:
 ~~~~~~~~~
 
-* Modify the code example given above: Call :func:`.simulate_exponential_IF_neuron` and set the function parameter v_spike=+10mV (which overrides the default value -30mV). What do you expect to happen? How many spikes will be generated?
+* Modify the code example given above: Call :func:`.simulate_exponential_IF_neuron` and set the function parameter ``v_spike`` to +10mV (which overrides the default value -30mV). What do you expect to happen? How many spikes will be generated?
 
-* Compute the minimal amplitude I_rh of a constant input current such that the neuron will elicit a spike. If you are not sure what and how to compute I_rh, have a look at `Figure 5.1 <http://neuronaldynamics.epfl.ch/online/Ch5.S1.html>`_  and `the textbox "Rheobase threshold and interpretation of parameters" <http://neuronaldynamics.epfl.ch/online/Ch5.S2.html>`_ in the book.
+* Compute the minimal amplitude :math:`I_{rh}` of a constant input current such that the neuron will elicit a spike. If you are not sure what and how to compute :math:`I_{rh}`, have a look at `Figure 5.1 <http://neuronaldynamics.epfl.ch/online/Ch5.S1.html>`_ and the textbox `"Rheobase threshold and interpretation of parameters" <http://neuronaldynamics.epfl.ch/online/Ch5.S2.html>`_ in the book.
 
-* Validate your result: Modify the code given above and inject a current of amplitude I_rh and 300 ms duration into the expIF neuron.
+* Validate your result: Modify the code given above and inject a current of amplitude :math:`I_{rh}` and 300ms duration into the expIF neuron.
 
 
 Exercise: strength-duration curve
 ---------------------------------
 
-The minimal amplitude to elicit a spike depends on the duration of the current. For an infinitely long current, we've just calculated the rheobase current. For short pulses and step currents, we can "experimentally" determine the minimal currents. If we plot the amplitude versus duration, we get the strength-duration curve
+The minimal amplitude to elicit a spike depends on the duration of the current. For an infinitely long current, we've just calculated the rheobase current. For short pulses and step currents, we can "experimentally" determine the minimal currents. If we plot the amplitude versus duration, we get the strength-duration curve.
 
 
 Question:
 ~~~~~~~~~
-Have a look at the following code: for the values i = 0, 2 and 6 we did not provide the minimal amplitude, but the entries in min_amp[i] are set to 0. Complete the min_amp list.
+Have a look at the following code: for the values ``i`` = 0, 2 and 6 we did not provide the minimal amplitude, but the entries in ``min_amp[i]`` are set to 0. Complete the ``min_amp`` list.
 
-* Set the index i to 0
-* Enter an informed guess into the min_amp table
-* Run the script
+* Set the index ``i`` to 0.
+* Enter an informed guess into the ``min_amp`` table.
+* Run the script.
 * Depending on the plot, increase or decrease the amplitude, repeat until you just get one spike.
-* Do the same for i = 2 and i = 6
+* Do the same for ``i = 2`` and ``i = 6``.
 
 At the end of the script, the strength-duration curve is plotted. Discuss it. You may want to add a log-log plot to better see the asymptotic behaviour.
 
 .. code-block:: py
 
-    % matplotlib inline
+    %matplotlib inline
     import brian2 as b2
     import matplotlib.pyplot as plt
-    import neurodynex.exponential_integrate_fire.exp_IF as exp_IF
-    from neurodynex.tools import plot_tools, input_factory
+    import neurodynex3.exponential_integrate_fire.exp_IF as exp_IF
+    from neurodynex3.tools import plot_tools, input_factory
 
     i=1  #change i and find the value that goes into min_amp
     durations = [1,   2,    5,  10,   20,   50, 100]

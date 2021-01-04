@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7. FitzHugh-Nagumo: Phase plane and bifurcation analysis &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Hopfield Network model of associative memory" href="hopfield-network.html" />
+    <link rel="prev" title="6. Numerical integration of the HH model of the squid axon" href="hodgkin-huxley.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-phase-plane-analysis">7.1. Exercise: Phase plane analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">7.1.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-traj">7.1.2. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">7.1.3. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-traj2">7.1.4. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-jacobian-eigenvalues">7.2. Exercise: Jacobian &amp; Eigenvalues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-jac">7.2.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-jac2">7.2.2. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-jac3">7.2.3. Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-bifurcation-analysis">7.3. Exercise: Bifurcation analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">7.3.1. Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">7.3.2. Question</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/phase-plane-analysis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fitzhugh-nagumo-phase-plane-and-bifurcation-analysis">
+<h1>7. FitzHugh-Nagumo: Phase plane and bifurcation analysis<a class="headerlink" href="#fitzhugh-nagumo-phase-plane-and-bifurcation-analysis" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>See <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch4.html">Chapter 4</a> and especially <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch4.S3.html">Chapter 4 Section 3</a> for background knowledge on phase plane analysis.</p>
+<p><strong>Python classes</strong></p>
+<p>In this exercise we study the phase plane of a two dimensional dynamical system implemented in the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">phase_plane_analysis.fitzhugh_nagumo</span></code>. To get started, copy the following code block into your Jupyter Notebook. Check the documentation to learn how to use these functions. Make sure you understand the parameters the functions take.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.phase_plane_analysis</span> <span class="kn">import</span> <span class="n">fitzhugh_nagumo</span>
+
+<span class="n">fitzhugh_nagumo</span><span class="o">.</span><span class="n">plot_flow</span><span class="p">()</span>
+
+<span class="n">fixed_point</span> <span class="o">=</span> <span class="n">fitzhugh_nagumo</span><span class="o">.</span><span class="n">get_fixed_point</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;fixed_point: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fixed_point</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">trajectory</span> <span class="o">=</span> <span class="n">fitzhugh_nagumo</span><span class="o">.</span><span class="n">get_trajectory</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trajectory</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">trajectory</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-phase-plane-analysis">
+<h2>7.1. Exercise: Phase plane analysis<a class="headerlink" href="#exercise-phase-plane-analysis" title="Permalink to this headline">¶</a></h2>
+<p>We have implemented the following Fitzhugh-Nagumo model.</p>
+<div class="math notranslate nohighlight" id="equation-eq1">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq1" title="Permalink to this equation">¶</a></span>\[\begin{split}\left[\begin{array}{ccll}
+{\displaystyle \frac{du}{dt}} &amp;=&amp; u\left(1-u^{2}\right)-w+I \equiv F(u,w)\\[.2cm]
+{\displaystyle \frac{dw}{dt}} &amp;=&amp; \varepsilon \left(u -0.5w+1\right) \equiv \varepsilon G(u,w)\, ,\\
+\end{array}\right.\end{split}\]</div>
+<div class="section" id="question">
+<h3>7.1.1. Question<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<p>Use the function <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plt.plot</span></code></a> to plot the two nullclines of the Fitzhugh-Nagumo system given in Eq. <a class="reference internal" href="#equation-eq1">(1)</a> for <span class="math notranslate nohighlight">\(I = 0\)</span> and <span class="math notranslate nohighlight">\(\varepsilon=0.1\)</span>.</p>
+<p>Plot the nullclines in the <span class="math notranslate nohighlight">\(u-w\)</span> plane, for voltages in the region <span class="math notranslate nohighlight">\(u\in\left[-2.5,2.5\right]\)</span>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For instance the following example shows plotting the function
+<span class="math notranslate nohighlight">\(y(x) = -\frac{x^2}{2} + x + 1\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.51</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># create an array of x values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># calculate the function values for the given x values</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>  <span class="c1"># plot y as a function of x</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>  <span class="c1"># constrain the x limits of the plot</span>
+</pre></div>
+</div>
+<p class="last">You can use similar code to plot the nullclines, inserting the appropriate equations.</p>
+</div>
+</div>
+<div class="section" id="q-traj">
+<span id="id1"></span><h3>7.1.2. Question<a class="headerlink" href="#q-traj" title="Permalink to this headline">¶</a></h3>
+<p>Get the lists <code class="docutils literal notranslate"><span class="pre">t</span></code>, <code class="docutils literal notranslate"><span class="pre">u</span></code> and  <code class="docutils literal notranslate"><span class="pre">w</span></code> by calling <code class="xref py py-func docutils literal notranslate"><span class="pre">t,</span> <span class="pre">u,</span> <span class="pre">w</span> <span class="pre">=</span> <span class="pre">fitzhugh_nagumo.get_trajectory(u_0,</span> <span class="pre">w_0,</span> <span class="pre">I)</span></code> for <span class="math notranslate nohighlight">\(u_0 = 0\)</span>, <span class="math notranslate nohighlight">\(w_0= 0\)</span> and <span class="math notranslate nohighlight">\(I = 1.3\)</span>. They are corresponding values of <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(u(t)\)</span> and <span class="math notranslate nohighlight">\(w(t)\)</span> during trajectories starting at the given point <span class="math notranslate nohighlight">\((u_0,w_0)\)</span> for a given <strong>constant</strong> input current <span class="math notranslate nohighlight">\(I\)</span>. Plot the nullclines for this given current and the trajectories into the <span class="math notranslate nohighlight">\(u-w\)</span> plane.</p>
+</div>
+<div class="section" id="id2">
+<h3>7.1.3. Question<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>At this point for the same current <span class="math notranslate nohighlight">\(I\)</span>, call the function <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_flow</span></code>, which adds the flow created by the system Eq. <a class="reference internal" href="#equation-eq1">(1)</a> to your plot. This indicates the direction that trajectories will take.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If everything went right so far, the trajectories should follow the flow. First, create a new figure by calling <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plt.figure()</span></code></a> and then plot the <span class="math notranslate nohighlight">\(u\)</span> data points from the trajectory obtained in <a class="reference internal" href="#q-traj"><span class="std std-ref">the previous exercise</span></a> on the ordinate.</p>
+<p>You can do this by using the <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.1.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plt.plot</span></code></a> function and passing only the array of <span class="math notranslate nohighlight">\(u\)</span> data points:</p>
+<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>  <span class="c1"># example data points of the u trajectory</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>  <span class="c1"># plot will assume that u is the ordinate data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="q-traj2">
+<span id="id3"></span><h3>7.1.4. Question<a class="headerlink" href="#q-traj2" title="Permalink to this headline">¶</a></h3>
+<p>Finally, change the input current in your python file to other values <span class="math notranslate nohighlight">\(I&gt;0\)</span> and reload it. You might have to first define <span class="math notranslate nohighlight">\(I\)</span> as a variable and then use this variable in all following commands if you did not do so already. At which value of <span class="math notranslate nohighlight">\(I\)</span> do you observe the change in stability of the system?</p>
+</div>
+</div>
+<div class="section" id="exercise-jacobian-eigenvalues">
+<h2>7.2. Exercise: Jacobian &amp; Eigenvalues<a class="headerlink" href="#exercise-jacobian-eigenvalues" title="Permalink to this headline">¶</a></h2>
+<p>The linear stability of a system of differential equations can be evaluated by calculating the eigenvalues of the system’s Jacobian at the fixed points. In the following we will graphically explore the linear stability of the fixed point of the system Eq. <a class="reference internal" href="#equation-eq1">(1)</a>. We will find that the linear stability changes as the input current crosses a critical value.</p>
+<div class="section" id="q-jac">
+<span id="id4"></span><h3>7.2.1. Question<a class="headerlink" href="#q-jac" title="Permalink to this headline">¶</a></h3>
+<p>Set <span class="math notranslate nohighlight">\(\varepsilon=.1\)</span> and <span class="math notranslate nohighlight">\(I\)</span> to zero for the moment. Then, the Jacobian of Eq. <a class="reference internal" href="#equation-eq1">(1)</a> as a function of the fixed point is
+given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+J\left(u_{0},w_{0}\right) &amp; = &amp; \left.\left(\begin{array}{cc}
+1-3u_0^2 &amp; -1\\[5pt]
+0.1 &amp; -0.05
+\end{array}\right)\right.\end{aligned}\end{split}\]</div>
+<p>Write a python function <code class="docutils literal notranslate"><span class="pre">get_jacobian(u_0,w_0)</span></code> that returns
+the Jacobian evaluated for a given fixed point <span class="math notranslate nohighlight">\((u_0,v_0)\)</span> as a
+python list.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>An example for a function that returns a list
+corresponding to the matrix <span class="math notranslate nohighlight">\(M(a,b)=\left(\begin{array}{cc}
+a &amp; 1\\
+0 &amp; b
+\end{array}\right)\)</span> is:</p>
+<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_M</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="n">b</span><span class="p">]]</span> <span class="c1"># return the matrix</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="q-jac2">
+<span id="id5"></span><h3>7.2.2. Question<a class="headerlink" href="#q-jac2" title="Permalink to this headline">¶</a></h3>
+<p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">u0,w0</span> <span class="pre">=</span> <span class="pre">get_fixed_point(I)</span></code> gives you the numerical coordinates of the fixed point for a given current <span class="math notranslate nohighlight">\(I\)</span>. Use the function you created in <a class="reference internal" href="#q-jac"><span class="std std-ref">the previous exercise</span></a> to evaluate the Jacobian at this fixed point and store it in a new variable <code class="docutils literal notranslate"><span class="pre">J</span></code>.</p>
+</div>
+<div class="section" id="q-jac3">
+<span id="id6"></span><h3>7.2.3. Question<a class="headerlink" href="#q-jac3" title="Permalink to this headline">¶</a></h3>
+<p>Calculate the eigenvalues of the Jacobian <code class="docutils literal notranslate"><span class="pre">J</span></code>, which you computed in
+<a class="reference internal" href="#q-jac2"><span class="std std-ref">the previous exercise</span></a>, by using the function <a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.linalg.eigvals.html#numpy.linalg.eigvals" title="(in NumPy v1.18)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.linalg.eigvals(J)</span></code></a>. Both should be negative for <span class="math notranslate nohighlight">\(I=0\)</span>.</p>
+</div>
+</div>
+<div class="section" id="exercise-bifurcation-analysis">
+<h2>7.3. Exercise: Bifurcation analysis<a class="headerlink" href="#exercise-bifurcation-analysis" title="Permalink to this headline">¶</a></h2>
+<p>Wrap the code you wrote so far by a loop, to calculate the eigenvalues for increasing values of <span class="math notranslate nohighlight">\(I\)</span>. Store the changing values of each eigenvalue in seperate lists, and finally plot their real values against <span class="math notranslate nohighlight">\(I\)</span>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<blockquote>
+<div>You can start from this example loop:</div></blockquote>
+<div class="last highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">list1</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">list2</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">currents</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># the I values to use</span>
+<span class="k">for</span> <span class="n">I</span> <span class="ow">in</span> <span class="n">currents</span><span class="p">:</span>
+    <span class="c1"># your code to calculate the eigenvalues e = [e1,e2] for a given I goes here</span>
+    <span class="n">list1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">)</span> <span class="c1"># store each value in a separate list</span>
+    <span class="n">list2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
+
+<span class="c1"># your code to plot list1 and list 2 against I goes here</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>7.3.1. Question<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>In what range of <span class="math notranslate nohighlight">\(I\)</span> are the real parts of eigenvalues positive?</p>
+</div>
+<div class="section" id="id8">
+<h3>7.3.2. Question<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>Compare this <a class="reference internal" href="#q-traj2"><span class="std std-ref">with your earlier result</span></a> for the critical <span class="math notranslate nohighlight">\(I\)</span>. What does this imply for the stability of the fixed point? What has become stable in this system instead of the fixed point?</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hopfield-network.html" class="btn btn-neutral float-right" title="8. Hopfield Network model of associative memory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hodgkin-huxley.html" class="btn btn-neutral float-left" title="6. Numerical integration of the HH model of the squid axon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

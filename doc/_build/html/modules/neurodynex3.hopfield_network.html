@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>neurodynex3.hopfield_network package &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="neurodynex3.leaky_integrate_and_fire package" href="neurodynex3.leaky_integrate_and_fire.html" />
+    <link rel="prev" title="neurodynex3.hodgkin_huxley package" href="neurodynex3.hodgkin_huxley.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises/index.html">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../contents.html">Python exercise modules</a> &raquo;</li>
+        
+          <li><a href="neurodynex3.html">neurodynex3 package</a> &raquo;</li>
+        
+      <li>neurodynex3.hopfield_network package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/neurodynex3.hopfield_network.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="neurodynex3-hopfield-network-package">
+<h1>neurodynex3.hopfield_network package<a class="headerlink" href="#neurodynex3-hopfield-network-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-neurodynex3.hopfield_network.demo">
+<span id="neurodynex3-hopfield-network-demo-module"></span><h2>neurodynex3.hopfield_network.demo module<a class="headerlink" href="#module-neurodynex3.hopfield_network.demo" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.demo.run_demo">
+<code class="descclassname">neurodynex3.hopfield_network.demo.</code><code class="descname">run_demo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.demo.run_demo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple demo</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.demo.run_hf_demo">
+<code class="descclassname">neurodynex3.hopfield_network.demo.</code><code class="descname">run_hf_demo</code><span class="sig-paren">(</span><em>pattern_size=4</em>, <em>nr_random_patterns=3</em>, <em>reference_pattern=0</em>, <em>initially_flipped_pixels=3</em>, <em>nr_iterations=6</em>, <em>random_seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.demo.run_hf_demo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple demo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pattern_size</strong> – </li>
+<li><strong>nr_random_patterns</strong> – </li>
+<li><strong>reference_pattern</strong> – </li>
+<li><strong>initially_flipped_pixels</strong> – </li>
+<li><strong>nr_iterations</strong> – </li>
+<li><strong>random_seed</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.demo.run_hf_demo_alphabet">
+<code class="descclassname">neurodynex3.hopfield_network.demo.</code><code class="descname">run_hf_demo_alphabet</code><span class="sig-paren">(</span><em>letters</em>, <em>initialization_noise_level=0.2</em>, <em>random_seed=None</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.demo.run_hf_demo_alphabet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple demo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>letters</strong> – </li>
+<li><strong>initialization_noise_level</strong> – </li>
+<li><strong>random_seed</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.demo.run_user_function_demo">
+<code class="descclassname">neurodynex3.hopfield_network.demo.</code><code class="descname">run_user_function_demo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.demo.run_user_function_demo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-neurodynex3.hopfield_network.network">
+<span id="neurodynex3-hopfield-network-network-module"></span><h2>neurodynex3.hopfield_network.network module<a class="headerlink" href="#module-neurodynex3.hopfield_network.network" title="Permalink to this headline">¶</a></h2>
+<p>This file implements a Hopfield network. It provides functions to
+set and retrieve the network state, store patterns.</p>
+<dl class="docutils">
+<dt>Relevant book chapters:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch17.S2.html">http://neuronaldynamics.epfl.ch/online/Ch17.S2.html</a></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork">
+<em class="property">class </em><code class="descclassname">neurodynex3.hopfield_network.network.</code><code class="descname">HopfieldNetwork</code><span class="sig-paren">(</span><em>nr_neurons</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Implements a Hopfield network.</p>
+<dl class="attribute">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.nrOfNeurons">
+<code class="descname">nrOfNeurons</code><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.nrOfNeurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of neurons</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.weights">
+<code class="descname">weights</code><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>nrOfNeurons x nrOfNeurons matrix of weights</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)">numpy.ndarray</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.state">
+<code class="descname">state</code><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>current network state. matrix of shape (nrOfNeurons, nrOfNeurons)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)">numpy.ndarray</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.iterate">
+<code class="descname">iterate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.iterate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes one timestep of the dynamics</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.reset_weights">
+<code class="descname">reset_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.reset_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the weights to random values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>nr_steps=5</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the dynamics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nr_steps</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – Timesteps to simulate</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.run_with_monitoring">
+<code class="descname">run_with_monitoring</code><span class="sig-paren">(</span><em>nr_steps=5</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.run_with_monitoring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates at most nr_steps steps. records the network state after every
+iteration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nr_steps</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of 2d network states</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_sign_async">
+<code class="descname">set_dynamics_sign_async</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_sign_async" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the update dynamics to the g(h) =  sign(h) functions. Neurons are updated asynchronously:
+In random order, all neurons are updated sequentially</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_sign_sync">
+<code class="descname">set_dynamics_sign_sync</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_sign_sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the update dynamics to the synchronous, deterministic g(h) = sign(h) function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_to_user_function">
+<code class="descname">set_dynamics_to_user_function</code><span class="sig-paren">(</span><em>update_function</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_to_user_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the network dynamics to the given update function</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>update_function</strong> – upd(state_t0, weights) -&gt; state_t1.
+Any function mapping a state s0 to the next state
+s1 using a function of s0 and weights.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.set_state_from_pattern">
+<code class="descname">set_state_from_pattern</code><span class="sig-paren">(</span><em>pattern</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.set_state_from_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the neuron states to the pattern pixel. The pattern is flattened.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pattern</strong> – pattern</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.network.HopfieldNetwork.store_patterns">
+<code class="descname">store_patterns</code><span class="sig-paren">(</span><em>pattern_list</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.network.HopfieldNetwork.store_patterns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learns the patterns by setting the network weights. The patterns
+themselves are not stored, only the weights are updated!
+self connections are set to 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pattern_list</strong> – a nonempty list of patterns.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-neurodynex3.hopfield_network.pattern_tools">
+<span id="neurodynex3-hopfield-network-pattern-tools-module"></span><h2>neurodynex3.hopfield_network.pattern_tools module<a class="headerlink" href="#module-neurodynex3.hopfield_network.pattern_tools" title="Permalink to this headline">¶</a></h2>
+<p>Functions to create 2D patterns.
+Note, in the hopfield model, we define patterns as vectors. To make
+the exercise more visual, we use 2D patterns (N by N ndarrays).</p>
+<dl class="class">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory">
+<em class="property">class </em><code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">PatternFactory</code><span class="sig-paren">(</span><em>pattern_length</em>, <em>pattern_width=None</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Creates square patterns of size pattern_length x pattern_width
+If pattern length is omitted, square patterns are produced</p>
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_L_pattern">
+<code class="descname">create_L_pattern</code><span class="sig-paren">(</span><em>l_width=1</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_L_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a pattern with column 0 (left) and row n (bottom) set to +1.
+Increase l_width to set more columns and rows (default is 1)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l_width</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – nr of rows and columns to set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an L shaped pattern.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_all_off">
+<code class="descname">create_all_off</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_all_off" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">2d pattern, all pixels off</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_all_on">
+<code class="descname">create_all_on</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_all_on" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">2d pattern, all pixels on</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_checkerboard">
+<code class="descname">create_checkerboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_checkerboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a checkerboard pattern of size (pattern_length x pattern_width)
+:returns: checkerboard pattern</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_random_pattern">
+<code class="descname">create_random_pattern</code><span class="sig-paren">(</span><em>on_probability=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_random_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a pattern_length by pattern_width 2D random pattern
+:param on_probability:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new random pattern</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_random_pattern_list">
+<code class="descname">create_random_pattern_list</code><span class="sig-paren">(</span><em>nr_patterns</em>, <em>on_probability=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_random_pattern_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list of nr_patterns random patterns
+:param nr_patterns: length of the new list
+:param on_probability:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of new random patterns of size (pattern_length x pattern_width)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_row_patterns">
+<code class="descname">create_row_patterns</code><span class="sig-paren">(</span><em>nr_patterns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_row_patterns" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a list of n patterns, the i-th pattern in the list
+has all states of the i-th row set to active.
+This is convenient to create a list of orthogonal patterns which
+are easy to visually identify</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nr_patterns</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of orthogonal patterns</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="neurodynex3.hopfield_network.pattern_tools.PatternFactory.reshape_patterns">
+<code class="descname">reshape_patterns</code><span class="sig-paren">(</span><em>pattern_list</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.PatternFactory.reshape_patterns" title="Permalink to this definition">¶</a></dt>
+<dd><p>reshapes all patterns in pattern_list to have shape = (self.pattern_length, self.pattern_width)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>self</strong> – </li>
+<li><strong>pattern_list</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.compute_overlap">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">compute_overlap</code><span class="sig-paren">(</span><em>pattern1</em>, <em>pattern2</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.compute_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute overlap</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pattern1</strong> – </li>
+<li><strong>pattern2</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns: Overlap between pattern1 and pattern2</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.compute_overlap_list">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">compute_overlap_list</code><span class="sig-paren">(</span><em>reference_pattern</em>, <em>pattern_list</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.compute_overlap_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the overlap between the reference_pattern and each pattern
+in pattern_list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>reference_pattern</strong> – </li>
+<li><strong>pattern_list</strong> – list of patterns</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of the same length as pattern_list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.compute_overlap_matrix">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">compute_overlap_matrix</code><span class="sig-paren">(</span><em>pattern_list</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.compute_overlap_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each pattern, it computes the overlap to all other patterns.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pattern_list</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the matrix m(i,k) = overlap(pattern_list[i], pattern_list[k]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.flip_n">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">flip_n</code><span class="sig-paren">(</span><em>template</em>, <em>nr_of_flips</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.flip_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>makes a copy of the template pattern and flips
+exactly n randomly selected states.
+:param template:
+:param nr_of_flips:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new pattern</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.get_noisy_copy">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">get_noisy_copy</code><span class="sig-paren">(</span><em>template</em>, <em>noise_level</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.get_noisy_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a copy of the template pattern and reassigns N pixels. N is determined
+by the noise_level
+Note: reassigning a random value is not the same as flipping the state. This
+function reassigns a random value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>template</strong> – </li>
+<li><strong>noise_level</strong> – a value in [0,1]. for 0, this returns a copy of the template.</li>
+<li><strong>1</strong><strong>, </strong><strong>a random pattern of the same size as template is returned.</strong> (<em>for</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.get_pattern_diff">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">get_pattern_diff</code><span class="sig-paren">(</span><em>pattern1</em>, <em>pattern2</em>, <em>diff_code=0</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.get_pattern_diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new pattern of same size as the two patterns.
+the diff pattern has the values pattern1 = pattern2 where the two patterns have
+the same value. Locations that differ between the two patterns are set to
+diff_code (default = 0)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pattern1</strong> – </li>
+<li><strong>pattern2</strong> – </li>
+<li><strong>diff_code</strong> – the values of the new pattern, at locations that differ between</li>
+<li><strong>two patterns are set to diff_code.</strong> (<em>the</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the diff pattern.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.load_alphabet">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">load_alphabet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.load_alphabet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load alphabet dict from the file
+<code class="docutils literal notranslate"><span class="pre">data/alphabet.pickle.gz</span></code>, which is included in
+the neurodynex3 release.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of 10x10 patterns</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ImportError</span></code> – Raised if <code class="docutils literal notranslate"><span class="pre">neurodynex</span></code>
+can not be imported. Please install
+<a class="reference external" href="pypi.python.org/pypi/neurodynex/">neurodynex</a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.pattern_tools.reshape_patterns">
+<code class="descclassname">neurodynex3.hopfield_network.pattern_tools.</code><code class="descname">reshape_patterns</code><span class="sig-paren">(</span><em>pattern_list</em>, <em>shape</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.pattern_tools.reshape_patterns" title="Permalink to this definition">¶</a></dt>
+<dd><p>reshapes each pattern in pattern_list to the given shape</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pattern_list</strong> – </li>
+<li><strong>shape</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-neurodynex3.hopfield_network.plot_tools">
+<span id="neurodynex3-hopfield-network-plot-tools-module"></span><h2>neurodynex3.hopfield_network.plot_tools module<a class="headerlink" href="#module-neurodynex3.hopfield_network.plot_tools" title="Permalink to this headline">¶</a></h2>
+<p>Helper tools to visualize patterns and network state</p>
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.plot_tools.plot_network_weights">
+<code class="descclassname">neurodynex3.hopfield_network.plot_tools.</code><code class="descname">plot_network_weights</code><span class="sig-paren">(</span><em>hopfield_network</em>, <em>color_map='jet'</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.plot_tools.plot_network_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualizes the network’s weight matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hopfield_network</strong> – </li>
+<li><strong>color_map</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.plot_tools.plot_overlap_matrix">
+<code class="descclassname">neurodynex3.hopfield_network.plot_tools.</code><code class="descname">plot_overlap_matrix</code><span class="sig-paren">(</span><em>overlap_matrix</em>, <em>color_map='bwr'</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.plot_tools.plot_overlap_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualizes the pattern overlap</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>overlap_matrix</strong> – </li>
+<li><strong>color_map</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.plot_tools.plot_pattern">
+<code class="descclassname">neurodynex3.hopfield_network.plot_tools.</code><code class="descname">plot_pattern</code><span class="sig-paren">(</span><em>pattern</em>, <em>reference=None</em>, <em>color_map='brg'</em>, <em>diff_code=0</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.plot_tools.plot_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Plots the pattern. If a (optional) reference pattern is provided, the pattern is  plotted</dt>
+<dd>with differences highlighted</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pattern</strong> (<a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><em>numpy.ndarray</em></a>) – N by N pattern to plot</li>
+<li><strong>reference</strong> (<a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><em>numpy.ndarray</em></a>) – optional. If set, differences between pattern and reference are highlighted</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.plot_tools.plot_pattern_list">
+<code class="descclassname">neurodynex3.hopfield_network.plot_tools.</code><code class="descname">plot_pattern_list</code><span class="sig-paren">(</span><em>pattern_list</em>, <em>color_map='brg'</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.plot_tools.plot_pattern_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the list of patterns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pattern_list</strong> – </li>
+<li><strong>color_map</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.hopfield_network.plot_tools.plot_state_sequence_and_overlap">
+<code class="descclassname">neurodynex3.hopfield_network.plot_tools.</code><code class="descname">plot_state_sequence_and_overlap</code><span class="sig-paren">(</span><em>state_sequence</em>, <em>pattern_list</em>, <em>reference_idx</em>, <em>color_map='brg'</em>, <em>suptitle=None</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.hopfield_network.plot_tools.plot_state_sequence_and_overlap" title="Permalink to this definition">¶</a></dt>
+<dd><p>For each time point t ( = index of state_sequence), plots the sequence of states and the overlap (barplot)
+between state(t) and each pattern.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>state_sequence</strong> – (list(numpy.ndarray))</li>
+<li><strong>pattern_list</strong> – (list(numpy.ndarray))</li>
+<li><strong>reference_idx</strong> – (int) identifies the pattern in pattern_list for which wrong pixels are colored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-neurodynex3.hopfield_network">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-neurodynex3.hopfield_network" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="neurodynex3.leaky_integrate_and_fire.html" class="btn btn-neutral float-right" title="neurodynex3.leaky_integrate_and_fire package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="neurodynex3.hodgkin_huxley.html" class="btn btn-neutral float-left" title="neurodynex3.hodgkin_huxley package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

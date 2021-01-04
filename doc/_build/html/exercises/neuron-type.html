@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. Type I and type II neuron models &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. Oja’s hebbian learning rule" href="ojas-rule.html" />
+    <link rel="prev" title="8. Hopfield Network model of associative memory" href="hopfield-network.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. Type I and type II neuron models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-probing-type-i-and-type-ii-neuron-models">9.1. Exercise: Probing Type I and Type II neuron models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-estimating-the-threshold">9.1.1. Question: Estimating the threshold</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-f-i-curves">9.2. Exercise: f-I curves</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-firing-rates-from-simulations">9.2.1. Get firing rates from simulations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plot-the-f-i-curve">9.2.2. Plot the f-I curve</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>9. Type I and type II neuron models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/neuron-type.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="type-i-and-type-ii-neuron-models">
+<h1>9. Type I and type II neuron models<a class="headerlink" href="#type-i-and-type-ii-neuron-models" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>See <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch4.html">Chapter 4</a> and especially <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch4.S4.html">Chapter 4 Section 4</a> for background knowledge on Type I and Type II neuron
+models.</p>
+<p><strong>Python classes</strong></p>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">neurodynex3.neuron_type.neurons</span></code> module contains all classes required for this exercise. To get started, call <code class="xref py py-func docutils literal notranslate"><span class="pre">getting_started</span></code> or copy the following code into your Jupyter notebook:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>  <span class="c1"># needed in Notebooks, not in Python scripts</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">input_factory</span><span class="p">,</span> <span class="n">plot_tools</span><span class="p">,</span> <span class="n">spike_tools</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.neuron_type</span> <span class="kn">import</span> <span class="n">neurons</span>
+
+<span class="c1"># create an input current</span>
+<span class="n">input_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mf">1.</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">pA</span><span class="p">)</span>
+
+<span class="c1"># get one instance of class NeuronX and save that object in the variable &#39;a_neuron_of_type_X&#39;</span>
+<span class="n">a_neuron_of_type_X</span> <span class="o">=</span> <span class="n">neurons</span><span class="o">.</span><span class="n">NeuronX</span><span class="p">()</span>  <span class="c1"># we do not know if it&#39;s type I or II</span>
+<span class="c1"># simulate it and get the state variables</span>
+<span class="n">state_monitor</span> <span class="o">=</span> <span class="n">a_neuron_of_type_X</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">input_current</span><span class="p">,</span> <span class="mi">200</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="c1"># plot state vs. time</span>
+<span class="n">neurons</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Neuron of Type X&quot;</span><span class="p">)</span>
+
+<span class="c1"># get an instance of class NeuronY</span>
+<span class="n">a_neuron_of_type_Y</span> <span class="o">=</span> <span class="n">neurons</span><span class="o">.</span><span class="n">NeuronY</span><span class="p">()</span>  <span class="c1"># we do not know if it&#39;s type I or II</span>
+<span class="n">state_monitor</span> <span class="o">=</span> <span class="n">a_neuron_of_type_Y</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">input_current</span><span class="p">,</span> <span class="mi">200</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">neurons</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Neuron of Type Y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For those who are interested, <a class="reference external" href="https://en.wikibooks.org/wiki/Python_Programming/Classes">here is more about classes and inheritance in Python</a>.</p>
+</div>
+<div class="section" id="exercise-probing-type-i-and-type-ii-neuron-models">
+<h2>9.1. Exercise: Probing Type I and Type II neuron models<a class="headerlink" href="#exercise-probing-type-i-and-type-ii-neuron-models" title="Permalink to this headline">¶</a></h2>
+<p>This exercise deals not only with Python functions, but with python objects. The classes <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronX</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronY</span></code> both are neurons, that have different dynamics: <strong>one is Type I and one is Type II</strong>. Finding out which class implements which dynamics is the goal of the exercise.</p>
+<p>The types get randomly assigned each time you load the module or you call the function <code class="xref py py-func docutils literal notranslate"><span class="pre">neurons.neurontype_random_reassignment()</span></code>.</p>
+<div class="section" id="question-estimating-the-threshold">
+<h3>9.1.1. Question: Estimating the threshold<a class="headerlink" href="#question-estimating-the-threshold" title="Permalink to this headline">¶</a></h3>
+<p>What is the threshold current for repetitive firing for <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronX</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">NeuronY</span></code>?</p>
+<p>Exploring various values of <code class="docutils literal notranslate"><span class="pre">I_amp</span></code>, find the range in which the threshold occurs, to a precision of 0.01.</p>
+<p>Plot the responses to step current which starts after 100ms (to let the system equilibrate) and lasting at least 1000ms (to detect repetitive firing with a long period). You can do this by modifying the code example given above. Make sure to check the documentation of the functions you use: <code class="xref py py-func docutils literal notranslate"><span class="pre">input_factory.get_step_current()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">neuron_type.neurons.run()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">neuron_type.neurons.plot_data()</span></code>.</p>
+<p>Already from the voltage response near threshold you might have an idea which is type I or II, but let’s investigate further.</p>
+</div>
+</div>
+<div class="section" id="exercise-f-i-curves">
+<h2>9.2. Exercise: f-I curves<a class="headerlink" href="#exercise-f-i-curves" title="Permalink to this headline">¶</a></h2>
+<p>In this exercise you will write a python script that plots the f-I curve for type I and type II neuron models.</p>
+<div class="section" id="get-firing-rates-from-simulations">
+<h3>9.2.1. Get firing rates from simulations<a class="headerlink" href="#get-firing-rates-from-simulations" title="Permalink to this headline">¶</a></h3>
+<p>We provide you with a function <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_spike_time()</span></code> to determine the spike times from a StateMonitor. The following code shows how to use that function. Note that the return value is a Brian Quantity: it has units. If you write code using units, you’ll get consistency checks done by Brian.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">input_current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">pA</span><span class="p">)</span>
+<span class="n">state_monitor</span> <span class="o">=</span> <span class="n">a_neuron_of_type_X</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">input_current</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">spike_times</span> <span class="o">=</span> <span class="n">spike_tools</span><span class="o">.</span><span class="n">get_spike_time</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">spike_times</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">spike_times</span><span class="p">))</span>  <span class="c1"># it&#39;s a Quantity</span>
+</pre></div>
+</div>
+<p>Now <strong>write a new function</strong> (in your own <cite>.py</cite> file or in your Jupyter Notebook) that calculates an estimate of the firing rate. In your function use <code class="xref py py-func docutils literal notranslate"><span class="pre">spike_tools.get_spike_time()</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_firing_rate</span><span class="p">(</span><span class="n">neuron</span><span class="p">,</span> <span class="n">input_current</span><span class="p">,</span> <span class="n">spike_threshold</span><span class="p">):</span>
+
+    <span class="c1"># inject a test current into the neuron and call it&#39;s run() function.</span>
+    <span class="c1"># get the spike times using spike_tools.get_spike_times</span>
+    <span class="c1"># from the spike times, calculate the firing rate f</span>
+
+    <span class="k">return</span> <span class="n">f</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>To calculate the firing rate, first calculate the inter-spike intervals (time difference between spikes) from the spike times using this elegant indexing idiom</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">isi</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">-</span><span class="n">st</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p class="last">Then find the mean isi and take the reciprocal to yield the firing-rate. As these are standard operations, you can expect that someone else has already implemented it. Have a look at the numpy package and look up the functions diff and mean. Once you have implemented your function, you should verify it’s correctness: inject a few currents into your neuron, plot the voltage response and compare the plot with the firing rate computed by your function.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You can check your results by calling:</p>
+<div class="last highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spike_tools</span><span class="o">.</span><span class="n">pretty_print_spike_train_stats</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="plot-the-f-i-curve">
+<h3>9.2.2. Plot the f-I curve<a class="headerlink" href="#plot-the-f-i-curve" title="Permalink to this headline">¶</a></h3>
+<p>Now let’s use your function <code class="docutils literal notranslate"><span class="pre">get_firing_rate</span></code> to plot an f-vs-I curve for both neuron classes.</p>
+<p>Add the following function skeleton to your code and complete it to plot the f-I curve, given the neuron class as an argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">plot_fI_curve</span><span class="p">(</span><span class="n">NeuronClass</span><span class="p">):</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>  <span class="c1"># new figure</span>
+
+    <span class="n">neuron</span> <span class="o">=</span> <span class="n">NeuronClass</span><span class="p">()</span>  <span class="c1"># instantiate the neuron class</span>
+
+    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># a range of current inputs</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># loop over current values</span>
+    <span class="k">for</span> <span class="n">I_amp</span> <span class="ow">in</span> <span class="n">I</span><span class="p">:</span>
+
+        <span class="n">firing_rate</span> <span class="o">=</span> <span class="c1"># insert here a call to your function get_firing_rate( ... )</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">firing_rate</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Amplitude of Injecting step current (pA)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Firing rate (Hz)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Call your <code class="docutils literal notranslate"><span class="pre">plot_fI_curve</span></code> function with each class <code class="docutils literal notranslate"><span class="pre">NeuronX</span></code> and <code class="docutils literal notranslate"><span class="pre">NeuronY</span></code> as argument.</li>
+<li>Change the <code class="docutils literal notranslate"><span class="pre">I</span></code> range (and reduce the step size) to zoom in near the threshold, and try running it again for both classes.</li>
+</ul>
+<p>Which class is Type I and which is Type II? Check your result:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;a_neuron_of_type_X is : {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a_neuron_of_type_X</span><span class="o">.</span><span class="n">get_neuron_type</span><span class="p">()))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;a_neuron_of_type_Y is : {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a_neuron_of_type_Y</span><span class="o">.</span><span class="n">get_neuron_type</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ojas-rule.html" class="btn btn-neutral float-right" title="10. Oja’s hebbian learning rule" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hopfield-network.html" class="btn btn-neutral float-left" title="8. Hopfield Network model of associative memory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

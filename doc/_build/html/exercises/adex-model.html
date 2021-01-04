@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. AdEx: the Adaptive Exponential Integrate-and-Fire model &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Dendrites and the (passive) cable equation" href="passive-cable.html" />
+    <link rel="prev" title="3. The Exponential Integrate-and-Fire model" href="exponential-integrate-and-fire.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-adaptation-and-firing-patterns">4.1. Exercise: Adaptation and firing patterns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-firing-pattern">4.1.1. Question: Firing pattern</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-phase-plane-and-nullclines">4.2. Exercise: phase plane and nullclines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">4.2.1. Question:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.2.2. Question:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>4. AdEx: the Adaptive Exponential Integrate-and-Fire model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/adex-model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="adex-the-adaptive-exponential-integrate-and-fire-model">
+<h1>4. AdEx: the Adaptive Exponential Integrate-and-Fire model<a class="headerlink" href="#adex-the-adaptive-exponential-integrate-and-fire-model" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>The Adaptive Exponential Integrate-and-Fire model is introduced in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch6.S1.html">Chapter 6 Section 1</a></p>
+<p><strong>Python classes</strong></p>
+<p>Use function <code class="xref py py-func docutils literal notranslate"><span class="pre">AdEx.simulate_AdEx_neuron()</span></code> to run the model for different input currents and different parameters. Get started by running the following script:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">brian2</span> <span class="kn">as</span> <span class="nn">b2</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.adex_model</span> <span class="kn">import</span> <span class="n">AdEx</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.tools</span> <span class="kn">import</span> <span class="n">plot_tools</span><span class="p">,</span> <span class="n">input_factory</span>
+
+<span class="n">current</span> <span class="o">=</span> <span class="n">input_factory</span><span class="o">.</span><span class="n">get_step_current</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">,</span> <span class="mf">65.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">pA</span><span class="p">)</span>
+<span class="n">state_monitor</span><span class="p">,</span> <span class="n">spike_monitor</span> <span class="o">=</span> <span class="n">AdEx</span><span class="o">.</span><span class="n">simulate_AdEx_neuron</span><span class="p">(</span><span class="n">I_stim</span><span class="o">=</span><span class="n">current</span><span class="p">,</span> <span class="n">simulation_time</span><span class="o">=</span><span class="mi">400</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_voltage_and_current_traces</span><span class="p">(</span><span class="n">state_monitor</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;nr of spikes: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spike_monitor</span><span class="o">.</span><span class="n">count</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="c1"># AdEx.plot_adex_state(state_monitor)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/AdaptiveExponential_Init_burst.png"><img alt="../_images/AdaptiveExponential_Init_burst.png" src="../_images/AdaptiveExponential_Init_burst.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-text">A step-current (top panel, red) is injected into an AdEx neuron. The membrane voltage of the neuron is shown in blue (bottom panel).</span></p>
+</div>
+<div class="section" id="exercise-adaptation-and-firing-patterns">
+<h2>4.1. Exercise: Adaptation and firing patterns<a class="headerlink" href="#exercise-adaptation-and-firing-patterns" title="Permalink to this headline">¶</a></h2>
+<p>We have implemented an Exponential Integrate-and-Fire model with a single adaptation current <code class="docutils literal notranslate"><span class="pre">w</span></code>:</p>
+<div class="math notranslate nohighlight" id="equation-adex-dynamics">
+<span class="eqno">(1)<a class="headerlink" href="#equation-adex-dynamics" title="Permalink to this equation">¶</a></span>\[\begin{split}\left[\begin{array}{ccll}
+{\displaystyle \tau_m \frac{du}{dt}} &amp;=&amp; -(u-u_{rest}) + \Delta_T exp(\frac{u-\vartheta_{rh}}{\Delta_T}) - R w + R I(t) \\[.2cm]
+{\displaystyle \tau_w \frac{dw}{dt}} &amp;=&amp; a (u-u_{rest}) -w  + b \tau_w \sum_{t^{(f)}} \delta (t - t^{(f)})
+ \\[.2cm]
+\end{array}\right.\end{split}\]</div>
+<div class="section" id="question-firing-pattern">
+<h3>4.1.1. Question: Firing pattern<a class="headerlink" href="#question-firing-pattern" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>When you simulate the model with the default parameters, it produces the voltage trace shown above. Describe that firing pattern. Use the terminology of Fig. 6.1 in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch6.S1.html">Chapter 6.1</a></li>
+<li>Call the function <code class="xref py py-func docutils literal notranslate"><span class="pre">AdEx.simulate_AdEx_neuron()</span></code> with different parameters and try to create <strong>adapting</strong>, <strong>bursting</strong> and <strong>irregular</strong> firing patterns. Table 6.1 in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch6.S2.html">Chapter 6.1</a> provides a starting point for your explorations.</li>
+<li>In order to better understand the dynamics, it is useful to observe the joint evolution of <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">w</span></code> in a phase diagram. Use the function <code class="xref py py-func docutils literal notranslate"><span class="pre">AdEx.plot_adex_state()</span></code> to get more insights.  Fig. 6.3 in <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch6.S2.html">Chapter 6 Section 2</a> shows a few trajectories in the phase diagram.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to set a parameter to 0, Brian still expects a unit. Therefore use <code class="docutils literal notranslate"><span class="pre">a=0*b2.nS</span></code> instead of <code class="docutils literal notranslate"><span class="pre">a=0</span></code>.</p>
+</div>
+<p>If you do not specify any parameter, the following default values are used:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">MEMBRANE_TIME_SCALE_tau_m</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">MEMBRANE_RESISTANCE_R</span> <span class="o">=</span> <span class="mi">500</span><span class="o">*</span><span class="n">b2</span><span class="o">.</span><span class="n">Mohm</span>
+<span class="n">V_REST</span> <span class="o">=</span> <span class="o">-</span><span class="mf">70.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">V_RESET</span> <span class="o">=</span> <span class="o">-</span><span class="mf">51.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">RHEOBASE_THRESHOLD_v_rh</span> <span class="o">=</span> <span class="o">-</span><span class="mf">50.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">SHARPNESS_delta_T</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">mV</span>
+<span class="n">ADAPTATION_VOLTAGE_COUPLING_a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">nS</span>
+<span class="n">ADAPTATION_TIME_CONSTANT_tau_w</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">ms</span>
+<span class="n">SPIKE_TRIGGERED_ADAPTATION_INCREMENT_b</span> <span class="o">=</span> <span class="mf">7.0</span> <span class="o">*</span> <span class="n">b2</span><span class="o">.</span><span class="n">pA</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-phase-plane-and-nullclines">
+<h2>4.2. Exercise: phase plane and nullclines<a class="headerlink" href="#exercise-phase-plane-and-nullclines" title="Permalink to this headline">¶</a></h2>
+<p>First, try to get some intuition on shape of nullclines by plotting or simply sketching them on a piece of paper and answering the following questions.</p>
+<ol class="arabic simple">
+<li>Plot or sketch the u- and w- nullclines of the AdEx model (<code class="docutils literal notranslate"><span class="pre">I(t)</span> <span class="pre">=</span> <span class="pre">0</span></code>)</li>
+<li>How do the nullclines change with respect to <code class="docutils literal notranslate"><span class="pre">a</span></code>?</li>
+<li>How do the nullclines change if a constant current <code class="docutils literal notranslate"><span class="pre">I(t)</span> <span class="pre">=</span> <span class="pre">c</span></code> is applied?</li>
+<li>What is the interpretation of parameter <code class="docutils literal notranslate"><span class="pre">b</span></code>?</li>
+<li>How do flow arrows change as <code class="docutils literal notranslate"><span class="pre">tau_w</span></code> gets bigger?</li>
+</ol>
+<div class="section" id="question">
+<h3>4.2.1. Question:<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<p>Can you predict what would be the firing pattern if <code class="docutils literal notranslate"><span class="pre">a</span></code> is small (in the order of <code class="docutils literal notranslate"><span class="pre">0.01</span> <span class="pre">nS</span></code>) ? To do so, consider the following 2 conditions:</p>
+<ol class="arabic simple">
+<li>A large jump <code class="docutils literal notranslate"><span class="pre">b</span></code> and a large time scale <code class="docutils literal notranslate"><span class="pre">tau_w</span></code>.</li>
+<li>A small jump <code class="docutils literal notranslate"><span class="pre">b</span></code> and a small time scale <code class="docutils literal notranslate"><span class="pre">tau_w</span></code>.</li>
+</ol>
+<p>Try to simulate the above conditions, to see if your predictions were true.</p>
+</div>
+<div class="section" id="id2">
+<h3>4.2.2. Question:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>To learn more about the variety of patterns the relatively simple neuron model can reproduce, have a look the following publication:
+Naud, R., Marcille, N., Clopath, C., Gerstner, W. (2008). <a class="reference external" href="http://link.springer.com/article/10.1007/s00422-008-0264-7">Firing patterns in the adaptive exponential integrate-and-fire model</a>. Biological cybernetics, 99(4-5), 335-347.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="passive-cable.html" class="btn btn-neutral float-right" title="5. Dendrites and the (passive) cable equation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="exponential-integrate-and-fire.html" class="btn btn-neutral float-left" title="3. The Exponential Integrate-and-Fire model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

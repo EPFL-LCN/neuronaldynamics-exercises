@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>10. Oja’s hebbian learning rule &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11. Network of LIF neurons (Brunel)" href="brunel-network.html" />
+    <link rel="prev" title="9. Type I and type II neuron models" href="neuron-type.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hopfield-network.html">8. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10. Oja’s hebbian learning rule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-getting-started">10.1. Exercise: getting started</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-the-norm-of-the-weights">10.1.1. Question: The norm of the weights</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-circular-data">10.2. Exercise: Circular data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-what-is-the-neuron-leaning">10.3. Exercise: What is the neuron leaning?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-non-centered-data">10.4. Exercise: Non-centered data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bonus-3-d">10.5. Bonus: 3 D</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>10. Oja’s hebbian learning rule</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/ojas-rule.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="oja-s-hebbian-learning-rule">
+<h1>10. Oja’s hebbian learning rule<a class="headerlink" href="#oja-s-hebbian-learning-rule" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>See <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch19.S2.html#SS1.p6">Chapter 19 Section 2</a> on the learning rule of Oja.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/Oja_cloud.png"><img alt="../_images/Oja_cloud.png" src="../_images/Oja_cloud.png" style="width: 480.0px; height: 360.0px;" /></a>
+<p class="caption"><span class="caption-text">Grey points: Datapoints (two presynaptic firing rates, presented sequentially in random order). Colored points:   weight change under Oja’s rule.</span></p>
+</div>
+<p><strong>Python classes</strong></p>
+<p>The <a class="reference internal" href="../modules/neurodynex3.ojas_rule.html#module-neurodynex3.ojas_rule.oja" title="neurodynex3.ojas_rule.oja"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ojas_rule.oja</span></code></a> module contains all code required for this exercise.
+At the beginning of your exercise solution file, import the contained functions by</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">neurodynex3.ojas_rule.oja</span> <span class="kn">as</span> <span class="nn">oja</span>
+</pre></div>
+</div>
+<p>You can then simply run the exercise functions by executing, e.g.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">cloud</span> <span class="o">=</span> <span class="n">oja</span><span class="o">.</span><span class="n">make_cloud</span><span class="p">()</span>  <span class="c1"># generate data points</span>
+<span class="n">wcourse</span> <span class="o">=</span> <span class="n">oja</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">cloud</span><span class="p">)</span>  <span class="c1"># learn weights and return timecourse</span>
+</pre></div>
+</div>
+<p>A complete script using these functions could look like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>  <span class="c1"># used for Jupyter Notebook</span>
+<span class="kn">import</span> <span class="nn">neurodynex3.ojas_rule.oja</span> <span class="kn">as</span> <span class="nn">oja</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">cloud</span> <span class="o">=</span> <span class="n">oja</span><span class="o">.</span><span class="n">make_cloud</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">wcourse</span> <span class="o">=</span> <span class="n">oja</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="n">initial_angle</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cloud</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cloud</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wcourse</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">wcourse</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;or&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wcourse</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wcourse</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The final weight vector w is: ({},{})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wcourse</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">wcourse</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-getting-started">
+<h2>10.1. Exercise: getting started<a class="headerlink" href="#exercise-getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The figure below shows the configuration of a neuron learning from the joint input of two presynaptic neurons. Run the above script. Make sure you understand what the functions are doing.</p>
+<div class="section" id="question-the-norm-of-the-weights">
+<h3>10.1.1. Question: The norm of the weights<a class="headerlink" href="#question-the-norm-of-the-weights" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Run the script with a large learning rate eta = 0.2. What do you observe?</li>
+<li>Modify the script: plot the time course of the norm of the weights vector.</li>
+</ul>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/Oja_setup.png"><img alt="../_images/Oja_setup.png" src="../_images/Oja_setup.png" style="width: 358.2px; height: 283.8px;" /></a>
+<p class="caption"><span class="caption-text">One linear neuron gets input from two presynaptic neurons.</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-circular-data">
+<h2>10.2. Exercise: Circular data<a class="headerlink" href="#exercise-circular-data" title="Permalink to this headline">¶</a></h2>
+<p>Now we study Oja’s rule on a data set which has no correlations.
+Use the functions <a class="reference internal" href="../modules/neurodynex3.ojas_rule.html#neurodynex3.ojas_rule.oja.make_cloud" title="neurodynex3.ojas_rule.oja.make_cloud"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_cloud</span></code></a> and <a class="reference internal" href="../modules/neurodynex3.ojas_rule.html#neurodynex3.ojas_rule.oja.learn" title="neurodynex3.ojas_rule.oja.learn"><code class="xref py py-func docutils literal notranslate"><span class="pre">learn</span></code></a> to get the timecourse for weights that are learned on a <strong>circular</strong> data cloud (<code class="docutils literal notranslate"><span class="pre">ratio=1</span></code>). Plot the time course
+of both components of the weight vector. Repeat this many times (<a class="reference internal" href="../modules/neurodynex3.ojas_rule.html#neurodynex3.ojas_rule.oja.learn" title="neurodynex3.ojas_rule.oja.learn"><code class="xref py py-func docutils literal notranslate"><span class="pre">learn</span></code></a> will choose random initial conditions on each run), and plot this into the same plot. Can you explain what happens? Try different learning rates eta.</p>
+</div>
+<div class="section" id="exercise-what-is-the-neuron-leaning">
+<h2>10.3. Exercise: What is the neuron leaning?<a class="headerlink" href="#exercise-what-is-the-neuron-leaning" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Repeat the previous question with an <strong>elongated</strong> elliptic data cloud (e.g. <code class="docutils literal notranslate"><span class="pre">ratio=0.3</span></code>). Again, repeat this several times.</li>
+<li>What difference in terms of learning do you observe with respect to the circular data clouds?</li>
+<li>The “goal” of the neuron is not to change weights, but to produce a meaningful output y. After learning, what does the output y tell about the input?</li>
+<li>Take the final weights [w31, w32], then calculate a single input vector (v1=?, v2=?) that leads to a <strong>maximal</strong> output firing y. Constrain your input to norm([v1,v2]) =1.</li>
+<li>Calculate an input which leads to a <strong>minimal</strong> output firing y.</li>
+</ul>
+</div>
+<div class="section" id="exercise-non-centered-data">
+<h2>10.4. Exercise: Non-centered data<a class="headerlink" href="#exercise-non-centered-data" title="Permalink to this headline">¶</a></h2>
+<p>The above exercises assume that the input activities can be negative (indeed the inputs were always statistically centered). In actual neurons, if we think of their activity as their firing rate, this cannot be less than zero.</p>
+<p>Try again the previous exercise, but applying the learning rule on a noncentered data cloud. E.g., use <code class="docutils literal notranslate"><span class="pre">cloud</span> <span class="pre">=</span> <span class="pre">(3,5)</span> <span class="pre">+</span> <span class="pre">oja.make_cloud(n=1000,</span> <span class="pre">ratio=.4,</span> <span class="pre">angle=-45)</span></code>, which centers the data around <code class="docutils literal notranslate"><span class="pre">(3,5)</span></code>. What conclusions can you draw? Can you think of a modification to the learning rule?</p>
+</div>
+<div class="section" id="bonus-3-d">
+<h2>10.5. Bonus: 3 D<a class="headerlink" href="#bonus-3-d" title="Permalink to this headline">¶</a></h2>
+<p>By modifying the source code of the given functions, try to visualize learning from a 3 dimensional time series. Here’s an example of a 3D scatter plot: <a class="reference external" href="http://matplotlib.org/examples/mplot3d/scatter3d_demo.html">scatter3d</a></p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/Oja_3D.png"><img alt="../_images/Oja_3D.png" src="../_images/Oja_3D.png" style="width: 414.0px; height: 314.4px;" /></a>
+<p class="caption"><span class="caption-text">Learning from a 3D input.</span></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="brunel-network.html" class="btn btn-neutral float-right" title="11. Network of LIF neurons (Brunel)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="neuron-type.html" class="btn btn-neutral float-left" title="9. Type I and type II neuron models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>neurodynex3.ojas_rule package &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="neurodynex3.phase_plane_analysis package" href="neurodynex3.phase_plane_analysis.html" />
+    <link rel="prev" title="neurodynex3.neuron_type package" href="neurodynex3.neuron_type.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises/index.html">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../contents.html">Python exercise modules</a> &raquo;</li>
+        
+          <li><a href="neurodynex3.html">neurodynex3 package</a> &raquo;</li>
+        
+      <li>neurodynex3.ojas_rule package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/neurodynex3.ojas_rule.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="neurodynex3-ojas-rule-package">
+<h1>neurodynex3.ojas_rule package<a class="headerlink" href="#neurodynex3-ojas-rule-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-neurodynex3.ojas_rule.oja">
+<span id="neurodynex3-ojas-rule-oja-module"></span><h2>neurodynex3.ojas_rule.oja module<a class="headerlink" href="#module-neurodynex3.ojas_rule.oja" title="Permalink to this headline">¶</a></h2>
+<p>This file implements Oja’s hebbian learning rule.</p>
+<dl class="docutils">
+<dt>Relevant book chapters:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch19.S2.html#SS1.p6">http://neuronaldynamics.epfl.ch/online/Ch19.S2.html#SS1.p6</a></li>
+</ul>
+</dd>
+</dl>
+<dl class="function">
+<dt id="neurodynex3.ojas_rule.oja.learn">
+<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">learn</code><span class="sig-paren">(</span><em>cloud</em>, <em>initial_angle=None</em>, <em>eta=0.005</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.learn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run one batch of Oja’s learning over
+a cloud of datapoints.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cloud</strong> (<a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><em>numpy.ndarray</em></a>) – An N by 2 array of datapoints. You can
+think of each of the two columns as the time series of firing rates of one presynaptic neuron.</li>
+<li><strong>initial_angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – angle of initial
+set of weights [deg]. If None, this is random.</li>
+<li><strong>eta</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – learning rate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">time course of the weight vector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)">numpy.ndarray</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.ojas_rule.oja.make_cloud">
+<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">make_cloud</code><span class="sig-paren">(</span><em>n=2000</em>, <em>ratio=1</em>, <em>angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.make_cloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an oriented elliptic
+gaussian cloud of 2D points</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – number of points in the cloud</li>
+<li><strong>ratio</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – (std along the short axis) /
+(std along the long axis)</li>
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – rotation angle [deg]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of datapoints</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)">numpy.ndarray</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.ojas_rule.oja.plot_oja_trace">
+<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">plot_oja_trace</code><span class="sig-paren">(</span><em>data_cloud</em>, <em>weights_course</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.plot_oja_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the datapoints and the time series of the weights
+:param data_cloud: n by 2 data
+:type data_cloud: numpy.ndarray
+:param weights_course: n by 2 weights
+:type weights_course: numpy.ndarray</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="neurodynex3.ojas_rule.oja.run_oja">
+<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">run_oja</code><span class="sig-paren">(</span><em>n=2000</em>, <em>ratio=1.0</em>, <em>angle=0.0</em>, <em>learning_rate=0.01</em>, <em>do_plot=True</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.run_oja" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a point cloud and runs Oja’s learning
+rule once. Optionally plots the result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – number of points in the cloud</li>
+<li><strong>ratio</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – (std along the short axis) /
+(std along the long axis)</li>
+<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – rotation angle [deg]</li>
+<li><strong>do_plot</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a><em>, </em><em>optional</em>) – plot the result</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-neurodynex3.ojas_rule">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-neurodynex3.ojas_rule" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="neurodynex3.phase_plane_analysis.html" class="btn btn-neutral float-right" title="neurodynex3.phase_plane_analysis package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="neurodynex3.neuron_type.html" class="btn btn-neutral float-left" title="neurodynex3.neuron_type package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

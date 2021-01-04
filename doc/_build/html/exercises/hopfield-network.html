@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8. Hopfield Network model of associative memory &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. Type I and type II neuron models" href="neuron-type.html" />
+    <link rel="prev" title="7. FitzHugh-Nagumo: Phase plane and bifurcation analysis" href="phase-plane-analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.5.dev61+gfd12cb6.d20200212
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Exercises</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html">1. Setting up Python and Brian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="passive-cable.html">5. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8. Hopfield Network model of associative memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started">8.1. Getting started:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction-hopfield-networks">8.2. Introduction: Hopfield-networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-n-4x4-hopfield-network">8.3. Exercise: N=4x4 Hopfield-network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question-storing-a-single-pattern">8.3.1. Question: Storing a single pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-the-weights-matrix">8.3.2. Question: the weights matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#question-optional-weights-distribution">8.3.3. Question (optional): Weights Distribution</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-capacity-of-an-n-100-hopfield-network">8.4. Exercise: Capacity of an N=100 Hopfield-network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#question">8.4.1. Question:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.4.2. Question:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">8.4.3. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-non-random-patterns">8.5. Exercise: Non-random patterns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">8.5.1. Question:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.5.2. Question:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">8.5.3. Question:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise-bonus">8.6. Exercise: Bonus</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neuron-type.html">9. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ojas-rule.html">10. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brunel-network.html">11. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Neuronaldynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Exercises</a> &raquo;</li>
+        
+      <li>8. Hopfield Network model of associative memory</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/exercises/hopfield-network.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hopfield-network-model-of-associative-memory">
+<h1>8. Hopfield Network model of associative memory<a class="headerlink" href="#hopfield-network-model-of-associative-memory" title="Permalink to this headline">¶</a></h1>
+<p><strong>Book chapters</strong></p>
+<p>See <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch17.S2.html">Chapter 17 Section 2</a> for an introduction to Hopfield networks.</p>
+<p><strong>Python classes</strong></p>
+<p>Hopfield networks can be analyzed mathematically. In this Python exercise we focus on visualization and simulation to develop our intuition about Hopfield dynamics.</p>
+<p>We provide a couple of functions to easily create patterns, store them in the network and visualize the network dynamics. Check the modules <a class="reference internal" href="../modules/neurodynex3.hopfield_network.html#module-neurodynex3.hopfield_network.network" title="neurodynex3.hopfield_network.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hopfield_network.network</span></code></a>, <a class="reference internal" href="../modules/neurodynex3.hopfield_network.html#module-neurodynex3.hopfield_network.pattern_tools" title="neurodynex3.hopfield_network.pattern_tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hopfield_network.pattern_tools</span></code></a> and <a class="reference internal" href="../modules/neurodynex3.hopfield_network.html#module-neurodynex3.hopfield_network.plot_tools" title="neurodynex3.hopfield_network.plot_tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hopfield_network.plot_tools</span></code></a> to learn the building blocks we provide.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you instantiate a new object of class  <code class="xref py py-class docutils literal notranslate"><span class="pre">network.HopfieldNetwork</span></code> it’s default dynamics are <strong>deterministic</strong> and <strong>synchronous</strong>. That is, all states are updated at the same time using the sign function. We use this dynamics in all exercises described below.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>8.1. Getting started:<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Run the following code. Read the inline comments and check the documentation. The patterns and the flipped pixels are randomly chosen. Therefore the result changes every time you execute this code. Run it several times and change some parameters like nr_patterns and nr_of_flips.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.hopfield_network</span> <span class="kn">import</span> <span class="n">network</span><span class="p">,</span> <span class="n">pattern_tools</span><span class="p">,</span> <span class="n">plot_tools</span>
+
+<span class="n">pattern_size</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># create an instance of the class HopfieldNetwork</span>
+<span class="n">hopfield_net</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">HopfieldNetwork</span><span class="p">(</span><span class="n">nr_neurons</span><span class="o">=</span> <span class="n">pattern_size</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># instantiate a pattern factory</span>
+<span class="n">factory</span> <span class="o">=</span> <span class="n">pattern_tools</span><span class="o">.</span><span class="n">PatternFactory</span><span class="p">(</span><span class="n">pattern_size</span><span class="p">,</span> <span class="n">pattern_size</span><span class="p">)</span>
+<span class="c1"># create a checkerboard pattern and add it to the pattern list</span>
+<span class="n">checkerboard</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_checkerboard</span><span class="p">()</span>
+<span class="n">pattern_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">checkerboard</span><span class="p">]</span>
+
+<span class="c1"># add random patterns to the list</span>
+<span class="n">pattern_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">factory</span><span class="o">.</span><span class="n">create_random_pattern_list</span><span class="p">(</span><span class="n">nr_patterns</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">on_probability</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_pattern_list</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)</span>
+<span class="c1"># how similar are the random patterns and the checkerboard? Check the overlaps</span>
+<span class="n">overlap_matrix</span> <span class="o">=</span> <span class="n">pattern_tools</span><span class="o">.</span><span class="n">compute_overlap_matrix</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_overlap_matrix</span><span class="p">(</span><span class="n">overlap_matrix</span><span class="p">)</span>
+
+<span class="c1"># let the hopfield network &quot;learn&quot; the patterns. Note: they are not stored</span>
+<span class="c1"># explicitly but only network weights are updated !</span>
+<span class="n">hopfield_net</span><span class="o">.</span><span class="n">store_patterns</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)</span>
+
+<span class="c1"># create a noisy version of a pattern and use that to initialize the network</span>
+<span class="n">noisy_init_state</span> <span class="o">=</span> <span class="n">pattern_tools</span><span class="o">.</span><span class="n">flip_n</span><span class="p">(</span><span class="n">checkerboard</span><span class="p">,</span> <span class="n">nr_of_flips</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">hopfield_net</span><span class="o">.</span><span class="n">set_state_from_pattern</span><span class="p">(</span><span class="n">noisy_init_state</span><span class="p">)</span>
+
+<span class="c1"># from this initial state, let the network dynamics evolve.</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">hopfield_net</span><span class="o">.</span><span class="n">run_with_monitoring</span><span class="p">(</span><span class="n">nr_steps</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># each network state is a vector. reshape it to the same shape used to create the patterns.</span>
+<span class="n">states_as_patterns</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">reshape_patterns</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+<span class="c1"># plot the states of the network</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_state_sequence_and_overlap</span><span class="p">(</span><span class="n">states_as_patterns</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">reference_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">suptitle</span><span class="o">=</span><span class="s2">&quot;Network dynamics&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id6">
+<img alt="../_images/HF_CheckerboardAndPatterns.png" src="../_images/HF_CheckerboardAndPatterns.png" />
+<p class="caption"><span class="caption-text">Six patterns are stored in a Hopfield network.</span></p>
+</div>
+<div class="figure align-center" id="id7">
+<img alt="../_images/HF_CheckerboardRecovered2.png" src="../_images/HF_CheckerboardRecovered2.png" />
+<p class="caption"><span class="caption-text">The network is initialized with a (very) noisy pattern S(t=0). Then, the dynamics recover pattern P0 in 5 iterations.</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The network state is a vector of N neurons. For visualization we use 2d patterns which are two dimensional numpy.ndarrays of size = (length, width). To store such patterns, initialize the network with N = length x width neurons.</p>
+</div>
+</div>
+<div class="section" id="introduction-hopfield-networks">
+<h2>8.2. Introduction: Hopfield-networks<a class="headerlink" href="#introduction-hopfield-networks" title="Permalink to this headline">¶</a></h2>
+<p>This exercise uses a model in which neurons are pixels and take the values of -1 (<em>off</em>) or +1 (<em>on</em>). The network can store a certain number of pixel patterns, which is to be investigated in this exercise. During a retrieval phase, the network is started with some initial configuration and the network dynamics evolves towards the stored pattern (attractor) which is closest to the initial configuration.</p>
+<p>The dynamics is that of equation:</p>
+<div class="math notranslate nohighlight">
+\[S_i(t+1) = sgn\left(\sum_j w_{ij} S_j(t)\right)\]</div>
+<p>In the Hopfield model each neuron is connected to every other neuron
+(full connectivity). The connection matrix is</p>
+<div class="math notranslate nohighlight">
+\[w_{ij} = \frac{1}{N}\sum_{\mu} p_i^\mu p_j^\mu\]</div>
+<p>where N is the number of neurons, <span class="math notranslate nohighlight">\(p_i^\mu\)</span> is the value of neuron
+<span class="math notranslate nohighlight">\(i\)</span> in pattern number <span class="math notranslate nohighlight">\(\mu\)</span> and the sum runs over all
+patterns from <span class="math notranslate nohighlight">\(\mu=1\)</span> to <span class="math notranslate nohighlight">\(\mu=P\)</span>. This is a simple
+correlation based learning rule (Hebbian learning). Since it is not a
+iterative rule it is sometimes called one-shot learning. The learning
+rule works best if the patterns that are to be stored are random
+patterns with equal probability for on (+1) and off (-1). In a large
+networks (N to infinity) the number of random patterns that can be
+stored is approximately 0.14 times N.</p>
+</div>
+<div class="section" id="exercise-n-4x4-hopfield-network">
+<h2>8.3. Exercise: N=4x4 Hopfield-network<a class="headerlink" href="#exercise-n-4x4-hopfield-network" title="Permalink to this headline">¶</a></h2>
+<p>We study how a network stores and retrieve patterns. Using a small network of only 16 neurons allows us to have a close look at the network weights and dynamics.</p>
+<div class="section" id="question-storing-a-single-pattern">
+<h3>8.3.1. Question: Storing a single pattern<a class="headerlink" href="#question-storing-a-single-pattern" title="Permalink to this headline">¶</a></h3>
+<p>Modify the Python code given above to implement this exercise:</p>
+<ol class="arabic simple">
+<li>Create a network with N=16 neurons.</li>
+<li>Create a single 4 by 4 checkerboard pattern.</li>
+<li>Store the checkerboard in the network.</li>
+<li>Set the initial state of the network to a noisy version of the checkerboard (nr_flipped_pixels = 5).</li>
+<li>Let the network dynamics evolve for 4 iterations.</li>
+<li>Plot the sequence of network states along with the overlap of network state with the checkerboard.</li>
+</ol>
+<p>Now test whether the network can still retrieve the pattern if we increase the number of flipped pixels. What happens at nr_flipped_pixels = 8, what if nr_flipped_pixels &gt; 8 ?</p>
+</div>
+<div class="section" id="question-the-weights-matrix">
+<h3>8.3.2. Question: the weights matrix<a class="headerlink" href="#question-the-weights-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The patterns a Hopfield network learns are not stored explicitly. Instead, the network learns by adjusting the weights to the pattern set it is presented during learning. Let’s visualize this.</p>
+<ol class="arabic simple">
+<li>Create a new 4x4 network. Do not yet store any pattern.</li>
+<li>What is the size of the network matrix?</li>
+<li>Visualize the weight matrix using the function <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_tools.plot_nework_weights()</span></code>. It takes the network as a parameter.</li>
+<li>Create a checkerboard, store it in the network.</li>
+<li>Plot the weights matrix. What weight values do occur?</li>
+<li>Create a new 4x4 network</li>
+<li>Create an L-shaped pattern (look at the pattern factory doc), store it in the network</li>
+<li>Plot the weights matrix. What weight values do occur?</li>
+<li>Create a new 4x4 network</li>
+<li>Create a checkerboard and an L-shaped pattern. Store <strong>both</strong> patterns in the network</li>
+<li>Plot the weights matrix. What weight values do occur? How does this matrix compare to the two previous matrices?</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The mapping of the 2 dimensional patterns onto the one dimensional list of network neurons is internal to the implementation of the network. You cannot know which pixel (x,y) in the pattern corresponds to which network neuron i.</p>
+</div>
+</div>
+<div class="section" id="question-optional-weights-distribution">
+<h3>8.3.3. Question (optional): Weights Distribution<a class="headerlink" href="#question-optional-weights-distribution" title="Permalink to this headline">¶</a></h3>
+<p>It’s interesting to look at the weights distribution in the three previous cases. You can easily plot a histogram by adding the following two lines to your script. It assumes you have stored your network in the variable ‘hopfield_net’.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">hopfield_net</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exercise-capacity-of-an-n-100-hopfield-network">
+<h2>8.4. Exercise: Capacity of an N=100 Hopfield-network<a class="headerlink" href="#exercise-capacity-of-an-n-100-hopfield-network" title="Permalink to this headline">¶</a></h2>
+<p>Larger networks can store more patterns. There is a theoretical limit: the capacity of the Hopfield network. Read <a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch17.S2.html">chapter “17.2.4 Memory capacity”</a> to learn how memory retrieval, pattern completion and the network capacity are related.</p>
+<div class="section" id="question">
+<h3>8.4.1. Question:<a class="headerlink" href="#question" title="Permalink to this headline">¶</a></h3>
+<p>A Hopfield network implements so called <strong>associative</strong> or <strong>content-adressable</strong> memory. Explain what this means.</p>
+</div>
+<div class="section" id="id1">
+<h3>8.4.2. Question:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Using the value <span class="math notranslate nohighlight">\(C_{store}\)</span> given in the book, how many patterns can you store in a N=10x10 network? Use this number <strong>K</strong> in the next question:</p>
+</div>
+<div class="section" id="id2">
+<h3>8.4.3. Question:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Create an N=10x10 network and store a checkerboard pattern together with <strong>(K-1) random patterns</strong>. Then initialize the network with the <strong>unchanged</strong> checkerboard pattern. Let the network evolve for five iterations.</p>
+<p>Rerun your script a few times. What do you observe?</p>
+</div>
+</div>
+<div class="section" id="exercise-non-random-patterns">
+<h2>8.5. Exercise: Non-random patterns<a class="headerlink" href="#exercise-non-random-patterns" title="Permalink to this headline">¶</a></h2>
+<p>In the previous exercises we used random patterns. Now we us a list of structured patterns: the letters A to Z. Each letter is represented in a 10 by 10 grid.</p>
+<div class="figure align-center" id="id8">
+<img alt="../_images/HF_LetterAandOverlap.png" src="../_images/HF_LetterAandOverlap.png" />
+<p class="caption"><span class="caption-text">Eight letters (including ‘A’) are stored in a Hopfield network. The letter ‘A’ is not recovered.</span></p>
+</div>
+<div class="section" id="id3">
+<h3>8.5.1. Question:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Run the following code. Read the inline comments and look up the doc of functions you do not know.</p>
+<div class="highlight-Py notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">neurodynex3.hopfield_network</span> <span class="kn">import</span> <span class="n">network</span><span class="p">,</span> <span class="n">pattern_tools</span><span class="p">,</span> <span class="n">plot_tools</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="c1"># the letters we want to store in the hopfield network</span>
+<span class="n">letter_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">]</span>
+
+<span class="c1"># set a seed to reproduce the same noise in the next run</span>
+<span class="c1"># numpy.random.seed(123)</span>
+
+<span class="n">abc_dictionary</span> <span class="o">=</span><span class="n">pattern_tools</span><span class="o">.</span><span class="n">load_alphabet</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;the alphabet is stored in an object of type: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">abc_dictionary</span><span class="p">)))</span>
+<span class="c1"># access the first element and get it&#39;s size (they are all of same size)</span>
+<span class="n">pattern_shape</span> <span class="o">=</span> <span class="n">abc_dictionary</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;letters are patterns of size: {}. Create a network of corresponding size&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pattern_shape</span><span class="p">))</span>
+<span class="c1"># create an instance of the class HopfieldNetwork</span>
+<span class="n">hopfield_net</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">HopfieldNetwork</span><span class="p">(</span><span class="n">nr_neurons</span><span class="o">=</span> <span class="n">pattern_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pattern_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># create a list using Pythons List Comprehension syntax:</span>
+<span class="n">pattern_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">abc_dictionary</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">letter_list</span> <span class="p">]</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_pattern_list</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)</span>
+
+<span class="c1"># store the patterns</span>
+<span class="n">hopfield_net</span><span class="o">.</span><span class="n">store_patterns</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)</span>
+
+<span class="c1"># # create a noisy version of a pattern and use that to initialize the network</span>
+<span class="n">noisy_init_state</span> <span class="o">=</span> <span class="n">pattern_tools</span><span class="o">.</span><span class="n">get_noisy_copy</span><span class="p">(</span><span class="n">abc_dictionary</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">noise_level</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">hopfield_net</span><span class="o">.</span><span class="n">set_state_from_pattern</span><span class="p">(</span><span class="n">noisy_init_state</span><span class="p">)</span>
+
+<span class="c1"># from this initial state, let the network dynamics evolve.</span>
+<span class="n">states</span> <span class="o">=</span> <span class="n">hopfield_net</span><span class="o">.</span><span class="n">run_with_monitoring</span><span class="p">(</span><span class="n">nr_steps</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># each network state is a vector. reshape it to the same shape used to create the patterns.</span>
+<span class="n">states_as_patterns</span> <span class="o">=</span> <span class="n">pattern_tools</span><span class="o">.</span><span class="n">reshape_patterns</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># plot the states of the network</span>
+<span class="n">plot_tools</span><span class="o">.</span><span class="n">plot_state_sequence_and_overlap</span><span class="p">(</span>
+    <span class="n">states_as_patterns</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">,</span> <span class="n">reference_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">suptitle</span><span class="o">=</span><span class="s2">&quot;Network dynamics&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>8.5.2. Question:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Add the letter ‘R’ to the letter list and store it in the network. Is the pattern ‘A’ still a fixed point? Does the overlap between the network state and the reference pattern ‘A’ always decrease?</p>
+</div>
+<div class="section" id="id5">
+<h3>8.5.3. Question:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Make a guess of how many letters the network can store. Then create a (small) set of letters. Check if <strong>all</strong> letters of your list are fixed points under the network dynamics. Explain the discrepancy between the network capacity C (computed above) and your observation.</p>
+</div>
+</div>
+<div class="section" id="exercise-bonus">
+<h2>8.6. Exercise: Bonus<a class="headerlink" href="#exercise-bonus" title="Permalink to this headline">¶</a></h2>
+<p>The implementation of the Hopfield Network in <a class="reference internal" href="../modules/neurodynex3.hopfield_network.html#module-neurodynex3.hopfield_network.network" title="neurodynex3.hopfield_network.network"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hopfield_network.network</span></code></a> offers a possibility to provide a custom update function <a class="reference internal" href="../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_to_user_function" title="neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_to_user_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HopfieldNetwork.set_dynamics_to_user_function()</span></code></a>. Have a look at the source code of <a class="reference internal" href="../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_sign_sync" title="neurodynex3.hopfield_network.network.HopfieldNetwork.set_dynamics_sign_sync"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HopfieldNetwork.set_dynamics_sign_sync()</span></code></a> to learn how the update dynamics are implemented. Then try to implement your own function. For example, you could implement an asynchronous update with stochastic neurons.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="neuron-type.html" class="btn btn-neutral float-right" title="9. Type I and type II neuron models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="phase-plane-analysis.html" class="btn btn-neutral float-left" title="7. FitzHugh-Nagumo: Phase plane and bifurcation analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
