@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>neurodynex3.hopfield_network.pattern_tools &mdash; Neuronal Dynamics Exercises 0.3.7.dev2+g7fad0c4.d20210111 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Neuronal Dynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.7.dev2+g7fad0c4.d20210111
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exercises/index.html">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Neuronal Dynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>neurodynex3.hopfield_network.pattern_tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for neurodynex3.hopfield_network.pattern_tools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions to create 2D patterns.</span>
+<span class="sd">Note, in the hopfield model, we define patterns as vectors. To make</span>
+<span class="sd">the exercise more visual, we use 2D patterns (N by N ndarrays).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># This file is part of the exercise code repository accompanying</span>
+<span class="c1"># the book: Neuronal Dynamics (see http://neuronaldynamics.epfl.ch)</span>
+<span class="c1"># located at http://github.com/EPFL-LCN/neuronaldynamics-exercises.</span>
+
+<span class="c1"># This free software: you can redistribute it and/or modify it under</span>
+<span class="c1"># the terms of the GNU General Public License 2.0 as published by the</span>
+<span class="c1"># Free Software Foundation. You should have received a copy of the</span>
+<span class="c1"># GNU General Public License along with the repository. If not,</span>
+<span class="c1"># see http://www.gnu.org/licenses/.</span>
+
+<span class="c1"># Should you reuse and publish the code for your own purposes,</span>
+<span class="c1"># please cite the book or point to the webpage http://neuronaldynamics.epfl.ch.</span>
+
+<span class="c1"># Wulfram Gerstner, Werner M. Kistler, Richard Naud, and Liam Paninski.</span>
+<span class="c1"># Neuronal Dynamics: From Single Neurons to Networks and Models of Cognition.</span>
+<span class="c1"># Cambridge University Press, 2014.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="PatternFactory"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory">[docs]</a><span class="k">class</span> <span class="nc">PatternFactory</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates square patterns of size pattern_length x pattern_width</span>
+<span class="sd">    If pattern length is omitted, square patterns are produced</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern_length</span><span class="p">,</span> <span class="n">pattern_width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor</span>
+<span class="sd">        Args:</span>
+<span class="sd">            pattern_length: the length of a pattern</span>
+<span class="sd">            pattern_width: width or None. If None, patterns are squares of size (pattern_length x pattern_length)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span> <span class="o">=</span> <span class="n">pattern_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span> <span class="o">=</span> <span class="n">pattern_length</span> <span class="k">if</span> <span class="n">pattern_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">pattern_width</span>
+
+<div class="viewcode-block" id="PatternFactory.create_random_pattern"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_random_pattern">[docs]</a>    <span class="k">def</span> <span class="nf">create_random_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on_probability</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a pattern_length by pattern_width 2D random pattern</span>
+<span class="sd">        Args:</span>
+<span class="sd">            on_probability:</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a new random pattern</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">on_probability</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># map {0, 1} to {-1 +1}</span>
+        <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="PatternFactory.create_random_pattern_list"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_random_pattern_list">[docs]</a>    <span class="k">def</span> <span class="nf">create_random_pattern_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr_patterns</span><span class="p">,</span> <span class="n">on_probability</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a list of nr_patterns random patterns</span>
+<span class="sd">        Args:</span>
+<span class="sd">            nr_patterns: length of the new list</span>
+<span class="sd">            on_probability:</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a list of new random patterns of size (pattern_length x pattern_width)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_patterns</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_random_pattern</span><span class="p">(</span><span class="n">on_probability</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">p</span></div>
+
+<div class="viewcode-block" id="PatternFactory.create_row_patterns"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_row_patterns">[docs]</a>    <span class="k">def</span> <span class="nf">create_row_patterns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nr_patterns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a list of n patterns, the i-th pattern in the list</span>
+<span class="sd">        has all states of the i-th row set to active.</span>
+<span class="sd">        This is convenient to create a list of orthogonal patterns which</span>
+<span class="sd">        are easy to visually identify</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            nr_patterns:</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of orthogonal patterns</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span> <span class="k">if</span> <span class="n">nr_patterns</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">nr_patterns</span>
+        <span class="n">pattern_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_all_off</span><span class="p">()</span>
+            <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">))</span>
+            <span class="n">pattern_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pattern_list</span></div>
+
+<div class="viewcode-block" id="PatternFactory.create_all_on"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_all_on">[docs]</a>    <span class="k">def</span> <span class="nf">create_all_on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            2d pattern, all pixels on</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PatternFactory.create_all_off"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_all_off">[docs]</a>    <span class="k">def</span> <span class="nf">create_all_off</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            2d pattern, all pixels off</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PatternFactory.create_checkerboard"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_checkerboard">[docs]</a>    <span class="k">def</span> <span class="nf">create_checkerboard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a checkerboard pattern of size (pattern_length x pattern_width)</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            checkerboard pattern</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1"># set every second value to -1</span>
+        <span class="n">pw</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">pl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1"># set every second value to -1</span>
+        <span class="n">pl</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">toeplitz</span><span class="p">(</span><span class="n">pw</span><span class="p">,</span> <span class="n">pl</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+
+<div class="viewcode-block" id="PatternFactory.create_L_pattern"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.create_L_pattern">[docs]</a>    <span class="k">def</span> <span class="nf">create_L_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l_width</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        creates a pattern with column 0 (left) and row n (bottom) set to +1.</span>
+<span class="sd">        Increase l_width to set more columns and rows (default is 1)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            l_width (int): nr of rows and columns to set</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            an L shaped pattern.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l_pat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l_width</span><span class="p">):</span>
+            <span class="n">l_pat</span><span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+            <span class="n">l_pat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">l_pat</span></div>
+
+<div class="viewcode-block" id="PatternFactory.reshape_patterns"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.PatternFactory.reshape_patterns">[docs]</a>    <span class="k">def</span> <span class="nf">reshape_patterns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        reshapes all patterns in pattern_list to have shape = (self.pattern_length, self.pattern_width)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            self:</span>
+<span class="sd">            pattern_list:</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_width</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">reshape_patterns</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="reshape_patterns"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.reshape_patterns">[docs]</a><span class="k">def</span> <span class="nf">reshape_patterns</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    reshapes each pattern in pattern_list to the given shape</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pattern_list:</span>
+<span class="sd">        shape:</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reshaped_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pattern_list</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">reshaped_patterns</span></div>
+
+
+<div class="viewcode-block" id="get_pattern_diff"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.get_pattern_diff">[docs]</a><span class="k">def</span> <span class="nf">get_pattern_diff</span><span class="p">(</span><span class="n">pattern1</span><span class="p">,</span> <span class="n">pattern2</span><span class="p">,</span> <span class="n">diff_code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a new pattern of same size as the two patterns.</span>
+<span class="sd">    the diff pattern has the values pattern1 = pattern2 where the two patterns have</span>
+<span class="sd">    the same value. Locations that differ between the two patterns are set to</span>
+<span class="sd">    diff_code (default = 0)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pattern1:</span>
+<span class="sd">        pattern2:</span>
+<span class="sd">        diff_code: the values of the new pattern, at locations that differ between</span>
+<span class="sd">        the two patterns are set to diff_code.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        the diff pattern.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pattern1</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">pattern2</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;patterns are not of equal shape&quot;</span><span class="p">)</span>
+    <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">pattern1</span><span class="p">,</span> <span class="n">pattern2</span><span class="p">)</span>
+    <span class="n">pattern_with_diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">diffs</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">diff_code</span><span class="p">,</span> <span class="n">pattern1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pattern_with_diffs</span></div>
+
+
+<div class="viewcode-block" id="flip_n"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.flip_n">[docs]</a><span class="k">def</span> <span class="nf">flip_n</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">nr_of_flips</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    makes a copy of the template pattern and flips</span>
+<span class="sd">    exactly n randomly selected states.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        template:</span>
+<span class="sd">        nr_of_flips:</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        a new pattern</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="c1"># pick nrOfMutations indices (without replacement)</span>
+    <span class="n">idx_reassignment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nr_of_flips</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">linear_template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">linear_template</span><span class="p">[</span><span class="n">idx_reassignment</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">linear_template</span><span class="p">[</span><span class="n">idx_reassignment</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">linear_template</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_noisy_copy"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.get_noisy_copy">[docs]</a><span class="k">def</span> <span class="nf">get_noisy_copy</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">noise_level</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a copy of the template pattern and reassigns N pixels. N is determined</span>
+<span class="sd">    by the noise_level</span>
+<span class="sd">    Note: reassigning a random value is not the same as flipping the state. This</span>
+<span class="sd">    function reassigns a random value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        template:</span>
+<span class="sd">        noise_level: a value in [0,1]. for 0, this returns a copy of the template.</span>
+<span class="sd">        for 1, a random pattern of the same size as template is returned.</span>
+<span class="sd">    Returns:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">noise_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">noise_level</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">noise_level</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;noise level is not in [0,1] but </span><span class="si">{}</span><span class="s2">0&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">noise_level</span><span class="p">))</span>
+    <span class="n">linear_template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">nr_mutations</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">noise_level</span><span class="p">))</span>
+    <span class="n">idx_reassignment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nr_mutations</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">rand_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">nr_mutations</span><span class="p">)</span>
+    <span class="n">rand_values</span> <span class="o">=</span> <span class="n">rand_values</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># map {0,1} to {-1, +1}</span>
+    <span class="n">linear_template</span><span class="p">[</span><span class="n">idx_reassignment</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand_values</span>
+    <span class="k">return</span> <span class="n">linear_template</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compute_overlap"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.compute_overlap">[docs]</a><span class="k">def</span> <span class="nf">compute_overlap</span><span class="p">(</span><span class="n">pattern1</span><span class="p">,</span> <span class="n">pattern2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute overlap</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pattern1:</span>
+<span class="sd">        pattern2:</span>
+
+<span class="sd">    Returns: Overlap between pattern1 and pattern2</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shape1</span> <span class="o">=</span> <span class="n">pattern1</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="n">shape1</span> <span class="o">!=</span> <span class="n">pattern2</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;patterns are not of equal shape&quot;</span><span class="p">)</span>
+    <span class="n">dot_prod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">pattern1</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">pattern2</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">dot_prod</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="compute_overlap_list"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.compute_overlap_list">[docs]</a><span class="k">def</span> <span class="nf">compute_overlap_list</span><span class="p">(</span><span class="n">reference_pattern</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the overlap between the reference_pattern and each pattern</span>
+<span class="sd">    in pattern_list</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        reference_pattern:</span>
+<span class="sd">        pattern_list: list of patterns</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of the same length as pattern_list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)):</span>
+        <span class="n">overlap</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_overlap</span><span class="p">(</span><span class="n">reference_pattern</span><span class="p">,</span> <span class="n">pattern_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">overlap</span></div>
+
+
+<div class="viewcode-block" id="compute_overlap_matrix"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.compute_overlap_matrix">[docs]</a><span class="k">def</span> <span class="nf">compute_overlap_matrix</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For each pattern, it computes the overlap to all other patterns.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pattern_list:</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        the matrix m(i,k) = overlap(pattern_list[i], pattern_list[k]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nr_patterns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">)</span>
+    <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nr_patterns</span><span class="p">,</span> <span class="n">nr_patterns</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nr_patterns</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nr_patterns</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+                <span class="n">overlap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># no need to compute the overlap with itself</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">overlap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_overlap</span><span class="p">(</span><span class="n">pattern_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pattern_list</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+                <span class="n">overlap</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">overlap</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>  <span class="c1"># because overlap is symmetric</span>
+    <span class="k">return</span> <span class="n">overlap</span></div>
+
+
+<div class="viewcode-block" id="load_alphabet"><a class="viewcode-back" href="../../../modules/neurodynex3.hopfield_network.html#neurodynex3.hopfield_network.pattern_tools.load_alphabet">[docs]</a><span class="k">def</span> <span class="nf">load_alphabet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Load alphabet dict from the file</span>
+<span class="sd">    ``data/alphabet.pickle.gz``, which is included in</span>
+<span class="sd">    the neurodynex3 release.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary of 10x10 patterns</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ImportError: Raised if ``neurodynex``</span>
+<span class="sd">            can not be imported. Please install</span>
+<span class="sd">            `neurodynex &lt;pypi.python.org/pypi/neurodynex/&gt;`_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Todo: consider removing the zip file and explicitly store the strings here.</span>
+    <span class="n">file_str</span> <span class="o">=</span> <span class="s2">&quot;data/alphabet.pickle.gz&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;neurodynex3&quot;</span><span class="p">,</span> <span class="n">file_str</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;Could not import data file </span><span class="si">%s</span><span class="s2">. &quot;</span> <span class="o">%</span> <span class="n">file_str</span> <span class="o">+</span>
+            <span class="s2">&quot;Make sure the pypi package `neurodynex` is installed!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># python2 pickle.loads has no attribute &quot;encoding&quot;</span>
+            <span class="n">abc_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># latin1 is required for python3 compatibility</span>
+            <span class="n">abc_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin1&quot;</span><span class="p">)</span>
+
+    <span class="c1"># shape the patterns and provide upper case keys</span>
+    <span class="n">ABC_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">abc_dict</span><span class="p">:</span>
+        <span class="n">ABC_dict</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span> <span class="o">=</span> <span class="n">abc_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ABC_dict</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">pf</span> <span class="o">=</span> <span class="n">PatternFactory</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">pf</span><span class="o">.</span><span class="n">create_L_pattern</span><span class="p">(</span><span class="n">l_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -66,7 +66,8 @@ def simulate_AdEx_neuron(
 
     .. math::
 
-        \tau_m \frac{dv}{dt} = -(v-v_{rest}) + \Delta_T \cdot e^{\frac{v-v_{rheobase}}{\Delta_T}} + R I_{stim}(t,i) - R w \\
+        \tau_m \frac{dv}{dt} = -(v-v_{rest}) + \Delta_T \cdot
+                                e^{\frac{v-v_{rheobase}}{\Delta_T}} + R I_{stim}(t,i) - R w \\
         \tau_w \frac{dw}{dt} = a (v-v_{rest}) - w
 
     Args:
@@ -116,8 +117,7 @@ def plot_adex_state(adex_state_monitor):
     Visualizes the state variables: w-t, v-t and phase-plane w-v
 
     Args:
-        adex_state_monitor (StateMonitor): States of "v" and "w"
-
+    adex_state_monitor (StateMonitor): States of "v" and "w"
     """
     plt.subplot(2, 2, 1)
     plt.plot(adex_state_monitor.t / b2.ms, adex_state_monitor.v[0] / b2.mV, lw=2)

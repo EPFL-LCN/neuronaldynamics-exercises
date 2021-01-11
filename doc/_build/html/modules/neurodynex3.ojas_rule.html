@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>neurodynex3.ojas_rule package &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  <title>neurodynex3.ojas_rule package &mdash; Neuronal Dynamics Exercises 0.3.7.dev2+g7fad0c4.d20210111 documentation</title>
   
 
   
@@ -21,10 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> Neuronaldynamics Exercises
+            <a href="../index.html" class="icon icon-home"> Neuronal Dynamics Exercises
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.0.5.dev61+gfd12cb6.d20200212
+                0.3.7.dev2+g7fad0c4.d20210111
               </div>
             
           
@@ -86,8 +87,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../exercises/index.html">Exercises</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contents.html">Package index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../licence.html">License</a></li>
 </ul>
 
@@ -103,7 +105,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Neuronaldynamics Exercises</a>
+          <a href="../index.html">Neuronal Dynamics Exercises</a>
         
       </nav>
 
@@ -134,7 +136,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../contents.html">Python exercise modules</a> &raquo;</li>
+          <li><a href="../contents.html">Package index</a> &raquo;</li>
         
           <li><a href="neurodynex3.html">neurodynex3 package</a> &raquo;</li>
         
@@ -162,104 +164,8 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-neurodynex3.ojas_rule.oja">
-<span id="neurodynex3-ojas-rule-oja-module"></span><h2>neurodynex3.ojas_rule.oja module<a class="headerlink" href="#module-neurodynex3.ojas_rule.oja" title="Permalink to this headline">¶</a></h2>
-<p>This file implements Oja’s hebbian learning rule.</p>
-<dl class="docutils">
-<dt>Relevant book chapters:</dt>
-<dd><ul class="first last simple">
-<li><a class="reference external" href="http://neuronaldynamics.epfl.ch/online/Ch19.S2.html#SS1.p6">http://neuronaldynamics.epfl.ch/online/Ch19.S2.html#SS1.p6</a></li>
-</ul>
-</dd>
-</dl>
-<dl class="function">
-<dt id="neurodynex3.ojas_rule.oja.learn">
-<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">learn</code><span class="sig-paren">(</span><em>cloud</em>, <em>initial_angle=None</em>, <em>eta=0.005</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.learn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run one batch of Oja’s learning over
-a cloud of datapoints.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cloud</strong> (<a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)"><em>numpy.ndarray</em></a>) – An N by 2 array of datapoints. You can
-think of each of the two columns as the time series of firing rates of one presynaptic neuron.</li>
-<li><strong>initial_angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – angle of initial
-set of weights [deg]. If None, this is random.</li>
-<li><strong>eta</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – learning rate</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">time course of the weight vector</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)">numpy.ndarray</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="neurodynex3.ojas_rule.oja.make_cloud">
-<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">make_cloud</code><span class="sig-paren">(</span><em>n=2000</em>, <em>ratio=1</em>, <em>angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.make_cloud" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an oriented elliptic
-gaussian cloud of 2D points</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – number of points in the cloud</li>
-<li><strong>ratio</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – (std along the short axis) /
-(std along the long axis)</li>
-<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – rotation angle [deg]</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">array of datapoints</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://numpy.org/doc/1.18/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.18)">numpy.ndarray</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="neurodynex3.ojas_rule.oja.plot_oja_trace">
-<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">plot_oja_trace</code><span class="sig-paren">(</span><em>data_cloud</em>, <em>weights_course</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.plot_oja_trace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots the datapoints and the time series of the weights
-:param data_cloud: n by 2 data
-:type data_cloud: numpy.ndarray
-:param weights_course: n by 2 weights
-:type weights_course: numpy.ndarray</p>
-<p>Returns:</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="neurodynex3.ojas_rule.oja.run_oja">
-<code class="descclassname">neurodynex3.ojas_rule.oja.</code><code class="descname">run_oja</code><span class="sig-paren">(</span><em>n=2000</em>, <em>ratio=1.0</em>, <em>angle=0.0</em>, <em>learning_rate=0.01</em>, <em>do_plot=True</em><span class="sig-paren">)</span><a class="headerlink" href="#neurodynex3.ojas_rule.oja.run_oja" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a point cloud and runs Oja’s learning
-rule once. Optionally plots the result.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em>, </em><em>optional</em>) – number of points in the cloud</li>
-<li><strong>ratio</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – (std along the short axis) /
-(std along the long axis)</li>
-<li><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a><em>, </em><em>optional</em>) – rotation angle [deg]</li>
-<li><strong>do_plot</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a><em>, </em><em>optional</em>) – plot the result</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="neurodynex3-ojas-rule-oja-module">
+<h2>neurodynex3.ojas_rule.oja module<a class="headerlink" href="#neurodynex3-ojas-rule-oja-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-neurodynex3.ojas_rule">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-neurodynex3.ojas_rule" title="Permalink to this headline">¶</a></h2>

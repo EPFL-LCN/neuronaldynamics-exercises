@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  <title>Introduction &mdash; Neuronal Dynamics Exercises 0.3.7.dev2+g7fad0c4.d20210111 documentation</title>
   
 
   
@@ -21,10 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -35,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Exercises" href="exercises/index.html" />
+    <link rel="next" title="Installation" href="setup.html" />
     <link rel="prev" title="Neuronal Dynamics: Python Exercises" href="index.html" /> 
 </head>
 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Neuronaldynamics Exercises
+            <a href="index.html" class="icon icon-home"> Neuronal Dynamics Exercises
           
 
           
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                0.0.5.dev61+gfd12cb6.d20200212
+                0.3.7.dev2+g7fad0c4.d20210111
               </div>
             
           
@@ -92,8 +93,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#bug-reports">Bug reports</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exercises/index.html">Exercises</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Package index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licence.html">License</a></li>
 </ul>
 
@@ -109,7 +111,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Neuronaldynamics Exercises</a>
+          <a href="index.html">Neuronal Dynamics Exercises</a>
         
       </nav>
 
@@ -161,43 +163,34 @@
             
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>This repository contains python exercises accompanying the book
-<a class="reference external" href="http://neuronaldynamics.epfl.ch/">Neuronal Dynamics</a> by Wulfram
-Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.
-References to relevant chapters will be added in the <a class="reference external" href="http://neuronaldynamics.epfl.ch/lectures.html">Teaching Materials</a> section of
-the book homepage.</p>
+<p>This repository contains python exercises accompanying the book <a class="reference external" href="http://neuronaldynamics.epfl.ch/">Neuronal Dynamics</a> by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski. References to relevant chapters will be added in the <a class="reference external" href="http://neuronaldynamics.epfl.ch/lectures.html">Teaching Materials</a> section of the book homepage.</p>
 <div class="section" id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference internal" href="exercises/setup.html#exercises-setup"><span class="std std-ref">the setup instructions</span></a> for details on how to install the python classes needed for the exercises.</p>
-<p>Every <a class="reference internal" href="exercises/index.html#exercises-index"><span class="std std-ref">exercise</span></a> comes with instructions and a demo function to get started. We recommend to create one jupyter notebook per exercise.</p>
+<p>See the <a class="reference internal" href="setup.html#setup"><span class="std std-ref">installation instructions</span></a> for details on how to install the Python packages needed for the exercises.</p>
+<p>Every <a class="reference internal" href="exercises/index.html#exercises-index"><span class="std std-ref">exercise</span></a> comes with instructions and a demo function to get started. We recommend to create one Jupyter notebook per exercise.</p>
 </div>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>The following requirements should be met:</p>
+<p>The following packages are required to use <code class="docutils literal notranslate"><span class="pre">neurodynex3</span></code>:</p>
 <ul class="simple">
-<li>Either Python 2.7 or 3.4</li>
-<li><a class="reference external" href="https://github.com/brian-team/brian2">Brian2 Simulator</a> 2.0b4</li>
-<li>Numpy</li>
-<li>Matplotlib</li>
-<li>Scipy (only required in some exercises)</li>
+<li><p>Python 3 or higher</p></li>
+<li><p><a class="reference external" href="https://brian2.readthedocs.io/en/stable">Brian2 Simulator</a></p></li>
+<li><p>Numpy</p></li>
+<li><p>Matplotlib</p></li>
+<li><p>Scipy</p></li>
+<li><p>Jupyter</p></li>
 </ul>
-<p>If you are not using anaconda/miniconda, you can install all requirements by running:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
-</pre></div>
-</div>
 </div>
 <div class="section" id="disclaimer">
 <h2>Disclaimer<a class="headerlink" href="#disclaimer" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>You can download, use and modify the software we provide here. It has been tested but it can still contain errors.</li>
-<li>The content of this site can change at any moment. We may change, add or remove code/exercises without notification.</li>
+<ul class="simple">
+<li><p>You can download, use and modify the software we provide here. It has been tested but it can still contain errors.</p></li>
+<li><p>The content of this site can change at any moment. We may change, add or remove code/exercises without notification.</p></li>
 </ul>
-</div></blockquote>
 </div>
 <div class="section" id="bug-reports">
 <h2>Bug reports<a class="headerlink" href="#bug-reports" title="Permalink to this headline">¶</a></h2>
-<p>Did you find a bug? Open an issue on <a class="reference external" href="https://github.com/EPFL-LCN/neuronaldynamics-exercises/issues">github</a> . Thank you!</p>
+<p>Did you find a bug? Open an issue on <a class="reference external" href="https://github.com/martinbarry59/neurodynex3/issues">Github</a>. Thank you!</p>
 </div>
 </div>
 
@@ -209,7 +202,7 @@ the book homepage.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="exercises/index.html" class="btn btn-neutral float-right" title="Exercises" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="setup.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Neuronal Dynamics: Python Exercises" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -22,6 +22,7 @@ Helper tools to visualize patterns and network state
 import matplotlib.pyplot as plt
 import neurodynex3.hopfield_network.pattern_tools as pattern_tools
 import numpy as np
+import matplotlib
 
 
 def plot_pattern(pattern, reference=None, color_map="brg", diff_code=0):
@@ -62,10 +63,8 @@ def plot_overlap_matrix(overlap_matrix, color_map="bwr"):
     plt.title("pattern overlap m(i,k)")
     plt.xlabel("pattern k")
     plt.ylabel("pattern i")
-    plt.axes().get_xaxis().set_major_locator(plt.MaxNLocator(integer=True))
-    plt.axes().get_yaxis().set_major_locator(plt.MaxNLocator(integer=True))
-    cb = plt.colorbar(ticks=np.arange(-1, 1.01, 0.25).tolist())
-    cb.set_clim(-1, 1)
+    norm = matplotlib.colors.Normalize(vmin=-1, vmax=1)
+    plt.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=color_map))
     plt.show()
 
 

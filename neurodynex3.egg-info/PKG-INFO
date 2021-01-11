@@ -1,0 +1,17 @@
+Metadata-Version: 1.2
+Name: neurodynex3
+Version: 1.0.2
+Summary: Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.
+Home-page: https://github.com/martinbarry59/neurodynex3
+Author: LCN-EPFL
+Author-email: martin.barry@epfl.ch
+License: GPLv2
+Download-URL: https://github.com/martinbarry59/neurodynex3/archive/1.0.0.tar.gz
+Description: UNKNOWN
+Keywords: compneuro,science,teaching,neuroscience,brian
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Classifier: Topic :: Scientific/Engineering :: Medical Science Apps.
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6

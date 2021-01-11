@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>neurodynex3.test.test_hopfield &mdash; Neuronal Dynamics Exercises 0.3.7.dev2+g7fad0c4.d20210111 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Neuronal Dynamics Exercises
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.7.dev2+g7fad0c4.d20210111
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../exercises/index.html">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contents.html">Package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../licence.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Neuronal Dynamics Exercises</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../test.html">neurodynex3.test</a> &raquo;</li>
+        
+      <li>neurodynex3.test.test_hopfield</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for neurodynex3.test.test_hopfield</h1><div class="highlight"><pre>
+<span></span><span class="c1"># import matplotlib</span>
+<span class="c1"># matplotlib.use(&quot;Agg&quot;)  # needed for plotting on travis</span>
+
+
+<div class="viewcode-block" id="test_pattern_factory"><a class="viewcode-back" href="../../../modules/neurodynex3.test.html#neurodynex3.test.test_hopfield.test_pattern_factory">[docs]</a><span class="k">def</span> <span class="nf">test_pattern_factory</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Test hopfield_network.pattern_tools &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">neurodynex3.hopfield_network.pattern_tools</span> <span class="k">as</span> <span class="nn">tools</span>
+    <span class="n">pattern_size</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">factory</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">PatternFactory</span><span class="p">(</span><span class="n">pattern_size</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_checkerboard</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span> <span class="o">==</span> <span class="n">pattern_size</span></div>
+
+
+<div class="viewcode-block" id="test_overlap"><a class="viewcode-back" href="../../../modules/neurodynex3.test.html#neurodynex3.test.test_hopfield.test_overlap">[docs]</a><span class="k">def</span> <span class="nf">test_overlap</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Test hopfield_network.pattern_tools overlap&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">neurodynex3.hopfield_network.pattern_tools</span> <span class="k">as</span> <span class="nn">tools</span>
+    <span class="n">pattern_size</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">factory</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">PatternFactory</span><span class="p">(</span><span class="n">pattern_size</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_checkerboard</span><span class="p">()</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">create_all_on</span><span class="p">()</span>
+    <span class="n">overlap</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">compute_overlap</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">overlap</span> <span class="o">==</span> <span class="mf">0.0</span>  <span class="c1"># works for checkerboards with even valued size</span></div>
+
+
+<div class="viewcode-block" id="test_load_alphabet"><a class="viewcode-back" href="../../../modules/neurodynex3.test.html#neurodynex3.test.test_hopfield.test_load_alphabet">[docs]</a><span class="k">def</span> <span class="nf">test_load_alphabet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test if the alphabet patterns can be loaded&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">neurodynex3.hopfield_network.pattern_tools</span> <span class="k">as</span> <span class="nn">pattern_tools</span>
+    <span class="n">abc_dictionary</span> <span class="o">=</span> <span class="n">pattern_tools</span><span class="o">.</span><span class="n">load_alphabet</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="s1">&#39;A&#39;</span> <span class="ow">in</span> <span class="n">abc_dictionary</span><span class="p">,</span> \
+        <span class="s2">&quot;Alphabet dict not correctly loaded. Key not accessible&quot;</span>
+    <span class="k">assert</span> <span class="n">abc_dictionary</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> \
+        <span class="s2">&quot;Letter is not of shape (10,10)&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, EPFL-LCN
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

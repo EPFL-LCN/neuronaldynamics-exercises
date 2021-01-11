@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Neuronal Dynamics: Python Exercises &mdash; Neuronaldynamics Exercises 0.0.5.dev61+gfd12cb6.d20200212 documentation</title>
+  <title>Neuronal Dynamics: Python Exercises &mdash; Neuronal Dynamics Exercises 0.3.7.dev2+g7fad0c4.d20210111 documentation</title>
   
 
   
@@ -21,10 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Neuronaldynamics Exercises
+            <a href="#" class="icon icon-home"> Neuronal Dynamics Exercises
           
 
           
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                0.0.5.dev61+gfd12cb6.d20200212
+                0.3.7.dev2+g7fad0c4.d20210111
               </div>
             
           
@@ -85,8 +86,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exercises/index.html">Exercises</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contents.html">Python exercise modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Package index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licence.html">License</a></li>
 </ul>
 
@@ -102,7 +104,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Neuronaldynamics Exercises</a>
+          <a href="#">Neuronal Dynamics Exercises</a>
         
       </nav>
 
@@ -152,13 +154,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>neurodynex3|Build Status| <a class="reference external" href="https://anaconda.org/epfl-lcn/neurodynex3"><img alt="Conda Repo" src="https://anaconda.org/epfl-lcn/neurodynex3/badges/version.svg" /></a></p>
-<div class="section" id="neuronal-dynamics-python-exercises">
+  <div class="section" id="neuronal-dynamics-python-exercises">
 <h1>Neuronal Dynamics: Python Exercises<a class="headerlink" href="#neuronal-dynamics-python-exercises" title="Permalink to this headline">¶</a></h1>
 <p>This documentation is automatically generated documentation from the corresponding code
-repository hosted at <a class="reference external" href="https://github.com/EPFL-LCN/neuronaldynamics-exercises">Github</a>. The repository contains python exercises accompanying the book
-<a class="reference external" href="http://neuronaldynamics.epfl.ch/">Neuronal Dynamics</a> by Wulfram
-Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.</p>
+repository hosted at <a class="reference external" href="https://github.com/martinbarry59/neurodynex3">Github</a>.
+The repository contains python exercises accompanying the book
+<a class="reference external" href="http://neuronaldynamics.epfl.ch/">Neuronal Dynamics</a> by Wulfram Gerstner,
+Werner M. Kistler, Richard Naud and Liam Paninski.</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -170,265 +172,30 @@ Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.</p>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#bug-reports">Bug reports</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#using-pip">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#using-conda">Using <code class="docutils literal notranslate"><span class="pre">conda</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#start-a-jupyter-notebook">Start a Jupyter notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#links">Links</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="exercises/index.html">Exercises</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="exercises/setup.html">1. Setting up Python and Brian</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/setup.html#using-miniconda">1.1. Using miniconda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/setup.html#links">1.2. Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html">1. Leaky-integrate-and-fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/exponential-integrate-and-fire.html">2. The Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/adex-model.html">3. AdEx: the Adaptive Exponential Integrate-and-Fire model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/passive-cable.html">4. Dendrites and the (passive) cable equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/hodgkin-huxley.html">5. Numerical integration of the HH model of the squid axon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/phase-plane-analysis.html">6. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/hopfield-network.html">7. Hopfield Network model of associative memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/neuron-type.html">8. Type I and type II neuron models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/ojas-rule.html">9. Oja’s hebbian learning rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/brunel-network.html">10. Network of LIF neurons (Brunel)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/spatial-working-memory.html">11. Spatial Working Memory (Compte et. al.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exercises/perceptual-decision-making.html">12. Perceptual Decision Making (Wong &amp; Wang)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html">2. Leaky-integrate-and-fire model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#exercise-minimal-current">2.1. Exercise: minimal current</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#question-minimal-current-calculation">2.1.1. Question: minimal current (calculation)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#question-minimal-current-simulation">2.1.2. Question: minimal current (simulation)</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#exercise-f-i-curve">2.2. Exercise: f-I Curve</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#question-f-i-curve-and-refractoryness">2.2.1. Question: f-I Curve and refractoryness</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#exercise-experimentally-estimate-the-parameters-of-a-lif-neuron">2.3. Exercise: “Experimentally” estimate the parameters of a LIF neuron</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#question-read-the-lif-parameters-out-of-the-vm-plot">2.3.1. Question: “Read” the LIF parameters out of the vm plot</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#exercise-sinusoidal-input-current-and-subthreshold-response">2.4. Exercise: Sinusoidal input current and subthreshold response</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#question">2.4.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#id1">2.4.2. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#id2">2.4.3. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/leaky-integrate-and-fire.html#id3">2.4.4. Question</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/exponential-integrate-and-fire.html">3. The Exponential Integrate-and-Fire model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/exponential-integrate-and-fire.html#exercise-rehobase-threshold">3.1. Exercise: rehobase threshold</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/exponential-integrate-and-fire.html#question">3.1.1. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/exponential-integrate-and-fire.html#exercise-strength-duration-curve">3.2. Exercise: strength-duration curve</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/exponential-integrate-and-fire.html#id1">3.2.1. Question:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/adex-model.html">4. AdEx: the Adaptive Exponential Integrate-and-Fire model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/adex-model.html#exercise-adaptation-and-firing-patterns">4.1. Exercise: Adaptation and firing patterns</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/adex-model.html#question-firing-pattern">4.1.1. Question: Firing pattern</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/adex-model.html#exercise-phase-plane-and-nullclines">4.2. Exercise: phase plane and nullclines</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/adex-model.html#question">4.2.1. Question:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/adex-model.html#id2">4.2.2. Question:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/passive-cable.html">5. Dendrites and the (passive) cable equation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/passive-cable.html#exercise-spatial-and-temporal-evolution-of-a-pulse-input">5.1. Exercise: spatial and temporal evolution of a pulse input</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/passive-cable.html#question">5.1.1. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/passive-cable.html#exercise-spatio-temporal-input-pattern">5.2. Exercise: Spatio-temporal input pattern</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/passive-cable.html#id1">5.2.1. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/passive-cable.html#exercise-effect-of-cable-parameters">5.3. Exercise: Effect of cable parameters</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/passive-cable.html#id2">5.3.1. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/passive-cable.html#exercise-stationary-solution-and-comparison-with-theoretical-result">5.4. Exercise: stationary solution and comparison with theoretical result</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/passive-cable.html#id3">5.4.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/passive-cable.html#id4">5.4.2. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/passive-cable.html#question-bonus">5.4.3. Question (Bonus)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/hodgkin-huxley.html">6. Numerical integration of the HH model of the squid axon</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hodgkin-huxley.html#exercise-step-current-response">6.1. Exercise: step current response</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#question">6.1.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#id1">6.1.2. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hodgkin-huxley.html#exercise-slow-and-fast-ramp-current">6.2. Exercise: slow and fast ramp current</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#id2">6.2.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#id3">6.2.2. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#id4">6.2.3. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hodgkin-huxley.html#exercise-rebound-spike">6.3. Exercise: Rebound Spike</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#id5">6.3.1. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hodgkin-huxley.html#exercise-brian-implementation-of-a-hh-neuron">6.4. Exercise: Brian implementation of a HH neuron</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hodgkin-huxley.html#id6">6.4.1. Question</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/phase-plane-analysis.html">7. FitzHugh-Nagumo: Phase plane and bifurcation analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/phase-plane-analysis.html#exercise-phase-plane-analysis">7.1. Exercise: Phase plane analysis</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#question">7.1.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#q-traj">7.1.2. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#id2">7.1.3. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#q-traj2">7.1.4. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/phase-plane-analysis.html#exercise-jacobian-eigenvalues">7.2. Exercise: Jacobian &amp; Eigenvalues</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#q-jac">7.2.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#q-jac2">7.2.2. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#q-jac3">7.2.3. Question</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/phase-plane-analysis.html#exercise-bifurcation-analysis">7.3. Exercise: Bifurcation analysis</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#id7">7.3.1. Question</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/phase-plane-analysis.html#id8">7.3.2. Question</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/hopfield-network.html">8. Hopfield Network model of associative memory</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hopfield-network.html#getting-started">8.1. Getting started:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hopfield-network.html#introduction-hopfield-networks">8.2. Introduction: Hopfield-networks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hopfield-network.html#exercise-n-4x4-hopfield-network">8.3. Exercise: N=4x4 Hopfield-network</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#question-storing-a-single-pattern">8.3.1. Question: Storing a single pattern</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#question-the-weights-matrix">8.3.2. Question: the weights matrix</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#question-optional-weights-distribution">8.3.3. Question (optional): Weights Distribution</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hopfield-network.html#exercise-capacity-of-an-n-100-hopfield-network">8.4. Exercise: Capacity of an N=100 Hopfield-network</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#question">8.4.1. Question:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#id1">8.4.2. Question:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#id2">8.4.3. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hopfield-network.html#exercise-non-random-patterns">8.5. Exercise: Non-random patterns</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#id3">8.5.1. Question:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#id4">8.5.2. Question:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/hopfield-network.html#id5">8.5.3. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/hopfield-network.html#exercise-bonus">8.6. Exercise: Bonus</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/neuron-type.html">9. Type I and type II neuron models</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/neuron-type.html#exercise-probing-type-i-and-type-ii-neuron-models">9.1. Exercise: Probing Type I and Type II neuron models</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/neuron-type.html#question-estimating-the-threshold">9.1.1. Question: Estimating the threshold</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/neuron-type.html#exercise-f-i-curves">9.2. Exercise: f-I curves</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/neuron-type.html#get-firing-rates-from-simulations">9.2.1. Get firing rates from simulations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/neuron-type.html#plot-the-f-i-curve">9.2.2. Plot the f-I curve</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/ojas-rule.html">10. Oja’s hebbian learning rule</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/ojas-rule.html#exercise-getting-started">10.1. Exercise: getting started</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/ojas-rule.html#question-the-norm-of-the-weights">10.1.1. Question: The norm of the weights</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/ojas-rule.html#exercise-circular-data">10.2. Exercise: Circular data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/ojas-rule.html#exercise-what-is-the-neuron-leaning">10.3. Exercise: What is the neuron leaning?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/ojas-rule.html#exercise-non-centered-data">10.4. Exercise: Non-centered data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/ojas-rule.html#bonus-3-d">10.5. Bonus: 3 D</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/brunel-network.html">11. Network of LIF neurons (Brunel)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/brunel-network.html#exercise-model-parameters-and-threshold-rate">11.1. Exercise: model parameters and threshold rate</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#question">11.1.1. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/brunel-network.html#exercise-population-activity">11.2. Exercise: Population activity</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#question-network-states">11.2.1. Question: Network states</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#question-interspike-interval-isi-and-coefficient-of-variation-cv">11.2.2. Question: Interspike interval (ISI)  and Coefficient of Variation (CV)</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/brunel-network.html#exercise-emergence-of-synchronization">11.3. Exercise: Emergence of Synchronization</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#id1">11.3.1. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/brunel-network.html#bonus-power-spectrum-of-the-population-activity">11.4. Bonus: Power Spectrum of the Population Activity</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#question-sampling-the-population-activity">11.4.1. Question: Sampling the Population Activity</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#question-sampling-a-single-neuron-spike-train">11.4.2. Question: Sampling a Single Neuron Spike Train</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/brunel-network.html#question-single-neuron-activity-vs-population-activity">11.4.3. Question: Single Neuron activity vs. Population Activity</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/spatial-working-memory.html">12. Spatial Working Memory (Compte et. al.)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/spatial-working-memory.html#exercise-spontanous-bump-formation">12.1. Exercise: Spontanous bump formation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#question-external-poisson-population">12.1.1. Question: External poisson population</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#question-unstructured-input">12.1.2. Question: Unstructured input</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#question-weight-profile">12.1.3. Question: Weight profile</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/spatial-working-memory.html#exercise-network-response-to-a-structured-input-stimulus">12.2. Exercise: Network response to a structured input stimulus</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#question-integration-of-input">12.2.1. Question: Integration of input</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#question-role-of-the-inhibitory-population">12.2.2. Question: Role of the inhibitory population</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/spatial-working-memory.html#exercise-decoding-the-population-activity-into-a-population-vector">12.3. Exercise: Decoding the population activity into a population vector</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#mapping-the-neuron-index-onto-its-preferred-direction">12.3.1. Mapping the neuron index onto its preferred direction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#extracting-spikes-from-the-spike-monitor">12.3.2. Extracting spikes from the spike monitor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#computing-the-population-vector">12.3.3. Computing the population vector</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#exercise-visualize-the-diffusion-of-the-population-vector">12.3.4. Exercise: Visualize the diffusion of the population vector</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/spatial-working-memory.html#reading-exercise-slow-and-fast-channels">12.4. Reading exercise: slow and fast channels</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/spatial-working-memory.html#question">12.4.1. Question:</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/spatial-working-memory.html#references">12.5. <strong>References</strong></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="exercises/perceptual-decision-making.html">13. Perceptual Decision Making (Wong &amp; Wang)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="exercises/perceptual-decision-making.html#exercise-the-network-implementation">13.1. Exercise: The network implementation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-understanding-brian2-monitors">13.1.1. Question: Understanding Brian2 Monitors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-accessing-a-dictionary-to-plot-the-population-rates">13.1.2. Question: Accessing a dictionary to plot the population rates</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/perceptual-decision-making.html#exercise-stimulating-the-decision-making-circuit">13.2. Exercise: Stimulating the decision making circuit</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-coherence-level">13.2.1. Question: Coherence Level</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-input-stimuli-with-different-coherence-levels">13.2.2. Question: Input stimuli with different coherence levels</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/perceptual-decision-making.html#exercise-decision-space">13.3. Exercise: Decision Space</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-plotting-the-decision-space">13.3.1. Question: Plotting the Decision Space</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-implementing-a-decision-criterion">13.3.2. Question: Implementing a decision criterion</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/perceptual-decision-making.html#exercise-percent-correct-and-decision-time-as-a-function-of-coherence-level">13.4. Exercise: Percent-correct and Decision-time as a function of coherence level</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-running-multiple-simulations">13.4.1. Question: Running multiple simulations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="exercises/perceptual-decision-making.html#question-percent-correct-time-to-decision">13.4.2. Question: Percent-Correct, Time-to-decision</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="exercises/perceptual-decision-making.html#references">13.5. <strong>References</strong></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="contents.html">Python exercise modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/neurodynex3.html">neurodynex3 package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modules/neurodynex3.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.adex_model.html">neurodynex3.adex_model package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.brunel_model.html">neurodynex3.brunel_model package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.cable_equation.html">neurodynex3.cable_equation package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.competing_populations.html">neurodynex3.competing_populations package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.exponential_integrate_fire.html">neurodynex3.exponential_integrate_fire package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.hodgkin_huxley.html">neurodynex3.hodgkin_huxley package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.hopfield_network.html">neurodynex3.hopfield_network package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.leaky_integrate_and_fire.html">neurodynex3.leaky_integrate_and_fire package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.neuron_type.html">neurodynex3.neuron_type package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.ojas_rule.html">neurodynex3.ojas_rule package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.phase_plane_analysis.html">neurodynex3.phase_plane_analysis package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.test.html">neurodynex3.test package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.tools.html">neurodynex3.tools package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/neurodynex3.working_memory_network.html">neurodynex3.working_memory_network package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="modules/neurodynex3.html#module-neurodynex3">Module contents</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="contents.html">Package index</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/neurodynex3.html">neurodynex3 package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="licence.html">License</a></li>
@@ -438,9 +205,9 @@ Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.</p>
 <div class="section" id="indices-and-tables">
 <h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 </div>
