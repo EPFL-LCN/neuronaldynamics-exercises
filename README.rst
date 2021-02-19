@@ -27,8 +27,8 @@ Should you reuse and publish the code for your own purposes, please point to the
 
 Contributors (alphabetically)
 -----------------------------
-* Martin Barry (LCN, EPFL)
 * Parima Ahmadipouranari (LCN, EPFL)
+* Martin Barry (LCN, EPFL)
 * Georgios Iatropoulos (BBP/LCN, EPFL)
 * Bernd Illing (LCN, EPFL)
 * Marco Lehmann (LCN, EPFL)
