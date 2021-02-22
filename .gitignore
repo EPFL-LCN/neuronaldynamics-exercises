@@ -9,4 +9,3 @@ build
 .ipynb_checkpoints
 *.ipynb
 tmp_*.py
-doc/modules/
