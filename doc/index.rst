@@ -16,7 +16,7 @@ Contents
     intro
     setup
     exercises/index
-    contents
+    modules/neurodynex3
     licence
 
 Indices and tables
