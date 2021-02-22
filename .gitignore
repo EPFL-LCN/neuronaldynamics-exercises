@@ -2,6 +2,7 @@
 *.log
 *.idea
 *.pyc
+.DS_Store
 neurodynex.egg-info/*
 dist
 build
