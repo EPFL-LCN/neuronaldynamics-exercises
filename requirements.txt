@@ -1,6 +1,6 @@
 numpy
 scipy
-brian2>=2.0
+brian2==2.3
 matplotlib
 mpmath
 setuptools
