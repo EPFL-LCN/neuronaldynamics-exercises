@@ -71,7 +71,7 @@ def plot_data(state_monitor, title=None, show=True):
     # plot current
     plt.subplot(313)
     plt.plot(t, I_ext, lw=2)
-    plt.axis((0, t.max(), 0, I.max() * 1.1))
+    plt.axis((0, t.max(), 0, I_ext.max() * 1.1))
     plt.xlabel("t [ms]")
     plt.ylabel("I [pA]")
     plt.grid()
