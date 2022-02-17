@@ -38,6 +38,7 @@ Using ``pip``
 4. Now install ``neurodynex3`` and all its requirements:
 
    .. code-block:: bash
+   
       >> pip install --upgrade neurodynex3
       >> pip install jupyter
 
