@@ -38,8 +38,8 @@ Using ``pip``
 4. Now install ``neurodynex3`` and all its requirements:
 
    .. code-block:: bash
-
       >> pip install --upgrade neurodynex3
+      >> pip install jupyter
 
 5. You can now use Python in this environment as you normally would. Move to the folder where you want your code to be stored and start a Jupyter notebook by running:
 
