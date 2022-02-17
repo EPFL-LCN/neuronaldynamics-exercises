@@ -33,5 +33,5 @@ Disclaimer
 
 Bug reports
 -----------
-Did you find a bug? Open an issue on `Github <https://github.com/martinbarry59/neurodynex3/issues>`_. Thank you!
+Did you find a bug? Open an issue on `Github <https://github.com/EPFL-LCN/neuronaldynamics-exercises/issues>`_. Thank you!
 
