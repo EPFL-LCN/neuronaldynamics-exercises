@@ -59,7 +59,7 @@ The minimal current to elicit a spike does not just depend on the amplitude :mat
 
 Question
 ~~~~~~~~
-Inject a slow ramp current into a HH neuron. The current has amplitude ``0A`` at t in [0, 5] ms and linearly increases to an amplitude of ``12.0uAmp`` at ``t=ramp_t_end``. At ``t>ramp_t_end``, the current is set to ``0A``. Using the following code, reduce ``slow_ramp_t_end`` to the maximal duration of the ramp current, such that the neuron does **not** spike. Make sure you simulate system for at least 20ms after the current stops.
+Inject a slow ramp current into a HH neuron. The current has amplitude ``0A`` at t in [0, 5] ms and linearly increases to an amplitude of ``12.0uAmp`` at ``t=ramp_t_end``. At ``t>ramp_t_end``, the current is set to ``0A``. Using the following code, reduce ``slow_ramp_t_end`` to the minimal duration of the ramp current, such that the neuron does **not** spike. Make sure you simulate system for at least 20ms after the current stops.
 
 * What is the membrane voltage at the time when the current injection stops (``t=slow_ramp_t_end``)?
 
