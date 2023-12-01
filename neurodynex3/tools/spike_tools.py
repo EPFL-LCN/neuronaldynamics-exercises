@@ -422,7 +422,6 @@ def get_population_activity_power_spectrum(
     # normalize
     ps = ps * delta_t / N_signal  # TODO: verify: subtract 1 (N_signal-1)?
     freqs = np.fft.fftfreq(N_signal, delta_t)
-    print(N_signal/2)
     ps = ps[:int(N_signal/2)]
     freqs = freqs[:int(N_signal/2)]
     return freqs, ps, average_population_rate
