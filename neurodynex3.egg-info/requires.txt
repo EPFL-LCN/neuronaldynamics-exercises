@@ -1,8 +1,0 @@
-scipy
-brian2>=2.0
-matplotlib
-mpmath
-setuptools
-setuptools_scm
-mock
-nose

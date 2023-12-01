@@ -358,5 +358,5 @@ def plot_population_activity_power_spectrum(freq, ps, max_freq, average_At=None,
     if average_At is None:
         plt.title("Power Spectrum of population activity A(t).")
     else:
-        plt.title("Power Spectrum of population activity A(t). Avg. rate = {}".format(round(average_At, 1)))
+        plt.title("Power Spectrum of population activity A(t). Avg. rate = {}".format(average_At.round(1)))
     return f
