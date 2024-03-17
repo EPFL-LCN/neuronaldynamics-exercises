@@ -59,12 +59,11 @@ def plot_overlap_matrix(overlap_matrix, color_map="bwr"):
 
     """
 
-    plt.imshow(overlap_matrix, interpolation="nearest", cmap=color_map)
+    plt.imshow(overlap_matrix, interpolation="nearest", cmap=color_map, vmin=-1, vmax=1)
     plt.title("pattern overlap m(i,k)")
     plt.xlabel("pattern k")
     plt.ylabel("pattern i")
-    norm = matplotlib.colors.Normalize(vmin=-1, vmax=1)
-    plt.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=color_map))
+    plt.colorbar()
     plt.show()
 
 

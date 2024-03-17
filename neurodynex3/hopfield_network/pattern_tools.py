@@ -98,14 +98,14 @@ class PatternFactory:
         Returns:
             2d pattern, all pixels on
         """
-        return np.ones((self.pattern_length, self.pattern_width), np.int)
+        return np.ones((self.pattern_length, self.pattern_width), int)
 
     def create_all_off(self):
         """
         Returns:
             2d pattern, all pixels off
         """
-        return -1 * np.ones((self.pattern_length, self.pattern_width), np.int)
+        return -1 * np.ones((self.pattern_length, self.pattern_width), int)
 
     def create_checkerboard(self):
         """
@@ -113,10 +113,10 @@ class PatternFactory:
         Returns:
             checkerboard pattern
         """
-        pw = np.ones(self.pattern_length, np.int)
+        pw = np.ones(self.pattern_length, int)
         # set every second value to -1
         pw[1::2] = -1
-        pl = np.ones(self.pattern_width, np.int)
+        pl = np.ones(self.pattern_width, int)
         # set every second value to -1
         pl[1::2] = -1
         t = linalg.toeplitz(pw, pl)
@@ -134,10 +134,10 @@ class PatternFactory:
         Returns:
             an L shaped pattern.
         """
-        l_pat = -1 * np.ones((self.pattern_length, self.pattern_width), np.int)
+        l_pat = -1 * np.ones((self.pattern_length, self.pattern_width), int)
         for i in range(l_width):
-            l_pat[-i - 1, :] = np.ones(self.pattern_length, np.int)
-            l_pat[:, i] = np.ones(self.pattern_length, np.int)
+            l_pat[-i - 1, :] = np.ones(self.pattern_length, int)
+            l_pat[:, i] = np.ones(self.pattern_length, int)
         return l_pat
 
     def reshape_patterns(self, pattern_list):
