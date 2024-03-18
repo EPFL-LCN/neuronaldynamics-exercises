@@ -18,6 +18,8 @@ To install the exercises using ``pip`` simply execute:
 
    pip install --upgrade neurodynex3
 
+Version 1.0.4 has been verified to work with Python versions 3.12.2 to 3.9.18.
+
 License
 -------
 
