@@ -17,7 +17,7 @@ packages_pre = ["%s.%s" % (prefix, s) for s in packages]
 
 setup(
   name='neurodynex3',
-  version = '1.0.3',
+  version = '1.0.4',
   packages=find_packages(),
   package_data={
     'neurodynex3': ['data/*'],
@@ -25,7 +25,7 @@ setup(
   description='Python exercises accompanying the book Neuronal Dynamics by Wulfram Gerstner, Werner M. Kistler, Richard Naud and Liam Paninski.',
   author='LCN-EPFL',
   author_email='martin.barry@epfl.ch',
-  url='https://github.com/martinbarry59/neurodynex3',  # use the URL to the github repo
+  url='https://github.com/EPFL-LCN/neuronaldynamics-exercises',  # use the URL to the github repo
   download_url ='https://github.com/martinbarry59/neurodynex3/archive/1.0.0.tar.gz',
   keywords=['compneuro', 'science', 'teaching', 'neuroscience', 'brian'],  # arbitrary keywords
   classifiers=[
